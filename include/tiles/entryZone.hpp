@@ -1,15 +1,15 @@
-#ifndef EXIT_ZONE_HPP
-#define EXIT_ZONE_HPP
+#ifndef ENTRY_ZONE_HPP
+#define ENTRY_ZONE_HPP
 
 #include "tile.hpp"
 
-class ExitZone: private Tile {
+class EntryZone: private Tile {
 private:
     /* data */
     
 public:
-    ExitZone(/* args */);
-    ~ExitZone();
+    EntryZone(/* args */);
+    ~EntryZone();
 };
 
-#endif // EXIT_ZONE_HPP
+#endif // ENTRY_ZONE_HPP

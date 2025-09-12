@@ -1,23 +1,16 @@
-cmake_minimum_required(VERSION 3.3)
-project(towwer-defense-game)
+cmake_minimum_required(VERSION 3.16)
+project(TowerDefense CXX)
 
+# C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-include_directories(
-    include/
-)
+# Include directory
+include_directories(include)
 
-set(SOURCES
-    src/main.cpp
-)
+# Collect all source files
+file(GLOB_RECURSE SOURCES src/*.cpp)
 
-set(HEADERS
-    #include/pca9685.hpp
-)
-
-set(CMAKE_BUILD_TYPE Debug) 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g")  
-
-add_executable( main ${SOURCES} ${HEADERS} )
-target_link_libraries( main )
+# Create executable
+add_executable(tower_defense ${SOURCES})

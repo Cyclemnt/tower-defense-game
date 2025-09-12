@@ -1,4 +1,4 @@
-#include "../../include/ressources/cores.hpp"
+#include "../../include/resources/cores.hpp"
 
 Cores::Cores()
     : present(24), away(0), stolen(0) {}

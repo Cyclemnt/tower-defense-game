@@ -1,5 +1,5 @@
-#include "../../include/tiles/exitZone.hpp"
+#include "../../include/tiles/entryZone.hpp"
 
-ExitZone::ExitZone() {}
+EntryZone::EntryZone() {}
 
-ExitZone::~ExitZone() {}
+EntryZone::~EntryZone() {}
