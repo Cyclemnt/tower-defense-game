@@ -8,8 +8,11 @@ private:
     /* data */
     
 public:
-    EmptyZone(/* args */);
+    EmptyZone(int x, int y);
     ~EmptyZone();
+
+    bool isWalkable() const override;
+    bool isBuildable() const override;
 };
 
 #endif // EMPTY_ZONE_HPP

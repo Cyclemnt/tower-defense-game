@@ -8,8 +8,11 @@ private:
     /* data */
     
 public:
-    ExitZone(/* args */);
+    ExitZone(int x, int y);
     ~ExitZone();
+
+    bool isWalkable() const override;
+    bool isBuildable() const override;
 };
 
 #endif // EXIT_ZONE_HPP

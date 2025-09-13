@@ -1,6 +1,9 @@
 #ifndef CREATURE_HPP
 #define CREATURE_HPP
 
+#include "../map/tile.hpp"
+#include <vector>
+
 class Creature {
 private:
     // Specifications of the creature
@@ -9,11 +12,19 @@ private:
     int speed;
 
     // Amount of cores currently on the creature
-    int cores;
+    int carriedCores;
+
+    // Path to follow
+    std::vector<Tile*> path;
     
 public:
     Creature(/* args */);
     ~Creature();
+    
+    void move();
+    void takeDamage(int amount);
+    void stealCore();
+    void exitMap();
 };
 
 #endif // CREATURE_HPP

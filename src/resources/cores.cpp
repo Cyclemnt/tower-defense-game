@@ -1,6 +1,15 @@
 #include "../../include/resources/cores.hpp"
 
 Cores::Cores()
-    : present(24), away(0), stolen(0) {}
+    : safe(24), stolen(0), lost(0) {}
 
 Cores::~Cores() {}
+
+void Cores::stealCore() {
+}
+
+void Cores::returnCore() {
+}
+
+void Cores::loseCore() {
+}

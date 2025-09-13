@@ -13,7 +13,7 @@ private:
     int speed;
     int range;
 
-    // Does it go kaboom?
+    // Does it do area damage?
     bool areaDamage;
 
     // Level of the tower
@@ -22,6 +22,10 @@ private:
 public:
     Tower(/* args */);
     ~Tower();
+
+    
+    void attack() const;
+    void upgrade();
 };
 
 #endif // TOWER_HPP

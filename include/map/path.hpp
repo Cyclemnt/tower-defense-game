@@ -8,8 +8,11 @@ private:
     /* data */
     
 public:
-    Path(/* args */);
+    Path(int x, int y);
     ~Path();
+
+    bool isWalkable() const override;
+    bool isBuildable() const override;
 };
 
 #endif // PATH_HPP

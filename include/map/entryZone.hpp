@@ -8,8 +8,11 @@ private:
     /* data */
     
 public:
-    EntryZone(/* args */);
+    EntryZone(int x, int y);
     ~EntryZone();
+
+    bool isWalkable() const override;
+    bool isBuildable() const override;
 };
 
 #endif // ENTRY_ZONE_HPP
