@@ -1,6 +1,8 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
+#include <string>
+
 class Tile {
 private:
     // Coordinates
@@ -16,6 +18,8 @@ public:
 
     int getX() const;
     int getY() const;
+
+    virtual std::string getTypeName() const = 0;
 };
 
 #endif // TILE_HPP

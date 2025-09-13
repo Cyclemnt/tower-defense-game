@@ -12,3 +12,7 @@ bool ExitZone::isWalkable() const {
 bool ExitZone::isBuildable() const {
     return false;
 }
+
+std::string ExitZone::getTypeName() const {
+    return "ExitZone";
+}

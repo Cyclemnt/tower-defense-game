@@ -16,3 +16,15 @@ bool OpenZone::isBuildable() const {
 void OpenZone::setOccupied(bool value) {
     occupied = value;
 }
+
+std::string OpenZone::getTypeName() const {
+    return "OpenZone";
+}
+
+bool OpenZone::isOccupied() const {
+    return occupied;
+}
+
+void OpenZone::setOccupied(bool value) {
+    occupied = value;
+}

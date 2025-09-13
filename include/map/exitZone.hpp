@@ -13,6 +13,8 @@ public:
 
     bool isWalkable() const override;
     bool isBuildable() const override;
+
+    std::string getTypeName() const override;
 };
 
 #endif // EXIT_ZONE_HPP

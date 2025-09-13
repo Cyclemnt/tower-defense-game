@@ -12,3 +12,7 @@ bool EmptyZone::isWalkable() const {
 bool EmptyZone::isBuildable() const {
     return false;
 }
+
+std::string EmptyZone::getTypeName() const {
+    return "EmptyZone";
+}

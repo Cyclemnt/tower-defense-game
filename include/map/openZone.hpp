@@ -15,6 +15,9 @@ public:
     bool isWalkable() const override;
     bool isBuildable() const override;
 
+    std::string getTypeName() const override;
+
+    bool isOccupied() const;
     void setOccupied(bool value);
 };
 

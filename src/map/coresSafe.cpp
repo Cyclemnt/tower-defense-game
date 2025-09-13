@@ -12,3 +12,7 @@ bool CoresSafe::isWalkable() const {
 bool CoresSafe::isBuildable() const {
     return false;
 }
+
+std::string CoresSafe::getTypeName() const {
+    return "CoresSafe";
+}

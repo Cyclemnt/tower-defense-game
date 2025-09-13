@@ -12,3 +12,7 @@ bool Path::isWalkable() const {
 bool Path::isBuildable() const {
     return false;
 }
+
+std::string Path::getTypeName() const {
+    return "Path";
+}
