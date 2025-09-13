@@ -1,15 +1,15 @@
-#ifndef CORES_SAFE_HPP
-#define CORES_SAFE_HPP
+#ifndef CORE_STORAGE_HPP
+#define CORE_STORAGE_HPP
 
 #include "tile.hpp"
 
-class CoresSafe: private Tile {
+class CoreStorage: private Tile {
 private:
     /* data */
     
 public:
-    CoresSafe(int x, int y);
-    ~CoresSafe();
+    CoreStorage(int x, int y);
+    ~CoreStorage();
 
     bool isWalkable() const override;
     bool isBuildable() const override;
@@ -17,4 +17,4 @@ public:
     std::string getTypeName() const override;
 };
 
-#endif // CORES_SAFE_HPP
+#endif // CORE_STORAGE_HPP
