@@ -3,29 +3,44 @@
 
 #include "tile.hpp"
 
-class CoreStorage: public Tile {
+/// @brief Represents a core storage area on the map, where cores are stored.
+class CoreStorage : public Tile {
 private:
-    int cores; // number of cores currently stored here
-    
+    int cores; ///< The number of cores currently stored in this tile.
+
 public:
+    /// @brief Constructs a new CoreStorage at the specified coordinates with an initial core count.
+    /// @param x The x-coordinate (column) of the core storage.
+    /// @param y The y-coordinate (row) of the core storage.
+    /// @param initialCores The initial number of cores to store on this tile.
     CoreStorage(int x, int y, int initialCores = 0);
+
+    /// @brief Destroys the CoreStorage object.
     ~CoreStorage() override = default;
 
+    /// @brief Determines if the core storage is walkable by creatures.
+    /// @return true, as core storage areas are walkable.
     bool isWalkable() const override;
+
+    /// @brief Determines if the core storage is buildable.
+    /// @return false, as core storage areas are not buildable.
     bool isBuildable() const override;
 
-    // Return Tile type name
+    /// @brief Retrieves the name/type of this tile.
+    /// @return A string representing the type of this tile ("CoreStorage").
     std::string getTypeName() const override;
 
-    // Return current number of cores on this tile
+    /// @brief Returns the current number of cores stored on this tile.
+    /// @return The number of cores in storage.
     int getCoreCount() const;
 
-    // Attempt to take up to 'requested' cores from this tile.
-    // Returns the actual number taken (0..requested).
-    // This method modifies the internal cores count.
+    /// @brief Attempts to take a specified number of cores from the core storage.
+    /// @param requested The number of cores to try and take.
+    /// @return The actual number of cores taken (0 to requested).
     int takeCores(int requested);
 
-    // Put back `n` cores onto this tile (n >= 0).
+    /// @brief Deposits a specified number of cores back into the core storage.
+    /// @param n The number of cores to deposit.
     void depositCores(int n);
 };
 

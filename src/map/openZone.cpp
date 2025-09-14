@@ -6,7 +6,7 @@ OpenZone::OpenZone(int x, int y)
 OpenZone::~OpenZone() {}
 
 bool OpenZone::isWalkable() const {
-    return true;
+    return !occupied;
 }
 
 bool OpenZone::isBuildable() const {

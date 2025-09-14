@@ -3,21 +3,38 @@
 
 #include "tile.hpp"
 
-class OpenZone: public Tile {
+/// @brief Represents an open zone on the map, which may be occupied by a tower.
+class OpenZone : public Tile {
 private:
-    // Occupied by a tower
-    bool occupied;
-    
+    bool occupied; ///< Indicates if the zone is currently occupied by a tower.
+
 public:
+    /// @brief Constructs a new OpenZone at the specified coordinates.
+    /// @param x The x-coordinate (column) of the open zone.
+    /// @param y The y-coordinate (row) of the open zone.
     OpenZone(int x, int y);
+
+    /// @brief Destroys the OpenZone object.
     ~OpenZone();
 
+    /// @brief Determines if the open zone is walkable by creatures.
+    /// @return true if the zone is not occupied, false otherwise.
     bool isWalkable() const override;
+
+    /// @brief Determines if the open zone is buildable (i.e., can a structure be placed on it).
+    /// @return true if the zone is not occupied, false otherwise.
     bool isBuildable() const override;
 
+    /// @brief Retrieves the name/type of this tile.
+    /// @return A string representing the type of this tile ("OpenZone").
     std::string getTypeName() const override;
 
+    /// @brief Checks if the open zone is currently occupied.
+    /// @return true if the zone is occupied, false otherwise.
     bool isOccupied() const;
+
+    /// @brief Sets the occupation status of the open zone.
+    /// @param value The occupation status to set (true for occupied, false for not).
     void setOccupied(bool value);
 };
 
