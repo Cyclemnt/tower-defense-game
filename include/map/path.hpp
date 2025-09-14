@@ -3,7 +3,7 @@
 
 #include "tile.hpp"
 
-class Path: private Tile {
+class Path: public Tile {
 private:
     /* data */
     

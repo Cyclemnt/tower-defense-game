@@ -3,7 +3,7 @@
 
 #include "tile.hpp"
 
-class OpenZone: private Tile {
+class OpenZone: public Tile {
 private:
     // Occupied by a tower
     bool occupied;

@@ -3,7 +3,7 @@
 
 #include "tile.hpp"
 
-class ExitZone: private Tile {
+class ExitZone: public Tile {
 private:
     /* data */
     

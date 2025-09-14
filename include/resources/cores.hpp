@@ -9,12 +9,12 @@ private:
     int lost;
 
 public:
-    Cores(/* args */);
+    Cores(int initial = 24);
     ~Cores();
     
-    void stealCore();
-    void returnCore();
-    void loseCore();
+    void stealCore(int n);   // Enemy steals cores from base
+    void returnCore(int n);  // Enemy carrying cores dies → cores return
+    void loseCore(int n);    // Enemy exits with cores → they are permanently lost
 };
 
 #endif // CORES_HPP

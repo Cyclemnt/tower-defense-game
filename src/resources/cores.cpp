@@ -1,15 +1,24 @@
 #include "../../include/resources/cores.hpp"
 
-Cores::Cores()
-    : safe(24), stolen(0), lost(0) {}
+Cores::Cores(int initial)
+    : safe(initial), stolen(0), lost(0) {}
 
 Cores::~Cores() {}
 
-void Cores::stealCore() {
+// Enemy steals cores from base
+void Cores::stealCore(int n) {
+    safe -= n;
+    stolen += n;
 }
 
-void Cores::returnCore() {
+// Enemy carrying cores dies → cores return
+void Cores::returnCore(int n) {
+    stolen -= n;
+    safe += n;
 }
 
-void Cores::loseCore() {
+// Enemy exits with cores → they are permanently lost
+void Cores::loseCore(int n) {
+    stolen -= n;
+    lost += n;
 }

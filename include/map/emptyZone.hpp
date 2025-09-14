@@ -3,7 +3,7 @@
 
 #include "tile.hpp"
 
-class EmptyZone: private Tile {
+class EmptyZone: public Tile {
 private:
     /* data */
     

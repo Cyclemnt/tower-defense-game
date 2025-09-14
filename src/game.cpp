@@ -2,11 +2,12 @@
 #include "game.hpp"
 
 Game::Game()
-    : map({}), towers({}), creatures({}), player(), elapsedTime(0) {}
+    : map(2, 2), towers({}), creatures({}), player(), elapsedTime(0) {}
 
 Game::~Game() {}
 
 void Game::run() {
+    map.printMap();
 }
 
 void Game::update() {

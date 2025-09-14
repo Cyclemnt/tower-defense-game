@@ -13,10 +13,6 @@ bool OpenZone::isBuildable() const {
     return !occupied;
 }
 
-void OpenZone::setOccupied(bool value) {
-    occupied = value;
-}
-
 std::string OpenZone::getTypeName() const {
     return "OpenZone";
 }
