@@ -7,7 +7,6 @@ Game::Game()
 Game::~Game() {}
 
 void Game::run() {
-    map.printMap();
 }
 
 void Game::update() {

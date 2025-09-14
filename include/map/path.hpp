@@ -4,9 +4,6 @@
 #include "tile.hpp"
 
 class Path: public Tile {
-private:
-    /* data */
-    
 public:
     Path(int x, int y);
     ~Path();

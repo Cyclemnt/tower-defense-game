@@ -4,9 +4,6 @@
 #include "tile.hpp"
 
 class EntryZone: public Tile {
-private:
-    /* data */
-    
 public:
     EntryZone(int x, int y);
     ~EntryZone();

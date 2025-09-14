@@ -4,9 +4,6 @@
 #include "tile.hpp"
 
 class ExitZone: public Tile {
-private:
-    /* data */
-    
 public:
     ExitZone(int x, int y);
     ~ExitZone();

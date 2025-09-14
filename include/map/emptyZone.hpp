@@ -4,9 +4,6 @@
 #include "tile.hpp"
 
 class EmptyZone: public Tile {
-private:
-    /* data */
-    
 public:
     EmptyZone(int x, int y);
     ~EmptyZone();

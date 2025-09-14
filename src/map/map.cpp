@@ -1,6 +1,7 @@
 #include "../../include/map/map.hpp"
 #include <stdexcept>
 #include <iostream>
+#include <algorithm>
 
 Map::Map(int w, int h) : width(w), height(h) {
     grid.resize(height);
@@ -10,20 +11,57 @@ Map::Map(int w, int h) : width(w), height(h) {
             grid[y][x] = std::make_unique<EmptyZone>(x, y);
         }
     }
+    grid[0][0] = std::make_unique<EmptyZone>(0, 0);
 }
 
 Map::~Map() {}
 
-// Return map dimensions
 int Map::getWidth() const { return width; }
 int Map::getHeight() const { return height; }
 
-// Return pointer to the (x, y) tile
 Tile* Map::getTile(int x, int y) const {
     if (x < 0 || x >= width || y < 0 || y >= height) {
         throw std::out_of_range("Invalid tile coordinates");
     }
     return grid[y][x].get();
+}
+
+void Map::placeTile(std::unique_ptr<Tile> tile) {
+    int x = tile->getX();
+    int y = tile->getY();
+
+    if (x < 0 || x >= width || y < 0 || y >= height) {
+        throw std::out_of_range("Invalid tile coordinates");
+    }
+
+    // If it was an interest point, remove from the right vector
+    if (auto e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
+        // Using std::find to find the tile to delete
+        auto it = std::find(entries.begin(), entries.end(), e);
+        if (it != entries.end()) {
+            entries.erase(it);
+        }
+    } else if (auto ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
+        // Using std::find to find the tile to delete
+        auto it = std::find(exits.begin(), exits.end(), ex);
+        if (it != exits.end()) {
+            exits.erase(it);
+        }
+    } else if (auto c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
+        coreStorage = nullptr;
+    }
+
+    // Replace the tile
+    grid[y][x] = std::move(tile);
+
+    // If it is an interest point, add to the right vector
+    if (auto e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
+        entries.push_back(e);
+    } else if (auto ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
+        exits.push_back(ex);
+    } else if (auto c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
+        coreStorage = c;
+    }
 }
 
 const std::vector<EntryZone*>& Map::getEntries() const { return entries; }

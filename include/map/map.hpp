@@ -2,54 +2,89 @@
 #define MAP_HPP
 
 #include "tile.hpp"
-
 #include "coreStorage.hpp"
 #include "emptyZone.hpp"
 #include "entryZone.hpp"
 #include "exitZone.hpp"
 #include "openZone.hpp"
 #include "path.hpp"
-
 #include "../creatures/creature.hpp"
 
 #include <array>
 #include <vector>
 #include <memory>
 
+/// @brief Represents game's map, with areas of interest for creatures.
 class Map {
 private:
-    // 2D map
-    int width;
-    int height;
+    int width; ///< The width of the map (number of columns).
+    int height; ///< The height of the map (number of rows).
+
+    /// @brief 2D grid representing the map's layout, with each cell containing a unique tile.
     std::vector<std::vector<std::unique_ptr<Tile>>> grid;
 
-    // Interest points for the creatures
+    /// @brief List of entry zones (special areas where creatures can enter).
     std::vector<EntryZone*> entries;
+
+    /// @brief List of exit zones (special areas where creatures can exit).
     std::vector<ExitZone*> exits;
+
+    /// @brief Pointer to the core storage object (special area where cores are stored).
     CoreStorage* coreStorage;
     
 public:
+    /// @brief Constructs a new map with given dimensions.
+    /// @param w The width of the map (number of columns).
+    /// @param h The height of the map (number of rows).
     Map(int w, int h);
+
+    /// @brief Destroys the map object and frees any allocated resources.
     ~Map();
 
-    // Return map dimensions
+    /// @brief Returns the width of the map (number of columns).
+    /// @return The width of the map.
     int getWidth() const;
+
+    /// @brief Returns the height of the map (number of rows).
+    /// @return The height of the map.
     int getHeight() const;
 
-    // Return pointer to the (x, y) tile
+    /// @brief Retrieves the tile located at the given coordinates.
+    /// @param x The x-coordinate (column) of the tile.
+    /// @param y The y-coordinate (row) of the tile.
+    /// @return A pointer to the tile located at the specified coordinates.
+    /// @throws std::out_of_range If the provided coordinates are outside the map's bounds.
     Tile* getTile(int x, int y) const;
 
-    // Return interest points
+    /// @brief Places a new tile at the correct position on the grid.
+    /// @param tile A unique pointer to the tile object to be placed on the map.
+    void placeTile(std::unique_ptr<Tile> tile);
+
+    /// @brief Returns a reference to the list of entry zones on the map.
+    /// @return A constant reference to the vector of EntryZone pointers.
     const std::vector<EntryZone*>& getEntries() const;
+
+    /// @brief Returns a reference to the list of exit zones on the map.
+    /// @return A constant reference to the vector of ExitZone pointers.
     const std::vector<ExitZone*>& getExits() const;
+
+    /// @brief Returns a pointer to the core storage of the map.
+    /// @return A pointer to the CoreStorage object.
     const CoreStorage* getCoreStorage() const;
 
-    // Return neighbors of a tile
+    /// @brief Returns a list of neighboring tiles surrounding the given tile.
+    /// @param tile The central tile to check neighbors for.
+    /// @return A vector of pointers to neighboring tiles (adjacent horizontally or vertically).
     std::vector<Tile*> getNeighbors(Tile* tile) const;
-    // Return a path
+
+    /// @brief Finds a path for a given creature, potentially from an entry to an exit.
+    /// @param c A pointer to the creature for which a path needs to be found.
+    /// @return A vector of tiles that form the path for the creature.
     std::vector<Tile*> findPath(Creature* c) const;
 
-    // Console debug
+    /// @brief Prints the current map to the console for debugging purposes.
+    /// @details This method outputs a visual representation of the map, 
+    /// where different types of tiles are displayed using specific characters.
     void printMap() const;
 };
 
