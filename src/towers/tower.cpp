@@ -25,13 +25,15 @@ void Tower::update(std::vector<Creature*>& creatures) {
 
         if (dist <= range) {
             target = c;
-            break; // simple : shoot the first target found
+            break; // simple: shoot the first target found
+            // TODO (maybe): use spacial hashing to compute targets faster 
         }
     }
 
     if (target) {
         attack(target);
         cooldown = 1.0f / fireRate; // reset cooldown
+        // TODO: calculate cooldown in ticks/frames
     }
 }
 
