@@ -5,22 +5,12 @@ OpenZone::OpenZone(int x, int y)
 
 OpenZone::~OpenZone() {}
 
-bool OpenZone::isWalkable() const {
-    return !occupied;
-}
+bool OpenZone::isWalkable() const { return !occupied; }
 
-bool OpenZone::isBuildable() const {
-    return !occupied;
-}
+bool OpenZone::isBuildable() const { return !occupied; }
 
-std::string OpenZone::getTypeName() const {
-    return "OpenZone";
-}
+std::string OpenZone::getTypeName() const { return "OpenZone"; }
 
-bool OpenZone::isOccupied() const {
-    return occupied;
-}
+bool OpenZone::isOccupied() const { return occupied; }
 
-void OpenZone::setOccupied(bool value) {
-    occupied = value;
-}
+void OpenZone::setOccupied(bool value) { occupied = value; }

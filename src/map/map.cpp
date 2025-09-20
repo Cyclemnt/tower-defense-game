@@ -17,6 +17,7 @@ Map::Map(int w, int h) : width(w), height(h) {
 Map::~Map() {}
 
 int Map::getWidth() const { return width; }
+
 int Map::getHeight() const { return height; }
 
 Tile* Map::getTile(int x, int y) const {
@@ -65,7 +66,9 @@ void Map::placeTile(std::unique_ptr<Tile> tile) {
 }
 
 const std::vector<EntryZone*>& Map::getEntries() const { return entries; }
+
 const std::vector<ExitZone*>& Map::getExits() const { return exits; }
+
 const CoreStorage* Map::getCoreStorage() const { return coreStorage; }
 
 std::vector<Tile*> Map::getNeighbors(Tile* tile) const {

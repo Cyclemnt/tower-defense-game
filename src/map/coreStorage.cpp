@@ -3,17 +3,11 @@
 CoreStorage::CoreStorage(int x, int y, int initialCores)
     : Tile(x, y), cores(initialCores) {}
 
-bool CoreStorage::isWalkable() const {
-    return true;
-}
+bool CoreStorage::isWalkable() const { return true; }
 
-bool CoreStorage::isBuildable() const {
-    return false;
-}
+bool CoreStorage::isBuildable() const { return false; }
 
-std::string CoreStorage::getTypeName() const {
-    return "CoreStorage";
-}
+std::string CoreStorage::getTypeName() const { return "CoreStorage"; }
 
 int CoreStorage::getCoreCount() const { return cores; }
 

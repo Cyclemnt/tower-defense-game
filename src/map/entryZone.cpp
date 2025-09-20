@@ -5,14 +5,8 @@ EntryZone::EntryZone(int x, int y)
 
 EntryZone::~EntryZone() {}
 
-bool EntryZone::isWalkable() const {
-    return true;
-}
+bool EntryZone::isWalkable() const { return true; }
 
-bool EntryZone::isBuildable() const {
-    return false;
-}
+bool EntryZone::isBuildable() const { return false; }
 
-std::string EntryZone::getTypeName() const {
-    return "EntryZone";
-}
+std::string EntryZone::getTypeName() const { return "EntryZone"; }

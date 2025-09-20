@@ -5,14 +5,8 @@ Path::Path(int x, int y)
 
 Path::~Path() {}
 
-bool Path::isWalkable() const {
-    return true;
-}
+bool Path::isWalkable() const { return true; }
 
-bool Path::isBuildable() const {
-    return false;
-}
+bool Path::isBuildable() const { return false; }
 
-std::string Path::getTypeName() const {
-    return "Path";
-}
+std::string Path::getTypeName() const { return "Path"; }

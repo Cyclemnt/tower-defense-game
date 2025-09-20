@@ -5,14 +5,8 @@ EmptyZone::EmptyZone(int x, int y)
 
 EmptyZone::~EmptyZone() {}
 
-bool EmptyZone::isWalkable() const {
-    return false;
-}
+bool EmptyZone::isWalkable() const { return false; }
 
-bool EmptyZone::isBuildable() const {
-    return false;
-}
+bool EmptyZone::isBuildable() const { return false; }
 
-std::string EmptyZone::getTypeName() const {
-    return "EmptyZone";
-}
+std::string EmptyZone::getTypeName() const { return "EmptyZone"; }
