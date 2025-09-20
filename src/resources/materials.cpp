@@ -12,4 +12,5 @@ void Materials::spend(std::array<int, 3> amounts) {
 }
 
 bool Materials::canAfford(Tower t) const {
+    return false;
 }
