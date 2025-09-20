@@ -10,12 +10,10 @@
  * @class Tower
  * @brief Base class for all towers in the tower defense game.
  *
- * A Tower is placed on an OpenZone tile by the player. Each tower has
- * a purchase cost in materials, attack stats (damage, range, fire rate),
- * and can optionally deal area damage. Towers automatically search for
- * enemies within range and attack them when their cooldown is ready.
- *
- * Towers can also be upgraded to improve their stats.
+ * A Tower is placed on an OpenZone tile by the player. Towers have a cost,
+ * stats such as damage, range, and fire rate, and can optionally deal
+ * area damage. Towers automatically search for and attack enemies in range,
+ * and can be upgraded to improve their stats.
  */
 class Tower {
 protected:

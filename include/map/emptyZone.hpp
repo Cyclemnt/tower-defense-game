@@ -3,7 +3,12 @@
 
 #include "tile.hpp"
 
-/// @brief Represents an empty zone on the map, which is not walkable nor buildable.
+/**
+ * @class EmptyZone
+ * @brief Represents an unused tile on the map.
+ *
+ * EmptyZone tiles are neither walkable by creatures nor buildable by towers.
+ */
 class EmptyZone : public Tile {
 public:
     /// @brief Constructs a new EmptyZone at the specified coordinates.

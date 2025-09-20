@@ -3,7 +3,13 @@
 
 #include "tile.hpp"
 
-/// @brief Represents a path tile on the map, which is walkable and not buildable.
+/**
+ * @class Path
+ * @brief Represents a walkable tile on the map.
+ *
+ * Path tiles define the routes creatures can follow from entry points
+ * to the core storage and eventually to exit points.
+ */
 class Path : public Tile {
 public:
     /// @brief Constructs a new Path at the specified coordinates.

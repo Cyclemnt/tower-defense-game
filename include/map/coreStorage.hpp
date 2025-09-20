@@ -3,7 +3,13 @@
 
 #include "tile.hpp"
 
-/// @brief Represents a core storage area on the map, where cores are stored.
+/**
+ * @class CoreStorage
+ * @brief Represents the core storage location on the map.
+ *
+ * CoreStorage tiles contain the cores that creatures attempt to steal.
+ * Losing all cores results in the player's defeat.
+ */
 class CoreStorage : public Tile {
 private:
     int cores; ///< The number of cores currently stored in this tile.

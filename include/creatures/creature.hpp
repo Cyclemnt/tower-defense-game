@@ -4,7 +4,14 @@
 #include "../map/tile.hpp"
 #include <vector>
 
-/// @brief Represents a creature in the game, capable of moving along a path, taking damage, and carrying cores.
+/**
+ * @class Creature
+ * @brief Base class for enemy units.
+ *
+ * A Creature represents an enemy that follows a path through the map.
+ * Creatures have health, shields, speed, and may carry stolen cores.
+ * They can move, take damage, die, and drop cores upon death.
+ */
 class Creature {
 private:
     // --- Creature Specifications ---

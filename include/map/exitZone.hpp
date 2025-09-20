@@ -3,7 +3,13 @@
 
 #include "tile.hpp"
 
-/// @brief Represents an exit zone on the map, where creatures can exit.
+/**
+ * @class ExitZone
+ * @brief Represents a creature exit point.
+ *
+ * ExitZone tiles are the goal locations that creatures attempt to reach
+ * after stealing cores from the base.
+ */
 class ExitZone : public Tile {
 public:
     /// @brief Constructs a new ExitZone at the specified coordinates.

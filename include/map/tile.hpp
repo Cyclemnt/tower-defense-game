@@ -3,7 +3,15 @@
 
 #include <string>
 
-/// @brief Represents a base class for tiles in the game. All specific tile types inherit from this class.
+/**
+ * @class Tile
+ * @brief Abstract base class for all map tiles.
+ *
+ * A Tile represents a cell on the game map grid. Each type of tile defines
+ * whether it can be walked on by creatures and/or built upon by towers.
+ * Derived classes include EmptyZone, Path, OpenZone, EntryZone, ExitZone,
+ * and CoreStorage.
+ */
 class Tile {
 private:
     int x; ///< The x-coordinate (column) of the tile.

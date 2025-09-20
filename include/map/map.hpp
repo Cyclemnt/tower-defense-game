@@ -14,7 +14,14 @@
 #include <vector>
 #include <memory>
 
-/// @brief Represents game's map, with areas of interest for creatures.
+/**
+ * @class Map
+ * @brief Represents the game map grid.
+ *
+ * The Map manages a 2D grid of Tile objects, provides access to neighbors
+ * for pathfinding, and keeps track of key points such as entries, exits,
+ * and the core storage.
+ */
 class Map {
 private:
     int width; ///< The width of the map (number of columns).

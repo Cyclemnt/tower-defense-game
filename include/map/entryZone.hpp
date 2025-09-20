@@ -3,7 +3,13 @@
 
 #include "tile.hpp"
 
-/// @brief Represents an entry zone on the map, where creatures can enter.
+/**
+ * @class EntryZone
+ * @brief Represents a creature spawn point.
+ *
+ * EntryZone tiles are the starting locations where enemy creatures
+ * enter the map.
+ */
 class EntryZone : public Tile {
 public:
     /// @brief Constructs a new EntryZone at the specified coordinates.

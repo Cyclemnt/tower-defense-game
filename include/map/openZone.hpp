@@ -3,7 +3,13 @@
 
 #include "tile.hpp"
 
-/// @brief Represents an open zone on the map, which may be occupied by a tower.
+/**
+ * @class OpenZone
+ * @brief Represents a buildable tile on the map.
+ *
+ * OpenZone tiles allow the player to place towers. They are not walkable
+ * for creatures and may be marked as occupied once a tower is built.
+ */
 class OpenZone : public Tile {
 private:
     bool occupied; ///< Indicates if the zone is currently occupied by a tower.
