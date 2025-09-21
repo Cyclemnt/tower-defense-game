@@ -18,7 +18,8 @@ public:
     
     void placeTower(Tile* tile, Tower* tower);
     void upgradeTower(Tower* tower);
-    bool canAfford(Tower* tower) const;
+    bool canAfford(const Tower& tower);
+    void pay(const Tower& tower);
 };
 
 #endif // PLAYER_HPP

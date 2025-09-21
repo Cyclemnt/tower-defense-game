@@ -24,6 +24,8 @@ private:
     Map map;                          ///< The game map containing tiles and zones
     Pathfinder pathfinder;            ///< Pathfinding system (A* search)
 
+    Player player;
+
     std::vector<std::unique_ptr<Creature>> creatures; ///< List of active creatures
     std::vector<std::unique_ptr<Tower>> towers;       ///< List of placed towers
 

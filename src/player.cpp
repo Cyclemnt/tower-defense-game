@@ -11,6 +11,10 @@ void Player::placeTower(Tile* tile, Tower* tower) {
 void Player::upgradeTower(Tower* tower) {
 }
 
-bool Player::canAfford(Tower* tower) const {
+bool Player::canAfford(const Tower& tower) {
     return false;
+}
+
+void Player::pay(const Tower& tower) {
+    materials.spend(tower.getPrice());
 }

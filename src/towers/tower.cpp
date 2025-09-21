@@ -6,6 +6,22 @@
 Tower::Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate, bool area)
     : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), areaDamage(area), level(1), cooldown(0.0f) {}
 
+int Tower::getX() const { return x; }
+
+int Tower::getY() const { return y; }
+
+int Tower::getLevel() const { return level; }
+
+int Tower::getDamage() const { return damage; }
+
+float Tower::getRange() const { return range; }
+
+float Tower::getFireRate() const { return fireRate; }
+
+bool Tower::isAreaDamage() const { return areaDamage; }
+
+std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu}; }
+
 void Tower::update(std::vector<Creature*>& creatures) {
     std::cout << "twr cooldown: " << cooldown << std::endl;
     if (cooldown > 0.0f) {

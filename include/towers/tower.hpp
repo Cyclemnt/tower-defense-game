@@ -1,10 +1,11 @@
 #ifndef TOWER_HPP
 #define TOWER_HPP
 
-#include <string>
-#include <vector>
 #include "creatures/creature.hpp"
 #include "map/tile.hpp"
+#include <string>
+#include <vector>
+#include <array>
 
 /**
  * @class Tower
@@ -52,25 +53,28 @@ public:
     // --- Getters ---
 
     /// @return X coordinate on the map grid.
-    int getX() const { return x; }
+    int getX() const;
 
     /// @return Y coordinate on the map grid.
-    int getY() const { return y; }
+    int getY() const;
 
     /// @return Current upgrade level of the tower.
-    int getLevel() const { return level; }
+    int getLevel() const;
 
     /// @return Attack damage of the tower.
-    int getDamage() const { return damage; }
+    int getDamage() const;
 
     /// @return Attack range of the tower in tiles.
-    float getRange() const { return range; }
+    float getRange() const;
 
     /// @return Fire rate (attacks per second).
-    float getFireRate() const { return fireRate; }
+    float getFireRate() const;
 
     /// @return True if the tower deals area damage, false otherwise.
-    bool isAreaDamage() const { return areaDamage; }
+    bool isAreaDamage() const;
+
+    /// @return The price of the tower.
+    std::array<int, 3> getPrice() const;
 
     // --- Actions ---
 

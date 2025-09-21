@@ -70,4 +70,5 @@ std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal) const {
 
     // Return the found path (or an empty path if none was found).
     return path;
+    // TODO: if no path found, search again with walkable OR occupied tiles
 }

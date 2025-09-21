@@ -37,8 +37,17 @@ void Game::spawnCreature(std::unique_ptr<Creature> creature) {
 }
 
 void Game::placeTower(std::unique_ptr<Tower> tower) {
-    // TODO: verify if buildable zone and if player can afford
+    if (!map.getTile(tower.get()->getX(), tower.get()->getY())->isBuildable())
+        throw std::runtime_error("Trying to place tower on non buildable tile");
+    
+    if (!player.canAfford(*tower))
+        throw std::runtime_error("Player cannot afford a tower");
+    player.pay(*tower);
+    
     towers.push_back(std::move(tower));
+
+    // TODO: update paths
+
 }
 
 void Game::update() {
@@ -59,9 +68,7 @@ void Game::update() {
 
     // Remove dead creatures
     creatures.erase(std::remove_if(creatures.begin(), creatures.end(),
-                                   [](const std::unique_ptr<Creature>& c) {
-                                       return !c->isAlive();
-                                   }),
+                                   [](const std::unique_ptr<Creature>& c) { return !c->isAlive(); }),
                     creatures.end());
 }
 
