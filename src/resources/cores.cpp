@@ -5,6 +5,8 @@ Cores::Cores(int initial)
 
 Cores::~Cores() {}
 
+int Cores::getLost() const { return lost; }
+
 // Enemy steals cores from base
 void Cores::stealCore(int n) {
     safe -= n;

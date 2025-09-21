@@ -11,6 +11,8 @@ private:
 public:
     Cores(int initial = 24);
     ~Cores();
+
+    int getLost() const;
     
     void stealCore(int n);   // Enemy steals cores from base
     void returnCore(int n);  // Enemy carrying cores dies → cores return

@@ -1,17 +1,17 @@
 #include "../../include/towers/tower.hpp"
 #include <cmath>
 #include <algorithm>
+#include <iostream>
 
-Tower::Tower(int x_, int y_, int au, int ag, int cu,
-             int dmg, float rng, float rate, bool area)
-    : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu),
-      damage(dmg), range(rng), fireRate(rate), areaDamage(area),
-      level(1), cooldown(0.0f) {}
+Tower::Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate, bool area)
+    : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), areaDamage(area), level(1), cooldown(0.0f) {}
 
 void Tower::update(std::vector<Creature*>& creatures) {
+    std::cout << "twr cooldown: " << cooldown << std::endl;
     if (cooldown > 0.0f) {
-        cooldown -= 1.0f; // 1 tick = 1 unité de temps
-        return;
+        cooldown -= std::min(1.0f, cooldown); // 1 tick = 1 unité de temps
+        if (cooldown != 0.0f)
+            return;
     }
 
     // Searching a target within range
@@ -21,11 +21,11 @@ void Tower::update(std::vector<Creature*>& creatures) {
 
         int dx = c->getCurrentTile()->getX() - x;
         int dy = c->getCurrentTile()->getY() - y;
-        float dist = std::sqrt(dx * dx + dy * dy);
+        float dist = std::sqrt(dx * dx + dy * dy); // Possible optimization by comparing square distance
 
         if (dist <= range) {
             target = c;
-            break; // simple: shoot the first target found
+            break; // simple: shoot the first target found, in spawn order
             // TODO (maybe): use spacial hashing to compute targets faster 
         }
     }
@@ -34,6 +34,7 @@ void Tower::update(std::vector<Creature*>& creatures) {
         attack(target);
         cooldown = 1.0f / fireRate; // reset cooldown
         // TODO: calculate cooldown in ticks/frames
+        // cooldown = framerate / firerate
     }
 }
 

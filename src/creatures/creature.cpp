@@ -46,6 +46,7 @@ void Creature::takeDamage(int dmg) {
         int absorbed = std::min(shield, remaining);
         shield -= absorbed;
         remaining -= absorbed;
+        return;
     }
 
     // Then health
