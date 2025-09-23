@@ -15,9 +15,9 @@ public:
     Materials(/* args */);
     ~Materials();
 
+    std::array<int, 3> getBalance() const;
     void add(std::array<int, 3> amounts);
     void spend(std::array<int, 3> amounts);
-    bool canAfford(Tower t) const;
 };
 
 #endif // MATERIALS_HPP

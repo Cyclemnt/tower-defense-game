@@ -14,7 +14,7 @@ int main() {
     game.placeTower(std::move(t));
 
     // Boucle de simulation console
-        game.render();
+    game.render();
     for (int i = 0; i < 10 && !game.isGameOver(); i++) {
         game.update();
         game.render();

@@ -12,7 +12,11 @@ void Player::upgradeTower(Tower* tower) {
 }
 
 bool Player::canAfford(const Tower& tower) {
-    return false;
+    for (size_t i = 0; i < 3; i++)
+        if (materials.getBalance()[i] < tower.getPrice()[i])
+            return false;
+    
+    return true;
 }
 
 void Player::pay(const Tower& tower) {

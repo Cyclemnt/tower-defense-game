@@ -18,6 +18,7 @@ Game::Game(int w, int h, int initialCores)
     map.placeTile(std::make_unique<EmptyZone>(3, 1));
     map.placeTile(std::make_unique<EmptyZone>(3, 0));
     // Interest points setup
+    map.placeTile(std::make_unique<OpenZone>(2, 0));
     map.placeTile(std::make_unique<EntryZone>(0, 0));
     map.placeTile(std::make_unique<ExitZone>(4, 4));
     map.placeTile(std::make_unique<CoreStorage>(2, 2, 24));
