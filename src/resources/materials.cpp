@@ -1,5 +1,7 @@
 #include "../../include/resources/materials.hpp"
 
+#include <stdexcept>
+
 Materials::Materials()
     : au(10), ag(0), cu(0) {}
 
@@ -10,7 +12,19 @@ std::array<int, 3> Materials::getBalance() const {
 }
 
 void Materials::add(std::array<int, 3> amounts) {
+    if (amounts[0] < 0) throw std::runtime_error("Trying to add a negative amount of Au");
+    if (amounts[1] < 0) throw std::runtime_error("Trying to add a negative amount of Ag");
+    if (amounts[2] < 0) throw std::runtime_error("Trying to add a negative amount of Cu");
+    au += amounts[0];
+    ag += amounts[1];
+    cu += amounts[2];
 }
 
 void Materials::spend(std::array<int, 3> amounts) {
+    if (amounts[0] > au || amounts[0] < 0) throw std::runtime_error("Trying to spend an incorect amount of Au");
+    if (amounts[1] > ag || amounts[1] < 0) throw std::runtime_error("Trying to spend an incorect amount of Ag");
+    if (amounts[2] > cu || amounts[2] < 0) throw std::runtime_error("Trying to spend an incorect amount of Cu");
+    au -= amounts[0];
+    ag -= amounts[1];
+    cu -= amounts[2];
 }
