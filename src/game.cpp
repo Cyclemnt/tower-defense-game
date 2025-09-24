@@ -20,19 +20,20 @@ Game::Game(int w, int h, int initialCores)
     // Interest points setup
     map.placeTile(std::make_unique<OpenZone>(2, 0));
     map.placeTile(std::make_unique<EntryZone>(0, 0));
-    map.placeTile(std::make_unique<ExitZone>(4, 4));
+    map.placeTile(std::make_unique<ExitZone>(4, 3));
     map.placeTile(std::make_unique<CoreStorage>(2, 2, 24));
+    map.printMap();
 }
 
 void Game::spawnCreature(std::unique_ptr<Creature> creature) {
+    if (map.getEntries().empty() || map.getCoreStorage() == nullptr || map.getExits().empty())
+        throw std::runtime_error("Map missing entry or core storage or exit");
     // Assign path (Entry -> CoreStorage or Exit)
-    if (!map.getEntries().empty() && !map.getExits().empty()) {
-        Tile* start = map.getEntries()[0];
-        Tile* goal = map.getExits()[0];
+    Tile* start = map.getEntries()[0];
+    Tile* goal = map.getCoreStorage();
 
-        auto path = pathfinder.findPath(start, goal);
-        creature->setPath(path);
-    }
+    auto path = pathfinder.findPath(start, goal);
+    creature->setPath(path);
 
     creatures.push_back(std::move(creature));
 }
@@ -43,21 +44,48 @@ void Game::placeTower(std::unique_ptr<Tower> tower) {
     
     if (!player.canAfford(*tower))
         throw std::runtime_error("Player cannot afford a tower");
+        
     player.pay(*tower);
     
     towers.push_back(std::move(tower));
 
-    // TODO: update paths
-
+    // Update every creature's paths
+    for (auto& c : creatures) {
+        Tile* start = c->getCurrentTile();
+        Tile* goal = c->getDestinationTile();
+        auto newPath = pathfinder.findPath(start, goal);
+        c->setPath(newPath);
+    }
 }
 
-void Game::update() {
+void Game::update(float deltaTime) {
     tick++;
 
     // Update creatures
     for (auto& c : creatures) {
         if (c->isAlive()) {
-            c->update();
+
+            c->update(deltaTime);
+
+            Tile* current = c->getCurrentTile();
+            
+            // CoreStorage reached
+            if (auto storage = dynamic_cast<CoreStorage*>(current)) {
+                if (c->getDestinationTile() == map.getCoreStorage()) {
+                    // New path to exit
+                    Tile* goal = map.getExits()[0];
+                    auto newPath = pathfinder.findPath(current, goal);
+                    c->setPath(newPath);
+                }
+            }
+
+            // Exit reached
+            if (auto exit = dynamic_cast<ExitZone*>(current)) {
+                if (c->getDestinationTile() == map.getExits()[0]) {
+                    // TODO: make creature diseapear (and remove carried cores)
+                }
+            }
+            
             // TODO: manage stealing/exiting
         }
     }
@@ -79,12 +107,10 @@ void Game::render() const {
 
     for (const auto& c : creatures) {
         if (c->isAlive()) {
-            auto pos = c->getCurrentTile();
-            if (pos) {
-                std::cout << "Creature at (" << pos->getX() << "," << pos->getY()
-                          << ") HP=" << c->getHealth()
-                          << " Shield=" << c->getShield() << "\n";
-            }
+            auto pos = c->getPosition();
+            std::cout << "Creature at (" << pos[0] << "," << pos[1]
+                        << ") HP=" << c->getHealth()
+                        << " Shield=" << c->getShield() << "\n";
         }
     }
 }

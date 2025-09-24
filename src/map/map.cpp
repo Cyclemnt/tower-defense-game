@@ -69,7 +69,7 @@ const std::vector<EntryZone*>& Map::getEntries() const { return entries; }
 
 const std::vector<ExitZone*>& Map::getExits() const { return exits; }
 
-const CoreStorage* Map::getCoreStorage() const { return coreStorage; }
+CoreStorage* Map::getCoreStorage() const { return coreStorage; }
 
 std::vector<Tile*> Map::getNeighbors(Tile* tile) const {
     std::vector<Tile*> neighbors;

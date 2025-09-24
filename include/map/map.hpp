@@ -77,7 +77,7 @@ public:
 
     /// @brief Returns a pointer to the core storage of the map.
     /// @return A pointer to the CoreStorage object.
-    const CoreStorage* getCoreStorage() const;
+    CoreStorage* getCoreStorage() const;
 
     /// @brief Returns a list of neighboring tiles surrounding the given tile.
     /// @param tile The central tile to check neighbors for.

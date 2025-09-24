@@ -1,8 +1,11 @@
 #include "../../include/creatures/creature.hpp"
+#include "../../include/map/coreStorage.hpp"
+#include "../../include/map/exitZone.hpp"
+#include <cmath>
 
-Creature::Creature(int hp, int sh, float spd, int au_, int ag_, int cu_)
-    : health(hp), shield(sh), speed(spd), au(au_), ag(ag_), cu(cu_), coresCarried(0),
-      pathIndex(0), alive(true) {}
+Creature::Creature(int hp, int sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)
+    : health(hp), shield(sh), speed(spd), coresCapacity(coresCapacity_), au(au_), ag(ag_), cu(cu_), coresCarried(0),
+    pathIndex(0), alive(true) {}
 
 bool Creature::isAlive() const { return alive; }
 
@@ -17,6 +20,10 @@ void Creature::setPath(const std::vector<Tile*>& p) {
     pathIndex = 0;
 }
 
+std::array<float, 2> Creature::getPosition() const {
+    return {posX, posY};
+}
+
 Tile* Creature::getCurrentTile() const {
     if (path.empty() || pathIndex >= (int)path.size()) return nullptr;
     return path[pathIndex];
@@ -27,12 +34,54 @@ Tile* Creature::getNextTile() const {
     return path[pathIndex + 1];
 }
 
-void Creature::update() {
-    if (!alive || path.empty()) return;
+Tile* Creature::getDestinationTile() const {
+    if (path.empty()) return nullptr;
+    return path.back();
+}
 
-    // Simple movement: one tile per update (to improve later with speed/ticks)
-    if (pathIndex + 1 < (int)path.size()) {
-        pathIndex++;
+void Creature::update(float deltaTime) {
+    if (!alive || path.empty() || pathIndex + 1 >= (int)path.size())
+        return;
+
+    float distanceToTravel = speed * deltaTime;
+
+    while (distanceToTravel > 0.0f && pathIndex + 1 < (int)path.size()) {
+        Tile* current = path[pathIndex];
+        Tile* next = path[pathIndex + 1];
+
+        float targetX = next->getX();
+        float targetY = next->getY();
+
+        float dx = targetX - posX;
+        float dy = targetY - posY;
+        float distToNext = std::sqrt(dx * dx + dy * dy);
+
+        if (distanceToTravel >= distToNext) {
+            // Get to next Tile
+            posX = targetX;
+            posY = targetY;
+            pathIndex++;
+            distanceToTravel -= distToNext;
+
+            // Events depending on Tile
+            if (auto c = dynamic_cast<CoreStorage*>(next)) {
+                if (coresCarried < coresCapacity) {
+                    stealCores(c->takeCores(coresCapacity - coresCarried)); // Taking as many cores as possible
+                    distanceToTravel = 0.0f; // Path will change
+                }
+            }
+            else if (auto ex = dynamic_cast<ExitZone*>(next)) {
+                if (coresCarried > 0) {
+                    // TODO: Tell Game about lost cores
+                    coresCarried = 0;
+                }
+            }
+        } else {
+            // Partially move thowards next Tile
+            posX += (dx / distToNext) * distanceToTravel;
+            posY += (dy / distToNext) * distanceToTravel;
+            distanceToTravel = 0.0f;
+        }
     }
 }
 
@@ -58,8 +107,8 @@ void Creature::takeDamage(int dmg) {
     }
 }
 
-void Creature::stealCore() {
-    coresCarried++;
+void Creature::stealCores(int amount) {
+    coresCarried += amount;
 }
 
 int Creature::dropCores() {

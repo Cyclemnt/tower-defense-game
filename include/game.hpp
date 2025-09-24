@@ -58,7 +58,8 @@ public:
     /// - Handles core stealing/loss logic.
     /// - Updates tower cooldowns and attacks.
     /// - Cleans up dead creatures.
-    void update();
+    /// @param deltaTime Time elapsed since last update.
+    void update(float deltaTime);
 
     /// @brief Render the current state of the game to the console.
     /// Displays the map grid and entity states for debugging purposes.

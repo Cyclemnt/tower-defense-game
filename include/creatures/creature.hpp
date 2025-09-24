@@ -3,6 +3,7 @@
 
 #include "../map/tile.hpp"
 #include <vector>
+#include <array>
 
 /**
  * @class Creature
@@ -14,10 +15,14 @@
  */
 class Creature {
 private:
+    // --- Creature position ---
+    float posX;
+    float posY;
+
     // --- Creature Specifications ---
-    int health;           ///< Health of the creature.
-    int shield;           ///< Shield of the creature.
-    int speed;            ///< Speed of the creature, used to determine movement.
+    int health;     ///< Health of the creature.
+    int shield;     ///< Shield of the creature.
+    int speed;      ///< Speed of the creature, used to determine movement.
 
     // --- Loot quantities ---
     int au;     ///< Amount of Au dropped when killed.
@@ -25,20 +30,21 @@ private:
     int cu;     ///< Amount of Cu dropped when killed.
 
     // --- Core Carrying ---
-    int coresCarried;     ///< Number of cores the creature is currently carrying.
+    int coresCarried;           ///< Number of cores the creature is currently carrying.
+    int coresCapacity;          ///< Number of cores the creature can carry.
 
     // --- Path Information ---
-    std::vector<Tile*> path;      ///< The path the creature will follow (a sequence of tiles).
-    int pathIndex;                ///< Current index on the path (indicating the creature's position).
+    std::vector<Tile*> path;    ///< The path the creature will follow (a sequence of tiles).
+    int pathIndex;              ///< Current index on the path (indicating the creature's position).
 
-    bool alive;           ///< Boolean flag indicating whether the creature is alive or dead.
+    bool alive;     ///< Boolean flag indicating whether the creature is alive or dead.
 
 public:
     /// @brief Constructs a new creature with specified health, shield, and speed.
     /// @param hp Initial health of the creature.
     /// @param sh Initial shield of the creature.
     /// @param spd Speed of the creature.
-    Creature(int hp, int sh, float spd, int au_, int ag_, int cu_);
+    Creature(int hp, int sh, float spd, int coresCapacity_, int au_, int ag_, int cu_);
 
     /// @brief Default destructor.
     virtual ~Creature() = default;
@@ -67,6 +73,10 @@ public:
     /// @param p The path (a vector of tiles) that the creature will follow.
     void setPath(const std::vector<Tile*>& p);
 
+    /// @brief Gets the current creature coordinates.
+    /// @return an array of x and y.
+    std::array<float, 2> getPosition() const;
+
     /// @brief Gets the current tile the creature is on.
     /// @return Pointer to the current tile in the path.
     Tile* getCurrentTile() const;
@@ -75,17 +85,23 @@ public:
     /// @return Pointer to the next tile in the path, or nullptr if there are no more tiles.
     Tile* getNextTile() const;
 
+    /// @brief Gets the last tile on the creature's path.
+    /// @return Pointer to the last tile on the path.
+    Tile* getDestinationTile() const;
+
     // --- Actions ---
 
     /// @brief Updates the creature's state, moving it along its path if possible.
-    virtual void update();
+    /// @param deltaTime Time elapsed since last update.
+    virtual void update(float deltaTime);
 
     /// @brief Reduces the creature's health and shield when it takes damage.
     /// @param dmg Amount of damage to apply to the creature.
     virtual void takeDamage(int dmg);
 
     /// @brief Attempts to pick up a core from the environment.
-    virtual void stealCore();
+    /// @param amount Quantity of cores taken.
+    virtual void stealCores(int amount);
 
     /// @brief Drops all the cores the creature is carrying (when it dies).
     /// @return The number of cores dropped by the creature.
