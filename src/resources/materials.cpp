@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 Materials::Materials()
-    : au(10), ag(0), cu(0) {}
+    : au(1000), ag(1000), cu(1000) {}
 
 Materials::~Materials() {}
 

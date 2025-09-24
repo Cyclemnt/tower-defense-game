@@ -1,5 +1,5 @@
 #include "../include/game.hpp"
-
+#include "../include/towers/gatling.hpp"
 #include <iostream>
 
 int main() {
@@ -10,7 +10,7 @@ int main() {
     game.spawnCreature(std::move(c));
 
     // Ajouter une tour simple
-    auto t = std::make_unique<Tower>(2, 0, 10, 0, 0, 5, 3.0f, 1.0f, false);
+    std::unique_ptr<Tower> t = std::make_unique<Gatling>(2, 0);
     game.placeTower(std::move(t));
 
     // Boucle de simulation console
