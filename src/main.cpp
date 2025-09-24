@@ -1,12 +1,13 @@
 #include "../include/game.hpp"
 #include "../include/towers/laser.hpp"
+#include "../include/creatures/minion.hpp"
 #include <iostream>
 
 int main() {
     Game game(5, 5, 24);
 
     // Ajouter une créature simple
-    auto c = std::make_unique<Creature>(30, 5, 1.0f);
+    auto c = std::make_unique<Minion>();
     game.spawnCreature(std::move(c));
 
     // Ajouter une tour simple

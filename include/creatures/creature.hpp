@@ -19,6 +19,11 @@ private:
     int shield;           ///< Shield of the creature.
     int speed;            ///< Speed of the creature, used to determine movement.
 
+    // --- Loot quantities ---
+    int au;     ///< Amount of Au dropped when killed.
+    int ag;     ///< Amount of Ag dropped when killed.
+    int cu;     ///< Amount of Cu dropped when killed.
+
     // --- Core Carrying ---
     int coresCarried;     ///< Number of cores the creature is currently carrying.
 
@@ -33,7 +38,7 @@ public:
     /// @param hp Initial health of the creature.
     /// @param sh Initial shield of the creature.
     /// @param spd Speed of the creature.
-    Creature(int hp, int sh, float spd);
+    Creature(int hp, int sh, float spd, int au_, int ag_, int cu_);
 
     /// @brief Default destructor.
     virtual ~Creature() = default;

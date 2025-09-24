@@ -1,7 +1,7 @@
 #include "../../include/creatures/creature.hpp"
 
-Creature::Creature(int hp, int sh, float spd)
-    : health(hp), shield(sh), speed(spd), coresCarried(0),
+Creature::Creature(int hp, int sh, float spd, int au_, int ag_, int cu_)
+    : health(hp), shield(sh), speed(spd), au(au_), ag(ag_), cu(cu_), coresCarried(0),
       pathIndex(0), alive(true) {}
 
 bool Creature::isAlive() const { return alive; }
