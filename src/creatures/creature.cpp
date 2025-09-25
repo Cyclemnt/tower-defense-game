@@ -116,5 +116,3 @@ int Creature::dropCores() {
     coresCarried = 0;
     return dropped;
 }
-
-std::string Creature::getTypeName() const { return "Creature"; }

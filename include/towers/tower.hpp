@@ -105,7 +105,7 @@ public:
 
     /// @brief Get the type name of the tower (for debug).
     /// @return String representing the type of the tower.
-    virtual std::string getTypeName() const { return "Tower"; }
+    virtual std::string getTypeName() const = 0;
 };
 
 

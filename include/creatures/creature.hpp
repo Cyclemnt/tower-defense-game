@@ -111,7 +111,7 @@ public:
 
     /// @brief Gets the name or type of the creature (for debugging purposes).
     /// @return A string representing the type or name of the creature.
-    virtual std::string getTypeName() const;
+    virtual std::string getTypeName() const = 0;
 };
 
 #endif // CREATURE_HPP
