@@ -95,7 +95,7 @@ void Game::update(float deltaTime) {
 
     // Update towers
     for (auto& t : towers) {
-        t->update(reinterpret_cast<std::vector<Creature*>&>(creatures));
+        t->update(deltaTime, reinterpret_cast<std::vector<Creature*>&>(creatures));
     }
 
     // Remove dead creatures

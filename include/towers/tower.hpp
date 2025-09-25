@@ -33,6 +33,8 @@ protected:
 
     float cooldown;     ///< Time left before the next attack.
 
+    Creature* target;   ///< Target lockdown.
+
 public:
     /// @brief Construct a new Tower object with given stats.
     /// @param x_ X coordinate on the map.
@@ -82,11 +84,17 @@ public:
     /// Checks cooldown and searches for enemies within range. If a valid
     /// target is found, the tower attacks and resets its cooldown.
     /// @param creatures List of all creatures currently on the map.
-    virtual void update(std::vector<Creature*>& creatures);
+    /// @param deltaTime Time elapsed since last update.
+    virtual void update(float deltaTime, std::vector<Creature*>& creatures);
 
     /// @brief Attack a single creature target.
     /// @param target Pointer to the target creature.
     virtual void attack(Creature* target);
+    
+    /// @brief Selecting the best target among the creatures.
+    /// Selects the strongest creature whithin range.
+    /// @param creatures List of all creatures currently on the map.
+    virtual Creature* selectTarget(const std::vector<Creature*>& creatures);
 
     /// @brief Upgrade the tower.
     /// Increases stats such as damage, range, and fire rate. The upgrade

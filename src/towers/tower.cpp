@@ -4,7 +4,7 @@
 #include <iostream>
 
 Tower::Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate, bool area)
-    : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), areaDamage(area), level(1), cooldown(0.0f) {}
+    : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), areaDamage(area), level(1), cooldown(0.0f), target(nullptr) {}
 
 int Tower::getX() const { return x; }
 
@@ -22,35 +22,24 @@ bool Tower::isAreaDamage() const { return areaDamage; }
 
 std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu}; }
 
-void Tower::update(std::vector<Creature*>& creatures) {
+void Tower::update(float deltaTime, std::vector<Creature*>& creatures) {
     std::cout << "twr cooldown: " << cooldown << std::endl;
-    if (cooldown > 0.0f) {
-        cooldown -= std::min(1.0f, cooldown); // 1 tick = 1 unité de temps
-        if (cooldown != 0.0f)
-            return;
+    cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
+
+    // Verify if actual target is still available
+    if (target && (!target->isAlive() || std::sqrt(std::pow(target->getPosition()[0] - x, 2) + std::pow(target->getPosition()[1] - y, 2)) > range)) {
+        target = nullptr; // Loosing lockdown
     }
 
-    // Searching a target within range
-    Creature* target = nullptr;
-    for (Creature* c : creatures) {
-        if (!c->isAlive()) continue;
-
-        int dx = c->getCurrentTile()->getX() - x;
-        int dy = c->getCurrentTile()->getY() - y;
-        float dist = std::sqrt(dx * dx + dy * dy); // Possible optimization by comparing square distance
-
-        if (dist <= range) {
-            target = c;
-            break; // simple: shoot the first target found, in spawn order
-            // TODO (maybe): use spacial hashing to compute targets faster 
-        }
+    // Selecting new target if required
+    if (!target) {
+        target = selectTarget(creatures);
     }
 
-    if (target) {
+    // Attack while cooldown let it
+    while (target && cooldown <= 0.0f) {
         attack(target);
-        cooldown = 1.0f / fireRate; // reset cooldown
-        // TODO: calculate cooldown in ticks/frames
-        // cooldown = framerate / firerate
+        cooldown += 1.0f / (fireRate); // seconds
     }
 }
 
@@ -63,6 +52,30 @@ void Tower::attack(Creature* target) {
     } else {
         target->takeDamage(damage);
     }
+}
+
+Creature* Tower::selectTarget(const std::vector<Creature*>& creatures) {
+    Creature* best = nullptr;
+
+    for (Creature* c : creatures) {
+        if (!c->isAlive()) continue;
+
+        float dx = c->getPosition()[0] - x;
+        float dy = c->getPosition()[1] - y;
+        float dist = std::sqrt(dx*dx + dy*dy);
+
+        if (dist <= range) {
+            if (!best) best = c;
+            else {
+                // Selecting highest HP
+                if (c->getHealth() > best->getHealth()) {
+                    best = c;
+                }
+            }
+        }
+    }
+
+    return best;
 }
 
 void Tower::upgrade() {

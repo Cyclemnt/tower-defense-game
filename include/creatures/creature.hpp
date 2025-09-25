@@ -22,7 +22,7 @@ private:
     // --- Creature Specifications ---
     int health;     ///< Health of the creature.
     int shield;     ///< Shield of the creature.
-    int speed;      ///< Speed of the creature, used to determine movement.
+    float speed;    ///< Speed of the creature in tile per second, used to determine movement.
 
     // --- Loot quantities ---
     int au;     ///< Amount of Au dropped when killed.
