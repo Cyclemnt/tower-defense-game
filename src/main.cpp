@@ -1,13 +1,13 @@
 #include "../include/game.hpp"
 #include "../include/towers/gatling.hpp"
-#include "../include/creatures/drone.hpp"
+#include "../include/creatures/tank.hpp"
 #include <iostream>
 
 int main() {
     Game game(5, 5, 24);
 
     // Add a simple creature
-    auto c = std::make_unique<Drone>();
+    auto c = std::make_unique<Tank>();
     game.spawnCreature(std::move(c));
 
     // Add a simple tower
