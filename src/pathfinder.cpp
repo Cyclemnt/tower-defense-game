@@ -14,7 +14,7 @@ int Pathfinder::heuristic(Tile* a, Tile* b) const {
     return std::abs(a->getX() - b->getX()) + std::abs(a->getY() - b->getY());
 }
 
-std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal, bool ignoreTowers = false) const {
+std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal, bool ignoreTowers) const {
     if (!start || !goal) return {};  // Return an empty path if start or goal are invalid.
 
     // Comparator for the priority queue, sorts nodes by their total cost (fCost = gCost + hCost).
