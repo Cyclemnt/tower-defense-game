@@ -35,11 +35,11 @@ public:
     /// @brief Destroys the Pathfinder object.
     ~Pathfinder();
 
-    /// @brief Finds the shortest path between a start tile and a goal tile using the A* algorithm.
+    /// @brief Search the shortest path between a start tile and a goal tile using the A* algorithm.
     /// @param start The start tile.
     /// @param goal The goal tile.
-    /// @return A vector of tiles representing the path from start to goal.
-    std::vector<Tile*> findPath(Tile* start, Tile* goal) const;
+    /// @return A vector of tiles representing the path from start to goal or empty if none found.
+    std::vector<Tile*> findPath(Tile* start, Tile* goal, bool ignoreTowers = false) const;
 };
 
 #endif // PATHFINDER_HPP

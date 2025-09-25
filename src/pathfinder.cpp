@@ -14,7 +14,7 @@ int Pathfinder::heuristic(Tile* a, Tile* b) const {
     return std::abs(a->getX() - b->getX()) + std::abs(a->getY() - b->getY());
 }
 
-std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal) const {
+std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal, bool ignoreTowers = false) const {
     if (!start || !goal) return {};  // Return an empty path if start or goal are invalid.
 
     // Comparator for the priority queue, sorts nodes by their total cost (fCost = gCost + hCost).
@@ -48,7 +48,8 @@ std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal) const {
         // Explore the neighbors of the current node.
         for (Tile* neighbor : map.getNeighbors(current->tile)) {
             // If the neighbor is not walkable, skip it.
-            if (!neighbor->isWalkable()) continue;
+            // Or, if ignoreTowers == true, accept OpenZones regardless of occupation.
+            if (!(neighbor->isWalkable() || (ignoreTowers && neighbor->getTypeName() == "OpenZone"))) continue;
 
             // Calculate the new gCost for this neighbor (gCost of the parent + 1 for the move).
             int newG = current->gCost + 1;

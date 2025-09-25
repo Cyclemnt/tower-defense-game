@@ -33,6 +33,7 @@ void Game::spawnCreature(std::unique_ptr<Creature> creature) {
     Tile* goal = map.getCoreStorage();
 
     auto path = pathfinder.findPath(start, goal);
+    if (path.empty()) path = pathfinder.findPath(start, goal, true);
     creature->setPath(path);
 
     creatures.push_back(std::move(creature));
@@ -53,7 +54,9 @@ void Game::placeTower(std::unique_ptr<Tower> tower) {
     for (auto& c : creatures) {
         Tile* start = c->getCurrentTile();
         Tile* goal = c->getDestinationTile();
+        
         auto newPath = pathfinder.findPath(start, goal);
+        if (newPath.empty()) newPath = pathfinder.findPath(start, goal, true);
         c->setPath(newPath);
     }
 }
