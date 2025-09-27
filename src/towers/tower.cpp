@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <iostream>
 
-Tower::Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate, bool area)
-    : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), areaDamage(area), level(1), cooldown(0.0f), target(nullptr) {}
+Tower::Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate)
+    : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), level(1), cooldown(0.0f), target(nullptr) {}
 
 int Tower::getX() const { return x; }
 
@@ -17,8 +17,6 @@ float Tower::getDamage() const { return damage; }
 float Tower::getRange() const { return range; }
 
 float Tower::getFireRate() const { return fireRate; }
-
-bool Tower::isAreaDamage() const { return areaDamage; }
 
 std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu}; }
 
@@ -48,13 +46,7 @@ void Tower::update(float deltaTime, std::vector<Creature*>& creatures) {
 
 void Tower::attack(Creature* target) {
     if (!target || !target->isAlive()) return;
-
-    if (areaDamage) {
-        // TODO: damage close creatures
-        target->takeDamage(damage);
-    } else {
-        target->takeDamage(damage);
-    }
+    target->takeDamage(damage);
 }
 
 Creature* Tower::selectTarget(const std::vector<Creature*>& creatures) {

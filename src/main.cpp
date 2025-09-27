@@ -1,5 +1,5 @@
 #include "../include/game.hpp"
-#include "../include/towers/laser.hpp"
+#include "../include/towers/mortar.hpp"
 #include "../include/creatures/drone.hpp"
 #include <iostream>
 
@@ -11,7 +11,7 @@ int main() {
     game.spawnCreature(std::move(c));
 
     // Add a simple tower
-    std::unique_ptr<Tower> t = std::make_unique<Laser>(2, 0);
+    std::unique_ptr<Tower> t = std::make_unique<Mortar>(2, 0);
     game.placeTower(std::move(t));
     
     // Simulation loop in the console

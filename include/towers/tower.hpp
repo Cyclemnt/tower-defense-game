@@ -28,7 +28,6 @@ protected:
     float damage;       ///< Damage dealt per attack.
     float range;        ///< Attack range (in tiles).
     float fireRate;     ///< Attacks per second.
-    bool areaDamage;    ///< Whether the attack affects an area (true) or a single target (false).
     int level;          ///< Current upgrade level of the tower.
 
     float cooldown;     ///< Time left before the next attack.
@@ -45,9 +44,8 @@ public:
     /// @param dmg Base damage per attack.
     /// @param rng Attack range in tiles.
     /// @param rate Number of attacks per second (fire rate).
-    /// @param area True if the tower deals area damage, false for single target.
     Tower(int x_, int y_, int au, int ag, int cu,
-          int dmg, float rng, float rate, bool area);
+          int dmg, float rng, float rate);
 
     /// Virtual destructor.
     virtual ~Tower() = default;
@@ -71,9 +69,6 @@ public:
 
     /// @return Fire rate (attacks per second).
     float getFireRate() const;
-
-    /// @return True if the tower deals area damage, false otherwise.
-    bool isAreaDamage() const;
 
     /// @return The price of the tower.
     std::array<int, 3> getPrice() const;
