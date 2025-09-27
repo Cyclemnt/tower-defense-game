@@ -51,6 +51,7 @@ void Tower::attack(Creature* target) {
 
 Creature* Tower::selectTarget(const std::vector<Creature*>& creatures) {
     Creature* best = nullptr;
+    float closest = std::numeric_limits<float>::max();
 
     for (Creature* c : creatures) {
         if (!c->isAlive()) continue;
@@ -62,9 +63,10 @@ Creature* Tower::selectTarget(const std::vector<Creature*>& creatures) {
         if (dist <= range) {
             if (!best) best = c;
             else {
-                // Selecting highest HP
-                if (c->getHealth() > best->getHealth()) {
+                // Selecting the closest HP
+                if (dist < closest) {
                     best = c;
+                    closest = dist;
                 }
             }
         }
