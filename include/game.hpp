@@ -41,6 +41,11 @@ public:
     /// @param initialCores Number of cores initially stored in the base.
     Game(int w, int h, int initialCores);
 
+    // --- Getters pour Renderer ---
+    const Map& getMap() const;
+    const std::vector<std::unique_ptr<Creature>>& getCreatures() const;
+    const std::vector<std::unique_ptr<Tower>>& getTowers() const;
+
     /// @brief Spawn a new creature and add it to the simulation.
     /// The creature will automatically be assigned a path from the entry
     /// to the exit using the Pathfinder.

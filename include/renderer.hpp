@@ -1,43 +1,41 @@
 #ifndef RENDERER_HPP
 #define RENDERER_HPP
 
+#include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
+#include <TGUI/Core.hpp>
+#include <TGUI/Backend/SFML-Graphics.hpp>
+#include <TGUI/Widgets/Button.hpp>
+
+#include "game.hpp"
+
 class Renderer {
 private:
-    /* data */
-    
+    sf::RenderWindow window;
+    tgui::Gui gui;
+
+    // Textures (tiles, towers, creatures…)
+    sf::Texture texPath, texEmpty, texOpen, texEntry, texExit, texCore;
+    sf::Texture texTowerGatling, texTowerMortar, texTowerLaser;
+    sf::Texture texMinionCreature, texDroneCreature, texTankCreature;
+    sf::Texture texNull;
+
+    float tileSize; // Taille en pixels d'une case
+
 public:
-    Renderer();
-    ~Renderer();
+    Renderer(int width, int height, int tileSize);
 
-    /*
-    Exemple de fonctionnement avec textures
+    bool isOpen() const;
+    void processEvents(Game& game);
+    void render(const Game& game);
 
-    std::map<TileType, sf::Texture> tileTextures;
-    std::map<TowerType, sf::Texture> towerTextures;
-
-    void Renderer::draw(const Tower& tower) {
-        sf::Sprite sprite;
-        sprite.setTexture(towerTextures[tower.getType()]);
-        sprite.setPosition(tower.getX(), tower.getY());
-        window.draw(sprite);
-    }
-
-    Ou avec une classe RessourceManager :
-
-    class ResourceManager {
-    private:
-        std::map<std::string, sf::Texture> textures;
-    public:
-        void loadTexture(const std::string& id, const std::string& filename);
-        sf::Texture& getTexture(const std::string& id);
-    };
-
-    Pour permettre le fonctionnement :
-    
-    sprite.setTexture(resourceManager.getTexture("tower_basic"));
-
-    */
-
+private:
+    void loadTextures();
+    void drawMap(const Game& game);
+    void drawTowers(const Game& game);
+    void drawCreatures(const Game& game);
+    void drawUI(const Game& game);
 };
+
 
 #endif // RENDERER_HPP

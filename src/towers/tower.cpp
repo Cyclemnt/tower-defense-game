@@ -63,7 +63,7 @@ Creature* Tower::selectTarget(const std::vector<Creature*>& creatures) {
         if (dist <= range) {
             if (!best) best = c;
             else {
-                // Selecting the closest HP
+                // Selecting the closest
                 if (dist < closest) {
                     best = c;
                     closest = dist;

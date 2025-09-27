@@ -25,6 +25,12 @@ Game::Game(int w, int h, int initialCores)
     map.printMap();
 }
 
+const Map& Game::getMap() const { return map; }
+
+const std::vector<std::unique_ptr<Creature>>& Game::getCreatures() const { return creatures; }
+
+const std::vector<std::unique_ptr<Tower>>& Game::getTowers() const { return towers; }
+
 void Game::spawnCreature(std::unique_ptr<Creature> creature) {
     if (map.getEntries().empty() || map.getCoreStorage() == nullptr || map.getExits().empty())
         throw std::runtime_error("Map missing entry or core storage or exit");
