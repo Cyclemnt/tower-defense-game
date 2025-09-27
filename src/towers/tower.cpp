@@ -12,7 +12,7 @@ int Tower::getY() const { return y; }
 
 int Tower::getLevel() const { return level; }
 
-int Tower::getDamage() const { return damage; }
+float Tower::getDamage() const { return damage; }
 
 float Tower::getRange() const { return range; }
 
@@ -24,7 +24,8 @@ std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu};
 
 void Tower::update(float deltaTime, std::vector<Creature*>& creatures) {
     std::cout << "twr cooldown: " << cooldown << std::endl;
-    cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
+    if (target || cooldown > 0.0f)
+        cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
 
     // Verify if actual target is still available
     if (target && (!target->isAlive() || std::sqrt(std::pow(target->getPosition()[0] - x, 2) + std::pow(target->getPosition()[1] - y, 2)) > range)) {
@@ -33,6 +34,8 @@ void Tower::update(float deltaTime, std::vector<Creature*>& creatures) {
 
     // Selecting new target if required
     if (!target) {
+        if (cooldown < 0.0f)
+            cooldown = 0.0f;  // Cooldown cannot be negative when target is lost
         target = selectTarget(creatures);
     }
 

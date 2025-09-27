@@ -3,15 +3,15 @@
 #include "../../include/map/exitZone.hpp"
 #include <cmath>
 
-Creature::Creature(int hp, int sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)
+Creature::Creature(float hp, float sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)
     : health(hp), shield(sh), speed(spd), coresCapacity(coresCapacity_), au(au_), ag(ag_), cu(cu_), coresCarried(0),
     pathIndex(0), alive(true) {}
 
 bool Creature::isAlive() const { return alive; }
 
-int Creature::getHealth() const { return health; }
+float Creature::getHealth() const { return health; }
 
-int Creature::getShield() const { return shield; }
+float Creature::getShield() const { return shield; }
 
 int Creature::getCoresCarried() const { return coresCarried; }
 
@@ -85,14 +85,14 @@ void Creature::update(float deltaTime) {
     }
 }
 
-void Creature::takeDamage(int dmg) {
+void Creature::takeDamage(float dmg) {
     if (!alive) return;
 
-    int remaining = dmg;
+    float remaining = dmg;
 
     // Shield absorbs first
     if (shield > 0) {
-        int absorbed = std::min(shield, remaining);
+        float absorbed = std::min(shield, remaining);
         shield -= absorbed;
         remaining -= absorbed;
         return;

@@ -20,8 +20,8 @@ private:
     float posY;
 
     // --- Creature Specifications ---
-    int health;     ///< Health of the creature.
-    int shield;     ///< Shield of the creature.
+    float health;   ///< Health of the creature.
+    float shield;   ///< Shield of the creature.
     float speed;    ///< Speed of the creature in tile per second, used to determine movement.
 
     // --- Loot quantities ---
@@ -44,7 +44,7 @@ public:
     /// @param hp Initial health of the creature.
     /// @param sh Initial shield of the creature.
     /// @param spd Speed of the creature.
-    Creature(int hp, int sh, float spd, int coresCapacity_, int au_, int ag_, int cu_);
+    Creature(float hp, float sh, float spd, int coresCapacity_, int au_, int ag_, int cu_);
 
     /// @brief Default destructor.
     virtual ~Creature() = default;
@@ -57,11 +57,11 @@ public:
 
     /// @brief Gets the current health of the creature.
     /// @return The health value of the creature.
-    int getHealth() const;
+    float getHealth() const;
 
     /// @brief Gets the current shield value of the creature.
     /// @return The shield value of the creature.
-    int getShield() const;
+    float getShield() const;
 
     /// @brief Gets the number of cores the creature is carrying.
     /// @return The amount of cores the creature has.
@@ -97,7 +97,7 @@ public:
 
     /// @brief Reduces the creature's health and shield when it takes damage.
     /// @param dmg Amount of damage to apply to the creature.
-    virtual void takeDamage(int dmg);
+    virtual void takeDamage(float dmg);
 
     /// @brief Attempts to pick up a core from the environment.
     /// @param amount Quantity of cores taken.

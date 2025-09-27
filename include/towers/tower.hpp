@@ -25,7 +25,7 @@ protected:
     int priceAg;        ///< Silver cost (Ag) to build the tower.
     int priceCu;        ///< Copper cost (Cu) to build the tower.
 
-    int damage;         ///< Damage dealt per attack.
+    float damage;       ///< Damage dealt per attack.
     float range;        ///< Attack range (in tiles).
     float fireRate;     ///< Attacks per second.
     bool areaDamage;    ///< Whether the attack affects an area (true) or a single target (false).
@@ -64,7 +64,7 @@ public:
     int getLevel() const;
 
     /// @return Attack damage of the tower.
-    int getDamage() const;
+    float getDamage() const;
 
     /// @return Attack range of the tower in tiles.
     float getRange() const;
