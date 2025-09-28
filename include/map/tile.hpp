@@ -14,8 +14,8 @@
  */
 class Tile {
 private:
-    int x; ///< The x-coordinate (column) of the tile.
-    int y; ///< The y-coordinate (row) of the tile.
+    int x;  ///< The x-coordinate (column) of the tile.
+    int y;  ///< The y-coordinate (row) of the tile.
 
 public:
     /// @brief Constructs a new Tile at the specified coordinates.

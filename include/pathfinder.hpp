@@ -7,14 +7,15 @@
 /// @brief A pathfinding utility that calculates the best path from a start tile to a goal tile using the A* algorithm.
 class Pathfinder {
 private:
-    const Map& map; ///< Reference to the map used for pathfinding.
+    const Map& map;     ///< Reference to the map used for pathfinding.
 
+    /// @struct Node
     /// @brief A struct representing a node in the pathfinding algorithm.
     struct Node {
-        Tile* tile; ///< The tile represented by this node.
-        int gCost; ///< The cost from the start tile to this node.
-        int hCost; ///< The heuristic cost from this node to the goal.
-        Node* parent; ///< The parent node, used for path reconstruction.
+        Tile* tile;     ///< The tile represented by this node.
+        int gCost;      ///< The cost from the start tile to this node.
+        int hCost;      ///< The heuristic cost from this node to the goal.
+        Node* parent;   ///< The parent node, used for path reconstruction.
 
         /// @brief Calculates the total cost (g + h).
         /// @return The total cost of this node.

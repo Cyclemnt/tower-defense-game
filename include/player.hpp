@@ -6,16 +6,25 @@
 #include "map/tile.hpp"
 #include "towers/tower.hpp"
 
+/**
+ * @class Player
+ * @brief Represents the player and their resources.
+ *
+ * The player can build towers if they have enough
+ * materials. They must defend the cores from being stolen.
+ */
 class Player {
 private:
-    // Ressources
-    Materials materials;
+    Materials materials;    ///< Building resources
     
 public:
-    Player(/* args */);
+    Player();
     ~Player();
     
+    /// @brief Check if the player has enough resources for a tower.
     bool canAfford(const Tower& tower);
+
+    /// @brief Deduct resources when building a tower.
     void pay(const Tower& tower);
 };
 

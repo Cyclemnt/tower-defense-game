@@ -3,13 +3,19 @@
 
 #include "creature.hpp"
 
-class Drone : public Creature
-{
-private:
-    /* data */
+/**
+ * @class Drone
+ * @brief Standard enemy type.
+ *
+ * A Drone represents the baseline enemy: average health, speed and
+ * no special abilities. Used as the most common wave unit.
+ */
+class Drone : public Creature {
 public:
     Drone();
     ~Drone();
+
+    /// @return The type name of this creature ("Drone").
     std::string getTypeName() const override;
 };
 

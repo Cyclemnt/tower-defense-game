@@ -12,18 +12,18 @@
 class EmptyZone : public Tile {
 public:
     /// @brief Constructs a new EmptyZone at the specified coordinates.
-    /// @param x The x-coordinate (column) of the zone.
-    /// @param y The y-coordinate (row) of the zone.
+    /// @param x The x-coordinate (column) of the empty zone.
+    /// @param y The y-coordinate (row) of the empty zone.
     EmptyZone(int x, int y);
 
     /// @brief Destroys the EmptyZone object.
     ~EmptyZone();
 
-    /// @brief Determines if the zone is walkable by creatures.
+    /// @brief Determines if the empty zone is walkable by creatures.
     /// @return false, as an empty zone is not walkable.
     bool isWalkable() const override;
 
-    /// @brief Determines if the zone is buildable (i.e., can a structure be placed on it).
+    /// @brief Determines if the empty zone is buildable.
     /// @return false, as empty zones cannot be built on.
     bool isBuildable() const override;
 

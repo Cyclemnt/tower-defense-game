@@ -19,7 +19,7 @@ public:
     /// @brief Constructs a new CoreStorage at the specified coordinates with an initial core count.
     /// @param x The x-coordinate (column) of the core storage.
     /// @param y The y-coordinate (row) of the core storage.
-    /// @param initialCores The initial number of cores to store on this tile.
+    /// @param coresptr A pointer to the Game's cores.
     CoreStorage(int x, int y, Cores* coresptr);
 
     /// @brief Destroys the CoreStorage object.
@@ -41,12 +41,12 @@ public:
     /// @return The number of cores in storage.
     int getCoreCount() const;
 
-    /// @brief Attempts to take a specified number of cores from the core storage.
+    /// @brief Attempts to take a specified number of cores from the Game's cores.
     /// @param requested The number of cores to try and take.
     /// @return The actual number of cores taken (0 to requested).
     int takeCores(int requested);
 
-    /// @brief Deposits a specified number of cores back into the core storage.
+    /// @brief Deposits a specified number of cores back into the Game's cores.
     /// @param n The number of cores to deposit.
     void depositCores(int n);
 };

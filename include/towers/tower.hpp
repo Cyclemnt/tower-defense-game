@@ -33,7 +33,7 @@ protected:
 
     float cooldown;     ///< Time left before the next attack.
 
-    Creature* target;   ///< Target lockdown.
+    Creature* target;   ///< Target locked.
 
 public:
     /// @brief Construct a new Tower object with given stats.
@@ -45,8 +45,7 @@ public:
     /// @param dmg Base damage per attack.
     /// @param rng Attack range in tiles.
     /// @param rate Number of attacks per second (fire rate).
-    Tower(int x_, int y_, int au, int ag, int cu,
-          int dmg, float rng, float rate);
+    Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate);
 
     /// Virtual destructor.
     virtual ~Tower() = default;

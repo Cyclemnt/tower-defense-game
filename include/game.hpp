@@ -27,17 +27,16 @@ enum class PlaceTowerResult {
  */
 class Game {
 private:
-    Map map;                          ///< The game map containing tiles and zones
-    Pathfinder pathfinder;            ///< Pathfinding system (A* search)
+    Map map;                    ///< The game map containing tiles and zones
+    Pathfinder pathfinder;      ///< Pathfinding system (A* search)
 
-    Player player;
+    Player player;              ///< Class that manages Player's actions
+    Cores cores;                ///< Player's core resources (safe, stolen, lost)
 
-    std::vector<std::unique_ptr<Creature>> creatures; ///< List of active creatures
-    std::vector<std::unique_ptr<Tower>> towers;       ///< List of placed towers
+    std::vector<std::unique_ptr<Creature>> creatures;   ///< List of active creatures
+    std::vector<std::unique_ptr<Tower>> towers;         ///< List of placed towers
 
-    Cores cores;                      ///< Player's core resources (safe, stolen, lost)
-
-    int tick;                         ///< Current tick count (simulation time)
+    int tick;                   ///< Current tick count (simulation time)
 
 public:
     /// @brief Construct a new Game object.
@@ -47,6 +46,7 @@ public:
     Game(int w, int h, int initialCores);
 
     // --- Getters for Renderer ---
+    
     const Map& getMap() const;
     const std::vector<std::unique_ptr<Creature>>& getCreatures() const;
     const std::vector<std::unique_ptr<Tower>>& getTowers() const;

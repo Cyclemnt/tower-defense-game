@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 
-Materials::Materials()
-    : au(1000), ag(1000), cu(1000) {}
+Materials::Materials(int initialAu, int initialAg, int initialCu)
+    : au(initialAu), ag(initialAg), cu(initialCu) {}
 
 Materials::~Materials() {}
 

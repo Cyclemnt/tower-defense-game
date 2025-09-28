@@ -7,8 +7,7 @@
  * @class ExitZone
  * @brief Represents a creature exit point.
  *
- * ExitZone tiles are the goal locations that creatures attempt to reach
- * after stealing cores from the base.
+ * ExitZone tiles are the goal locations that creatures attempt to reach after stealing cores from the base.
  */
 class ExitZone : public Tile {
 public:

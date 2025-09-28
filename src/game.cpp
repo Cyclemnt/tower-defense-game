@@ -4,7 +4,7 @@
 #include <algorithm>
 
 Game::Game(int w, int h, int initialCores)
-    : map(w, h), pathfinder(map), cores(initialCores), tick(0) {
+    : map(w, h), pathfinder(map), player(), cores(initialCores), tick(0) {
     // TODO: generate map
     // Map example :
     for (int i = 0; i < 5; i++)

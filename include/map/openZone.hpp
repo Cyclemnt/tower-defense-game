@@ -27,7 +27,7 @@ public:
     /// @return true if the zone is not occupied, false otherwise.
     bool isWalkable() const override;
 
-    /// @brief Determines if the open zone is buildable (i.e., can a structure be placed on it).
+    /// @brief Determines if the open zone is buildable.
     /// @return true if the zone is not occupied, false otherwise.
     bool isBuildable() const override;
 

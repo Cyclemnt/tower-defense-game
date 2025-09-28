@@ -7,8 +7,7 @@
  * @class EntryZone
  * @brief Represents a creature spawn point.
  *
- * EntryZone tiles are the starting locations where enemy creatures
- * enter the map.
+ * EntryZone tiles are the starting locations where enemy creatures enter the map.
  */
 class EntryZone : public Tile {
 public:
