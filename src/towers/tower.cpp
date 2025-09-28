@@ -20,7 +20,7 @@ float Tower::getFireRate() const { return fireRate; }
 
 std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu}; }
 
-void Tower::update(float deltaTime, std::vector<Creature*>& creatures) {
+void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
     std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
         cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
@@ -49,11 +49,11 @@ void Tower::attack(Creature* target) {
     target->takeDamage(damage);
 }
 
-Creature* Tower::selectTarget(const std::vector<Creature*>& creatures) {
+Creature* Tower::selectTarget(const std::vector<std::unique_ptr<Creature>>& creatures) {
     Creature* best = nullptr;
     float closest = std::numeric_limits<float>::max();
 
-    for (Creature* c : creatures) {
+    for (auto& c : creatures) {
         if (!c->isAlive()) continue;
 
         float dx = c->getPosition()[0] - x;
@@ -61,11 +61,11 @@ Creature* Tower::selectTarget(const std::vector<Creature*>& creatures) {
         float dist = std::sqrt(dx*dx + dy*dy);
 
         if (dist <= range) {
-            if (!best) best = c;
+            if (!best) best = c.get();
             else {
                 // Selecting the closest
                 if (dist < closest) {
-                    best = c;
+                    best = c.get();
                     closest = dist;
                 }
             }

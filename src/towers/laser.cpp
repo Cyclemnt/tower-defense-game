@@ -8,7 +8,7 @@ Laser::Laser(int x_, int y_)
 
 Laser::~Laser() {}
 
-void Laser::update(float deltaTime, std::vector<Creature*>& creatures) {
+void Laser::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
     std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
         cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)

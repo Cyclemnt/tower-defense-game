@@ -8,6 +8,12 @@
 #include "player.hpp"
 #include <vector>
 
+enum class PlaceTowerResult {
+    Success,
+    NotBuildable,
+    NotAffordable
+};
+
 /**
  * @brief The Game class is the central manager of the Tower Defense simulation.
  *
@@ -30,7 +36,6 @@ private:
     std::vector<std::unique_ptr<Tower>> towers;       ///< List of placed towers
 
     Cores cores;                      ///< Player's core resources (safe, stolen, lost)
-    Materials materials;              ///< Player's construction resources
 
     int tick;                         ///< Current tick count (simulation time)
 
@@ -41,7 +46,7 @@ public:
     /// @param initialCores Number of cores initially stored in the base.
     Game(int w, int h, int initialCores);
 
-    // --- Getters pour Renderer ---
+    // --- Getters for Renderer ---
     const Map& getMap() const;
     const std::vector<std::unique_ptr<Creature>>& getCreatures() const;
     const std::vector<std::unique_ptr<Tower>>& getTowers() const;
@@ -56,7 +61,8 @@ public:
     /// This method should check if the tile is buildable and if the player
     /// has enough resources before adding the tower.
     /// @param tower A unique pointer to the tower to be placed.
-    void placeTower(std::unique_ptr<Tower> tower);
+    /// @return The result of trying to place a tower (success or not).
+    PlaceTowerResult placeTower(std::unique_ptr<Tower> tower);
 
     /// @brief Update the game state for one tick.
     /// - Moves creatures along their path.

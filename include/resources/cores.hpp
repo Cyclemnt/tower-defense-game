@@ -12,9 +12,11 @@ public:
     Cores(int initial = 24);
     ~Cores();
 
+    int getSafe() const;
+    int getStolen() const;
     int getLost() const;
     
-    void stealCore(int n);   // Enemy steals cores from base
+    int stealCore(int n);   // Enemy steals cores from base
     void returnCore(int n);  // Enemy carrying cores dies → cores return
     void loseCore(int n);    // Enemy exits with cores → they are permanently lost
 };

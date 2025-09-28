@@ -20,7 +20,7 @@ private:
 public:
     Mortar(int x_, int y_);
     ~Mortar();
-    void update(float deltaTime, std::vector<Creature*>& creatures) override;
+    void update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) override;
     std::string getTypeName() const override;
 };
 

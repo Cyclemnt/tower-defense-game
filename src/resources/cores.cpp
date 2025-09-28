@@ -1,26 +1,31 @@
 #include "../../include/resources/cores.hpp"
+#include <cmath>
 
 Cores::Cores(int initial)
     : safe(initial), stolen(0), lost(0) {}
 
 Cores::~Cores() {}
 
+int Cores::getSafe() const { return safe; }
+int Cores::getStolen() const { return stolen; }
 int Cores::getLost() const { return lost; }
 
-// Enemy steals cores from base
-void Cores::stealCore(int n) {
-    safe -= n;
-    stolen += n;
+int Cores::stealCore(int n) {
+    if (n <= 0) return 0;
+    int taken = std::min(n, safe);
+    safe -= taken;
+    stolen += taken;
+    return taken;
 }
 
-// Enemy carrying cores dies → cores return
 void Cores::returnCore(int n) {
+    if (n <= 0) return;
     stolen -= n;
     safe += n;
 }
 
-// Enemy exits with cores → they are permanently lost
 void Cores::loseCore(int n) {
+    if (n <= 0) return;
     stolen -= n;
     lost += n;
 }

@@ -2,6 +2,7 @@
 #define CORE_STORAGE_HPP
 
 #include "tile.hpp"
+#include "../resources/cores.hpp"
 
 /**
  * @class CoreStorage
@@ -12,14 +13,14 @@
  */
 class CoreStorage : public Tile {
 private:
-    int cores; ///< The number of cores currently stored in this tile.
+    Cores* cores; ///< Pointer to the cores of the game, to take/deposit.
 
 public:
     /// @brief Constructs a new CoreStorage at the specified coordinates with an initial core count.
     /// @param x The x-coordinate (column) of the core storage.
     /// @param y The y-coordinate (row) of the core storage.
     /// @param initialCores The initial number of cores to store on this tile.
-    CoreStorage(int x, int y, int initialCores = 0);
+    CoreStorage(int x, int y, Cores* coresptr);
 
     /// @brief Destroys the CoreStorage object.
     ~CoreStorage() override = default;

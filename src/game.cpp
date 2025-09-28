@@ -4,8 +4,7 @@
 #include <algorithm>
 
 Game::Game(int w, int h, int initialCores)
-    : map(w, h), pathfinder(map), cores(initialCores), materials(),
-      tick(0) {
+    : map(w, h), pathfinder(map), cores(initialCores), tick(0) {
     // TODO: generate map
     // Map example :
     for (int i = 0; i < 5; i++)
@@ -21,7 +20,7 @@ Game::Game(int w, int h, int initialCores)
     map.placeTile(std::make_unique<OpenZone>(2, 0));
     map.placeTile(std::make_unique<EntryZone>(0, 0));
     map.placeTile(std::make_unique<ExitZone>(4, 3));
-    map.placeTile(std::make_unique<CoreStorage>(2, 2, 24));
+    map.placeTile(std::make_unique<CoreStorage>(2, 2, &cores));
     map.printMap();
 }
 
@@ -45,26 +44,28 @@ void Game::spawnCreature(std::unique_ptr<Creature> creature) {
     creatures.push_back(std::move(creature));
 }
 
-void Game::placeTower(std::unique_ptr<Tower> tower) {
-    if (!map.getTile(tower.get()->getX(), tower.get()->getY())->isBuildable())
-        throw std::runtime_error("Trying to place tower on non buildable tile");
-    
+PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
+    Tile* tile = map.getTile(tower->getX(), tower->getY());
+
+    if (!tile->isBuildable())
+        return PlaceTowerResult::NotBuildable;
+
     if (!player.canAfford(*tower))
-        throw std::runtime_error("Player cannot afford a tower");
-        
+        return PlaceTowerResult::NotAffordable;
+
     player.pay(*tower);
-    
     towers.push_back(std::move(tower));
 
-    // Update every creature's paths
+    // Update every creature's path
     for (auto& c : creatures) {
         Tile* start = c->getCurrentTile();
         Tile* goal = c->getDestinationTile();
-        
         auto newPath = pathfinder.findPath(start, goal);
         if (newPath.empty()) newPath = pathfinder.findPath(start, goal, true);
         c->setPath(newPath);
     }
+
+    return PlaceTowerResult::Success;
 }
 
 void Game::update(float deltaTime) {
@@ -77,9 +78,12 @@ void Game::update(float deltaTime) {
             c->update(deltaTime);
 
             Tile* current = c->getCurrentTile();
+
+            if (!c->isAlive())
+                cores.returnCore(c->dropCores());
             
             // CoreStorage reached
-            if (auto storage = dynamic_cast<CoreStorage*>(current)) {
+            else if (auto storage = dynamic_cast<CoreStorage*>(current)) {
                 if (c->getDestinationTile() == map.getCoreStorage()) {
                     // New path to exit
                     Tile* goal = map.getExits()[0];
@@ -89,19 +93,18 @@ void Game::update(float deltaTime) {
             }
 
             // Exit reached
-            if (auto exit = dynamic_cast<ExitZone*>(current)) {
+            else if (auto exit = dynamic_cast<ExitZone*>(current)) {
                 if (c->getDestinationTile() == map.getExits()[0]) {
                     // TODO: make creature diseapear (and remove carried cores)
+                    cores.loseCore(c->dropCores());
                 }
             }
-            
-            // TODO: manage stealing/exiting
         }
     }
 
     // Update towers
     for (auto& t : towers) {
-        t->update(deltaTime, reinterpret_cast<std::vector<Creature*>&>(creatures));
+        t->update(deltaTime, creatures);
     }
 
     // Remove dead creatures

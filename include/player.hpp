@@ -10,14 +10,11 @@ class Player {
 private:
     // Ressources
     Materials materials;
-    Cores cores;
     
 public:
     Player(/* args */);
     ~Player();
     
-    void placeTower(Tile* tile, Tower* tower);
-    void upgradeTower(Tower* tower);
     bool canAfford(const Tower& tower);
     void pay(const Tower& tower);
 };

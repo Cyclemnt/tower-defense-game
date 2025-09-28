@@ -7,7 +7,7 @@ Mortar::Mortar(int x_, int y_)
 
 Mortar::~Mortar() {}
 
-void Mortar::update(float deltaTime, std::vector<Creature*>& creatures) {
+void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
     std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
         cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
@@ -35,7 +35,7 @@ void Mortar::update(float deltaTime, std::vector<Creature*>& creatures) {
         if (dist < s.speed * deltaTime) {
             // Impact
             std::cout << "Shell exploding" << "\n";
-            for (Creature* c : creatures) {
+            for (auto& c : creatures) {
                 float dx = c->getPosition()[0] - s.targetX;
                 float dy = c->getPosition()[1] - s.targetY;
                 float distSquare = dx*dx + dy*dy;

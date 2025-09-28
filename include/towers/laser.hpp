@@ -20,7 +20,7 @@ public:
     /// Increases the damage over time when targeting the same enemy
     /// @param creatures List of all creatures currently on the map.
     /// @param deltaTime Time elapsed since last update.
-    void update(float deltaTime, std::vector<Creature*>& creatures) override;
+    void update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) override;
 
     std::string getTypeName() const override;
 };

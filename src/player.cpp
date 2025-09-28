@@ -1,15 +1,9 @@
 #include "../include/player.hpp"
 
 Player::Player()
-    : materials(), cores() {}
+    : materials() {}
 
 Player::~Player() {}
-
-void Player::placeTower(Tile* tile, Tower* tower) {
-}
-
-void Player::upgradeTower(Tower* tower) {
-}
 
 bool Player::canAfford(const Tower& tower) {
     for (size_t i = 0; i < 3; i++)

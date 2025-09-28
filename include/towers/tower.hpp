@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <array>
+#include <memory>
 
 /**
  * @class Tower
@@ -80,7 +81,7 @@ public:
     /// target is found, the tower attacks and resets its cooldown.
     /// @param creatures List of all creatures currently on the map.
     /// @param deltaTime Time elapsed since last update.
-    virtual void update(float deltaTime, std::vector<Creature*>& creatures);
+    virtual void update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures);
 
     /// @brief Attack a single creature target.
     /// @param target Pointer to the target creature.
@@ -89,7 +90,7 @@ public:
     /// @brief Selecting the best target among the creatures.
     /// Selects the strongest creature whithin range.
     /// @param creatures List of all creatures currently on the map.
-    virtual Creature* selectTarget(const std::vector<Creature*>& creatures);
+    virtual Creature* selectTarget(const std::vector<std::unique_ptr<Creature>>& creatures);
 
     /// @brief Upgrade the tower.
     /// Increases stats such as damage, range, and fire rate. The upgrade
