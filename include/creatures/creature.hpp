@@ -74,6 +74,9 @@ public:
     void setPath(const std::vector<Tile*>& p);
 
     /// @brief Gets the current creature coordinates.
+    void setPosition(std::array<int, 2> pos);
+
+    /// @brief Gets the current creature coordinates.
     /// @return an array of x and y.
     std::array<float, 2> getPosition() const;
 

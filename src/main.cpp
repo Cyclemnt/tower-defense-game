@@ -34,19 +34,19 @@
 // }
 
 #include "../include/game.hpp"
-#include "../include/towers/mortar.hpp"
+#include "../include/towers/gatling.hpp"
 #include "../include/creatures/drone.hpp"
 #include <iostream>
 
 int main() {
-    Game game(5, 5, 24);
+    Game game(15, 10, 24);
 
     // Add a simple creature
     std::unique_ptr<Creature> c = std::make_unique<Drone>();
     game.spawnCreature(std::move(c));
 
     // Add a simple tower
-    std::unique_ptr<Tower> t = std::make_unique<Mortar>(2, 0);
+    std::unique_ptr<Tower> t = std::make_unique<Gatling>(13, 5);
     game.placeTower(std::move(t));
     
     // Simulation loop in the console

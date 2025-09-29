@@ -20,6 +20,11 @@ void Creature::setPath(const std::vector<Tile*>& p) {
     pathIndex = 0;
 }
 
+void Creature::setPosition(std::array<int, 2> pos) {
+    posX = pos[0];
+    posY = pos[1];
+}
+
 std::array<float, 2> Creature::getPosition() const {
     return {posX, posY};
 }

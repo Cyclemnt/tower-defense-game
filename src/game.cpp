@@ -7,20 +7,40 @@ Game::Game(int w, int h, int initialCores)
     : map(w, h), pathfinder(map), player(), cores(initialCores), tick(0) {
     // TODO: generate map
     // Map example :
-    for (int i = 0; i < 5; i++)
-        for (int j = 0; j < 5; j++)
-            map.placeTile(std::make_unique<Path>(i, j));
-    map.placeTile(std::make_unique<EmptyZone>(1, 3));
-    map.placeTile(std::make_unique<EmptyZone>(2, 3));
-    map.placeTile(std::make_unique<EmptyZone>(3, 3));
-    map.placeTile(std::make_unique<EmptyZone>(3, 2));
-    map.placeTile(std::make_unique<EmptyZone>(3, 1));
-    map.placeTile(std::make_unique<EmptyZone>(3, 0));
-    // Interest points setup
-    map.placeTile(std::make_unique<OpenZone>(2, 0));
-    map.placeTile(std::make_unique<EntryZone>(0, 0));
-    map.placeTile(std::make_unique<ExitZone>(4, 3));
-    map.placeTile(std::make_unique<CoreStorage>(2, 2, &cores));
+
+    
+    for (int i : {8, 9, 10}) {
+        map.placeTile(std::make_unique<Path>(i, 0));
+        map.placeTile(std::make_unique<Path>(i, 2));
+    }
+    map.placeTile(std::make_unique<EntryZone>(1, 0));
+    map.placeTile(std::make_unique<ExitZone>(0, 1));
+    for (int i = 1; i < 14; i++)
+        if (i != 7) map.placeTile(std::make_unique<Path>(i, 1));
+    map.placeTile(std::make_unique<CoreStorage>(9, 1, &cores));
+
+    for (int i = 1; i < 8; i++)
+        map.placeTile(std::make_unique<Path>(6, i));
+    map.placeTile(std::make_unique<Path>(7, 7));
+    for (int i = 7; i < 14; i++)
+        map.placeTile(std::make_unique<Path>(i, 8));
+    for (int i = 1; i < 9; i++)
+        map.placeTile(std::make_unique<Path>(13, i));
+    for (int i : {4, 5, 6}) {
+        map.placeTile(std::make_unique<Path>(12, i));
+        map.placeTile(std::make_unique<Path>(14, i));
+    }
+    map.placeTile(std::make_unique<OpenZone>(13, 5));
+    for (int i : {0, 1}) {
+        map.placeTile(std::make_unique<OpenZone>(5, i+3));
+        map.placeTile(std::make_unique<OpenZone>(i+10, 9));
+    }
+    for (int i : {0, 1, 2})
+        map.placeTile(std::make_unique<OpenZone>(7+i, 5+i));
+
+    
+
+
     map.printMap();
 }
 
@@ -40,6 +60,7 @@ void Game::spawnCreature(std::unique_ptr<Creature> creature) {
     std::vector<Tile*> path = pathfinder.findPath(start, goal);
     if (path.empty()) path = pathfinder.findPath(start, goal, true);
     creature->setPath(path);
+    creature->setPosition({start->getX(), start->getY()});
 
     creatures.push_back(std::move(creature));
 }
@@ -120,7 +141,8 @@ void Game::render() const {
     for (const auto& c : creatures) {
         if (c->isAlive()) {
             std::array<float, 2> pos = c->getPosition();
-            std::cout << "Creature at (" << pos[0] << "," << pos[1]
+            std::string name = c->getTypeName();
+            std::cout << name <<  " at (" << pos[0] << "," << pos[1]
                         << ") HP=" << c->getHealth()
                         << " Shield=" << c->getShield() << "\n";
         }
