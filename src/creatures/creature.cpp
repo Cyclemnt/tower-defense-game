@@ -64,13 +64,13 @@ void Creature::update(float deltaTime) {
             distanceToTravel -= distToNext;
 
             // Events depending on Tile
-            if (auto c = dynamic_cast<CoreStorage*>(next)) {
+            if (CoreStorage* c = dynamic_cast<CoreStorage*>(next)) {
                 if (coresCarried < coresCapacity) {
                     stealCores(c->takeCores(coresCapacity - coresCarried)); // Taking as many cores as possible
                     distanceToTravel = 0.0f; // Path will change
                 }
             }
-            else if (auto ex = dynamic_cast<ExitZone*>(next)) {
+            else if (ExitZone* ex = dynamic_cast<ExitZone*>(next)) {
                 // if (coresCarried > 0) {
                 //     // TODO: Tell Game about lost cores
                 //     coresCarried = 0;

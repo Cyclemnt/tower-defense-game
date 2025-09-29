@@ -37,7 +37,7 @@ void Game::spawnCreature(std::unique_ptr<Creature> creature) {
     Tile* start = map.getEntries()[0];
     Tile* goal = map.getCoreStorage();
 
-    auto path = pathfinder.findPath(start, goal);
+    std::vector<Tile*> path = pathfinder.findPath(start, goal);
     if (path.empty()) path = pathfinder.findPath(start, goal, true);
     creature->setPath(path);
 
@@ -60,7 +60,7 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     for (auto& c : creatures) {
         Tile* start = c->getCurrentTile();
         Tile* goal = c->getDestinationTile();
-        auto newPath = pathfinder.findPath(start, goal);
+        std::vector<Tile*> newPath = pathfinder.findPath(start, goal);
         if (newPath.empty()) newPath = pathfinder.findPath(start, goal, true);
         c->setPath(newPath);
     }
@@ -83,17 +83,17 @@ void Game::update(float deltaTime) {
                 cores.returnCore(c->dropCores());
             
             // CoreStorage reached
-            else if (auto storage = dynamic_cast<CoreStorage*>(current)) {
+            else if (CoreStorage* storage = dynamic_cast<CoreStorage*>(current)) {
                 if (c->getDestinationTile() == map.getCoreStorage()) {
                     // New path to exit
                     Tile* goal = map.getExits()[0];
-                    auto newPath = pathfinder.findPath(current, goal);
+                    std::vector<Tile*> newPath = pathfinder.findPath(current, goal);
                     c->setPath(newPath);
                 }
             }
 
             // Exit reached
-            else if (auto exit = dynamic_cast<ExitZone*>(current)) {
+            else if (ExitZone* exit = dynamic_cast<ExitZone*>(current)) {
                 if (c->getDestinationTile() == map.getExits()[0]) {
                     // TODO: make creature diseapear (and remove carried cores)
                     cores.loseCore(c->dropCores());
@@ -119,7 +119,7 @@ void Game::render() const {
 
     for (const auto& c : creatures) {
         if (c->isAlive()) {
-            auto pos = c->getPosition();
+            std::array<float, 2> pos = c->getPosition();
             std::cout << "Creature at (" << pos[0] << "," << pos[1]
                         << ") HP=" << c->getHealth()
                         << " Shield=" << c->getShield() << "\n";

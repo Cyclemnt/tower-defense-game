@@ -36,19 +36,19 @@ void Map::placeTile(std::unique_ptr<Tile> tile) {
     }
 
     // If it was an interest point, remove from the right vector
-    if (auto e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
+    if (EntryZone* e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
         // Using std::find to find the tile to delete
         auto it = std::find(entries.begin(), entries.end(), e);
         if (it != entries.end()) {
             entries.erase(it);
         }
-    } else if (auto ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
+    } else if (ExitZone* ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
         // Using std::find to find the tile to delete
         auto it = std::find(exits.begin(), exits.end(), ex);
         if (it != exits.end()) {
             exits.erase(it);
         }
-    } else if (auto c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
+    } else if (CoreStorage* c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
         coreStorage = nullptr;
     }
 
@@ -56,11 +56,11 @@ void Map::placeTile(std::unique_ptr<Tile> tile) {
     grid[y][x] = std::move(tile);
 
     // If it is an interest point, add to the right vector
-    if (auto e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
+    if (EntryZone* e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
         entries.push_back(e);
-    } else if (auto ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
+    } else if (ExitZone* ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
         exits.push_back(ex);
-    } else if (auto c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
+    } else if (CoreStorage* c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
         coreStorage = c;
     }
 }

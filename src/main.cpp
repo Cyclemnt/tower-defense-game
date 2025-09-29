@@ -42,7 +42,7 @@ int main() {
     Game game(5, 5, 24);
 
     // Add a simple creature
-    auto c = std::make_unique<Drone>();
+    std::unique_ptr<Creature> c = std::make_unique<Drone>();
     game.spawnCreature(std::move(c));
 
     // Add a simple tower
