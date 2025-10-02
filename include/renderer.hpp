@@ -20,7 +20,7 @@ private:
     sf::Texture texMinionCreature, texDroneCreature, texTankCreature;
     sf::Texture texNull;
 
-    float tileSize; // Taille en pixels d'une case
+    float tileSize; // Tile size in px
 
 public:
     Renderer(int width, int height, int tileSize);

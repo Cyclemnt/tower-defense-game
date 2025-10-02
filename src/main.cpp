@@ -3,8 +3,8 @@
 #include <chrono>
 
 // int main() {
-//     const int width = 10;
-//     const int height = 10;
+//     const int width = 16;
+//     const int height = 16;
 //     const int initialCores = 24;
 //     const int tileSize = 64;
 
