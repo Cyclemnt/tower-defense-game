@@ -13,6 +13,8 @@ float Creature::getHealth() const { return health; }
 
 float Creature::getShield() const { return shield; }
 
+float Creature::getSpeed() const { return speed; }
+
 int Creature::getCoresCarried() const { return coresCarried; }
 
 void Creature::setPath(const std::vector<Tile*>& p) {

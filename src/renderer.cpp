@@ -1,9 +1,18 @@
 #include "../include/renderer.hpp"
+// MAP
 #include "../include/map/entryZone.hpp"
 #include "../include/map/exitZone.hpp"
 #include "../include/map/coreStorage.hpp"
 #include "../include/map/path.hpp"
 #include "../include/map/openZone.hpp"
+// TOWERS
+#include "../include/towers/gatling.hpp"
+#include "../include/towers/mortar.hpp"
+#include "../include/towers/laser.hpp"
+// CREATURES
+#include "../include/creatures/minion.hpp"
+#include "../include/creatures/drone.hpp"
+#include "../include/creatures/tank.hpp"
 
 Renderer::Renderer(int width, int height, int tileSize)
     : window(sf::VideoMode({ static_cast<unsigned int>(width * tileSize), static_cast<unsigned int>(height * tileSize)}),
@@ -19,19 +28,24 @@ void Renderer::loadTextures() {
         }
     };
 
-    load(texPath, "../assets/path.png");
-    load(texEmpty, "../assets/empty.png");
-    load(texOpen, "../assets/open.png");
-    load(texEntry, "../assets/entry.png");
-    load(texExit, "../assets/exit.png");
-    load(texCore, "../assets/core.png");
+    load(texPath, "../assets/tile_path.png");
+    load(texEmpty, "../assets/tile_empty.png");
+    load(texOpen, "../assets/tile_open.png");
+    load(texEntry, "../assets/tile_entry.png");
+    load(texExit, "../assets/tile_exit.png");
+    load(texCore, "../assets/tile_core_storage.png");
     load(texTowerGatling, "../assets/tower_gatling.png");
     load(texTowerMortar, "../assets/tower_mortar.png");
     load(texTowerLaser, "../assets/tower_laser.png");
-    load(texMinionCreature, "../assets/creature_minion.png");
-    load(texDroneCreature, "../assets/creature_drone.png");
-    load(texTankCreature, "../assets/creature_tank.png");
-    load(texNull, "../assets/missing_texture.png");
+
+    for (size_t i = 0; i < 3; ++i) {
+        for (size_t j = 0; j < 4; ++j) {
+
+            std::ostringstream oss ; 
+            oss << "../assets/creature_" << ((i == 0) ? "minion_" : (i == 1) ? "drone_" : "tank_") << j << ".png";
+            load(texCreature[i][j], oss.str());
+        }
+    }
 }
 
 bool Renderer::isOpen() const {
@@ -90,9 +104,9 @@ void Renderer::drawTowers(const Game& game) {
     for (auto& t : game.getTowers()) {
         const sf::Texture* texture = &texNull;
 
-        if (t->getTypeName() == "Gatling") texture = &texTowerGatling;
-        else if (t->getTypeName() == "Mortar") texture = &texTowerMortar;
-        else if (t->getTypeName() == "Laser") texture = &texTowerLaser;
+        if (dynamic_cast<Gatling*>(t.get())) texture = &texTowerGatling;
+        else if (dynamic_cast<Mortar*>(t.get())) texture = &texTowerMortar;
+        else if (dynamic_cast<Laser*>(t.get())) texture = &texTowerLaser;
 
         sf::Sprite sprite(*texture);
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
@@ -106,11 +120,17 @@ void Renderer::drawCreatures(const Game& game) {
     for (auto& c : game.getCreatures()) {
         if (!c->isAlive()) continue;
 
+        unsigned long tick = game.getTick();
+        float animFramesPerSecond = c->getSpeed() * 2.0f; // 2.0f is the number of frame per tile
+        int frameDurationTicks = (animFramesPerSecond > 0.0f) ? int(60 / animFramesPerSecond) : 1e9;
+
+        int textureNumber = (tick / frameDurationTicks) % 4;
+
         const sf::Texture* texture = &texNull;
 
-        if (c->getTypeName() == "Minion") texture = &texMinionCreature;
-        else if (c->getTypeName() == "Drone") texture = &texDroneCreature;
-        else if (c->getTypeName() == "Tank") texture = &texTankCreature;
+        if (dynamic_cast<Minion*>(c.get())) texture = &texCreature[0][textureNumber];
+        else if (dynamic_cast<Drone*>(c.get())) texture = &texCreature[1][textureNumber];
+        else if (dynamic_cast<Tank*>(c.get())) texture = &texCreature[2][textureNumber];
 
         sf::Sprite sprite(*texture);
         auto pos = c->getPosition();

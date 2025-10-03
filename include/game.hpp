@@ -36,7 +36,7 @@ private:
     std::vector<std::unique_ptr<Creature>> creatures;   ///< List of active creatures
     std::vector<std::unique_ptr<Tower>> towers;         ///< List of placed towers
 
-    int tick;                   ///< Current tick count (simulation time)
+    unsigned long tick;                   ///< Current tick count (simulation time)
 
 public:
     /// @brief Construct a new Game object.
@@ -50,7 +50,8 @@ public:
     const Map& getMap() const;
     const std::vector<std::unique_ptr<Creature>>& getCreatures() const;
     const std::vector<std::unique_ptr<Tower>>& getTowers() const;
-
+    const unsigned long getTick() const;
+    
     /// @brief Spawn a new creature and add it to the simulation.
     /// The creature will automatically be assigned a path from the entry
     /// to the exit using the Pathfinder.

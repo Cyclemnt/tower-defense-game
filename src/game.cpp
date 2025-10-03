@@ -50,6 +50,8 @@ const std::vector<std::unique_ptr<Creature>>& Game::getCreatures() const { retur
 
 const std::vector<std::unique_ptr<Tower>>& Game::getTowers() const { return towers; }
 
+const unsigned long Game::getTick() const { return tick; }
+
 void Game::spawnCreature(std::unique_ptr<Creature> creature) {
     if (map.getEntries().empty() || map.getCoreStorage() == nullptr || map.getExits().empty())
         throw std::runtime_error("Map missing entry or core storage or exit");

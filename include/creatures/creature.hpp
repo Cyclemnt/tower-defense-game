@@ -63,6 +63,10 @@ public:
     /// @return The shield value of the creature.
     float getShield() const;
 
+    /// @brief Gets the current speed value of the creature.
+    /// @return The speed value of the creature.
+    float getSpeed() const;
+
     /// @brief Gets the number of cores the creature is carrying.
     /// @return The amount of cores the creature has.
     int getCoresCarried() const;

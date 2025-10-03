@@ -17,7 +17,7 @@ private:
     // Textures (tiles, towers, creatures…)
     sf::Texture texPath, texEmpty, texOpen, texEntry, texExit, texCore;
     sf::Texture texTowerGatling, texTowerMortar, texTowerLaser;
-    sf::Texture texMinionCreature, texDroneCreature, texTankCreature;
+    std::array<std::array<sf::Texture, 4>, 3> texCreature;
     sf::Texture texNull;
 
     float tileSize; // Tile size in px
