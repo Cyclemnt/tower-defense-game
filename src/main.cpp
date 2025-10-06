@@ -35,6 +35,8 @@
 
 #include "../include/game.hpp"
 #include "../include/renderer.hpp"
+#include "../include/towers/laser.hpp"
+#include "../include/towers/mortar.hpp"
 #include "../include/towers/gatling.hpp"
 #include "../include/creatures/tank.hpp"
 #include "../include/creatures/minion.hpp"
@@ -58,10 +60,19 @@ int main() {
     c = std::make_unique<Drone>();
     game.spawnCreature(std::move(c));
 
+
+    // Add a tower 
+    std::unique_ptr<Tower> t = std::make_unique<Laser>(13, 5);
+    game.placeTower(std::move(t));
+    t = std::make_unique<Mortar>(7, 5);
+    game.placeTower(std::move(t));
+    t = std::make_unique<Gatling>(8, 6);
+    game.placeTower(std::move(t));
+
     // Simulation loop in the console
     game.render();
     for (int i = 0; i < 100000 && !game.isGameOver(); i++) {
-        game.update(0.002f);
+        game.update(0.02f);
         game.render();
         renderer.render(game);
     }

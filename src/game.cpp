@@ -72,12 +72,15 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
 
     if (!tile->isBuildable())
         return PlaceTowerResult::NotBuildable;
+    
+    OpenZone* openZoneTile = dynamic_cast<OpenZone*>(tile); // If buildable then the tile is OpenZone
 
     if (!player.canAfford(*tower))
         return PlaceTowerResult::NotAffordable;
 
     player.pay(*tower);
     towers.push_back(std::move(tower));
+    openZoneTile->setOccupied(true);
 
     // Update every creature's path
     for (auto& c : creatures) {
