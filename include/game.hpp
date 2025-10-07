@@ -6,6 +6,7 @@
 #include "towers/tower.hpp"
 #include "creatures/creature.hpp"
 #include "player.hpp"
+#include "visual-effects/visualEffect.hpp"
 #include <vector>
 
 enum class PlaceTowerResult {
@@ -36,6 +37,8 @@ private:
     std::vector<std::unique_ptr<Creature>> creatures;   ///< List of active creatures
     std::vector<std::unique_ptr<Tower>> towers;         ///< List of placed towers
 
+    std::vector<std::unique_ptr<VisualEffect>> visualEffects;
+
     unsigned long tick;                   ///< Current tick count (simulation time)
 
 public:
@@ -51,6 +54,7 @@ public:
     const std::vector<std::unique_ptr<Creature>>& getCreatures() const;
     const std::vector<std::unique_ptr<Tower>>& getTowers() const;
     const unsigned long getTick() const;
+    const std::vector<std::unique_ptr<VisualEffect>>& getVisualEffects() const;
     
     /// @brief Spawn a new creature and add it to the simulation.
     /// The creature will automatically be assigned a path from the entry

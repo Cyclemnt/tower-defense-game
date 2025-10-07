@@ -1,80 +1,60 @@
-#include "game.hpp"
-#include "renderer.hpp"
-#include <chrono>
-
-// int main() {
-//     const int width = 16;
-//     const int height = 16;
-//     const int initialCores = 24;
-//     const int tileSize = 64;
-
-//     Game game(width, height, initialCores);
-//     Renderer renderer(width, height, tileSize);
-
-//     auto lastTime = std::chrono::high_resolution_clock::now();
-
-//     while (renderer.isOpen()) {
-//         // Process events (keyboard/mouse/UI)
-//         renderer.processEvents(game);
-
-//         // Delta time
-//         auto now = std::chrono::high_resolution_clock::now();
-//         std::chrono::duration<float> elapsed = now - lastTime;
-//         float deltaTime = elapsed.count();
-//         lastTime = now;
-
-//         // Game logic
-//         game.update(deltaTime);
-
-//         // Rendering
-//         renderer.render(game);
-//     }
-
-//     return 0;
-// }
-
+#include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
 #include "../include/game.hpp"
 #include "../include/renderer.hpp"
-#include "../include/towers/laser.hpp"
-#include "../include/towers/mortar.hpp"
-#include "../include/towers/gatling.hpp"
 #include "../include/creatures/tank.hpp"
-#include "../include/creatures/minion.hpp"
-#include "../include/creatures/drone.hpp"
-#include <iostream>
+#include <memory>
 
 int main() {
-    const int width = 16;
-    const int height = 16;
-    const int initialCores = 24;
-    const int tileSize = 64;
+    sf::RenderWindow window(sf::VideoMode({1280, 720}), "Tower Defense");
+    window.setFramerateLimit(60);
 
-    Game game(width, height, initialCores);
-    Renderer renderer(width, height, tileSize);
+    tgui::Gui gui(window);
+    Game game(16, 10, 24);
+    Renderer renderer(window, gui);
 
-    // Add a simple creature
     std::unique_ptr<Creature> c = std::make_unique<Tank>();
     game.spawnCreature(std::move(c));
-    c = std::make_unique<Minion>();
-    game.spawnCreature(std::move(c));
-    c = std::make_unique<Drone>();
-    game.spawnCreature(std::move(c));
 
+    sf::Clock clock;
+    bool paused = false;
+    
+    while (window.isOpen()) {
+        // --- Gestion des événements ---
+        while (auto event = window.pollEvent()) {
+            gui.handleEvent(*event);
 
-    // Add a tower 
-    std::unique_ptr<Tower> t = std::make_unique<Laser>(13, 5);
-    game.placeTower(std::move(t));
-    t = std::make_unique<Mortar>(7, 5);
-    game.placeTower(std::move(t));
-    t = std::make_unique<Gatling>(8, 6);
-    game.placeTower(std::move(t));
+            // Fermeture de la fenêtre
+            if (event->is<sf::Event::Closed>()) {
+                window.close();
+            }
 
-    // Simulation loop in the console
-    game.render();
-    for (int i = 0; i < 100000 && !game.isGameOver(); i++) {
-        game.update(0.02f);
-        game.render();
+            // Clic souris
+            if (!paused) {
+                if (auto mouse = event->getIf<sf::Event::MouseButtonPressed>()) {
+                    renderer.handleMouseClick(mouse->position.x, mouse->position.y, game);
+                }
+            }
+
+            // Touche ESC → pause
+            if (auto key = event->getIf<sf::Event::KeyPressed>()) {
+                if (key->code == sf::Keyboard::Key::Escape) {
+                    paused = !paused;
+                    renderer.togglePauseMenu(paused, game);
+                }
+            }
+        }
+
+        // --- Mise à jour logique ---
+        float deltaTime = clock.restart().asSeconds();
+        if (!paused)
+            game.update(deltaTime);
+
+        // --- Rendu ---
+        window.clear();
         renderer.render(game);
+        gui.draw();
+        window.display();
     }
 
     return 0;

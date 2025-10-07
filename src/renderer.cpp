@@ -14,132 +14,191 @@
 #include "../include/creatures/drone.hpp"
 #include "../include/creatures/tank.hpp"
 
-Renderer::Renderer(int width, int height, int tileSize)
-    : window(sf::VideoMode({ static_cast<unsigned int>(width * tileSize), static_cast<unsigned int>(height * tileSize)}),
-    "Tower Defense"), gui(window), tileSize(tileSize) {
+#include <iostream>
+#include <algorithm>
 
-    loadTextures();
-}
+Renderer::Renderer(sf::RenderWindow& win, tgui::Gui& g)
+    : window(win), gui(g) {}
 
-void Renderer::loadTextures() {
-    auto load = [](sf::Texture& tex, const std::string& path) {
-        if (!tex.loadFromFile(path)) {
-            std::cerr << "Erreur: impossible de charger la texture " << path << std::endl;
+sf::Texture& Renderer::getTexture(const std::string& filename) {
+    if (textures.find(filename) == textures.end()) {
+        sf::Texture tex;
+        if (!tex.loadFromFile("../assets/" + filename)) {
+            std::cerr << "[Renderer] Missing texture: " << filename << std::endl;
+            tex.loadFromFile("../assets/missing_texture.png");
         }
-    };
-
-    load(texPath, "../assets/tile_path.png");
-    load(texEmpty, "../assets/tile_empty.png");
-    load(texOpen, "../assets/tile_open.png");
-    load(texEntry, "../assets/tile_entry.png");
-    load(texExit, "../assets/tile_exit.png");
-    load(texCore, "../assets/tile_core_storage.png");
-    load(texTowerGatling, "../assets/tower_gatling.png");
-    load(texTowerMortar, "../assets/tower_mortar.png");
-    load(texTowerLaser, "../assets/tower_laser.png");
-
-    for (size_t i = 0; i < 3; ++i) {
-        for (size_t j = 0; j < 4; ++j) {
-
-            std::ostringstream oss ; 
-            oss << "../assets/creature_" << ((i == 0) ? "minion_" : (i == 1) ? "drone_" : "tank_") << j << ".png";
-            load(texCreature[i][j], oss.str());
-        }
+        tex.setSmooth(true);
+        textures.insert({filename, std::move(tex)});
     }
+    return textures.at(filename);
 }
 
-bool Renderer::isOpen() const {
-    return window.isOpen();
-}
-
-void Renderer::processEvents(Game& game) {
-    while (auto eventOpt = window.pollEvent()) {
-        const sf::Event& event = *eventOpt;
-
-        // Verify if event is Closed
-        if (event.is<sf::Event::Closed>()) {
-            window.close();
-        }
-
-        // Manage other events if necessary
-        gui.handleEvent(event);
-    }
+sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
+    return sf::Vector2i(static_cast<int>(mouseX / tileSize),
+                        static_cast<int>(mouseY / tileSize));
 }
 
 void Renderer::render(const Game& game) {
-    window.clear(sf::Color::Black);
+    const Map& map = game.getMap();
 
-    drawMap(game);
-    drawTowers(game);
-    drawCreatures(game);
-    drawUI(game);
+    // --- Draw map ---
+    for (int y = 0; y < map.getHeight(); ++y) {
+        for (int x = 0; x < map.getWidth(); ++x) {
+            Tile* tile = map.getTile(x, y);
+            const sf::Texture* tex = nullptr;
 
-    gui.draw();
-    window.display();
-}
+            if (dynamic_cast<Path*>(tile))
+                tex = &getTexture("tile_path.png");
+            else if (dynamic_cast<OpenZone*>(tile))
+                tex = &getTexture("tile_open.png");
+            else if (dynamic_cast<EntryZone*>(tile))
+                tex = &getTexture("tile_entry.png");
+            else if (dynamic_cast<ExitZone*>(tile))
+                tex = &getTexture("tile_exit.png");
+            else if (dynamic_cast<CoreStorage*>(tile))
+                tex = &getTexture("tile_core.png");
+            else
+                tex = &getTexture("tile_empty.png");
 
-void Renderer::drawMap(const Game& game) {
-    for (int y = 0; y < game.getMap().getHeight(); y++) {
-        for (int x = 0; x < game.getMap().getWidth(); x++) {
-            Tile* tile = game.getMap().getTile(x, y);
-            const sf::Texture* texture = &texNull;
+            sf::Sprite sprite(*tex);
+            sprite.setPosition({static_cast<float>(x) * tileSize,
+                                static_cast<float>(y) * tileSize});
 
-            if (dynamic_cast<Path*>(tile)) texture = &texPath;
-            else if (dynamic_cast<EmptyZone*>(tile)) texture = &texEmpty;
-            else if (dynamic_cast<OpenZone*>(tile)) texture = &texOpen;
-            else if (dynamic_cast<EntryZone*>(tile)) texture = &texEntry;
-            else if (dynamic_cast<ExitZone*>(tile)) texture = &texExit;
-            else if (dynamic_cast<CoreStorage*>(tile)) texture = &texCore;
-
-            sf::Sprite sprite(*texture);
-            sprite.setPosition({x * tileSize, y * tileSize});
-            sprite.setScale({tileSize / float(texture->getSize().x),
-                            tileSize / float(texture->getSize().y)});
+            const auto& sz = tex->getSize();
+            sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
             window.draw(sprite);
         }
     }
-}
 
-void Renderer::drawTowers(const Game& game) {
-    for (auto& t : game.getTowers()) {
-        const sf::Texture* texture = &texNull;
+    // --- Highlight tile under mouse ---
+    sf::Vector2i mouse = sf::Mouse::getPosition(window);
+    sf::Vector2i tilePos = screenToTile(mouse.x, mouse.y);
+    if (tilePos.x >= 0 && tilePos.x < map.getWidth() &&
+        tilePos.y >= 0 && tilePos.y < map.getHeight()) {
+        Tile* hover = map.getTile(tilePos.x, tilePos.y);
+        if (dynamic_cast<OpenZone*>(hover)) {
+            sf::RectangleShape highlight({tileSize, tileSize});
+            highlight.setPosition({tilePos.x * tileSize, tilePos.y * tileSize});
+            highlight.setFillColor(sf::Color(255, 255, 0, 80));
+            window.draw(highlight);
+        }
+    }
 
-        if (dynamic_cast<Gatling*>(t.get())) texture = &texTowerGatling;
-        else if (dynamic_cast<Mortar*>(t.get())) texture = &texTowerMortar;
-        else if (dynamic_cast<Laser*>(t.get())) texture = &texTowerLaser;
-
-        sf::Sprite sprite(*texture);
+    // --- Towers ---
+    for (const auto& t : game.getTowers()) {
+        std::string name = t->getTypeName();
+        std::string file = "tower_" + name + ".png";
+        const sf::Texture& tex = getTexture(file);
+        sf::Sprite sprite(tex);
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
-        sprite.setScale({tileSize / float(texture->getSize().x),
-                        tileSize / float(texture->getSize().y)});
+        const auto& sz = tex.getSize();
+        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
         window.draw(sprite);
+    }
+
+    // --- Creatures ---
+    int frame = (game.getTick() / 8) % 4;
+    for (const auto& c : game.getCreatures()) {
+        std::string name = c->getTypeName();
+        std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+        std::string filename = "creature_" + name + "_" + std::to_string(frame) + ".png";
+        const sf::Texture& tex = getTexture(filename);
+        sf::Sprite sprite(tex);
+        sprite.setPosition({c->getPosition()[0] * tileSize,
+                            c->getPosition()[1] * tileSize});
+        const auto& sz = tex.getSize();
+        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
+        window.draw(sprite);
+    }
+
+    // --- Visual effects ---
+    for (const auto& e : game.getVisualEffects())
+    e->render(window, tileSize);
+}
+
+void Renderer::handleMouseClick(int mouseX, int mouseY, Game& game) {
+    sf::Vector2i tilePos = screenToTile(mouseX, mouseY);
+    if (tilePos.x < 0 || tilePos.x >= game.getMap().getWidth() ||
+        tilePos.y < 0 || tilePos.y >= game.getMap().getHeight())
+        return;
+
+    Tile* clicked = game.getMap().getTile(tilePos.x, tilePos.y);
+    if (dynamic_cast<OpenZone*>(clicked)) {
+        openTowerMenu(tilePos, game);
     }
 }
 
-void Renderer::drawCreatures(const Game& game) {
-    for (auto& c : game.getCreatures()) {
-        if (!c->isAlive()) continue;
+void Renderer::openTowerMenu(sf::Vector2i tilePos, Game& game) {
+    gui.removeAllWidgets();
 
-        unsigned long tick = game.getTick();
-        float animFramesPerSecond = c->getSpeed() * 2.0f; // 2.0f is the number of frame per tile
-        int frameDurationTicks = (animFramesPerSecond > 0.0f) ? int(60 / animFramesPerSecond) : 1e9;
+    towerMenu = tgui::Panel::create({"200", "180"});
+    towerMenu->setPosition({"50%", "50%"});
+    towerMenu->getRenderer()->setBackgroundColor({40, 40, 40, 230});
 
-        int textureNumber = (tick / frameDurationTicks) % 4;
+    auto label = tgui::Label::create("Select a tower");
+    label->setPosition(10, 10);
+    towerMenu->add(label);
 
-        const sf::Texture* texture = &texNull;
+    auto addButton = [&](const std::string& name,
+                         auto factory,
+                         float y) {
+        auto btn = tgui::Button::create(name);
+        btn->setSize({"180", "30"});
+        btn->setPosition(10, y);
+        btn->onPress([&, factory, tilePos]() {
+            try {
+                game.placeTower(factory(tilePos.x, tilePos.y));
+                gui.remove(towerMenu);
+            } catch (const std::exception& e) {
+                showError(e.what());
+            }
+        });
+        towerMenu->add(btn);
+    };
 
-        if (dynamic_cast<Minion*>(c.get())) texture = &texCreature[0][textureNumber];
-        else if (dynamic_cast<Drone*>(c.get())) texture = &texCreature[1][textureNumber];
-        else if (dynamic_cast<Tank*>(c.get())) texture = &texCreature[2][textureNumber];
+    addButton("Gatling (Cu)", [](int x, int y) { return std::make_unique<Gatling>(x, y); }, 40);
+    addButton("Laser (Ag)", [](int x, int y) { return std::make_unique<Laser>(x, y); }, 80);
+    addButton("Mortar (Au)", [](int x, int y) { return std::make_unique<Mortar>(x, y); }, 120);
 
-        sf::Sprite sprite(*texture);
-        auto pos = c->getPosition();
-        sprite.setPosition({pos[0] * tileSize, pos[1] * tileSize});
-        sprite.setScale({tileSize / float(texture->getSize().x),
-                        tileSize / float(texture->getSize().y)});
-        window.draw(sprite);
+    gui.add(towerMenu);
+}
+
+void Renderer::togglePauseMenu(bool isPaused, Game& game) {
+    paused = isPaused;
+    gui.removeAllWidgets();
+
+    if (isPaused) {
+        pausePanel = tgui::Panel::create({"300", "200"});
+        pausePanel->setPosition({"center", "center"});
+        pausePanel->getRenderer()->setBackgroundColor({0, 0, 0, 150});
+
+        auto label = tgui::Label::create("Game Paused");
+        label->setPosition({"center", "20"});
+        pausePanel->add(label);
+
+        auto resumeBtn = tgui::Button::create("Resume");
+        resumeBtn->setSize({"200", "40"});
+        resumeBtn->setPosition({"center", "120"});
+        resumeBtn->onPress([this]() {
+            paused = false;
+            gui.removeAllWidgets();
+        });
+        pausePanel->add(resumeBtn);
+
+        gui.add(pausePanel);
     }
 }
 
-void Renderer::drawUI(const Game& game) {
+void Renderer::showError(const std::string& msg) {
+    auto panel = tgui::Panel::create({"300", "120"});
+    panel->setPosition({"70%", "10%"});
+    panel->getRenderer()->setBackgroundColor({120, 30, 30, 240});
+
+    auto label = tgui::Label::create(msg);
+    label->setPosition(10, 10);
+    panel->add(label);
+
+    gui.add(panel);
+    // Ignore Timer warnings, TGUI 1.x return shared_ptr but whatever
+    (void)tgui::Timer::create([panel, this]() { gui.remove(panel); }, tgui::Duration(2.5f));
 }
