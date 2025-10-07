@@ -54,6 +54,8 @@ const std::vector<std::unique_ptr<Tower>>& Game::getTowers() const { return towe
 
 const unsigned long Game::getTick() const { return tick; }
 
+const Player& Game::getPlayer() const { return player; };
+
 const std::vector<std::unique_ptr<VisualEffect>>& Game::getVisualEffects() const { return visualEffects;}
 
 void Game::spawnCreature(std::unique_ptr<Creature> creature) {

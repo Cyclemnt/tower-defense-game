@@ -98,6 +98,65 @@ void Renderer::render(const Game& game) {
         const auto& sz = tex.getSize();
         sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
         window.draw(sprite);
+
+        // Life and shield data
+        float health = c->getHealth();
+        float shield = c->getShield();
+        float baseHealth = c->getBaseHealth();
+        float baseShield = c->getBaseShield();
+
+        float hpRatio = health / baseHealth;
+        float shieldRatio = shield / baseShield;
+        std::cout << shieldRatio << " " << shield << " " << baseShield << std::endl;
+
+        // Bar dimensions and positions
+        float barWidth = tileSize * 0.8f;
+        float barHeight = tileSize * 0.08f;
+        float x = c->getPosition()[0] * tileSize + (tileSize - barWidth) * 0.5f;
+        float baseY = c->getPosition()[1] * tileSize - barHeight - 4.0f;
+
+        // Shield bar 
+        if (baseShield > 0.f) {
+            float y = baseY - (barHeight + 2.0f); // above health bar
+
+            // Background
+            sf::RectangleShape backBar(sf::Vector2f(barWidth, barHeight));
+            backBar.setFillColor(sf::Color(40, 40, 40));
+            backBar.setPosition({x, y});
+            window.draw(backBar);
+
+            // Current shield
+            sf::RectangleShape shieldBar(sf::Vector2f(barWidth * shieldRatio, barHeight));
+            shieldBar.setFillColor(sf::Color(100, 150, 255, 200)); // light blue
+            shieldBar.setPosition({x, y});
+            window.draw(shieldBar);
+        }
+        // Health bar
+        {
+            float y = baseY;
+
+            // Background
+            sf::RectangleShape backBar(sf::Vector2f(barWidth, barHeight));
+            backBar.setFillColor(sf::Color(40, 40, 40));
+            backBar.setPosition({x, y});
+            window.draw(backBar);
+
+            // Color based on ratio
+            sf::Color lifeColor;
+            if (hpRatio < 0.3f)
+                lifeColor = sf::Color::Red;
+            else if (hpRatio < 0.6f)
+                lifeColor = sf::Color::Yellow;
+            else
+                lifeColor = sf::Color::Green;
+
+            // Current health
+            sf::RectangleShape hpBar(sf::Vector2f(barWidth * hpRatio, barHeight));
+            hpBar.setFillColor(lifeColor);
+            hpBar.setPosition({x, y});
+            window.draw(hpBar);
+        }
+
     }
 
     // --- Visual effects ---
@@ -105,18 +164,22 @@ void Renderer::render(const Game& game) {
         e->render(window, tileSize);
 
     // --- Towers ---
+    int towerFrame = (game.getTick() / 8) % 4; 
     for (const auto& t : game.getTowers()) {
         std::string name = t->getTypeName();
         std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-        std::string file = "tower_" + name + "_0.png";
-        // TODO: change texture to change orientation
-        const sf::Texture& tex = getTexture(file);
+
+        std::string filename = "tower_" + name + "_" + std::to_string(towerFrame) + ".png";
+
+        const sf::Texture& tex = getTexture(filename);
         sf::Sprite sprite(tex);
+
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
+
         const auto& sz = tex.getSize();
-        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
+        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize /sz.y)); // uniform scaling
         window.draw(sprite);
-    }
+}
 }
 
 void Renderer::handleMouseClick(int mouseX, int mouseY, Game& game) {
@@ -228,4 +291,69 @@ void Renderer::showError(const std::string& message)
         gui.remove(panel);
     }, std::chrono::milliseconds(2500));
 
+}
+
+void Renderer::drawMaterials(const Game& game) {
+    // Load font for numbers
+    static sf::Font font;
+    static bool fontLoaded = false;
+    if (!fontLoaded) {
+        if (!font.openFromFile("../assets/arial.ttf")) {
+            std::cerr << "Error: cannot load font ../assets/arial.ttf" << std::endl;
+            return;
+        }
+        fontLoaded = true;
+    }
+
+    // HUD background panel
+    sf::RectangleShape panel;
+    panel.setSize({150.f, 90.f});
+    panel.setFillColor(sf::Color(0, 0, 0, 150));
+    panel.setOutlineThickness(2.f);
+    panel.setOutlineColor(sf::Color(80, 80, 80));
+    panel.setPosition({10.f, 10.f});
+    window.draw(panel);
+
+    // Get player resources 
+    std::array<int, 3> balance = game.getPlayer().getMaterials().getBalance();
+
+    // Display parameters 
+    const float iconSize = 24.f;
+    const float startX = 20.f;
+    const float startY = 20.f;
+    const float spacingY = 22.f;
+    const float textOffsetX = 35.f;
+
+    struct ResourceDisplay {
+        std::string filename;
+        int value;
+        float yOffset;
+    };
+
+    // List of resources to display 
+    std::array<ResourceDisplay, 3> displays = {{
+        { "icon_gold.png",   balance[0], startY },
+        { "icon_silver.png", balance[1], startY + spacingY },
+        { "icon_copper.png", balance[2], startY + spacingY * 2 }
+    }};
+
+    // --- Draw resource icons and values ---
+    for (auto& res : displays) {
+        // Icon sprite
+        sf::Sprite icon(getTexture(res.filename));
+        icon.setPosition({startX, res.yOffset});
+        const auto& size = getTexture(res.filename).getSize();
+        icon.setScale(sf::Vector2f(iconSize / static_cast<float>(size.x),
+                                   iconSize / static_cast<float>(size.y)));
+        window.draw(icon);
+
+        // Value text
+        sf::Text valueText(font, std::to_string(res.value), 18);
+        valueText.setFont(font);
+        valueText.setString(std::to_string(res.value));
+        valueText.setCharacterSize(18);
+        valueText.setFillColor(sf::Color::White);
+        valueText.setPosition({startX + textOffsetX, res.yOffset - 2.f});
+        window.draw(valueText);
+    }
 }

@@ -20,9 +20,11 @@ private:
     float posY;
 
     // --- Creature Specifications ---
-    float health;   ///< Health of the creature.
-    float shield;   ///< Shield of the creature.
-    float speed;    ///< Speed of the creature in tile per second, used to determine movement.
+    float health;       ///< Health of the creature.
+    float baseHealth;    ///< Initiale health of the creature.
+    float shield;       ///< Shield of the creature.
+    float baseShield;    ///< Initiale shield of the creature.
+    float speed;        ///< Speed of the creature in tile per second, used to determine movement.
 
     // --- Loot quantities ---
     int au;     ///< Amount of Au dropped when killed.
@@ -59,9 +61,17 @@ public:
     /// @return The health value of the creature.
     float getHealth() const;
 
+    /// @brief Gets the initiale health of the creature.
+    /// @return The initiale health value of the creature.
+    float getBaseHealth() const;
+
     /// @brief Gets the current shield value of the creature.
     /// @return The shield value of the creature.
     float getShield() const;
+
+    /// @brief Gets the initiale shield of the creature.
+    /// @return The initiale shield value of the creature.
+    float getBaseShield() const;
 
     /// @brief Gets the current speed value of the creature.
     /// @return The speed value of the creature.

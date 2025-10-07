@@ -3,6 +3,8 @@
 #include "../include/game.hpp"
 #include "../include/renderer.hpp"
 #include "../include/creatures/tank.hpp"
+#include "../include/creatures/minion.hpp"
+#include "../include/creatures/drone.hpp"
 #include <memory>
 
 int main() {
@@ -15,7 +17,9 @@ int main() {
 
     std::unique_ptr<Creature> c = std::make_unique<Tank>();
     game.spawnCreature(std::move(c));
-    c = std::make_unique<Tank>();
+    c = std::make_unique<Minion>();
+    game.spawnCreature(std::move(c));
+    c = std::make_unique<Drone>();
     game.spawnCreature(std::move(c));
 
     sf::Clock clock;
@@ -55,6 +59,8 @@ int main() {
         // --- Render ---
         window.clear();
         renderer.render(game);
+        renderer.drawMaterials(game);
+
         gui.draw();
         window.display();
     }

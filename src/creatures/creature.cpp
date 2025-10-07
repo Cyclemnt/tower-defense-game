@@ -4,14 +4,18 @@
 #include <cmath>
 
 Creature::Creature(float hp, float sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)
-    : health(hp), shield(sh), speed(spd), coresCapacity(coresCapacity_), au(au_), ag(ag_), cu(cu_), coresCarried(0),
+    : health(hp), baseHealth(hp), shield(sh), baseShield(sh), speed(spd), coresCapacity(coresCapacity_), au(au_), ag(ag_), cu(cu_), coresCarried(0),
     pathIndex(0), alive(true) {}
 
 bool Creature::isAlive() const { return alive; }
 
 float Creature::getHealth() const { return health; }
 
+float Creature::getBaseHealth() const { return baseHealth; }
+
 float Creature::getShield() const { return shield; }
+
+float Creature::getBaseShield() const { return baseShield; }
 
 float Creature::getSpeed() const { return speed; }
 

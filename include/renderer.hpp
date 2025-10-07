@@ -53,6 +53,9 @@ public:
 
     /// @brief Shows an error message popup.
     void showError(const std::string& msg);
+
+    /// @brief Draws the HUD of ressources.
+    void drawMaterials(const Game& game);
 };
 
 #endif // RENDERER_HPP

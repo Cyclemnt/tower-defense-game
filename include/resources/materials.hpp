@@ -21,7 +21,7 @@ private:
     int cu;     ///< Copper
 
 public:
-    Materials(int initialAu = 0, int initialAg = 10, int initialCu = 100);
+    Materials(int initialAu = 100, int initialAg = 100, int initialCu = 100);
     ~Materials();
 
     /// @return Current balance of resources {Au, Ag, Cu}.
