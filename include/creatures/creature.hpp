@@ -70,6 +70,10 @@ public:
     /// @brief Gets the number of cores the creature is carrying.
     /// @return The amount of cores the creature has.
     int getCoresCarried() const;
+    
+    /// @brief Gets the loot the creature drops at death.
+    /// @return The amount of loot the creature drops.
+    std::array<int, 3> getLoot() const;
 
     // --- Path Handling ---
     

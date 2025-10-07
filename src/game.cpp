@@ -1,7 +1,9 @@
 #include "../include/game.hpp"
-
+#include "../include/visual-effects/tracerEffect.hpp"
+#include "../include/visual-effects/visualEffect.hpp"
 #include <iostream>
 #include <algorithm>
+#include <memory>
 
 Game::Game(int w, int h, int initialCores)
     : map(w, h), pathfinder(map), player(), cores(initialCores), tick(0) {
@@ -106,12 +108,9 @@ void Game::update(float deltaTime) {
             c->update(deltaTime);
 
             Tile* current = c->getCurrentTile();
-
-            if (!c->isAlive())
-                cores.returnCore(c->dropCores());
             
             // CoreStorage reached
-            else if (CoreStorage* storage = dynamic_cast<CoreStorage*>(current)) {
+            if (CoreStorage* storage = dynamic_cast<CoreStorage*>(current)) {
                 if (c->getDestinationTile() == map.getCoreStorage()) {
                     // New path to exit
                     Tile* goal = map.getExits()[0];
@@ -130,9 +129,29 @@ void Game::update(float deltaTime) {
         }
     }
 
+    // Update visual effects
+    for (auto& e : visualEffects)
+        e->update(deltaTime);
+
     // Update towers
     for (auto& t : towers) {
         t->update(deltaTime, creatures);
+
+        // Create visual effect
+        if (t->getTarget()) {
+            std::array<float, 2> twrPos = {(float)t->getX(), (float)t->getY()};
+            // TODO: adapt visual effect to tower type
+            std::unique_ptr<VisualEffect> e = std::make_unique<TracerEffect>(twrPos, t->getTarget()->getPosition(), sf::Color::Yellow);
+            visualEffects.push_back(std::move(e));
+        }
+    }
+
+    // Rewards the player for dead creatures ang return cores to the storage
+    for (auto& c : creatures) {
+        if (!c->isAlive()) {
+            cores.returnCore(c->dropCores());
+            player.addMaterials(c->getLoot());
+        }
     }
 
     // Remove dead creatures
@@ -140,10 +159,7 @@ void Game::update(float deltaTime) {
                                    [](const std::unique_ptr<Creature>& c) { return !c->isAlive(); }),
                     creatures.end());
 
-    // Update visual effects
-    for (auto& e : visualEffects)
-    e->update(deltaTime);
-
+    // Remove "dead" visual effects
     visualEffects.erase(std::remove_if(visualEffects.begin(), visualEffects.end(),
                                        [](auto& e){ return !e->isAlive(); }),
                         visualEffects.end());

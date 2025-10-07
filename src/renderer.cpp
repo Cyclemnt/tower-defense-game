@@ -25,7 +25,8 @@ sf::Texture& Renderer::getTexture(const std::string& filename) {
         sf::Texture tex;
         if (!tex.loadFromFile("../assets/" + filename)) {
             std::cerr << "[Renderer] Missing texture: " << filename << std::endl;
-            tex.loadFromFile("../assets/missing_texture.png");
+            if (!tex.loadFromFile("../assets/missing_texture.png"))
+                std::cerr << "Failed to load missing_texture.png as fallback.\n";
         }
         tex.setSmooth(true);
         textures.insert({filename, std::move(tex)});
@@ -84,18 +85,6 @@ void Renderer::render(const Game& game) {
         }
     }
 
-    // --- Towers ---
-    for (const auto& t : game.getTowers()) {
-        std::string name = t->getTypeName();
-        std::string file = "tower_" + name + ".png";
-        const sf::Texture& tex = getTexture(file);
-        sf::Sprite sprite(tex);
-        sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
-        const auto& sz = tex.getSize();
-        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
-        window.draw(sprite);
-    }
-
     // --- Creatures ---
     int frame = (game.getTick() / 8) % 4;
     for (const auto& c : game.getCreatures()) {
@@ -113,7 +102,21 @@ void Renderer::render(const Game& game) {
 
     // --- Visual effects ---
     for (const auto& e : game.getVisualEffects())
-    e->render(window, tileSize);
+        e->render(window, tileSize);
+
+    // --- Towers ---
+    for (const auto& t : game.getTowers()) {
+        std::string name = t->getTypeName();
+        std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+        std::string file = "tower_" + name + "_0.png";
+        // TODO: change texture to change orientation
+        const sf::Texture& tex = getTexture(file);
+        sf::Sprite sprite(tex);
+        sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
+        const auto& sz = tex.getSize();
+        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
+        window.draw(sprite);
+    }
 }
 
 void Renderer::handleMouseClick(int mouseX, int mouseY, Game& game) {
@@ -145,20 +148,32 @@ void Renderer::openTowerMenu(sf::Vector2i tilePos, Game& game) {
         auto btn = tgui::Button::create(name);
         btn->setSize({"180", "30"});
         btn->setPosition(10, y);
+
         btn->onPress([&, factory, tilePos]() {
-            try {
-                game.placeTower(factory(tilePos.x, tilePos.y));
-                gui.remove(towerMenu);
-            } catch (const std::exception& e) {
-                showError(e.what());
+            auto tower = factory(tilePos.x, tilePos.y);
+            auto result = game.placeTower(std::move(tower));
+
+            switch (result) {
+                case PlaceTowerResult::NotBuildable:
+                    showError("Cannot build here!");
+                    break;
+                case PlaceTowerResult::NotAffordable:
+                    showError("Not enough materials!");
+                    break;
+                case PlaceTowerResult::Success:
+                    // TODO: could have visual effect of construction
+                    break;
             }
+
+            gui.remove(towerMenu);
         });
+
         towerMenu->add(btn);
     };
 
-    addButton("Gatling (Cu)", [](int x, int y) { return std::make_unique<Gatling>(x, y); }, 40);
-    addButton("Laser (Ag)", [](int x, int y) { return std::make_unique<Laser>(x, y); }, 80);
-    addButton("Mortar (Au)", [](int x, int y) { return std::make_unique<Mortar>(x, y); }, 120);
+    addButton("Gatling (50 Cu)", [](int x, int y) { return std::make_unique<Gatling>(x, y); }, 40);
+    addButton("Laser (10 Ag, 100 Cu)", [](int x, int y) { return std::make_unique<Laser>(x, y); }, 80);
+    addButton("Mortar (75 Cu)", [](int x, int y) { return std::make_unique<Mortar>(x, y); }, 120);
 
     gui.add(towerMenu);
 }
@@ -189,16 +204,28 @@ void Renderer::togglePauseMenu(bool isPaused, Game& game) {
     }
 }
 
-void Renderer::showError(const std::string& msg) {
-    auto panel = tgui::Panel::create({"300", "120"});
-    panel->setPosition({"70%", "10%"});
-    panel->getRenderer()->setBackgroundColor({120, 30, 30, 240});
+void Renderer::showError(const std::string& message)
+{
+    auto panel = tgui::Panel::create({"60%", "10%"});
+    panel->setPosition({"20%", "5%"});  // Center horizontally
+    panel->getRenderer()->setBackgroundColor({200, 50, 50, 230});
+    panel->getRenderer()->setBorderColor({255, 255, 255});
+    panel->getRenderer()->setBorders(2);
 
-    auto label = tgui::Label::create(msg);
-    label->setPosition(10, 10);
+    auto label = tgui::Label::create(message);
+    label->setPosition({"10", "5"});
+    label->getRenderer()->setTextColor(tgui::Color::White);
+    label->setTextSize(18);
     panel->add(label);
 
-    gui.add(panel);
-    // Ignore Timer warnings, TGUI 1.x return shared_ptr but whatever
-    (void)tgui::Timer::create([panel, this]() { gui.remove(panel); }, tgui::Duration(2.5f));
+    gui.add(panel, "errorPanel");
+
+    // Draw right now
+    //gui.draw();
+
+    // Delete message after 2.5s
+    std::shared_ptr<tgui::Timer> timer = tgui::Timer::create([panel, this]() {
+        gui.remove(panel);
+    }, std::chrono::milliseconds(2500));
+
 }

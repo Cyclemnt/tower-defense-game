@@ -72,6 +72,9 @@ public:
 
     /// @return The price of the tower.
     std::array<int, 3> getPrice() const;
+    
+    /// @return The target of the tower.
+    const Creature* getTarget() const;
 
     // --- Actions ---
 

@@ -9,7 +9,7 @@ Laser::Laser(int x_, int y_)
 Laser::~Laser() {}
 
 void Laser::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
-    std::cout << "twr cooldown: " << cooldown << std::endl;
+    //std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
         cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
 
@@ -27,7 +27,7 @@ void Laser::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>
         lockTime += deltaTime;
         damageScale = 2.9f * std::min(lockTime, 10.0f) + 1.0; // Scales from 1x at 0s to 30x at 10s: ((maxScale-minScale)/maxTime * min(time, maxTime) + 1)
         damage = baseDamage * damageScale;
-        std::cout << "Laser damage: " << damage << "\n";
+        //std::cout << "Laser damage: " << damage << "\n";
     }
 
     // Selecting new target if required

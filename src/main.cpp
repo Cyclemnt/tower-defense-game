@@ -15,28 +15,30 @@ int main() {
 
     std::unique_ptr<Creature> c = std::make_unique<Tank>();
     game.spawnCreature(std::move(c));
+    c = std::make_unique<Tank>();
+    game.spawnCreature(std::move(c));
 
     sf::Clock clock;
     bool paused = false;
     
     while (window.isOpen()) {
-        // --- Gestion des événements ---
+        // --- Managing events ---
         while (auto event = window.pollEvent()) {
             gui.handleEvent(*event);
 
-            // Fermeture de la fenêtre
+            // Closing window
             if (event->is<sf::Event::Closed>()) {
                 window.close();
             }
 
-            // Clic souris
+            // Mouse clic
             if (!paused) {
                 if (auto mouse = event->getIf<sf::Event::MouseButtonPressed>()) {
                     renderer.handleMouseClick(mouse->position.x, mouse->position.y, game);
                 }
             }
 
-            // Touche ESC → pause
+            // ESC key
             if (auto key = event->getIf<sf::Event::KeyPressed>()) {
                 if (key->code == sf::Keyboard::Key::Escape) {
                     paused = !paused;
@@ -45,12 +47,12 @@ int main() {
             }
         }
 
-        // --- Mise à jour logique ---
+        // --- Update logic ---
         float deltaTime = clock.restart().asSeconds();
         if (!paused)
             game.update(deltaTime);
 
-        // --- Rendu ---
+        // --- Render ---
         window.clear();
         renderer.render(game);
         gui.draw();

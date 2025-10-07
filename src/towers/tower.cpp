@@ -20,8 +20,10 @@ float Tower::getFireRate() const { return fireRate; }
 
 std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu}; }
 
+const Creature* Tower::getTarget() const {return target; }
+
 void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
-    std::cout << "twr cooldown: " << cooldown << std::endl;
+    //std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
         cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
 

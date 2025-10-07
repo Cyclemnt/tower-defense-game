@@ -17,6 +17,8 @@ float Creature::getSpeed() const { return speed; }
 
 int Creature::getCoresCarried() const { return coresCarried; }
 
+std::array<int, 3> Creature::getLoot() const { return {au, ag, cu}; }
+
 void Creature::setPath(const std::vector<Tile*>& p) {
     path = p;
     pathIndex = 0;

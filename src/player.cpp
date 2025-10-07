@@ -16,3 +16,7 @@ bool Player::canAfford(const Tower& tower) {
 void Player::pay(const Tower& tower) {
     materials.spend(tower.getPrice());
 }
+
+void Player::addMaterials(std::array<int, 3> loot) {
+    materials.add(loot);
+}

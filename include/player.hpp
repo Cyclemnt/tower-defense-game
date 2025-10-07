@@ -26,6 +26,9 @@ public:
 
     /// @brief Deduct resources when building a tower.
     void pay(const Tower& tower);
+
+    /// @brief Add materials to the player's balance.
+    void addMaterials(std::array<int, 3> loot);
 };
 
 #endif // PLAYER_HPP

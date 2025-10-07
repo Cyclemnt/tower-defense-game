@@ -21,7 +21,7 @@ private:
     tgui::Gui& gui;           ///< GUI manager (TGUI)
 
     const float tileSize = 48.f; ///< Size of each tile (in pixels)
-    bool paused = false;
+    bool paused = false; ///< flag for the state of the game (pause/play)
 
     // Cache of textures to avoid reloading from disk
     std::unordered_map<std::string, sf::Texture> textures;

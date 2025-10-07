@@ -1,0 +1,1 @@
+#include "../../include/visual-effects/visualEffect.hpp"
