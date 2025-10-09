@@ -39,6 +39,36 @@ sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
                         static_cast<int>(mouseY / tileSize));
 }
 
+uint32_t Renderer::pseudoRandomFromCoords(int x, int y) const {
+    // Combine coordinates into a single 64-bit value
+    uint64_t z = (static_cast<uint64_t>(static_cast<int64_t>(x)) & 0xffffffffULL)
+               | ((static_cast<uint64_t>(static_cast<int64_t>(y)) & 0xffffffffULL) << 32);
+    z += emptyTileSeed;
+
+    // SplitMix64-style hash for good distribution
+    z += 0x9e3779b97f4a7c15ULL;
+    z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ULL;
+    z = (z ^ (z >> 27)) * 0x94d049bb133111ebULL;
+    z = z ^ (z >> 31);
+
+    return static_cast<uint32_t>(z & 0xffffffffu);
+}
+
+const sf::Texture& Renderer::chooseEmptyTileTextureAt(int x, int y) {
+    uint32_t rnd = pseudoRandomFromCoords(x, y) % 101u; // 0–100
+
+    // Probability distribution:
+    // tile_empty_0: 70%
+    // tile_empty_1: 20%
+    // tile_empty_2: 10%
+    if (rnd < 70u)
+        return getTexture("tile_empty_1.png");
+    // else if (rnd < 90u)
+    //     return getTexture("tile_empty_1.png");
+    else
+        return getTexture("tile_empty_0.png");
+}
+
 void Renderer::render(const Game& game) {
     const Map& map = game.getMap();
 
@@ -56,10 +86,23 @@ void Renderer::render(const Game& game) {
                 tex = &getTexture("tile_entry.png");
             else if (dynamic_cast<ExitZone*>(tile))
                 tex = &getTexture("tile_exit.png");
-            else if (dynamic_cast<CoreStorage*>(tile))
-                tex = &getTexture("tile_core.png");
+            else if (auto core = dynamic_cast<CoreStorage*>(tile)) {
+                float ratio = 1.0f; // default value
+                Cores cores = game.getCores();
+                int safeCores = cores.getSafe();
+                int maxCores = safeCores + cores.getStolen() + cores.getLost();
+                if (maxCores > 0)
+                    ratio = static_cast<float>(safeCores) / maxCores;
+
+                if (ratio > 0.7f)
+                    tex = &getTexture("tile_core_0.png");
+                else if (ratio > 0.3f)
+                    tex = &getTexture("tile_core_1.png");
+                else
+                    tex = &getTexture("tile_core_2.png");
+            }
             else
-                tex = &getTexture("tile_empty.png");
+                tex = &chooseEmptyTileTextureAt(x, y);
 
             sf::Sprite sprite(*tex);
             sprite.setPosition({static_cast<float>(x) * tileSize,

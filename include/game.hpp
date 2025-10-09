@@ -55,6 +55,7 @@ public:
     const std::vector<std::unique_ptr<Tower>>& getTowers() const;
     const unsigned long getTick() const;
     const Player& getPlayer() const;
+    const Cores& getCores() const;
     const std::vector<std::unique_ptr<VisualEffect>>& getVisualEffects() const;
     
     /// @brief Spawn a new creature and add it to the simulation.

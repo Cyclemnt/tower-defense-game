@@ -56,6 +56,8 @@ const unsigned long Game::getTick() const { return tick; }
 
 const Player& Game::getPlayer() const { return player; };
 
+const Cores& Game::getCores() const { return cores; };
+
 const std::vector<std::unique_ptr<VisualEffect>>& Game::getVisualEffects() const { return visualEffects;}
 
 void Game::spawnCreature(std::unique_ptr<Creature> creature) {

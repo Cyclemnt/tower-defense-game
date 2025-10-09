@@ -38,6 +38,15 @@ private:
 
 public:
     Renderer(sf::RenderWindow& win, tgui::Gui& g);
+    
+    // Seed used for deterministic texture generation
+    const uint64_t emptyTileSeed = 0x123456789cbcdefULL;
+
+    // Pseudo-random generator from tile coordinates
+    uint32_t pseudoRandomFromCoords(int x, int y) const;
+
+    // Deterministically selects an empty-tile texture based on coordinates
+    const sf::Texture& chooseEmptyTileTextureAt(int x, int y);
 
     /// @brief Draws the full game scene.
     void render(const Game& game);
