@@ -51,6 +51,21 @@ public:
     /// @brief Draws the full game scene.
     void render(const Game& game);
 
+    /// @brief Draws the map.
+    void drawMap(const Game& game);
+
+    /// @brief Draws the creatures.
+    void drawCreatures(const Game& game);
+
+    /// @brief Draws the visual effects.
+    void drawVisualEffects(const Game& game);
+
+    /// @brief Draws the towers.
+    void drawTowers(const Game& game);
+
+    /// @brief Draws the HUD.
+    void drawHUD(const Game& game);
+
     /// @brief Handles left mouse click to open the tower selection menu.
     void handleMouseClick(int mouseX, int mouseY, Game& game);
 
@@ -62,9 +77,6 @@ public:
 
     /// @brief Shows an error message popup.
     void showError(const std::string& msg);
-
-    /// @brief Draws the HUD of ressources.
-    void drawMaterials(const Game& game);
 };
 
 #endif // RENDERER_HPP

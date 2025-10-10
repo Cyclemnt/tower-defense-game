@@ -59,7 +59,6 @@ int main() {
         // --- Render ---
         window.clear();
         renderer.render(game);
-        renderer.drawMaterials(game);
 
         gui.draw();
         window.display();

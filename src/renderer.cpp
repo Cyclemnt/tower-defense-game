@@ -70,9 +70,20 @@ const sf::Texture& Renderer::chooseEmptyTileTextureAt(int x, int y) {
 }
 
 void Renderer::render(const Game& game) {
-    const Map& map = game.getMap();
-
     // --- Draw map ---
+    drawMap(game);
+    // --- Creatures ---
+    drawCreatures(game);
+    // --- Visual effects ---
+    drawVisualEffects(game);
+    // --- Towers ---
+    drawTowers(game);
+    // --- UI ---
+    drawHUD(game);
+}
+
+void Renderer::drawMap(const Game& game) {
+    const Map& map = game.getMap();
     for (int y = 0; y < map.getHeight(); ++y) {
         for (int x = 0; x < map.getWidth(); ++x) {
             Tile* tile = map.getTile(x, y);
@@ -127,8 +138,9 @@ void Renderer::render(const Game& game) {
             window.draw(highlight);
         }
     }
+}
 
-    // --- Creatures ---
+void Renderer::drawCreatures(const Game& game) {
     int frame = (game.getTick() / 8) % 4;
     for (const auto& c : game.getCreatures()) {
         std::string name = c->getTypeName();
@@ -142,7 +154,7 @@ void Renderer::render(const Game& game) {
         sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
         window.draw(sprite);
 
-        // Life and shield data
+        // --- Display Health and Shield ---
         float health = c->getHealth();
         float shield = c->getShield();
         float baseHealth = c->getBaseHealth();
@@ -150,7 +162,6 @@ void Renderer::render(const Game& game) {
 
         float hpRatio = health / baseHealth;
         float shieldRatio = shield / baseShield;
-        std::cout << shieldRatio << " " << shield << " " << baseShield << std::endl;
 
         // Bar dimensions and positions
         float barWidth = tileSize * 0.8f;
@@ -159,7 +170,7 @@ void Renderer::render(const Game& game) {
         float baseY = c->getPosition()[1] * tileSize - barHeight - 4.0f;
 
         // Shield bar 
-        if (baseShield > 0.f) {
+        if (baseShield > 0.0f) {
             float y = baseY - (barHeight + 2.0f); // above health bar
 
             // Background
@@ -185,13 +196,7 @@ void Renderer::render(const Game& game) {
             window.draw(backBar);
 
             // Color based on ratio
-            sf::Color lifeColor;
-            if (hpRatio < 0.3f)
-                lifeColor = sf::Color::Red;
-            else if (hpRatio < 0.6f)
-                lifeColor = sf::Color::Yellow;
-            else
-                lifeColor = sf::Color::Green;
+            sf::Color lifeColor(255 * (1 - hpRatio), 255 * hpRatio, 0);
 
             // Current health
             sf::RectangleShape hpBar(sf::Vector2f(barWidth * hpRatio, barHeight));
@@ -199,144 +204,31 @@ void Renderer::render(const Game& game) {
             hpBar.setPosition({x, y});
             window.draw(hpBar);
         }
-
     }
+}
 
-    // --- Visual effects ---
+void Renderer::drawVisualEffects(const Game& game) {
     for (const auto& e : game.getVisualEffects())
         e->render(window, tileSize);
+}
 
-    // --- Towers ---
-    int towerFrame = (game.getTick() / 8) % 4; 
+void Renderer::drawTowers(const Game& game) {
+    // TODO : define frame with target position
     for (const auto& t : game.getTowers()) {
         std::string name = t->getTypeName();
         std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-
-        std::string filename = "tower_" + name + "_" + std::to_string(towerFrame) + ".png";
-
+        std::string filename = "tower_" + name + "_0" + ".png";
         const sf::Texture& tex = getTexture(filename);
         sf::Sprite sprite(tex);
-
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
-
         const auto& sz = tex.getSize();
         sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize /sz.y)); // uniform scaling
         window.draw(sprite);
-}
-}
-
-void Renderer::handleMouseClick(int mouseX, int mouseY, Game& game) {
-    sf::Vector2i tilePos = screenToTile(mouseX, mouseY);
-    if (tilePos.x < 0 || tilePos.x >= game.getMap().getWidth() ||
-        tilePos.y < 0 || tilePos.y >= game.getMap().getHeight())
-        return;
-
-    Tile* clicked = game.getMap().getTile(tilePos.x, tilePos.y);
-    if (dynamic_cast<OpenZone*>(clicked)) {
-        openTowerMenu(tilePos, game);
     }
 }
 
-void Renderer::openTowerMenu(sf::Vector2i tilePos, Game& game) {
-    gui.removeAllWidgets();
 
-    towerMenu = tgui::Panel::create({"200", "180"});
-    towerMenu->setPosition({"50%", "50%"});
-    towerMenu->getRenderer()->setBackgroundColor({40, 40, 40, 230});
-
-    auto label = tgui::Label::create("Select a tower");
-    label->setPosition(10, 10);
-    towerMenu->add(label);
-
-    auto addButton = [&](const std::string& name,
-                         auto factory,
-                         float y) {
-        auto btn = tgui::Button::create(name);
-        btn->setSize({"180", "30"});
-        btn->setPosition(10, y);
-
-        btn->onPress([&, factory, tilePos]() {
-            auto tower = factory(tilePos.x, tilePos.y);
-            auto result = game.placeTower(std::move(tower));
-
-            switch (result) {
-                case PlaceTowerResult::NotBuildable:
-                    showError("Cannot build here!");
-                    break;
-                case PlaceTowerResult::NotAffordable:
-                    showError("Not enough materials!");
-                    break;
-                case PlaceTowerResult::Success:
-                    // TODO: could have visual effect of construction
-                    break;
-            }
-
-            gui.remove(towerMenu);
-        });
-
-        towerMenu->add(btn);
-    };
-
-    addButton("Gatling (50 Cu)", [](int x, int y) { return std::make_unique<Gatling>(x, y); }, 40);
-    addButton("Laser (10 Ag, 100 Cu)", [](int x, int y) { return std::make_unique<Laser>(x, y); }, 80);
-    addButton("Mortar (75 Cu)", [](int x, int y) { return std::make_unique<Mortar>(x, y); }, 120);
-
-    gui.add(towerMenu);
-}
-
-void Renderer::togglePauseMenu(bool isPaused, Game& game) {
-    paused = isPaused;
-    gui.removeAllWidgets();
-
-    if (isPaused) {
-        pausePanel = tgui::Panel::create({"300", "200"});
-        pausePanel->setPosition({"center", "center"});
-        pausePanel->getRenderer()->setBackgroundColor({0, 0, 0, 150});
-
-        auto label = tgui::Label::create("Game Paused");
-        label->setPosition({"center", "20"});
-        pausePanel->add(label);
-
-        auto resumeBtn = tgui::Button::create("Resume");
-        resumeBtn->setSize({"200", "40"});
-        resumeBtn->setPosition({"center", "120"});
-        resumeBtn->onPress([this]() {
-            paused = false;
-            gui.removeAllWidgets();
-        });
-        pausePanel->add(resumeBtn);
-
-        gui.add(pausePanel);
-    }
-}
-
-void Renderer::showError(const std::string& message)
-{
-    auto panel = tgui::Panel::create({"60%", "10%"});
-    panel->setPosition({"20%", "5%"});  // Center horizontally
-    panel->getRenderer()->setBackgroundColor({200, 50, 50, 230});
-    panel->getRenderer()->setBorderColor({255, 255, 255});
-    panel->getRenderer()->setBorders(2);
-
-    auto label = tgui::Label::create(message);
-    label->setPosition({"10", "5"});
-    label->getRenderer()->setTextColor(tgui::Color::White);
-    label->setTextSize(18);
-    panel->add(label);
-
-    gui.add(panel, "errorPanel");
-
-    // Draw right now
-    //gui.draw();
-
-    // Delete message after 2.5s
-    std::shared_ptr<tgui::Timer> timer = tgui::Timer::create([panel, this]() {
-        gui.remove(panel);
-    }, std::chrono::milliseconds(2500));
-
-}
-
-void Renderer::drawMaterials(const Game& game) {
+void Renderer::drawHUD(const Game& game) {
     // Load font for numbers
     static sf::Font font;
     static bool fontLoaded = false;
@@ -399,4 +291,111 @@ void Renderer::drawMaterials(const Game& game) {
         valueText.setPosition({startX + textOffsetX, res.yOffset - 2.f});
         window.draw(valueText);
     }
+}
+
+void Renderer::handleMouseClick(int mouseX, int mouseY, Game& game) {
+    sf::Vector2i tilePos = screenToTile(mouseX, mouseY);
+    if (tilePos.x < 0 || tilePos.x >= game.getMap().getWidth() ||
+        tilePos.y < 0 || tilePos.y >= game.getMap().getHeight())
+        return;
+
+    Tile* clicked = game.getMap().getTile(tilePos.x, tilePos.y);
+    if (dynamic_cast<OpenZone*>(clicked)) {
+        openTowerMenu(tilePos, game);
+    }
+}
+
+void Renderer::openTowerMenu(sf::Vector2i tilePos, Game& game) {
+    gui.removeAllWidgets();
+
+    towerMenu = tgui::Panel::create({"200", "180"});
+    towerMenu->setPosition({"50%", "50%"});
+    towerMenu->getRenderer()->setBackgroundColor({40, 40, 40, 230});
+
+    auto label = tgui::Label::create("Select a tower");
+    label->setPosition(10, 10);
+    towerMenu->add(label);
+
+    auto addButton = [&](const std::string& name,
+                         auto factory,
+                         float y) {
+        auto btn = tgui::Button::create(name);
+        btn->setSize({"180", "30"});
+        btn->setPosition(10, y);
+
+        btn->onPress([&, factory, tilePos]() {
+            auto tower = factory(tilePos.x, tilePos.y);
+            PlaceTowerResult result = game.placeTower(std::move(tower));
+
+            switch (result) {
+                case PlaceTowerResult::NotBuildable:
+                    showError("Cannot build here!");
+                    break;
+                case PlaceTowerResult::NotAffordable:
+                    showError("Not enough materials!");
+                    break;
+                case PlaceTowerResult::Success:
+                    // TODO: could have visual effect of construction
+                    break;
+            }
+
+            gui.remove(towerMenu);
+        });
+
+        towerMenu->add(btn);
+    };
+
+    addButton("Gatling (50 Cu)", [](int x, int y) { return std::make_unique<Gatling>(x, y); }, 40);
+    addButton("Laser (10 Ag, 100 Cu)", [](int x, int y) { return std::make_unique<Laser>(x, y); }, 80);
+    addButton("Mortar (75 Cu)", [](int x, int y) { return std::make_unique<Mortar>(x, y); }, 120);
+
+    gui.add(towerMenu);
+}
+
+void Renderer::togglePauseMenu(bool isPaused, Game& game) {
+    paused = isPaused;
+    gui.removeAllWidgets();
+
+    if (isPaused) {
+        pausePanel = tgui::Panel::create({"300", "200"});
+        pausePanel->setPosition({"center", "center"});
+        pausePanel->getRenderer()->setBackgroundColor({0, 0, 0, 150});
+
+        auto label = tgui::Label::create("Game Paused");
+        label->setPosition({"center", "20"});
+        pausePanel->add(label);
+
+        auto resumeBtn = tgui::Button::create("Resume");
+        resumeBtn->setSize({"200", "40"});
+        resumeBtn->setPosition({"center", "120"});
+        resumeBtn->onPress([this]() {
+            paused = false;
+            gui.removeAllWidgets();
+        });
+        pausePanel->add(resumeBtn);
+
+        gui.add(pausePanel);
+    }
+}
+
+void Renderer::showError(const std::string& message) {
+    auto panel = tgui::Panel::create({"60%", "10%"});
+    panel->setPosition({"20%", "5%"});  // Center horizontally
+    panel->getRenderer()->setBackgroundColor({200, 50, 50, 230});
+    panel->getRenderer()->setBorderColor({255, 255, 255});
+    panel->getRenderer()->setBorders(2);
+
+    auto label = tgui::Label::create(message);
+    label->setPosition({"10", "5"});
+    label->getRenderer()->setTextColor(tgui::Color::White);
+    label->setTextSize(18);
+    panel->add(label);
+
+    gui.add(panel, "errorPanel");
+
+    // Delete message after 2.5s
+    std::shared_ptr<tgui::Timer> timer = tgui::Timer::create([panel, this]() {
+        gui.remove(panel);
+    }, std::chrono::milliseconds(2500));
+
 }

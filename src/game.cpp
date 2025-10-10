@@ -1,6 +1,7 @@
 #include "../include/game.hpp"
 #include "../include/visual-effects/tracerEffect.hpp"
 #include "../include/visual-effects/visualEffect.hpp"
+#include "../include/towers/gatling.hpp"
 #include <iostream>
 #include <algorithm>
 #include <memory>
@@ -145,7 +146,7 @@ void Game::update(float deltaTime) {
         if (t->getTarget()) {
             std::array<float, 2> twrPos = {(float)t->getX(), (float)t->getY()};
             // TODO: adapt visual effect to tower type
-            std::unique_ptr<VisualEffect> e = std::make_unique<TracerEffect>(twrPos, t->getTarget()->getPosition(), sf::Color::Yellow);
+            std::unique_ptr<VisualEffect> e = std::make_unique<TracerEffect>(twrPos, t->getTarget()->getPosition());
             visualEffects.push_back(std::move(e));
         }
     }
