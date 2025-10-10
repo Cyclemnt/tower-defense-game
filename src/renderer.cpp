@@ -51,6 +51,23 @@ uint32_t Renderer::pseudoRandomFromCoords(int x, int y) const {
 const sf::Texture& Renderer::getRandomEmptyTileTexture(int x, int y) {
     uint32_t rnd = pseudoRandomFromCoords(x, y) % 100;
 
+    // Probability distribution:
+    if (rnd < 70u)
+        return getTexture("tile_empty_1.png");
+    else if (rnd < 72u)
+        return getTexture("tile_empty_2.png");
+    else if (rnd < 74u)
+        return getTexture("tile_empty_4.png");
+    else if (rnd < 76u)
+        return getTexture("tile_empty_5.png");
+    else if (rnd < 78u)
+        return getTexture("tile_empty_6.png");
+    else if (rnd < 80u)
+        return getTexture("tile_empty_7.png");
+    else if (rnd < 90u)
+        return getTexture("tile_empty_3.png");
+    else
+        return getTexture("tile_empty_0.png");
     if (rnd < 70) return getTexture("tile_empty_1.png");
     else if (rnd < 90) return getTexture("tile_empty_1.png");
     else return getTexture("tile_empty_0.png");
@@ -229,7 +246,14 @@ void Renderer::drawTowers(const Game& game) {
 
 
 void Renderer::drawHUD(const Game& game) {
-    // Load font for numbers
+    // Retrieve core information
+    Cores cores = game.getCores();
+    int safeCores = cores.getSafe();
+    int stolenCores = cores.getStolen();
+    int lostCores = cores.getLost();
+    int maxCores = safeCores + stolenCores + lostCores;
+
+    // Load font once
     static sf::Font font;
     static bool fontLoaded = false;
     if (!fontLoaded) {
@@ -240,22 +264,33 @@ void Renderer::drawHUD(const Game& game) {
         fontLoaded = true;
     }
 
-    // HUD background panel
-    sf::RectangleShape panel;
-    panel.setSize({150.f, 90.f});
+    // --- PANEL DIMENSIONS ---
+    const float panelWidth = 220.f;
+    const float panelHeight = 150.f;
+
+    // --- RESPONSIVE CENTERING ---
+    sf::Vector2u winSize = window.getSize();
+    float panelX = (winSize.x - panelWidth) / 2.f;
+    float panelY = 10.f; // always near top
+
+    // Draw background panel
+    sf::RectangleShape panel({panelWidth, panelHeight});
     panel.setFillColor(sf::Color(0, 0, 0, 150));
     panel.setOutlineThickness(2.f);
     panel.setOutlineColor(sf::Color(80, 80, 80));
-    panel.setPosition({10.f, 10.f});
+    panel.setPosition({panelX, panelY});
     window.draw(panel);
 
-    // Get player resources 
+    // --- INTERNAL LAYOUT SETTINGS ---
+    const float marginX = 10.f;
+    const float marginY = 10.f;
+    const float startX = panelX + marginX;
+    const float startY = panelY + marginY;
+
+    // --- MATERIALS DISPLAY ---
     std::array<int, 3> balance = game.getPlayer().getMaterials().getBalance();
 
-    // Display parameters 
     const float iconSize = 24.f;
-    const float startX = 20.f;
-    const float startY = 20.f;
     const float spacingY = 22.f;
     const float textOffsetX = 35.f;
 
@@ -265,32 +300,76 @@ void Renderer::drawHUD(const Game& game) {
         float yOffset;
     };
 
-    // List of resources to display 
     std::array<ResourceDisplay, 3> displays = {{
         { "icon_gold.png",   balance[0], startY },
         { "icon_silver.png", balance[1], startY + spacingY },
         { "icon_copper.png", balance[2], startY + spacingY * 2 }
     }};
 
-    // --- Draw resource icons and values ---
     for (auto& res : displays) {
-        // Icon sprite
+        // Draw icon
         sf::Sprite icon(getTexture(res.filename));
+        const auto& texSize = getTexture(res.filename).getSize();
+        icon.setScale(sf::Vector2f(iconSize / static_cast<float>(texSize.x),
+                                   iconSize / static_cast<float>(texSize.y)));
         icon.setPosition({startX, res.yOffset});
-        const sf::Vector2<unsigned int>& size = getTexture(res.filename).getSize();
-        icon.setScale(sf::Vector2f(iconSize / static_cast<float>(size.x),
-                                   iconSize / static_cast<float>(size.y)));
         window.draw(icon);
 
-        // Value text
+        // Draw value
         sf::Text valueText(font, std::to_string(res.value), 18);
-        valueText.setFont(font);
-        valueText.setString(std::to_string(res.value));
-        valueText.setCharacterSize(18);
         valueText.setFillColor(sf::Color::White);
         valueText.setPosition({startX + textOffsetX, res.yOffset - 2.f});
         window.draw(valueText);
     }
+
+    // --- CORE DISPLAY AREA (no label) ---
+    const float availableWidth = panelWidth - 2 * marginX;
+    const float circleY = startY + spacingY * 4.2f;
+    const float radius = 6.f;
+    float spacing = 18.f;
+
+    // Adjust spacing if cores are too many
+    float requiredWidth = maxCores * spacing;
+    if (requiredWidth > availableWidth) {
+        spacing = availableWidth / static_cast<float>(maxCores);
+        if (spacing < radius * 2.2f)
+            spacing = radius * 2.2f; // avoid overlap
+    }
+
+    // Center cores inside the panel
+    float totalWidth = maxCores * spacing;
+    float circleStartX = startX + (availableWidth - totalWidth) / 2.f;
+
+    // --- DRAW CORES WITH WRAPPING ---
+    const float circleYStart = startY + spacingY * 4.2f;
+    float x = startX;                    // current X position
+    float y = circleYStart;              // current Y position
+    float maxLineWidth = availableWidth; // max width inside the panel
+
+    for (int i = 0; i < maxCores; ++i) {
+        // Wrap to next line if necessary
+        if (x + radius * 2 > startX + maxLineWidth) {
+            x = startX;                   // reset X to left margin
+            y += radius * 2 + 4.f;        // move Y down for new line
+        }
+
+        sf::CircleShape circle(radius);
+        circle.setPosition({x, y});
+        circle.setOutlineThickness(1.f);
+        circle.setOutlineColor(sf::Color(200, 200, 200));
+
+        if (i < safeCores)
+            circle.setFillColor(sf::Color(0, 150, 255));      // Blue = safe
+        else if (i < safeCores + stolenCores)
+            circle.setFillColor(sf::Color(255, 140, 0));      // Orange = stolen
+        else
+            circle.setFillColor(sf::Color(200, 50, 50));      // Red = lost
+
+        window.draw(circle);
+
+        x += spacing; // move to next X position
+    }
+
 }
 
 void Renderer::handleMouseClick(int mouseX, int mouseY, Game& game) {
