@@ -22,7 +22,6 @@ private:
 
     float tileSize = 64.0f;         ///< Size of each tile (in pixels)
     float scaleFactor = 1.0f;       ///< Ratio between window size and map size (no distortion)
-    sf::Vector2f offset{0.f, 0.f};  ///< Offset to center the map in the window
 
     bool paused = false; ///< flag for the state of the game (pause/play)
 

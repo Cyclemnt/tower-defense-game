@@ -35,8 +35,8 @@ sf::Texture& Renderer::getTexture(const std::string& filename) {
 }
 
 sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
-    float localX = (mouseX - offset.x) / (tileSize);
-    float localY = (mouseY - offset.y) / (tileSize);
+    float localX = (mouseX) / (tileSize);
+    float localY = (mouseY) / (tileSize);
     return { static_cast<int>(localX), static_cast<int>(localY) };
 }
 
@@ -70,10 +70,6 @@ void Renderer::computeScaling(const Game& game) {
     scaleFactor = std::min(scaleX, scaleY);
     
     tileSize *= scaleFactor;
-    // Calculer l’offset pour centrer la map
-    offset.x = (winSize.x - mapWidth * tileSize) * 0.5f;
-    offset.y = (winSize.y - mapHeight * tileSize) * 0.5f;
-
 }
 
 void Renderer::render(const Game& game) {
@@ -104,7 +100,7 @@ void Renderer::drawMap(const Game& game) {
                 tex = &getTexture("tile_entry.png");
             else if (dynamic_cast<ExitZone*>(tile))
                 tex = &getTexture("tile_exit.png");
-            else if (auto core = dynamic_cast<CoreStorage*>(tile)) {
+            else if (CoreStorage* core = dynamic_cast<CoreStorage*>(tile)) {
                 float ratio = 1.0f; // default value
                 Cores cores = game.getCores();
                 int safeCores = cores.getSafe();
@@ -123,15 +119,9 @@ void Renderer::drawMap(const Game& game) {
                 tex = &getRandomEmptyTileTexture(x, y);
 
             sf::Sprite sprite(*tex);
-            // sprite.setPosition({static_cast<float>(x) * tileSize,
-            //                     static_cast<float>(y) * tileSize});
-            sf::Vector2f pos(x * tileSize + offset.x, y * tileSize + offset.y);
-            sprite.setPosition(pos);
-
-            const auto& sz = tex->getSize();
-            //sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
-            sprite.setScale({(tileSize / sz.x), (tileSize / sz.y)});
-            sprite.move(offset);
+            sprite.setPosition({x * tileSize, y * tileSize});
+            const sf::Vector2<unsigned int>& sz = tex->getSize();
+            sprite.setScale({(tileSize / sz.x), (tileSize / sz.x)});
             window.draw(sprite);
         }
     }
@@ -144,10 +134,7 @@ void Renderer::drawMap(const Game& game) {
         Tile* hover = map.getTile(tilePos.x, tilePos.y);
         if (dynamic_cast<OpenZone*>(hover)) {
             sf::RectangleShape highlight({tileSize, tileSize});
-            //highlight.setPosition({tilePos.x * tileSize, tilePos.y * tileSize});
-            sf::Vector2f pos(tilePos.x * tileSize + offset.x, tilePos.y * tileSize + offset.y);
-            highlight.setPosition(pos);
-
+            highlight.setPosition({tilePos.x * tileSize, tilePos.y * tileSize});
             highlight.setFillColor(sf::Color(255, 255, 0, 80));
             window.draw(highlight);
         }
@@ -162,15 +149,9 @@ void Renderer::drawCreatures(const Game& game) {
         std::string filename = "creature_" + name + "_" + std::to_string(frame) + ".png";
         const sf::Texture& tex = getTexture(filename);
         sf::Sprite sprite(tex);
-        // sprite.setPosition({c->getPosition()[0] * tileSize,
-        //                     c->getPosition()[1] * tileSize});
-        sf::Vector2f pos(c->getPosition()[0] * tileSize + offset.x, c->getPosition()[1] * tileSize + offset.y);
-        sprite.setPosition(pos);
-
-        const auto& sz = tex.getSize();
-        //sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
-        sprite.setScale({(tileSize / sz.x), (tileSize / sz.y)});
-        sprite.move(offset); // décalage pour centrer la map
+        sprite.setPosition({c->getPosition()[0] * tileSize, c->getPosition()[1] * tileSize});
+        const sf::Vector2<unsigned int>& sz = tex.getSize();
+        sprite.setScale({(tileSize / sz.x), (tileSize / sz.x)});
         window.draw(sprite);
 
         // --- Display Health and Shield ---
@@ -240,10 +221,8 @@ void Renderer::drawTowers(const Game& game) {
         const sf::Texture& tex = getTexture(filename);
         sf::Sprite sprite(tex);
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
-        const auto& sz = tex.getSize();
+        const sf::Vector2<unsigned int>& sz = tex.getSize();
         sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.x));
-        sprite.move(offset); // décalage pour centrer la map
-
         window.draw(sprite);
     }
 }
@@ -298,7 +277,7 @@ void Renderer::drawHUD(const Game& game) {
         // Icon sprite
         sf::Sprite icon(getTexture(res.filename));
         icon.setPosition({startX, res.yOffset});
-        const auto& size = getTexture(res.filename).getSize();
+        const sf::Vector2<unsigned int>& size = getTexture(res.filename).getSize();
         icon.setScale(sf::Vector2f(iconSize / static_cast<float>(size.x),
                                    iconSize / static_cast<float>(size.y)));
         window.draw(icon);
@@ -333,14 +312,14 @@ void Renderer::openTowerMenu(sf::Vector2i tilePos, Game& game) {
     towerMenu->setPosition({"50%", "50%"});
     towerMenu->getRenderer()->setBackgroundColor({40, 40, 40, 230});
 
-    auto label = tgui::Label::create("Select a tower");
+    std::shared_ptr<tgui::Label> label = tgui::Label::create("Select a tower");
     label->setPosition(10, 10);
     towerMenu->add(label);
 
     auto addButton = [&](const std::string& name,
                          auto factory,
                          float y) {
-        auto btn = tgui::Button::create(name);
+        std::shared_ptr<tgui::Button> btn = tgui::Button::create(name);
         btn->setSize({"180", "30"});
         btn->setPosition(10, y);
 
@@ -382,11 +361,11 @@ void Renderer::togglePauseMenu(bool isPaused, Game& game) {
         pausePanel->setPosition({"center", "center"});
         pausePanel->getRenderer()->setBackgroundColor({0, 0, 0, 150});
 
-        auto label = tgui::Label::create("Game Paused");
+        std::shared_ptr<tgui::Label> label = tgui::Label::create("Game Paused");
         label->setPosition({"center", "20"});
         pausePanel->add(label);
 
-        auto resumeBtn = tgui::Button::create("Resume");
+        std::shared_ptr<tgui::Button> resumeBtn = tgui::Button::create("Resume");
         resumeBtn->setSize({"200", "40"});
         resumeBtn->setPosition({"center", "120"});
         resumeBtn->onPress([this]() {
@@ -400,13 +379,13 @@ void Renderer::togglePauseMenu(bool isPaused, Game& game) {
 }
 
 void Renderer::showError(const std::string& message) {
-    auto panel = tgui::Panel::create({"60%", "10%"});
+    std::shared_ptr<tgui::Panel> panel = tgui::Panel::create({"60%", "10%"});
     panel->setPosition({"20%", "5%"});  // Center horizontally
     panel->getRenderer()->setBackgroundColor({200, 50, 50, 230});
     panel->getRenderer()->setBorderColor({255, 255, 255});
     panel->getRenderer()->setBorders(2);
 
-    auto label = tgui::Label::create(message);
+    std::shared_ptr<tgui::Label> label = tgui::Label::create(message);
     label->setPosition({"10", "5"});
     label->getRenderer()->setTextColor(tgui::Color::White);
     label->setTextSize(18);
