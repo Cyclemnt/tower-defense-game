@@ -8,12 +8,16 @@
 #include <memory>
 
 int main() {
-    sf::RenderWindow window(sf::VideoMode({1280, 720}), "Tower Defense");
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+    sf::RenderWindow window(desktop, "Tower Defense", sf::State::Fullscreen);
+
+    //sf::RenderWindow window(sf::VideoMode({1280, 720}), "Tower Defense");
     window.setFramerateLimit(60);
 
     tgui::Gui gui(window);
     Game game(16, 10, 24);
     Renderer renderer(window, gui);
+    renderer.computeScaling(game);
 
     std::unique_ptr<Creature> c = std::make_unique<Tank>();
     game.spawnCreature(std::move(c));

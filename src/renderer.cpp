@@ -35,38 +35,45 @@ sf::Texture& Renderer::getTexture(const std::string& filename) {
 }
 
 sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
-    return sf::Vector2i(static_cast<int>(mouseX / tileSize),
-                        static_cast<int>(mouseY / tileSize));
+    float localX = (mouseX - offset.x) / (tileSize);
+    float localY = (mouseY - offset.y) / (tileSize);
+    return { static_cast<int>(localX), static_cast<int>(localY) };
 }
 
 uint32_t Renderer::pseudoRandomFromCoords(int x, int y) const {
-    // Combine coordinates into a single 64-bit value
-    uint64_t z = (static_cast<uint64_t>(static_cast<int64_t>(x)) & 0xffffffffULL)
-               | ((static_cast<uint64_t>(static_cast<int64_t>(y)) & 0xffffffffULL) << 32);
-    z += emptyTileSeed;
+    // Combine data with multiplication and bit shift
+    uint32_t combined = (x * 73856093U) ^ (y * 19349663U);
+    combined += emptyTileSeed & 0xFFFFFFFF; // Add seed
 
-    // SplitMix64-style hash for good distribution
-    z += 0x9e3779b97f4a7c15ULL;
-    z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9ULL;
-    z = (z ^ (z >> 27)) * 0x94d049bb133111ebULL;
-    z = z ^ (z >> 31);
-
-    return static_cast<uint32_t>(z & 0xffffffffu);
+    return combined;
 }
 
-const sf::Texture& Renderer::chooseEmptyTileTextureAt(int x, int y) {
-    uint32_t rnd = pseudoRandomFromCoords(x, y) % 101u; // 0–100
+const sf::Texture& Renderer::getRandomEmptyTileTexture(int x, int y) {
+    uint32_t rnd = pseudoRandomFromCoords(x, y) % 100;
 
-    // Probability distribution:
-    // tile_empty_0: 70%
-    // tile_empty_1: 20%
-    // tile_empty_2: 10%
-    if (rnd < 70u)
-        return getTexture("tile_empty_1.png");
-    // else if (rnd < 90u)
-    //     return getTexture("tile_empty_1.png");
-    else
-        return getTexture("tile_empty_0.png");
+    if (rnd < 70) return getTexture("tile_empty_1.png");
+    else if (rnd < 90) return getTexture("tile_empty_1.png");
+    else return getTexture("tile_empty_0.png");
+}
+
+void Renderer::computeScaling(const Game& game) {
+    const Map& map = game.getMap();
+    const int mapWidth = map.getWidth();
+    const int mapHeight = map.getHeight();
+
+    sf::Vector2u winSize = window.getSize();
+
+    float scaleX = static_cast<float>(winSize.x) / (mapWidth * tileSize);
+    float scaleY = static_cast<float>(winSize.y) / (mapHeight * tileSize);
+
+    // Choisir le plus petit facteur pour garder les proportions (tiles carrées)
+    scaleFactor = std::min(scaleX, scaleY);
+    
+    tileSize *= scaleFactor;
+    // Calculer l’offset pour centrer la map
+    offset.x = (winSize.x - mapWidth * tileSize) * 0.5f;
+    offset.y = (winSize.y - mapHeight * tileSize) * 0.5f;
+
 }
 
 void Renderer::render(const Game& game) {
@@ -113,14 +120,18 @@ void Renderer::drawMap(const Game& game) {
                     tex = &getTexture("tile_core_2.png");
             }
             else
-                tex = &chooseEmptyTileTextureAt(x, y);
+                tex = &getRandomEmptyTileTexture(x, y);
 
             sf::Sprite sprite(*tex);
-            sprite.setPosition({static_cast<float>(x) * tileSize,
-                                static_cast<float>(y) * tileSize});
+            // sprite.setPosition({static_cast<float>(x) * tileSize,
+            //                     static_cast<float>(y) * tileSize});
+            sf::Vector2f pos(x * tileSize + offset.x, y * tileSize + offset.y);
+            sprite.setPosition(pos);
 
             const auto& sz = tex->getSize();
-            sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
+            //sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
+            sprite.setScale({(tileSize / sz.x), (tileSize / sz.y)});
+            sprite.move(offset);
             window.draw(sprite);
         }
     }
@@ -133,7 +144,10 @@ void Renderer::drawMap(const Game& game) {
         Tile* hover = map.getTile(tilePos.x, tilePos.y);
         if (dynamic_cast<OpenZone*>(hover)) {
             sf::RectangleShape highlight({tileSize, tileSize});
-            highlight.setPosition({tilePos.x * tileSize, tilePos.y * tileSize});
+            //highlight.setPosition({tilePos.x * tileSize, tilePos.y * tileSize});
+            sf::Vector2f pos(tilePos.x * tileSize + offset.x, tilePos.y * tileSize + offset.y);
+            highlight.setPosition(pos);
+
             highlight.setFillColor(sf::Color(255, 255, 0, 80));
             window.draw(highlight);
         }
@@ -148,10 +162,15 @@ void Renderer::drawCreatures(const Game& game) {
         std::string filename = "creature_" + name + "_" + std::to_string(frame) + ".png";
         const sf::Texture& tex = getTexture(filename);
         sf::Sprite sprite(tex);
-        sprite.setPosition({c->getPosition()[0] * tileSize,
-                            c->getPosition()[1] * tileSize});
+        // sprite.setPosition({c->getPosition()[0] * tileSize,
+        //                     c->getPosition()[1] * tileSize});
+        sf::Vector2f pos(c->getPosition()[0] * tileSize + offset.x, c->getPosition()[1] * tileSize + offset.y);
+        sprite.setPosition(pos);
+
         const auto& sz = tex.getSize();
-        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
+        //sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.y));
+        sprite.setScale({(tileSize / sz.x), (tileSize / sz.y)});
+        sprite.move(offset); // décalage pour centrer la map
         window.draw(sprite);
 
         // --- Display Health and Shield ---
@@ -164,8 +183,8 @@ void Renderer::drawCreatures(const Game& game) {
         float shieldRatio = shield / baseShield;
 
         // Bar dimensions and positions
-        float barWidth = tileSize * 0.8f;
-        float barHeight = tileSize * 0.08f;
+        float barWidth = tileSize * 0.5f;
+        float barHeight = tileSize * 0.05f;
         float x = c->getPosition()[0] * tileSize + (tileSize - barWidth) * 0.5f;
         float baseY = c->getPosition()[1] * tileSize - barHeight - 4.0f;
 
@@ -222,7 +241,9 @@ void Renderer::drawTowers(const Game& game) {
         sf::Sprite sprite(tex);
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
         const auto& sz = tex.getSize();
-        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize /sz.y)); // uniform scaling
+        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.x));
+        sprite.move(offset); // décalage pour centrer la map
+
         window.draw(sprite);
     }
 }
