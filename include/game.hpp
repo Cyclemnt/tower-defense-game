@@ -5,6 +5,7 @@
 #include "pathfinder.hpp"
 #include "towers/tower.hpp"
 #include "creatures/creature.hpp"
+#include "waveManager.hpp"
 #include "player.hpp"
 #include "visual-effects/visualEffect.hpp"
 #include <vector>
@@ -37,16 +38,15 @@ private:
     std::vector<std::unique_ptr<Creature>> creatures;   ///< List of active creatures
     std::vector<std::unique_ptr<Tower>> towers;         ///< List of placed towers
 
+    WaveManager waveManager;
+
     std::vector<std::unique_ptr<VisualEffect>> visualEffects;
 
     unsigned long tick;                   ///< Current tick count (simulation time)
 
 public:
     /// @brief Construct a new Game object.
-    /// @param w Width of the map in tiles.
-    /// @param h Height of the map in tiles.
-    /// @param initialCores Number of cores initially stored in the base.
-    Game(int w, int h, int initialCores);
+    Game();
 
     // --- Getters for Renderer ---
     
@@ -62,7 +62,7 @@ public:
     /// The creature will automatically be assigned a path from the entry
     /// to the exit using the Pathfinder.
     /// @param creature A unique pointer to the creature to be spawned.
-    void spawnCreature(std::unique_ptr<Creature> creature);
+    void spawnCreature(CreatureType type);
 
     /// @brief Place a new tower on the map.
     /// This method should check if the tile is buildable and if the player

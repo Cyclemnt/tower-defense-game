@@ -5,6 +5,12 @@
 #include <vector>
 #include <array>
 
+enum class CreatureType {
+    Minion,
+    Drone,
+    Tank
+};
+
 /**
  * @class Creature
  * @brief Base class for enemy units.

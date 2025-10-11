@@ -14,16 +14,9 @@ int main() {
     window.setFramerateLimit(60);
 
     tgui::Gui gui(window);
-    Game game(16, 10, 24);
+    Game game;
     Renderer renderer(window, gui);
     renderer.computeScaling(game);
-
-    std::unique_ptr<Creature> c = std::make_unique<Tank>();
-    game.spawnCreature(std::move(c));
-    c = std::make_unique<Minion>();
-    game.spawnCreature(std::move(c));
-    c = std::make_unique<Drone>();
-    game.spawnCreature(std::move(c));
 
     sf::Clock clock;
     bool paused = false;

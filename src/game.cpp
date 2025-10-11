@@ -1,13 +1,16 @@
 #include "../include/game.hpp"
 #include "../include/visual-effects/tracerEffect.hpp"
 #include "../include/visual-effects/visualEffect.hpp"
+#include "../include/creatures/minion.hpp"
+#include "../include/creatures/drone.hpp"
+#include "../include/creatures/tank.hpp"
 #include "../include/towers/gatling.hpp"
 #include <iostream>
 #include <algorithm>
 #include <memory>
 
-Game::Game(int w, int h, int initialCores)
-    : map(w, h), pathfinder(map), player(), cores(initialCores), tick(0) {
+Game::Game()
+    : map(16, 10), pathfinder(map), player(), cores(24), tick(0), waveManager() {
     // TODO: generate map
     // Map example :
     
@@ -55,10 +58,27 @@ const Cores& Game::getCores() const { return cores; };
 
 const std::vector<std::unique_ptr<VisualEffect>>& Game::getVisualEffects() const { return visualEffects;}
 
-void Game::spawnCreature(std::unique_ptr<Creature> creature) {
+void Game::spawnCreature(CreatureType type) {
+    std::unique_ptr<Creature> creature;
+
+    switch (type) {
+        case CreatureType::Minion:
+            creature = std::make_unique<Minion>();
+            break;
+        case CreatureType::Drone:
+            creature = std::make_unique<Drone>();
+            break;
+        case CreatureType::Tank:
+            creature = std::make_unique<Tank>();
+            break;
+    }
+
+    if (!creature)
+        return;
+
     if (map.getEntries().empty() || map.getCoreStorage() == nullptr || map.getExits().empty())
         throw std::runtime_error("Map missing entry or core storage or exit");
-    // Assign path (Entry -> CoreStorage or Exit)
+
     Tile* start = map.getEntries()[0];
     Tile* goal = map.getCoreStorage();
 
@@ -99,7 +119,7 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
 
 void Game::update(float deltaTime) {
     tick++;
-
+waveManager.update(deltaTime, *this);
     // Update creatures
     for (auto& c : creatures) {
         if (c->isAlive()) {
