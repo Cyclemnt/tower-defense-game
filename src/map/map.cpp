@@ -65,9 +65,9 @@ void Map::placeTile(std::unique_ptr<Tile> tile) {
     }
 }
 
-const std::vector<EntryZone*>& Map::getEntries() const { return entries; }
+const std::vector<Tile*>& Map::getEntries() const { return entries; }
 
-const std::vector<ExitZone*>& Map::getExits() const { return exits; }
+const std::vector<Tile*>& Map::getExits() const { if (exits.empty()) return entries; else return exits; }
 
 CoreStorage* Map::getCoreStorage() const { return coreStorage; }
 
@@ -89,9 +89,15 @@ std::vector<Tile*> Map::getNeighbors(Tile* tile) const {
     return neighbors;
 }
 
-std::vector<Tile*> Map::findPath(Creature* c) const {
-    std::vector<Tile*> path;
-    return path;
+void Map::resize(int w, int h) {
+    width = w; height = h;
+    grid.resize(height);
+    for (int y = 0; y < height; ++y) {
+        grid[y].resize(width);
+        for (int x = 0; x < width; ++x) {
+            grid[y][x] = std::make_unique<EmptyZone>(x, y);
+        }
+    }
 }
 
 void Map::printMap() const {

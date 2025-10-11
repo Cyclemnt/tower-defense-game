@@ -31,10 +31,10 @@ private:
     std::vector<std::vector<std::unique_ptr<Tile>>> grid;
 
     /// @brief List of entry zones (special areas where creatures can enter).
-    std::vector<EntryZone*> entries;
+    std::vector<Tile*> entries;
 
     /// @brief List of exit zones (special areas where creatures can exit).
-    std::vector<ExitZone*> exits;
+    std::vector<Tile*> exits;
 
     /// @brief Pointer to the core storage object (special area where cores are stored).
     CoreStorage* coreStorage;
@@ -43,7 +43,7 @@ public:
     /// @brief Constructs a new map with given dimensions.
     /// @param w The width of the map (number of columns).
     /// @param h The height of the map (number of rows).
-    Map(int w, int h);
+    Map(int w = 1, int h = 1);
 
     /// @brief Destroys the map object and frees any allocated resources.
     ~Map();
@@ -69,11 +69,11 @@ public:
 
     /// @brief Returns a reference to the list of entry zones on the map.
     /// @return A constant reference to the vector of EntryZone pointers.
-    const std::vector<EntryZone*>& getEntries() const;
+    const std::vector<Tile*>& getEntries() const;
 
     /// @brief Returns a reference to the list of exit zones on the map.
     /// @return A constant reference to the vector of ExitZone pointers.
-    const std::vector<ExitZone*>& getExits() const;
+    const std::vector<Tile*>& getExits() const;
 
     /// @brief Returns a pointer to the core storage of the map.
     /// @return A pointer to the CoreStorage object.
@@ -84,10 +84,10 @@ public:
     /// @return A vector of pointers to neighboring tiles (adjacent horizontally or vertically).
     std::vector<Tile*> getNeighbors(Tile* tile) const;
 
-    /// @brief Finds a path for a given creature, potentially from an entry to an exit.
-    /// @param c A pointer to the creature for which a path needs to be found.
-    /// @return A vector of tiles that form the path for the creature.
-    std::vector<Tile*> findPath(Creature* c) const;
+    /// @brief Changes the dimention of the map.
+    /// @param w The width of the map (number of columns).
+    /// @param h The height of the map (number of rows).
+    void resize(int w, int h);
 
     /// @brief Prints the current map to the console for debugging purposes.
     /// @details This method outputs a visual representation of the map, 

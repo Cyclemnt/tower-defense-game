@@ -4,44 +4,19 @@
 #include "../include/creatures/minion.hpp"
 #include "../include/creatures/drone.hpp"
 #include "../include/creatures/tank.hpp"
-#include "../include/towers/gatling.hpp"
+#include "../include/map/mapLoader.hpp"
 #include <iostream>
 #include <algorithm>
 #include <memory>
 
 Game::Game()
-    : map(16, 10), pathfinder(map), player(), cores(24), tick(0), waveManager() {
-    // TODO: generate map
-    // Map example :
-    
-    for (int i : {8, 9, 10}) {
-        map.placeTile(std::make_unique<Path>(i, 0));
-        map.placeTile(std::make_unique<Path>(i, 2));
-    }
-    map.placeTile(std::make_unique<EntryZone>(1, 0));
-    map.placeTile(std::make_unique<ExitZone>(0, 1));
-    for (int i = 1; i < 14; i++)
-        if (i != 7) map.placeTile(std::make_unique<Path>(i, 1));
-    map.placeTile(std::make_unique<CoreStorage>(9, 1, &cores));
+    : map(), pathfinder(map), player(), cores(24), tick(0), waveManager() {
 
-    for (int i = 1; i < 8; i++)
-        map.placeTile(std::make_unique<Path>(6, i));
-    map.placeTile(std::make_unique<Path>(7, 7));
-    for (int i = 7; i < 14; i++)
-        map.placeTile(std::make_unique<Path>(i, 8));
-    for (int i = 1; i < 9; i++)
-        map.placeTile(std::make_unique<Path>(13, i));
-    for (int i : {4, 5, 6}) {
-        map.placeTile(std::make_unique<Path>(12, i));
-        map.placeTile(std::make_unique<Path>(14, i));
+    try {
+        MapLoader::loadFromFile(map, "../assets/maps/map1.txt", &cores);
+    } catch (const std::exception& e) {
+        std::cerr << "[Error] Failed to load map: " << e.what() << std::endl;
     }
-    map.placeTile(std::make_unique<OpenZone>(13, 5));
-    for (int i : {0, 1}) {
-        map.placeTile(std::make_unique<OpenZone>(5, i+3));
-        map.placeTile(std::make_unique<OpenZone>(i+10, 9));
-    }
-    for (int i : {0, 1, 2})
-        map.placeTile(std::make_unique<OpenZone>(7+i, 5+i));
 }
 
 const Map& Game::getMap() const { return map; }
@@ -76,8 +51,8 @@ void Game::spawnCreature(CreatureType type) {
     if (!creature)
         return;
 
-    if (map.getEntries().empty() || map.getCoreStorage() == nullptr || map.getExits().empty())
-        throw std::runtime_error("Map missing entry or core storage or exit");
+    if (map.getEntries().empty() || map.getCoreStorage() == nullptr)
+        throw std::runtime_error("Map missing entry or core storage");
 
     Tile* start = map.getEntries()[0];
     Tile* goal = map.getCoreStorage();
@@ -127,23 +102,20 @@ waveManager.update(deltaTime, *this);
             c->update(deltaTime);
 
             Tile* current = c->getCurrentTile();
+            Tile* destination = c->getDestinationTile();
             
             // CoreStorage reached
-            if (CoreStorage* storage = dynamic_cast<CoreStorage*>(current)) {
-                if (c->getDestinationTile() == map.getCoreStorage()) {
-                    // New path to exit
-                    Tile* goal = map.getExits()[0];
-                    std::vector<Tile*> newPath = pathfinder.findPath(current, goal);
-                    c->setPath(newPath);
-                }
+            if (destination == map.getCoreStorage() && current == destination) {
+                // New path to exit
+                Tile* goal = map.getExits()[0];
+                std::vector<Tile*> newPath = pathfinder.findPath(current, goal);
+                c->setPath(newPath);
             }
 
             // Exit reached
-            else if (ExitZone* exit = dynamic_cast<ExitZone*>(current)) {
-                if (c->getDestinationTile() == map.getExits()[0]) {
-                    // TODO: make creature diseapear
-                    cores.loseCore(c->dropCores());
-                }
+            else if (destination == map.getExits()[0] && current == destination) {
+                // TODO: make creature diseapear
+                cores.loseCore(c->dropCores());
             }
         }
     }
