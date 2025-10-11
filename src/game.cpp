@@ -10,7 +10,6 @@ Game::Game(int w, int h, int initialCores)
     : map(w, h), pathfinder(map), player(), cores(initialCores), tick(0) {
     // TODO: generate map
     // Map example :
-
     
     for (int i : {8, 9, 10}) {
         map.placeTile(std::make_unique<Path>(i, 0));
@@ -40,11 +39,6 @@ Game::Game(int w, int h, int initialCores)
     }
     for (int i : {0, 1, 2})
         map.placeTile(std::make_unique<OpenZone>(7+i, 5+i));
-
-    
-
-
-    map.printMap();
 }
 
 const Map& Game::getMap() const { return map; }
@@ -82,7 +76,7 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     if (!tile->isBuildable())
         return PlaceTowerResult::NotBuildable;
     
-    OpenZone* openZoneTile = dynamic_cast<OpenZone*>(tile); // If buildable then the tile is OpenZone
+    OpenZone* openZoneTile = dynamic_cast<OpenZone*>(tile); // If buildable then the tile is an OpenZone
 
     if (!player.canAfford(*tower))
         return PlaceTowerResult::NotAffordable;
@@ -127,7 +121,7 @@ void Game::update(float deltaTime) {
             // Exit reached
             else if (ExitZone* exit = dynamic_cast<ExitZone*>(current)) {
                 if (c->getDestinationTile() == map.getExits()[0]) {
-                    // TODO: make creature diseapear (and remove carried cores)
+                    // TODO: make creature diseapear
                     cores.loseCore(c->dropCores());
                 }
             }
@@ -142,13 +136,12 @@ void Game::update(float deltaTime) {
     for (auto& t : towers) {
         t->update(deltaTime, creatures);
 
-        // Create visual effect
-        if (t->getTarget()) {
-            std::array<float, 2> twrPos = {(float)t->getX(), (float)t->getY()};
-            // TODO: adapt visual effect to tower type
-            std::unique_ptr<VisualEffect> e = std::make_unique<TracerEffect>(twrPos, t->getTarget()->getPosition());
-            visualEffects.push_back(std::move(e));
-        }
+        // Get visual effects
+        std::vector<std::unique_ptr<VisualEffect>> newVisualEffects = t->getVisualEffects();
+        if (!newVisualEffects.empty())
+            visualEffects.insert(visualEffects.end(), 
+                                std::make_move_iterator(newVisualEffects.begin()), 
+                                std::make_move_iterator(newVisualEffects.end()));
     }
 
     // Rewards the player for dead creatures ang return cores to the storage
@@ -166,7 +159,7 @@ void Game::update(float deltaTime) {
 
     // Remove "dead" visual effects
     visualEffects.erase(std::remove_if(visualEffects.begin(), visualEffects.end(),
-                                       [](auto& e){ return !e->isAlive(); }),
+                                       [](auto& e) { return !e->isAlive(); }),
                         visualEffects.end());
 }
 
@@ -186,5 +179,6 @@ void Game::render() const {
 }
 
 bool Game::isGameOver() const {
-    return cores.getLost() > 0; // TODO: better condition
+    bool gameOver = cores.getSafe() == 0 && cores.getStolen() == 0;
+    return gameOver;
 }

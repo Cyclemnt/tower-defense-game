@@ -1,4 +1,6 @@
 #include "../../include/towers/mortar.hpp"
+#include "../../include/visual-effects/shellEffect.hpp"
+#include "../../include/visual-effects/explosionEffect.hpp"
 #include <iostream>
 #include <cmath>
 
@@ -7,8 +9,9 @@ Mortar::Mortar(int x_, int y_)
 
 Mortar::~Mortar() {}
 
+const std::vector<Shell>& Mortar::getShells() const { return shells; }
+
 void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
-    //std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
         cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
 
@@ -31,10 +34,8 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
         float dx = s.targetX - s.posX;
         float dy = s.targetY - s.posY;
         float dist = std::sqrt(dx*dx + dy*dy);
-        //std::cout << "shell dist: " << dist << "\n";
         if (dist < s.speed * deltaTime) {
             // Impact
-            //std::cout << "Shell exploding" << "\n";
             for (auto& c : creatures) {
                 float dx = c->getPosition()[0] - s.targetX;
                 float dy = c->getPosition()[1] - s.targetY;
@@ -43,6 +44,7 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
                 if (distSquare < s.explosionRadius * s.explosionRadius)
                     c->takeDamage(damage * damageCoefficient);
             }
+            visualEffects.push_back(std::make_unique<ExplosionEffect>(sf::Vector2f({s.posX, s.posY}))); // Create explosion effect
             it = shells.erase(it);  // Erease element and get new iterator
         } else {
             s.posX += (dx/dist) * s.speed * deltaTime;
@@ -51,12 +53,12 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
         }
     }
 
-    
     // Shoot shells while cooldown let it
     while (target && cooldown <= 0.0f) {
         // Create new projectile
         Shell s{(float)x, (float)y, target->getPosition()[0], target->getPosition()[1], damage};
         shells.push_back(s);
+        visualEffects.push_back(std::make_unique<ShellEffect>(sf::Vector2f(s.posX, s.posY), sf::Vector2f(s.targetX, s.targetY), s.speed));
         cooldown += 1.0f / (fireRate); // seconds
     }
 }

@@ -1,65 +1,47 @@
 #include "../../include/visual-effects/tracerEffect.hpp"
-#include "../../include/visual-effects/tracerSplashEffect.hpp"
+#include <SFML/System/Angle.hpp>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <iostream>
 
-TracerEffect::TracerEffect(std::array<float, 2> s, std::array<float, 2> e, float duration)
-    : start(s), end(e), lifetime(duration) {}
+TracerEffect::TracerEffect(std::array<float, 2> start_, std::array<float, 2> end_)
+    : start(start_), end(end_), color(generateRandomColor()), tse(end, color) {
+        jitterX = ((std::rand() % 200) * 0.001f - 0.1f);
+        jitterY = ((std::rand() % 200) * 0.001f - 0.1f);
+}
 
-void TracerEffect::update(float dt) { lifetime -= dt; }
+void TracerEffect::update(float dt) {
+    tse.update(dt);
+    age += dt;
+    if (age >= lifetime) die();
+}
 
-void TracerEffect::render(sf::RenderWindow& w, float tileSize) const {
-    // Générer une couleur aléatoire pour chaque segment
-    sf::Color randomColor = generateRandomColor();
+void TracerEffect::render(sf::RenderWindow& w, float tileSize) {
+    tse.render(w, tileSize);
+    if (age >= 0.05f) return;
+    sf::Vector2f startPoint = {(start[0] + 0.5f) * tileSize,
+                               (start[1] + 0.5f) * tileSize};
+    sf::Vector2f endPoint   = {(end[0] + 0.5f) * tileSize,
+                               (end[1] + 0.5f) * tileSize};
 
-    // Calcul de la distance totale entre start et end
-    float dx = end[0] - start[0];
-    float dy = end[1] - start[1];
-    float distance = std::sqrt(dx * dx + dy * dy);
+    sf::Vector2f diff = endPoint - startPoint;
+    float length = std::sqrt(diff.x * diff.x + diff.y * diff.y);
+    float angleDeg = std::atan2(diff.y, diff.x) * 180.f * M_1_PIf; // atan * 180 / pi
 
-    // Choisir un point aléatoire sur la ligne entre start et end
-    float randomFactor = std::rand() % 1000 * 0.001f;  // Un facteur aléatoire entre 0 et 1
-    float offsetX = dx * randomFactor;
-    float offsetY = dy * randomFactor;
+    sf::RectangleShape line(sf::Vector2f(length, 2.5f));
+    line.setOrigin({0.0f, 1.25f});
+    line.setPosition(startPoint);
 
-    // Position de départ du segment aléatoire avec variation aléatoire
-    float randomOffsetStartX = (std::rand() % 200) * 0.001f - 0.1f;  // Petit décalage pour l'effet
-    float randomOffsetStartY = (std::rand() % 200) * 0.001f - 0.1f;
+    line.setRotation(sf::degrees(angleDeg));
 
-    sf::Vector2f randomStartPosition = { start[0] + offsetX + randomOffsetStartX * 0.5f, start[1] + offsetY + randomOffsetStartY };
-
-    // Dessiner un segment avec une longueur fixe
-    float segmentLength = 0.4f;  // Longueur du segment, ajustée pour éviter qu'elle dépasse
-    float segmentDistance = std::min(segmentLength, distance * (1 - randomFactor));  // Limite la longueur pour ne pas dépasser la cible
-
-    // Normaliser la direction (dx, dy) pour calculer le segment
-    float normFactor = segmentDistance / distance;  // On veut une longueur proportionnelle à la distance
-    float finalX = randomStartPosition.x + dx * normFactor;
-    float finalY = randomStartPosition.y + dy * normFactor;
-
-    // Créer le segment à afficher
-    std::array<sf::Vertex, 2> segment;
-
-    segment[0].position = { (randomStartPosition.x + 0.5f) * tileSize, (randomStartPosition.y + 0.5f) * tileSize };
-    segment[1].position = { (finalX + 0.5f) * tileSize, (finalY + 0.5f) * tileSize };
-
-    segment[0].color = randomColor;
-    segment[1].color = randomColor;
-
-    // Dessiner le segment
-    w.draw(segment.data(), segment.size(), sf::PrimitiveType::Lines);
-
-    // Ajouter l'effet de splash à la position de la créature (end)
-    SplashEffect splash({end[0], end[1]}, randomColor); // Splash toujours à la position de la créature
-    splash.render(w, tileSize);
+    line.setFillColor(color);
+    w.draw(line);
 }
 
 sf::Color TracerEffect::generateRandomColor() const {
-    int r = std::min(255, 255 - std::rand() % 100); // Légèrement rouge
-    int g = std::min(255, 255 - std::rand() % 100); // Jaune et vert
-    int b = 0; // Pas de bleu
+    int r = 200 + std::rand() % 56;
+    int g = 200 + std::rand() % 56;
+    int b = 50 + std::rand() % 50;
     return sf::Color(r, g, b);
 }
-
-bool TracerEffect::isAlive() const { return lifetime > 0.f; }

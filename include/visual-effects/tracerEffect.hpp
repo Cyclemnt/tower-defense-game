@@ -2,19 +2,23 @@
 #define TRACER_EFFECT_HPP
 
 #include "visualEffect.hpp"
+#include "tracerSplashEffect.hpp"
 #include <array>
 
 class TracerEffect : public VisualEffect {
 private:
     std::array<float, 2> start, end;
-    float lifetime;
+    sf::Color color;
+    float lifetime = 0.6f;
+    float age = 0.0f;
+    float jitterX, jitterY;
+    TracerSplashEffect tse;
 
 public:
-    TracerEffect(std::array<float, 2> s, std::array<float, 2> e, float duration = 0.01f);
+    TracerEffect(std::array<float, 2> start_, std::array<float, 2> end_);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize) const override;
+    void render(sf::RenderWindow& w, float tileSize) override;
     sf::Color generateRandomColor() const;
-    bool isAlive() const override;
 };
 
 #endif // TRACER_EFFECT_HPP

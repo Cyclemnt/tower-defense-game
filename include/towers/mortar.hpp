@@ -3,6 +3,17 @@
 
 #include "tower.hpp"
 
+/// @struct Shell
+/// @brief Represents a projectile fired by the Mortar.
+struct Shell {
+    float posX, posY;           ///< Current projectile position
+    float targetX, targetY;     ///< Target coordinates
+    float damage;               ///< Damage on impact
+    float speed = 4.0f;         ///< Speed in tiles/second
+    float explosionRadius = 0.6f;   ///< Explosion radius in tiles
+    bool active = true;         ///< Is the shell still flying?
+};
+
 /**
  * @class Mortar
  * @brief Area-of-effect tower type.
@@ -12,22 +23,13 @@
  */
 class Mortar : public Tower {
 private:
-    /// @struct Shell
-    /// @brief Represents a projectile fired by the Mortar.
-    struct Shell {
-        float posX, posY;           ///< Current projectile position
-        float targetX, targetY;     ///< Target coordinates
-        float damage;               ///< Damage on impact
-        float speed = 4.0f;         ///< Speed in tiles/second
-        float explosionRadius = 0.4f;   ///< Explosion radius in tiles
-        bool active = true;         ///< Is the shell still flying?
-    };
-
     std::vector<Shell> shells;  ///< All active projectiles fired by this mortar
 
 public:
     Mortar(int x_, int y_);
     ~Mortar();
+
+    const std::vector<Shell>& getShells() const;
 
     /// @brief Update tower logic each tick.
     /// - Fires new shells at enemies in range

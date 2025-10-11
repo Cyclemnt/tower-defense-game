@@ -11,7 +11,6 @@ int main() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(desktop, "Tower Defense", sf::State::Fullscreen);
 
-    //sf::RenderWindow window(sf::VideoMode({1280, 720}), "Tower Defense");
     window.setFramerateLimit(60);
 
     tgui::Gui gui(window);

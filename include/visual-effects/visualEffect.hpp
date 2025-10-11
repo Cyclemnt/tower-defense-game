@@ -4,11 +4,15 @@
 #include <SFML/Graphics.hpp>
 
 class VisualEffect {
+private:
+    bool alive = true;
+
 public:
     virtual ~VisualEffect() = default;
     virtual void update(float deltaTime) = 0;
-    virtual void render(sf::RenderWindow& window, float tileSize) const = 0;
-    virtual bool isAlive() const = 0;
+    virtual void render(sf::RenderWindow& window, float tileSize) = 0;
+    bool isAlive() const;
+    void die();
 };
 
-#endif
+#endif // VISUAL_EFFECT_HPP

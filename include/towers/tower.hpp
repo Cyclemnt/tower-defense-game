@@ -3,6 +3,7 @@
 
 #include "creatures/creature.hpp"
 #include "map/tile.hpp"
+#include "visual-effects/visualEffect.hpp"
 #include <string>
 #include <vector>
 #include <array>
@@ -34,6 +35,7 @@ protected:
     float cooldown;     ///< Time left before the next attack.
 
     Creature* target;   ///< Target locked.
+    std::vector<std::unique_ptr<VisualEffect>> visualEffects; ///< list of all visual effects to display
 
 public:
     /// @brief Construct a new Tower object with given stats.
@@ -75,6 +77,10 @@ public:
     
     /// @return The target of the tower.
     const Creature* getTarget() const;
+    
+    /// @brief Get and clear the visualEffects pile
+    /// @return the visualEffects pile
+    std::vector<std::unique_ptr<VisualEffect>> getVisualEffects();
 
     // --- Actions ---
 

@@ -1,4 +1,5 @@
 #include "../../include/towers/tower.hpp"
+#include "../../include/visual-effects/tracerEffect.hpp"
 #include <cmath>
 #include <algorithm>
 #include <iostream>
@@ -22,6 +23,14 @@ std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu};
 
 const Creature* Tower::getTarget() const {return target; }
 
+std::vector<std::unique_ptr<VisualEffect>> Tower::getVisualEffects() {
+    // Moving visualEffects to temp
+    std::vector<std::unique_ptr<VisualEffect>> temp = std::move(visualEffects);
+    // Clearing visualEffects
+    visualEffects.clear();
+    return temp;
+}
+
 void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
     //std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
@@ -43,6 +52,9 @@ void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>
     while (target && cooldown <= 0.0f) {
         attack(target);
         cooldown += 1.0f / (fireRate); // seconds
+        // Create tracer bullets
+        std::array<float, 2> pos = {static_cast<float>(x), static_cast<float>(y)};
+        visualEffects.push_back(std::make_unique<TracerEffect>(pos, target->getPosition()));
     }
 }
 

@@ -2,20 +2,19 @@
 #define EXPLOSION_EFFECT_HPP
 
 #include "visualEffect.hpp"
+#include <cmath>
 
 class ExplosionEffect : public VisualEffect {
 private:
-    sf::Vector2f center;
-    float radius;
-    float lifetime;
-    
+    sf::Vector2f pos;
+    float age = 0.0f;
+    float lifetime = 0.3f;
+    float maxRadius;
+
 public:
-    ExplosionEffect(sf::Vector2f pos, float r = 0.3f, float d = 0.2f);
-
+    ExplosionEffect(sf::Vector2f position, float radius = 0.6f);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize) const override;
-    bool isAlive() const override;
+    void render(sf::RenderWindow& w, float tileSize) override;
 };
-
 
 #endif // EXPLOSION_EFFECT_HPP

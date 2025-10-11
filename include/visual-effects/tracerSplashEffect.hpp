@@ -2,20 +2,30 @@
 #define TRACER_SPLASH_EFFECT_HPP
 
 #include "visualEffect.hpp"
-#include <array>
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <cstdint>
 
-class SplashEffect : public VisualEffect {
-private:
-    std::array<float, 2> position;
+struct SimpleParticle {
+    float vx, vy;   // direction unit
+    float speed;    // tiles/sec
+    float radius;   // fraction of tile
+    float age;
     float lifetime;
-    sf::Color color;
-
-public:
-    SplashEffect(std::array<float, 2> pos, sf::Color c, float duration = 0.1f);
-    void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize) const override;
-    bool isAlive() const override;
 };
 
-#endif // TRACER_SPLASH_EFFECT_HPP
+class TracerSplashEffect : public VisualEffect {
+private:
+    sf::Vector2f pos;      // tile coordinates
+    sf::Color color;
+    std::vector<SimpleParticle> parts;
+    float age = 0.0f;
+    float lifetime = 0.6f;
+
+public:
+    TracerSplashEffect(std::array<float,2> position, sf::Color c);
+    void update(float dt) override;
+    void render(sf::RenderWindow& w, float tileSize) override;
+};
+
+#endif

@@ -5,14 +5,15 @@
 
 class LaserEffect : public VisualEffect {
 private:
-    sf::Vector2f start, end;
-    float lifetime = 0.05f;
-
+    std::array<float, 2> start, end;
+    sf::Color color;
+    float lifetime = 0.02f;
+    float age = 0.0f;
+    
 public:
-    LaserEffect(sf::Vector2f s, sf::Vector2f e);
+    LaserEffect(std::array<float, 2> s, std::array<float, 2> e);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize) const;
-    bool isAlive() const override;
+    void render(sf::RenderWindow& w, float tileSize);
 };
 
 
