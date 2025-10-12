@@ -10,7 +10,8 @@ int Tile::getX() const { return x; }
 int Tile::getY() const { return y; }
 
 void Tile::render(const RenderContext& ctx) const {
-    const sf::Texture& tex = Renderer::getTextureStatic(getTextureName());
+    auto& renderer = ctx.renderer;
+    const sf::Texture& tex = renderer.getTexture(getTextureName());
 
     sf::Sprite sprite(tex);
     sprite.setPosition({x * ctx.tileSize, y * ctx.tileSize});

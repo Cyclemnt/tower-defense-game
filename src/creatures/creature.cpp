@@ -141,11 +141,12 @@ void Creature::leave() {
 }
 
 void Creature::render(RenderContext& ctx) const {
+    auto& renderer = ctx.renderer;
     auto& window = ctx.window;
     int frame = (ctx.tick / 8) % 4;
 
     std::string filename = getTextureName(frame);
-    const sf::Texture& tex = Renderer::getTextureStatic(filename);
+    const sf::Texture& tex = renderer.getTexture(filename);
 
     sf::Sprite sprite(tex);
     sprite.setPosition({posX * ctx.tileSize, posY * ctx.tileSize});

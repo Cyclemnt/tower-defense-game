@@ -29,7 +29,9 @@ void CoreStorage::render(const RenderContext& ctx) const {
     else if (ratio > 0.3f) texName = "tile_core_1.png";
     else texName = "tile_core_2.png";
 
-    const sf::Texture& tex = Renderer::getTextureStatic(texName);
+    auto& renderer = ctx.renderer;
+    const sf::Texture& tex = renderer.getTexture(texName);
+
     sf::Sprite sprite(tex);
     sprite.setPosition({getX() * ctx.tileSize, getY() * ctx.tileSize});
     sf::Vector2<unsigned int> sz = tex.getSize();

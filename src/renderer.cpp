@@ -20,7 +20,7 @@ sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
     return { static_cast<int>(localX), static_cast<int>(localY) };
 }
 
-const sf::Texture& Renderer::getTextureStatic(const std::string& filename) {
+const sf::Texture& Renderer::getTexture(const std::string& filename) {
     static std::unordered_map<std::string, sf::Texture> cache;
     if (cache.find(filename) == cache.end()) {
         sf::Texture tex;
@@ -54,16 +54,22 @@ void Renderer::computeScaling(const Game& game) {
 
 void Renderer::render(const Game& game) {
     ctx.tick = game.getTick();
-    game.getMap().render(ctx); // Draw map
+
+    // Draw map
+    game.getMap().render(ctx);
     drawTileHighlight(game); // Highlight tiles
+
     // Draw creatures
     for (const auto& c : game.getCreatures())
         c->render(ctx);
+
     // Draw visual effects
     for (const auto& e : game.getVisualEffects())
         e->render(window, tileSize);
+
     // Draw Towers
     drawTowers(game);
+
     // Draw HUD
     drawHUD(game);
 }
@@ -90,7 +96,7 @@ void Renderer::drawTowers(const Game& game) {
         std::string name = t->getTypeName();
         std::transform(name.begin(), name.end(), name.begin(), ::tolower);
         std::string filename = "tower_" + name + "_0" + ".png";
-        const sf::Texture& tex = getTextureStatic(filename);
+        const sf::Texture& tex = getTexture(filename);
         sf::Sprite sprite(tex);
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
         const sf::Vector2<unsigned int>& sz = tex.getSize();
@@ -163,8 +169,8 @@ void Renderer::drawHUD(const Game& game) {
 
     for (auto& res : displays) {
         // Draw icon
-        sf::Sprite icon(getTextureStatic(res.filename));
-        const auto& texSize = getTextureStatic(res.filename).getSize();
+        sf::Sprite icon(getTexture(res.filename));
+        const auto& texSize = getTexture(res.filename).getSize();
         icon.setScale(sf::Vector2f(iconSize / static_cast<float>(texSize.x),
                                    iconSize / static_cast<float>(texSize.y)));
         icon.setPosition({startX, res.yOffset});

@@ -8,11 +8,11 @@ class Renderer;
 class RenderContext {
 public:
     sf::RenderWindow& window;
-    const Renderer& renderer;
+    Renderer& renderer;
     float tileSize;
     int tick;
 
-    RenderContext(sf::RenderWindow& w, const Renderer& r, float ts, int t)
+    RenderContext(sf::RenderWindow& w, Renderer& r, float ts, int t)
         : window(w), renderer(r), tileSize(ts), tick(t) {}
 };
 

@@ -39,7 +39,7 @@ private:
 public:
     Renderer(sf::RenderWindow& win, tgui::Gui& g);
 
-    static const sf::Texture& getTextureStatic(const std::string& name);
+    const sf::Texture& getTexture(const std::string& name);
 
     void computeScaling(const Game& game);
 
