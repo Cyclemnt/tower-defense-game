@@ -7,6 +7,7 @@
 #include <memory>
 class Creature;
 class VisualEffect;
+class RenderContext;
 
 /**
  * @class Tower
@@ -104,11 +105,8 @@ public:
     /// rules may be overridden in derived classes for specific behaviors.
     virtual void upgrade();
 
-    // --- Debug ---
-
-    /// @brief Get the type name of the tower (for debug).
-    /// @return String representing the type of the tower.
-    virtual std::string getTypeName() const = 0;
+    virtual std::string getTextureName(int frame) const = 0;
+    virtual void render(RenderContext& ctx) const;
 };
 
 

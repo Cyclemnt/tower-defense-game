@@ -66,4 +66,16 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
     }
 }
 
-std::string Mortar::getTypeName() const { return "Mortar"; }
+std::string Mortar::getTextureName(int frame) const {
+    if (!target) return "tower_mortar_nw.png";
+
+    float dx = target->getPosition()[0] - x;
+
+    std::string texture = "tower_mortar_";
+    
+    if (dx < 0) texture += "nw.png";  // left
+    else if (dx > 0) texture += "ne.png";  // right
+    else texture += "n.png";  // up
+
+    return texture;
+}

@@ -57,7 +57,7 @@ void Renderer::render(const Game& game) {
 
     // Draw map
     game.getMap().render(ctx);
-    drawTileHighlight(game); // Highlight tiles
+    highlightTile(game); // Highlight tiles
 
     // Draw creatures
     for (const auto& c : game.getCreatures())
@@ -68,13 +68,14 @@ void Renderer::render(const Game& game) {
         e->render(window, tileSize);
 
     // Draw Towers
-    drawTowers(game);
+    for (const auto& t : game.getTowers())
+        t->render(ctx);
 
     // Draw HUD
     drawHUD(game);
 }
 
-void Renderer::drawTileHighlight(const Game& game) {
+void Renderer::highlightTile(const Game& game) {
     const Map& map = game.getMap();
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
     sf::Vector2i tilePos = screenToTile(mouse.x, mouse.y);
@@ -89,22 +90,6 @@ void Renderer::drawTileHighlight(const Game& game) {
         }
     }
 }
-
-void Renderer::drawTowers(const Game& game) {
-    // TODO : define frame with target position
-    for (const auto& t : game.getTowers()) {
-        std::string name = t->getTypeName();
-        std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-        std::string filename = "tower_" + name + "_0" + ".png";
-        const sf::Texture& tex = getTexture(filename);
-        sf::Sprite sprite(tex);
-        sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
-        const sf::Vector2<unsigned int>& sz = tex.getSize();
-        sprite.setScale(sf::Vector2f(tileSize / sz.x, tileSize / sz.x));
-        window.draw(sprite);
-    }
-}
-
 
 void Renderer::drawHUD(const Game& game) {
     // Retrieve core information

@@ -1,6 +1,8 @@
 #include <cmath>
 #include "../../include/towers/tower.hpp"
 #include "../../include/creatures/creature.hpp"
+#include "../../include/renderer.hpp"
+#include "../../include/renderer/renderContext.hpp"
 #include "../../include/visual-effects/tracerEffect.hpp"
 #include "../../include/visual-effects/visualEffect.hpp"
 
@@ -94,4 +96,21 @@ void Tower::upgrade() {
     damage = static_cast<int>(damage * 1.5f);
     range += 1.0f;
     fireRate *= 1.2f;
+}
+
+void Tower::render(RenderContext& ctx) const {
+    auto& window = ctx.window;
+    auto& renderer = ctx.renderer;
+    int frame = (ctx.tick / 8) % 4;
+
+    std::string filename = getTextureName(frame);
+    const sf::Texture& tex = renderer.getTexture(filename);
+
+    sf::Sprite sprite(tex);
+    const auto& sz = tex.getSize();
+
+    sprite.setPosition({x * ctx.tileSize, ctx.tileSize * (y + 1 - static_cast<float>(sz.y) / sz.x)}); // y depends on image height
+
+    sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
+    window.draw(sprite);
 }

@@ -48,4 +48,6 @@ void Laser::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>
     }
 }
 
-std::string Laser::getTypeName() const { return "Laser"; }
+std::string Laser::getTextureName(int frame) const {
+    return "tower_laser_" + std::to_string(frame) + ".png";
+}

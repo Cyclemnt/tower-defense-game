@@ -44,7 +44,7 @@ public:
     void update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) override;
 
     /// @return The type name of this tower ("Mortar").
-    std::string getTypeName() const override;
+    std::string getTextureName(int frame) const override;
 };
 
 #endif // MORTAR_HPP

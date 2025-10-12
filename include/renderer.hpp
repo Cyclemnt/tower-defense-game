@@ -46,10 +46,7 @@ public:
     /// @brief Draws the full game scene.
     void render(const Game& game);
 
-    void drawTileHighlight(const Game& game);
-
-    /// @brief Draws the towers.
-    void drawTowers(const Game& game);
+    void highlightTile(const Game& game);
 
     /// @brief Draws the HUD.
     void drawHUD(const Game& game);

@@ -17,7 +17,7 @@ public:
     ~Gatling();
 
     /// @return The type name of this tower ("Gatling").
-    std::string getTypeName() const override;
+    std::string getTextureName(int frame) const override;
 };
 
 #endif // GATLING_HPP
