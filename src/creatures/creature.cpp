@@ -131,3 +131,10 @@ int Creature::dropCores() {
     coresCarried = 0;
     return dropped;
 }
+
+void Creature::leave() {
+    au = 0;
+    ag = 0;
+    cu = 0;
+    alive = false;
+}

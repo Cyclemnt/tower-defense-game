@@ -2,10 +2,6 @@
 #include <TGUI/TGUI.hpp>
 #include "../include/game.hpp"
 #include "../include/renderer.hpp"
-#include "../include/creatures/tank.hpp"
-#include "../include/creatures/minion.hpp"
-#include "../include/creatures/drone.hpp"
-#include <memory>
 #include "../include/visual-effects/visualEffect.hpp"
 #include "../include/towers/tower.hpp"
 

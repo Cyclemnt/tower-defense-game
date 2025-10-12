@@ -117,6 +117,7 @@ waveManager.update(deltaTime, *this);
             else if (destination == map.getExits()[0] && current == destination) {
                 // TODO: make creature diseapear
                 cores.loseCore(c->dropCores());
+                c->leave();
             }
         }
     }

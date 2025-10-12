@@ -135,6 +135,9 @@ public:
     /// @return The number of cores dropped by the creature.
     virtual int dropCores();
 
+    /// @brief Leaves the map.
+    virtual void leave();
+
     // --- Debug ---
 
     /// @brief Gets the name or type of the creature (for debugging purposes).
