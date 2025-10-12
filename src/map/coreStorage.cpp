@@ -25,9 +25,10 @@ void CoreStorage::render(const RenderContext& ctx) const {
     if (total > 0) ratio = static_cast<float>(safe) / total;
 
     std::string texName;
-    if (ratio > 0.7f) texName = "tile_core_0.png";
-    else if (ratio > 0.3f) texName = "tile_core_1.png";
-    else texName = "tile_core_2.png";
+    if (ratio == 1.0f) texName = "tile_core_0.png";
+    else if (ratio > 0.5f) texName = "tile_core_1.png";
+    else if (ratio > 0.0f) texName = "tile_core_2.png";
+    else texName = "tile_core_3.png";
 
     auto& renderer = ctx.renderer;
     const sf::Texture& tex = renderer.getTexture(texName);

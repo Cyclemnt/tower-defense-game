@@ -9,14 +9,14 @@ class Game;
 class WaveManager {
 private:
     int currentWave = 0;
-    // float timeSinceLastSpawn = 0.0f;
-    // float spawnInterval = 1.0f;
-    // int currentIndex = 0;
+    float timeSinceLastSpawn = 0.0f;
+    float spawnInterval = 1.0f;
+    int currentIndex = 0;
 
-    // std::vector<CreatureType> pendingSpawns;
+    std::vector<CreatureType> pendingSpawns;
 
-    // std::default_random_engine rng{std::random_device{}()};
-    // std::discrete_distribution<int> spawnDist;
+    std::default_random_engine rng{std::random_device{}()};
+    std::discrete_distribution<int> spawnDist;
 
 public:
     WaveManager();
