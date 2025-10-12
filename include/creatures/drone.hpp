@@ -1,6 +1,7 @@
 #ifndef DRONE_HPP
 #define DRONE_HPP
 
+#include <string>
 #include "creature.hpp"
 
 /**

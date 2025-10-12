@@ -1,9 +1,10 @@
 #ifndef CREATURE_HPP
 #define CREATURE_HPP
 
-#include "../map/tile.hpp"
-#include <vector>
+#include <string>
 #include <array>
+#include <vector>
+class Tile;
 
 enum class CreatureType {
     Minion,

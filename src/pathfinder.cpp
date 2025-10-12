@@ -1,7 +1,8 @@
-#include "../include/pathfinder.hpp"
-#include <unordered_map>
 #include <queue>
 #include <algorithm> // std::reverse
+#include <unordered_map>
+#include "../include/pathfinder.hpp"
+#include "../include/map/tile.hpp"
 
 Pathfinder::Pathfinder(const Map& m)
     : map(m) {}

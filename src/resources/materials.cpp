@@ -1,6 +1,5 @@
-#include "../../include/resources/materials.hpp"
-
 #include <stdexcept>
+#include "../../include/resources/materials.hpp"
 
 Materials::Materials(int initialAu, int initialAg, int initialCu)
     : au(initialAu), ag(initialAg), cu(initialCu) {}

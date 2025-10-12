@@ -1,8 +1,9 @@
 #ifndef CORE_STORAGE_HPP
 #define CORE_STORAGE_HPP
 
+#include <string>
 #include "tile.hpp"
-#include "../resources/cores.hpp"
+class Cores;
 
 /**
  * @class CoreStorage

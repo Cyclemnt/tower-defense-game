@@ -1,10 +1,9 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include <array>
 #include "resources/materials.hpp"
-#include "resources/cores.hpp"
-#include "map/tile.hpp"
-#include "towers/tower.hpp"
+class Tower;
 
 /**
  * @class Player

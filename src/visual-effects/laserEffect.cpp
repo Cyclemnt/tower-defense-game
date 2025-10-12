@@ -1,9 +1,9 @@
-#include "../../include/visual-effects/laserEffect.hpp"
 #include <cmath>
 #include <SFML/System/Angle.hpp>
+#include "../../include/visual-effects/laserEffect.hpp"
 
 LaserEffect::LaserEffect(std::array<float, 2> s, std::array<float, 2> e)
-    : start(s), end(e) {}
+    : start(s[0], s[1]), end(e[0], e[1]) {}
 
 void LaserEffect::update(float dt) {
     age += dt;
@@ -12,10 +12,9 @@ void LaserEffect::update(float dt) {
 }
 
 void LaserEffect::render(sf::RenderWindow& w, float tileSize) {
-    sf::Vector2f startPoint = {(start[0] + 0.5f) * tileSize,
-                               (start[1] + 0.5f) * tileSize};
-    sf::Vector2f endPoint   = {(end[0] + 0.5f) * tileSize,
-                               (end[1] + 0.5f) * tileSize};
+    sf::Vector2f offset = {0.5f, 0.5f};
+    sf::Vector2f startPoint = (start + offset) * tileSize;
+    sf::Vector2f endPoint   = (end + offset) * tileSize;
 
     sf::Vector2f diff = endPoint - startPoint;
     float length = std::sqrt(diff.x * diff.x + diff.y * diff.y);

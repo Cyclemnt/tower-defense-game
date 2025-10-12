@@ -1,4 +1,5 @@
 #include "../include/renderer.hpp"
+#include "../include/visual-effects/visualEffect.hpp"
 // MAP
 #include "../include/map/entryZone.hpp"
 #include "../include/map/exitZone.hpp"
@@ -9,13 +10,6 @@
 #include "../include/towers/gatling.hpp"
 #include "../include/towers/mortar.hpp"
 #include "../include/towers/laser.hpp"
-// CREATURES
-#include "../include/creatures/minion.hpp"
-#include "../include/creatures/drone.hpp"
-#include "../include/creatures/tank.hpp"
-
-#include <iostream>
-#include <algorithm>
 
 Renderer::Renderer(sf::RenderWindow& win, tgui::Gui& g)
     : window(win), gui(g) {}

@@ -1,7 +1,9 @@
+#include <cmath>
+#include "../../include/map/tile.hpp"
 #include "../../include/creatures/creature.hpp"
 #include "../../include/map/coreStorage.hpp"
 #include "../../include/map/exitZone.hpp"
-#include <cmath>
+
 
 Creature::Creature(float hp, float sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)
     : health(hp), baseHealth(hp), shield(sh), baseShield(sh), speed(spd), coresCapacity(coresCapacity_), au(au_), ag(ag_), cu(cu_), coresCarried(0),

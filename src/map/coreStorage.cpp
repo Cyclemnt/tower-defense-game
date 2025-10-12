@@ -1,4 +1,5 @@
 #include "../../include/map/coreStorage.hpp"
+#include "../../include/resources/cores.hpp"
 
 CoreStorage::CoreStorage(int x, int y, Cores* coresptr)
     : Tile(x, y), cores(coresptr) {}

@@ -1,13 +1,14 @@
+#include <iostream>
+#include <memory>
 #include "../include/game.hpp"
-#include "../include/visual-effects/tracerEffect.hpp"
-#include "../include/visual-effects/visualEffect.hpp"
 #include "../include/creatures/minion.hpp"
 #include "../include/creatures/drone.hpp"
 #include "../include/creatures/tank.hpp"
+#include "../include/map/coreStorage.hpp"
 #include "../include/map/mapLoader.hpp"
-#include <iostream>
-#include <algorithm>
-#include <memory>
+#include "../include/map/openZone.hpp"
+#include "../include/towers/tower.hpp"
+#include "../include/visual-effects/visualEffect.hpp"
 
 Game::Game()
     : map(), pathfinder(map), player(), cores(24), tick(0), waveManager() {

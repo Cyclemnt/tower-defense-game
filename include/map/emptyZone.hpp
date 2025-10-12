@@ -1,6 +1,7 @@
 #ifndef EMPTY_ZONE_HPP
 #define EMPTY_ZONE_HPP
 
+#include <string>
 #include "tile.hpp"
 
 /**

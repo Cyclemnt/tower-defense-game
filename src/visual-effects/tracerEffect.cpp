@@ -1,12 +1,11 @@
-#include "../../include/visual-effects/tracerEffect.hpp"
 #include <SFML/System/Angle.hpp>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-#include <iostream>
+#include "../../include/visual-effects/tracerEffect.hpp"
 
 TracerEffect::TracerEffect(std::array<float, 2> start_, std::array<float, 2> end_)
-    : start(start_), end(end_), color(generateRandomColor()), tse(end, color) {
+    : start(start_[0], start_[1]), end(end_[0], end_[1]), color(generateRandomColor()), tse(end_, color) {
         jitterX = ((std::rand() % 200) * 0.001f - 0.1f);
         jitterY = ((std::rand() % 200) * 0.001f - 0.1f);
 }
@@ -20,10 +19,10 @@ void TracerEffect::update(float dt) {
 void TracerEffect::render(sf::RenderWindow& w, float tileSize) {
     tse.render(w, tileSize);
     if (age >= 0.05f) return;
-    sf::Vector2f startPoint = {(start[0] + 0.5f) * tileSize,
-                               (start[1] + 0.5f) * tileSize};
-    sf::Vector2f endPoint   = {(end[0] + 0.5f) * tileSize,
-                               (end[1] + 0.5f) * tileSize};
+    
+    sf::Vector2f offset = {0.5f, 0.5f};
+    sf::Vector2f startPoint = (start + offset) * tileSize;
+    sf::Vector2f endPoint   = (end + offset) * tileSize;
 
     sf::Vector2f diff = endPoint - startPoint;
     float length = std::sqrt(diff.x * diff.x + diff.y * diff.y);

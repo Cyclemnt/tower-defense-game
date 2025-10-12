@@ -1,8 +1,9 @@
 #ifndef PATHFINDER_HPP
 #define PATHFINDER_HPP
 
-#include "map/map.hpp"
 #include <vector>
+#include "map/map.hpp"
+class Tile;
 
 /// @brief A pathfinding utility that calculates the best path from a start tile to a goal tile using the A* algorithm.
 class Pathfinder {

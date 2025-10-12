@@ -1,5 +1,5 @@
-#include "../../include/resources/cores.hpp"
 #include <cmath>
+#include "../../include/resources/cores.hpp"
 
 Cores::Cores(int initial)
     : safe(initial), stolen(0), lost(0) {}

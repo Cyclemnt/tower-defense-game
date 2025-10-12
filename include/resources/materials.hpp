@@ -1,7 +1,6 @@
 #ifndef MATERIALS_HPP
 #define MATERIALS_HPP
 
-#include "../towers/tower.hpp"
 #include <array>
 
 /**

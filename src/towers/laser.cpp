@@ -1,7 +1,8 @@
-#include "../../include/towers/laser.hpp"
-#include "../../include/visual-effects/laserEffect.hpp"
-#include <iostream>
 #include <cmath>
+#include "../../include/towers/laser.hpp"
+#include "../../include/creatures/creature.hpp"
+#include "../../include/visual-effects/laserEffect.hpp"
+#include "../../include/visual-effects/visualEffect.hpp"
 
 Laser::Laser(int x_, int y_)
     : Tower(x_, y_, 0 /*au*/, 10 /*ag*/, 100 /*cu*/, 0.1f /*dmg*/, 3.0f /*rng*/, 15.0f /*rate*/),

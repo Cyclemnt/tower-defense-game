@@ -1,13 +1,12 @@
 #ifndef TOWER_HPP
 #define TOWER_HPP
 
-#include "creatures/creature.hpp"
-#include "map/tile.hpp"
-#include "visual-effects/visualEffect.hpp"
 #include <string>
 #include <vector>
 #include <array>
 #include <memory>
+class Creature;
+class VisualEffect;
 
 /**
  * @class Tower

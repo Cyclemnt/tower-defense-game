@@ -1,15 +1,16 @@
-#include "../include/map/mapLoader.hpp"
-#include "../include/map/path.hpp"
-#include "../include/map/openZone.hpp"
-#include "../include/map/entryZone.hpp"
-#include "../include/map/exitZone.hpp"
-#include "../include/map/coreStorage.hpp"
-#include "../include/map/emptyZone.hpp"
-
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <vector>
+#include "../include/map/mapLoader.hpp"
+#include "../../include/map/coreStorage.hpp"
+#include "../../include/map/emptyZone.hpp"
+#include "../../include/map/entryZone.hpp"
+#include "../../include/map/exitZone.hpp"
+#include "../../include/map/map.hpp"
+#include "../../include/map/openZone.hpp"
+#include "../../include/map/path.hpp"
+#include "../../include/resources/cores.hpp"
+
 
 void MapLoader::loadFromFile(Map& map, const std::string& filename, Cores* cores) {
     std::ifstream file(filename);

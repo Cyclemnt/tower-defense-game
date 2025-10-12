@@ -1,7 +1,11 @@
 #ifndef LASER_HPP
 #define LASER_HPP
 
+#include <string>
+#include <memory>
+#include <vector>
 #include "tower.hpp"
+class Creature;
 
 /**
  * @class Laser

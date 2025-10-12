@@ -1,8 +1,8 @@
-#include "../../include/towers/tower.hpp"
-#include "../../include/visual-effects/tracerEffect.hpp"
 #include <cmath>
-#include <algorithm>
-#include <iostream>
+#include "../../include/towers/tower.hpp"
+#include "../../include/creatures/creature.hpp"
+#include "../../include/visual-effects/tracerEffect.hpp"
+#include "../../include/visual-effects/visualEffect.hpp"
 
 Tower::Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate)
     : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), level(1), cooldown(0.0f), target(nullptr) {}

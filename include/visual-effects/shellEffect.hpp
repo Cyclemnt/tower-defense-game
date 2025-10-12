@@ -1,8 +1,9 @@
 #ifndef SHELL_EFFECT_HPP
 #define SHELL_EFFECT_HPP
 
+#include <array>
+#include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
-#include <cmath>
 
 class ShellEffect : public VisualEffect {
 private:
@@ -13,7 +14,7 @@ private:
     float radius = 0.1f;
 
 public:
-    ShellEffect(sf::Vector2f start, sf::Vector2f end, float spd);
+    ShellEffect(std::array<float, 2> start, std::array<float, 2> end, float spd);
     void update(float dt) override;
     void render(sf::RenderWindow& w, float tileSize);
     sf::Vector2f getPos() const;

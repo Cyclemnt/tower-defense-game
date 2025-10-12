@@ -1,4 +1,5 @@
 #include "../include/player.hpp"
+#include "../include/towers/tower.hpp"
 
 Player::Player()
     : materials() {}

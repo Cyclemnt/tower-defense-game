@@ -1,5 +1,5 @@
-#include "../../include/visual-effects/tracerSplashEffect.hpp"
 #include <cmath>
+#include "../../include/visual-effects/tracerSplashEffect.hpp"
 
 TracerSplashEffect::TracerSplashEffect(std::array<float,2> position, sf::Color c)
     : pos(position[0], position[1]), color(c) {

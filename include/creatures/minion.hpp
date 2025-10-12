@@ -1,6 +1,7 @@
 #ifndef MINION_HPP
 #define MINION_HPP
 
+#include <string>
 #include "creature.hpp"
 
 /**

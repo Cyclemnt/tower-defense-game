@@ -1,7 +1,11 @@
 #ifndef MORTAR_HPP
 #define MORTAR_HPP
 
+#include <string>
+#include <memory>
+#include <vector>
 #include "tower.hpp"
+class Creature;
 
 /// @struct Shell
 /// @brief Represents a projectile fired by the Mortar.

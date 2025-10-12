@@ -1,18 +1,10 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include "tile.hpp"
-#include "coreStorage.hpp"
-#include "emptyZone.hpp"
-#include "entryZone.hpp"
-#include "exitZone.hpp"
-#include "openZone.hpp"
-#include "path.hpp"
-#include "../creatures/creature.hpp"
-
-#include <array>
 #include <vector>
 #include <memory>
+class Tile;
+class CoreStorage;
 
 /**
  * @class Map

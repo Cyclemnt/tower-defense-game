@@ -1,8 +1,9 @@
-#include "../../include/towers/mortar.hpp"
-#include "../../include/visual-effects/shellEffect.hpp"
-#include "../../include/visual-effects/explosionEffect.hpp"
-#include <iostream>
 #include <cmath>
+#include "../../include/towers/mortar.hpp"
+#include "../../include/creatures/creature.hpp"
+#include "../../include/visual-effects/explosionEffect.hpp"
+#include "../../include/visual-effects/shellEffect.hpp"
+#include "../../include/visual-effects/visualEffect.hpp"
 
 Mortar::Mortar(int x_, int y_)
                  : Tower(x_, y_, 0 /*au*/, 0 /*ag*/, 75 /*cu*/, 48 /*dmg*/, 4.0f /*rng*/, 0.333333f /*rate*/) {}
@@ -44,7 +45,8 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
                 if (distSquare < s.explosionRadius * s.explosionRadius)
                     c->takeDamage(damage * damageCoefficient);
             }
-            visualEffects.push_back(std::make_unique<ExplosionEffect>(sf::Vector2f({s.posX, s.posY}))); // Create explosion effect
+            std::array<float, 2> pos = {s.posX, s.posY};
+            visualEffects.push_back(std::make_unique<ExplosionEffect>(pos)); // Create explosion effect
             it = shells.erase(it);  // Erease element and get new iterator
         } else {
             s.posX += (dx/dist) * s.speed * deltaTime;
@@ -58,7 +60,8 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
         // Create new projectile
         Shell s{(float)x, (float)y, target->getPosition()[0], target->getPosition()[1], damage};
         shells.push_back(s);
-        visualEffects.push_back(std::make_unique<ShellEffect>(sf::Vector2f(s.posX, s.posY), sf::Vector2f(s.targetX, s.targetY), s.speed));
+        std::array<float, 2> pos = {s.posX, s.posY}, target = {s.targetX, s.targetY};
+        visualEffects.push_back(std::make_unique<ShellEffect>(pos, target, s.speed));
         cooldown += 1.0f / (fireRate); // seconds
     }
 }

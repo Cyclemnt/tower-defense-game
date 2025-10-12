@@ -1,7 +1,12 @@
-#include "../../include/map/map.hpp"
-#include <stdexcept>
 #include <iostream>
 #include <algorithm>
+#include "../../include/map/coreStorage.hpp"
+#include "../../include/map/emptyZone.hpp"
+#include "../../include/map/entryZone.hpp"
+#include "../../include/map/exitZone.hpp"
+#include "../../include/map/map.hpp"
+#include "../../include/map/openZone.hpp"
+#include "../../include/map/path.hpp"
 
 Map::Map(int w, int h) : width(w), height(h) {
     grid.resize(height);

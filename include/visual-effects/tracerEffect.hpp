@@ -1,13 +1,14 @@
 #ifndef TRACER_EFFECT_HPP
 #define TRACER_EFFECT_HPP
 
+#include <array>
+#include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
 #include "tracerSplashEffect.hpp"
-#include <array>
 
 class TracerEffect : public VisualEffect {
 private:
-    std::array<float, 2> start, end;
+    sf::Vector2f start, end;
     sf::Color color;
     float lifetime = 0.6f;
     float age = 0.0f;

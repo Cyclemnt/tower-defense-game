@@ -1,7 +1,6 @@
+#include <cmath>
 #include "../include/waveManager.hpp"
 #include "../include/game.hpp"
-#include <iostream>
-#include <cmath>
 
 WaveManager::WaveManager() {
     // Default weights for [Minion, Drone, Tank]
@@ -30,8 +29,6 @@ void WaveManager::generateNextWave() {
 
     // currentIndex = 0;
     // timeSinceLastSpawn = 0.0f;
-
-    // std::cout << "wave " << currentWave << " (" << waveSize << " enemies)\n";
 }
 
 void WaveManager::update(float dt, Game& game) {

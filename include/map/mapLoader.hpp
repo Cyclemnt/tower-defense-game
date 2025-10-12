@@ -1,9 +1,8 @@
 #ifndef MAP_LOADER_HPP
 #define MAP_LOADER_HPP
 
-#include "map.hpp"
 #include <string>
-
+class Map;
 class Cores;
 
 class MapLoader {

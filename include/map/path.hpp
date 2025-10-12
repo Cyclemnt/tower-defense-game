@@ -1,6 +1,7 @@
 #ifndef PATH_HPP
 #define PATH_HPP
 
+#include <string>
 #include "tile.hpp"
 
 /**

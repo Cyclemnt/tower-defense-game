@@ -1,6 +1,7 @@
 #ifndef GATLING_HPP
 #define GATLING_HPP
 
+#include <string>
 #include "tower.hpp"
 
 /**

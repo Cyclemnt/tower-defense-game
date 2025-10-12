@@ -1,6 +1,7 @@
 #ifndef EXIT_ZONE_HPP
 #define EXIT_ZONE_HPP
 
+#include <string>
 #include "tile.hpp"
 
 /**

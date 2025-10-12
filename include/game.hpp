@@ -1,14 +1,16 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "map/map.hpp"
-#include "pathfinder.hpp"
-#include "towers/tower.hpp"
-#include "creatures/creature.hpp"
-#include "waveManager.hpp"
-#include "player.hpp"
-#include "visual-effects/visualEffect.hpp"
 #include <vector>
+#include <memory>
+#include "map/map.hpp"
+#include "resources/cores.hpp"
+#include "pathfinder.hpp"
+#include "player.hpp"
+#include "waveManager.hpp"
+class Creature;
+class Tower;
+class VisualEffect;
 
 enum class PlaceTowerResult {
     Success,

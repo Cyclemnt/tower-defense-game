@@ -1,6 +1,7 @@
 #ifndef OPEN_ZONE_HPP
 #define OPEN_ZONE_HPP
 
+#include <string>
 #include "tile.hpp"
 
 /**

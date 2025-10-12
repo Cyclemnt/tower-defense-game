@@ -6,6 +6,8 @@
 #include "../include/creatures/minion.hpp"
 #include "../include/creatures/drone.hpp"
 #include <memory>
+#include "../include/visual-effects/visualEffect.hpp"
+#include "../include/towers/tower.hpp"
 
 int main() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();

@@ -1,8 +1,9 @@
 #ifndef EXPLOSION_EFFECT_HPP
 #define EXPLOSION_EFFECT_HPP
 
+#include <array>
+#include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
-#include <cmath>
 
 class ExplosionEffect : public VisualEffect {
 private:
@@ -12,7 +13,7 @@ private:
     float maxRadius;
 
 public:
-    ExplosionEffect(sf::Vector2f position, float radius = 0.6f);
+    ExplosionEffect(std::array<float, 2> position, float radius = 0.6f);
     void update(float dt) override;
     void render(sf::RenderWindow& w, float tileSize) override;
 };

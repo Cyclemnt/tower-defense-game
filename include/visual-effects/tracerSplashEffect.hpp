@@ -1,10 +1,10 @@
 #ifndef TRACER_SPLASH_EFFECT_HPP
 #define TRACER_SPLASH_EFFECT_HPP
 
-#include "visualEffect.hpp"
-#include <SFML/Graphics.hpp>
+#include <array>
 #include <vector>
-#include <cstdint>
+#include <SFML/Graphics.hpp>
+#include "visualEffect.hpp"
 
 struct SimpleParticle {
     float vx, vy;   // direction unit
