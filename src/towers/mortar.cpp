@@ -60,7 +60,7 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
         // Create new projectile
         Shell s{(float)x, (float)y, target->getPosition()[0], target->getPosition()[1], damage};
         shells.push_back(s);
-        std::array<float, 2> pos = {s.posX, s.posY}, target = {s.targetX, s.targetY};
+        std::array<float, 2> pos = {s.posX, s.posY - 0.6f}, target = {s.targetX, s.targetY};
         visualEffects.push_back(std::make_unique<ShellEffect>(pos, target, s.speed));
         cooldown += 1.0f / (fireRate); // seconds
     }

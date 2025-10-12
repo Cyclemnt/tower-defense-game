@@ -63,13 +63,14 @@ void Renderer::render(const Game& game) {
     for (const auto& c : game.getCreatures())
         c->render(ctx);
 
-    // Draw visual effects
-    for (const auto& e : game.getVisualEffects())
-        e->render(window, tileSize);
 
     // Draw Towers
     for (const auto& t : game.getTowers())
         t->render(ctx);
+        
+    // Draw visual effects
+    for (const auto& e : game.getVisualEffects())
+        e->render(window, tileSize);
 
     // Draw HUD
     drawHUD(game);

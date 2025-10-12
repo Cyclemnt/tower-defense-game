@@ -20,9 +20,10 @@ void TracerEffect::render(sf::RenderWindow& w, float tileSize) {
     tse.render(w, tileSize);
     if (age >= 0.05f) return;
     
-    sf::Vector2f offset = {0.5f, 0.5f};
-    sf::Vector2f startPoint = (start + offset) * tileSize;
-    sf::Vector2f endPoint   = (end + offset) * tileSize;
+    sf::Vector2f startOffset = {0.5f, 0.3f};
+    sf::Vector2f endOffset = {0.5f, 0.5f};
+    sf::Vector2f startPoint = (start + startOffset) * tileSize;
+    sf::Vector2f endPoint   = (end + endOffset) * tileSize;
 
     sf::Vector2f diff = endPoint - startPoint;
     float length = std::sqrt(diff.x * diff.x + diff.y * diff.y);
