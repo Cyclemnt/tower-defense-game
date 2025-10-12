@@ -1,3 +1,4 @@
+#include <iostream>
 #include "../include/renderer.hpp"
 #include "../include/visual-effects/visualEffect.hpp"
 // MAP
