@@ -34,7 +34,7 @@ public:
 
     /// @brief Retrieves the name/type of this tile.
     /// @return A string representing the type of this tile ("OpenZone").
-    std::string getTypeName() const override;
+    std::string getTextureName() const override;
 
     /// @brief Checks if the open zone is currently occupied.
     /// @return true if the zone is occupied, false otherwise.

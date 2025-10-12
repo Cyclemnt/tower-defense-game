@@ -74,6 +74,8 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     
     OpenZone* openZoneTile = dynamic_cast<OpenZone*>(tile); // If buildable then the tile is an OpenZone
 
+    if (openZoneTile->isOccupied()) return PlaceTowerResult::Occupied;
+
     if (!player.canAfford(*tower))
         return PlaceTowerResult::NotAffordable;
 

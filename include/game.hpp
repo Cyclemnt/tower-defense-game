@@ -15,6 +15,7 @@ class VisualEffect;
 enum class PlaceTowerResult {
     Success,
     NotBuildable,
+    Occupied,
     NotAffordable
 };
 

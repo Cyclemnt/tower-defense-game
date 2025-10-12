@@ -9,4 +9,4 @@ bool Path::isWalkable() const { return true; }
 
 bool Path::isBuildable() const { return false; }
 
-std::string Path::getTypeName() const { return "Path"; }
+std::string Path::getTextureName() const { return "tile_path.png"; }

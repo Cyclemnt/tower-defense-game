@@ -30,7 +30,7 @@ public:
 
     /// @brief Retrieves the name/type of this tile.
     /// @return A string representing the type of this tile ("ExitZone").
-    std::string getTypeName() const override;
+    std::string getTextureName() const override;
 };
 
 #endif // EXIT_ZONE_HPP

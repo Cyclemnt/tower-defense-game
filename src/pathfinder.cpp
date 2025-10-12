@@ -50,7 +50,7 @@ std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal, bool ignoreTowe
         for (Tile* neighbor : map.getNeighbors(current->tile)) {
             // If the neighbor is not walkable, skip it.
             // Or, if ignoreTowers == true, accept OpenZones regardless of occupation.
-            if (!(neighbor->isWalkable() || (ignoreTowers && neighbor->getTypeName() == "OpenZone"))) continue;
+            if (!(neighbor->isWalkable() || (ignoreTowers && neighbor->isBuildable()))) continue;
 
             // Calculate the new gCost for this neighbor (gCost of the parent + 1 for the move).
             int newG = current->gCost + 1;

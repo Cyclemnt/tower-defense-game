@@ -31,7 +31,7 @@ public:
 
     /// @brief Retrieves the name/type of this tile.
     /// @return A string representing the type of this tile ("Path").
-    std::string getTypeName() const override;
+    std::string getTextureName() const override;
 };
 
 #endif // PATH_HPP

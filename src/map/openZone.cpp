@@ -7,9 +7,9 @@ OpenZone::~OpenZone() {}
 
 bool OpenZone::isWalkable() const { return !occupied; }
 
-bool OpenZone::isBuildable() const { return !occupied; }
+bool OpenZone::isBuildable() const { return true; }
 
-std::string OpenZone::getTypeName() const { return "OpenZone"; }
+std::string OpenZone::getTextureName() const { return "tile_open.png"; }
 
 bool OpenZone::isOccupied() const { return occupied; }
 

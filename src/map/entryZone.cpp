@@ -9,4 +9,4 @@ bool EntryZone::isWalkable() const { return true; }
 
 bool EntryZone::isBuildable() const { return false; }
 
-std::string EntryZone::getTypeName() const { return "EntryZone"; }
+std::string EntryZone::getTextureName() const { return "tile_entry.png"; }

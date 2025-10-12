@@ -6,6 +6,7 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <string>
 #include "game.hpp"
+#include "renderer/renderContext.hpp"
 
 /**
  * @class Renderer
@@ -18,6 +19,7 @@ class Renderer {
 private:
     sf::RenderWindow& window;   ///< Main SFML render window
     tgui::Gui& gui;             ///< GUI manager (TGUI)
+    RenderContext ctx;
 
     float tileSize = 64.0f;         ///< Size of each tile (in pixels)
     float scaleFactor = 1.0f;       ///< Ratio between window size and map size (no distortion)
@@ -31,28 +33,20 @@ private:
     tgui::Panel::Ptr pausePanel;
     tgui::Panel::Ptr towerMenu;
 
-    /// @brief Load a texture from the "assets/" folder if not already cached.
-    sf::Texture& getTexture(const std::string& filename);
-
     /// @brief Convert pixel coordinates to tile coordinates.
     sf::Vector2i screenToTile(int mouseX, int mouseY) const;
 
-    const uint32_t emptyTileSeed = 0xA1B2C3D5; ///< Seed used for deterministic texture generation
-    /// @brief Pseudo-random generator from tile coordinates
-    uint32_t pseudoRandomFromCoords(int x, int y) const;
-    /// @brief Deterministically selects an empty-tile texture based on coordinates
-    const sf::Texture& getRandomEmptyTileTexture(int x, int y);
-
 public:
     Renderer(sf::RenderWindow& win, tgui::Gui& g);
+
+    static const sf::Texture& getTextureStatic(const std::string& name);
 
     void computeScaling(const Game& game);
 
     /// @brief Draws the full game scene.
     void render(const Game& game);
 
-    /// @brief Draws the map.
-    void drawMap(const Game& game);
+    void drawTileHighlight(const Game& game);
 
     /// @brief Draws the creatures.
     void drawCreatures(const Game& game);

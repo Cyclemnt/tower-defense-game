@@ -5,6 +5,7 @@
 #include <memory>
 class Tile;
 class CoreStorage;
+class RenderContext;
 
 /**
  * @class Map
@@ -85,6 +86,9 @@ public:
     /// @details This method outputs a visual representation of the map, 
     /// where different types of tiles are displayed using specific characters.
     void printMap() const;
+
+    // Map.hpp
+    void render(RenderContext& ctx) const;
 };
 
 #endif // MAP_HPP

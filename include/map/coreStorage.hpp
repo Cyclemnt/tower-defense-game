@@ -4,6 +4,7 @@
 #include <string>
 #include "tile.hpp"
 class Cores;
+class RenderContext;
 
 /**
  * @class CoreStorage
@@ -36,7 +37,7 @@ public:
 
     /// @brief Retrieves the name/type of this tile.
     /// @return A string representing the type of this tile ("CoreStorage").
-    std::string getTypeName() const override;
+    std::string getTextureName() const override;
 
     /// @brief Returns the current number of cores stored on this tile.
     /// @return The number of cores in storage.
@@ -50,6 +51,8 @@ public:
     /// @brief Deposits a specified number of cores back into the Game's cores.
     /// @param n The number of cores to deposit.
     void depositCores(int n);
+
+    void render(const RenderContext& ctx) const override;
 };
 
 #endif // CORE_STORAGE_HPP

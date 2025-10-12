@@ -12,21 +12,7 @@
 #include "../include/towers/laser.hpp"
 
 Renderer::Renderer(sf::RenderWindow& win, tgui::Gui& g)
-    : window(win), gui(g) {}
-
-sf::Texture& Renderer::getTexture(const std::string& filename) {
-    if (textures.find(filename) == textures.end()) {
-        sf::Texture tex;
-        if (!tex.loadFromFile("../assets/" + filename)) {
-            std::cerr << "[Renderer] Missing texture: " << filename << std::endl;
-            if (!tex.loadFromFile("../assets/missing_texture.png"))
-                std::cerr << "Failed to load missing_texture.png as fallback.\n";
-        }
-        tex.setSmooth(true);
-        textures.insert({filename, std::move(tex)});
-    }
-    return textures.at(filename);
-}
+    : window(win), gui(g), ctx(window, *this, tileSize, 0) {}
 
 sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
     float localX = (mouseX) / (tileSize);
@@ -34,37 +20,19 @@ sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
     return { static_cast<int>(localX), static_cast<int>(localY) };
 }
 
-uint32_t Renderer::pseudoRandomFromCoords(int x, int y) const {
-    // Combine data with multiplication and bit shift
-    uint32_t combined = (x * 73856093U) ^ (y * 19349663U);
-    combined += emptyTileSeed & 0xFFFFFFFF; // Add seed
-
-    return combined;
-}
-
-const sf::Texture& Renderer::getRandomEmptyTileTexture(int x, int y) {
-    uint32_t rnd = pseudoRandomFromCoords(x, y) % 100;
-
-    // Probability distribution:
-    if (rnd < 70u)
-        return getTexture("tile_empty_1.png");
-    else if (rnd < 72u)
-        return getTexture("tile_empty_2.png");
-    else if (rnd < 74u)
-        return getTexture("tile_empty_4.png");
-    else if (rnd < 76u)
-        return getTexture("tile_empty_5.png");
-    else if (rnd < 78u)
-        return getTexture("tile_empty_6.png");
-    else if (rnd < 80u)
-        return getTexture("tile_empty_7.png");
-    else if (rnd < 90u)
-        return getTexture("tile_empty_3.png");
-    else
-        return getTexture("tile_empty_0.png");
-    if (rnd < 70) return getTexture("tile_empty_1.png");
-    else if (rnd < 90) return getTexture("tile_empty_1.png");
-    else return getTexture("tile_empty_0.png");
+const sf::Texture& Renderer::getTextureStatic(const std::string& filename) {
+    static std::unordered_map<std::string, sf::Texture> cache;
+    if (cache.find(filename) == cache.end()) {
+        sf::Texture tex;
+        if (!tex.loadFromFile("../assets/" + filename)) {
+            std::cerr << "[Renderer] Missing texture: " << filename << std::endl;
+            if (!tex.loadFromFile("../assets/missing_texture.png"))
+                std::cerr << "Failed to load missing_texture.png as fallback.\n";
+        }
+        tex.setSmooth(true);
+        cache[filename] = std::move(tex);
+    }
+    return cache.at(filename);
 }
 
 void Renderer::computeScaling(const Game& game) {
@@ -81,13 +49,19 @@ void Renderer::computeScaling(const Game& game) {
     scaleFactor = std::min(scaleX, scaleY);
     
     tileSize *= scaleFactor;
+    ctx.tileSize = tileSize;
 }
 
 void Renderer::render(const Game& game) {
+    ctx.tick = game.getTick();
     // --- Draw map ---
-    drawMap(game);
+    game.getMap().render(ctx); 
+    // --- Highlight tile under mouse ---
+    drawTileHighlight(game);
     // --- Creatures ---
-    drawCreatures(game);
+    //for (const auto& c : game.getCreatures())
+    //c->render(ctx);
+
     // --- Visual effects ---
     drawVisualEffects(game);
     // --- Towers ---
@@ -96,48 +70,8 @@ void Renderer::render(const Game& game) {
     drawHUD(game);
 }
 
-void Renderer::drawMap(const Game& game) {
+void Renderer::drawTileHighlight(const Game& game) {
     const Map& map = game.getMap();
-    for (int y = 0; y < map.getHeight(); ++y) {
-        for (int x = 0; x < map.getWidth(); ++x) {
-            Tile* tile = map.getTile(x, y);
-            const sf::Texture* tex = nullptr;
-
-            if (dynamic_cast<Path*>(tile))
-                tex = &getTexture("tile_path.png");
-            else if (dynamic_cast<OpenZone*>(tile))
-                tex = &getTexture("tile_open.png");
-            else if (dynamic_cast<EntryZone*>(tile))
-                tex = &getTexture("tile_entry.png");
-            else if (dynamic_cast<ExitZone*>(tile))
-                tex = &getTexture("tile_exit.png");
-            else if (CoreStorage* core = dynamic_cast<CoreStorage*>(tile)) {
-                float ratio = 1.0f; // default value
-                Cores cores = game.getCores();
-                int safeCores = cores.getSafe();
-                int maxCores = safeCores + cores.getStolen() + cores.getLost();
-                if (maxCores > 0)
-                    ratio = static_cast<float>(safeCores) / maxCores;
-
-                if (ratio > 0.7f)
-                    tex = &getTexture("tile_core_0.png");
-                else if (ratio > 0.3f)
-                    tex = &getTexture("tile_core_1.png");
-                else
-                    tex = &getTexture("tile_core_2.png");
-            }
-            else
-                tex = &getRandomEmptyTileTexture(x, y);
-
-            sf::Sprite sprite(*tex);
-            sprite.setPosition({x * tileSize, y * tileSize});
-            const sf::Vector2<unsigned int>& sz = tex->getSize();
-            sprite.setScale({(tileSize / sz.x), (tileSize / sz.x)});
-            window.draw(sprite);
-        }
-    }
-
-    // --- Highlight tile under mouse ---
     sf::Vector2i mouse = sf::Mouse::getPosition(window);
     sf::Vector2i tilePos = screenToTile(mouse.x, mouse.y);
     if (tilePos.x >= 0 && tilePos.x < map.getWidth() &&
@@ -158,7 +92,7 @@ void Renderer::drawCreatures(const Game& game) {
         std::string name = c->getTypeName();
         std::transform(name.begin(), name.end(), name.begin(), ::tolower);
         std::string filename = "creature_" + name + "_" + std::to_string(frame) + ".png";
-        const sf::Texture& tex = getTexture(filename);
+        const sf::Texture& tex = getTextureStatic(filename);
         sf::Sprite sprite(tex);
         sprite.setPosition({c->getPosition()[0] * tileSize, c->getPosition()[1] * tileSize});
         const sf::Vector2<unsigned int>& sz = tex.getSize();
@@ -229,7 +163,7 @@ void Renderer::drawTowers(const Game& game) {
         std::string name = t->getTypeName();
         std::transform(name.begin(), name.end(), name.begin(), ::tolower);
         std::string filename = "tower_" + name + "_0" + ".png";
-        const sf::Texture& tex = getTexture(filename);
+        const sf::Texture& tex = getTextureStatic(filename);
         sf::Sprite sprite(tex);
         sprite.setPosition({t->getX() * tileSize, t->getY() * tileSize});
         const sf::Vector2<unsigned int>& sz = tex.getSize();
@@ -302,8 +236,8 @@ void Renderer::drawHUD(const Game& game) {
 
     for (auto& res : displays) {
         // Draw icon
-        sf::Sprite icon(getTexture(res.filename));
-        const auto& texSize = getTexture(res.filename).getSize();
+        sf::Sprite icon(getTextureStatic(res.filename));
+        const auto& texSize = getTextureStatic(res.filename).getSize();
         icon.setScale(sf::Vector2f(iconSize / static_cast<float>(texSize.x),
                                    iconSize / static_cast<float>(texSize.y)));
         icon.setPosition({startX, res.yOffset});
@@ -406,6 +340,9 @@ void Renderer::openTowerMenu(sf::Vector2i tilePos, Game& game) {
                     break;
                 case PlaceTowerResult::NotAffordable:
                     showError("Not enough materials!");
+                    break;
+                case PlaceTowerResult::Occupied:
+                    showError("This tile is occupied!");
                     break;
                 case PlaceTowerResult::Success:
                     // TODO: could have visual effect of construction

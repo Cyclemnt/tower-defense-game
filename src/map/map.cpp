@@ -7,6 +7,7 @@
 #include "../../include/map/map.hpp"
 #include "../../include/map/openZone.hpp"
 #include "../../include/map/path.hpp"
+#include "../../include/renderer/renderContext.hpp"
 
 Map::Map(int w, int h) : width(w), height(h) {
     grid.resize(height);
@@ -119,4 +120,11 @@ void Map::printMap() const {
         }
         std::cout << "\n";
     }
+}
+
+void Map::render(RenderContext& ctx) const {
+    for (int y = 0; y < height; ++y)
+        for (int x = 0; x < width; ++x)
+            if (Tile* t = grid[y][x].get())
+                t->render(ctx);
 }
