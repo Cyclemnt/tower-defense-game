@@ -18,7 +18,7 @@ public:
     ~Tank();
 
     /// @return The type name of this creature ("Tank").
-    std::string getTypeName() const override;
+    std::string getTextureName(int frame) const override;
 };
 
 #endif // TANK_HPP

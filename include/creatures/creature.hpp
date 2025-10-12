@@ -5,6 +5,7 @@
 #include <array>
 #include <vector>
 class Tile;
+class RenderContext;
 
 enum class CreatureType {
     Minion,
@@ -138,11 +139,10 @@ public:
     /// @brief Leaves the map.
     virtual void leave();
 
-    // --- Debug ---
+    virtual std::string getTextureName(int frame) const = 0;
 
-    /// @brief Gets the name or type of the creature (for debugging purposes).
-    /// @return A string representing the type or name of the creature.
-    virtual std::string getTypeName() const = 0;
+    virtual void render(RenderContext& ctx) const;
+    virtual void drawHealthBar(RenderContext& ctx) const;
 };
 
 #endif // CREATURE_HPP

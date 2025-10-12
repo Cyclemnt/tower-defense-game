@@ -5,4 +5,6 @@ Drone::Drone()
 
 Drone::~Drone() {}
 
-std::string Drone::getTypeName() const { return "Drone"; }
+std::string Drone::getTextureName(int frame) const {
+    return "creature_drone_" + std::to_string(frame) + ".png";
+}

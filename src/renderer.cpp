@@ -54,19 +54,17 @@ void Renderer::computeScaling(const Game& game) {
 
 void Renderer::render(const Game& game) {
     ctx.tick = game.getTick();
-    // --- Draw map ---
-    game.getMap().render(ctx); 
-    // --- Highlight tile under mouse ---
-    drawTileHighlight(game);
-    // --- Creatures ---
-    //for (const auto& c : game.getCreatures())
-    //c->render(ctx);
-
-    // --- Visual effects ---
-    drawVisualEffects(game);
-    // --- Towers ---
+    game.getMap().render(ctx); // Draw map
+    drawTileHighlight(game); // Highlight tiles
+    // Draw creatures
+    for (const auto& c : game.getCreatures())
+        c->render(ctx);
+    // Draw visual effects
+    for (const auto& e : game.getVisualEffects())
+        e->render(window, tileSize);
+    // Draw Towers
     drawTowers(game);
-    // --- UI ---
+    // Draw HUD
     drawHUD(game);
 }
 
@@ -84,77 +82,6 @@ void Renderer::drawTileHighlight(const Game& game) {
             window.draw(highlight);
         }
     }
-}
-
-void Renderer::drawCreatures(const Game& game) {
-    int frame = (game.getTick() / 8) % 4;
-    for (const auto& c : game.getCreatures()) {
-        std::string name = c->getTypeName();
-        std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-        std::string filename = "creature_" + name + "_" + std::to_string(frame) + ".png";
-        const sf::Texture& tex = getTextureStatic(filename);
-        sf::Sprite sprite(tex);
-        sprite.setPosition({c->getPosition()[0] * tileSize, c->getPosition()[1] * tileSize});
-        const sf::Vector2<unsigned int>& sz = tex.getSize();
-        sprite.setScale({(tileSize / sz.x), (tileSize / sz.x)});
-        window.draw(sprite);
-
-        // --- Display Health and Shield ---
-        float health = c->getHealth();
-        float shield = c->getShield();
-        float baseHealth = c->getBaseHealth();
-        float baseShield = c->getBaseShield();
-
-        float hpRatio = health / baseHealth;
-        float shieldRatio = shield / baseShield;
-
-        // Bar dimensions and positions
-        float barWidth = tileSize * 0.5f;
-        float barHeight = tileSize * 0.05f;
-        float x = c->getPosition()[0] * tileSize + (tileSize - barWidth) * 0.5f;
-        float baseY = c->getPosition()[1] * tileSize - barHeight - 4.0f;
-
-        // Shield bar 
-        if (baseShield > 0.0f) {
-            float y = baseY - (barHeight + 2.0f); // above health bar
-
-            // Background
-            sf::RectangleShape backBar(sf::Vector2f(barWidth, barHeight));
-            backBar.setFillColor(sf::Color(40, 40, 40));
-            backBar.setPosition({x, y});
-            window.draw(backBar);
-
-            // Current shield
-            sf::RectangleShape shieldBar(sf::Vector2f(barWidth * shieldRatio, barHeight));
-            shieldBar.setFillColor(sf::Color(100, 150, 255, 200)); // light blue
-            shieldBar.setPosition({x, y});
-            window.draw(shieldBar);
-        }
-        // Health bar
-        {
-            float y = baseY;
-
-            // Background
-            sf::RectangleShape backBar(sf::Vector2f(barWidth, barHeight));
-            backBar.setFillColor(sf::Color(40, 40, 40));
-            backBar.setPosition({x, y});
-            window.draw(backBar);
-
-            // Color based on ratio
-            sf::Color lifeColor(255 * (1 - hpRatio), 255 * hpRatio, 0);
-
-            // Current health
-            sf::RectangleShape hpBar(sf::Vector2f(barWidth * hpRatio, barHeight));
-            hpBar.setFillColor(lifeColor);
-            hpBar.setPosition({x, y});
-            window.draw(hpBar);
-        }
-    }
-}
-
-void Renderer::drawVisualEffects(const Game& game) {
-    for (const auto& e : game.getVisualEffects())
-        e->render(window, tileSize);
 }
 
 void Renderer::drawTowers(const Game& game) {

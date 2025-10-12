@@ -5,4 +5,6 @@ Tank::Tank()
 
 Tank::~Tank() {}
 
-std::string Tank::getTypeName() const { return "Tank"; }
+std::string Tank::getTextureName(int frame) const {
+    return "creature_tank_" + std::to_string(frame) + ".png";
+}

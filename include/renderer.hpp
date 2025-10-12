@@ -48,12 +48,6 @@ public:
 
     void drawTileHighlight(const Game& game);
 
-    /// @brief Draws the creatures.
-    void drawCreatures(const Game& game);
-
-    /// @brief Draws the visual effects.
-    void drawVisualEffects(const Game& game);
-
     /// @brief Draws the towers.
     void drawTowers(const Game& game);
 

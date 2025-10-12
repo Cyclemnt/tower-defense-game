@@ -17,7 +17,7 @@ public:
     ~Drone();
 
     /// @return The type name of this creature ("Drone").
-    std::string getTypeName() const override;
+    std::string getTextureName(int frame) const override;
 };
 
 #endif // DRONE_HPP

@@ -3,7 +3,8 @@
 #include "../../include/creatures/creature.hpp"
 #include "../../include/map/coreStorage.hpp"
 #include "../../include/map/exitZone.hpp"
-
+#include "../../include/renderer.hpp"
+#include "../../include/renderer/renderContext.hpp"
 
 Creature::Creature(float hp, float sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)
     : health(hp), baseHealth(hp), shield(sh), baseShield(sh), speed(spd), coresCapacity(coresCapacity_), au(au_), ag(ag_), cu(cu_), coresCarried(0),
@@ -137,4 +138,61 @@ void Creature::leave() {
     ag = 0;
     cu = 0;
     alive = false;
+}
+
+void Creature::render(RenderContext& ctx) const {
+    auto& window = ctx.window;
+    int frame = (ctx.tick / 8) % 4;
+
+    std::string filename = getTextureName(frame);
+    const sf::Texture& tex = Renderer::getTextureStatic(filename);
+
+    sf::Sprite sprite(tex);
+    sprite.setPosition({posX * ctx.tileSize, posY * ctx.tileSize});
+    const auto& sz = tex.getSize();
+    sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
+    window.draw(sprite);
+
+    drawHealthBar(ctx);
+}
+
+void Creature::drawHealthBar(RenderContext& ctx) const {
+    auto& window = ctx.window;
+
+    float hpRatio = health / baseHealth;
+    float shieldRatio = baseShield > 0.0f ? shield / baseShield : 0.0f;
+
+    const float barWidth = ctx.tileSize * 0.5f;
+    const float barHeight = ctx.tileSize * 0.05f;
+    const float x = posX * ctx.tileSize + (ctx.tileSize - barWidth) * 0.5f;
+    const float baseY = posY * ctx.tileSize - barHeight - 4.0f;
+
+    // Shield bar
+    if (baseShield > 0.0f) {
+        float y = baseY - (barHeight + 2.0f);
+        sf::RectangleShape backBar({barWidth, barHeight});
+        backBar.setFillColor(sf::Color(40, 40, 40));
+        backBar.setPosition({x, y});
+        window.draw(backBar);
+
+        sf::RectangleShape shieldBar({barWidth * shieldRatio, barHeight});
+        shieldBar.setFillColor(sf::Color(100, 150, 255, 200));
+        shieldBar.setPosition({x, y});
+        window.draw(shieldBar);
+    }
+
+    // Health bar
+    {
+        float y = baseY;
+        sf::RectangleShape backBar({barWidth, barHeight});
+        backBar.setFillColor(sf::Color(40, 40, 40));
+        backBar.setPosition({x, y});
+        window.draw(backBar);
+
+        sf::Color lifeColor(255 * (1 - hpRatio), 255 * hpRatio, 0);
+        sf::RectangleShape hpBar({barWidth * hpRatio, barHeight});
+        hpBar.setFillColor(lifeColor);
+        hpBar.setPosition({x, y});
+        window.draw(hpBar);
+    }
 }

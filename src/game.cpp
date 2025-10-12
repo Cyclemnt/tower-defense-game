@@ -159,21 +159,6 @@ waveManager.update(deltaTime, *this);
                         visualEffects.end());
 }
 
-void Game::render() const {
-    std::cout << "Tick: " << tick << "\n";
-    //map.printMap();
-
-    for (const auto& c : creatures) {
-        if (c->isAlive()) {
-            std::array<float, 2> pos = c->getPosition();
-            std::string name = c->getTypeName();
-            std::cout << name <<  " at (" << pos[0] << "," << pos[1]
-                        << ") HP=" << c->getHealth()
-                        << " Shield=" << c->getShield() << "\n";
-        }
-    }
-}
-
 bool Game::isGameOver() const {
     bool gameOver = cores.getSafe() == 0 && cores.getStolen() == 0;
     return gameOver;

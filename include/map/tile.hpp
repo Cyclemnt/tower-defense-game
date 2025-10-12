@@ -2,7 +2,7 @@
 #define TILE_HPP
 
 #include <string>
-#include "../renderer/renderable.hpp"
+class RenderContext;
 
 /**
  * @class Tile
@@ -13,7 +13,7 @@
  * Derived classes include EmptyZone, Path, OpenZone, EntryZone, ExitZone,
  * and CoreStorage.
  */
-class Tile : public IRenderable {
+class Tile {
 private:
     int x;  ///< The x-coordinate (column) of the tile.
     int y;  ///< The y-coordinate (row) of the tile.
@@ -46,8 +46,7 @@ public:
     /// @brief Retrieves the name/type of the tile.
     /// @return A string representing the type of this tile.
     virtual std::string getTextureName() const = 0;
-
-    void render(const RenderContext& ctx) const override;
+    virtual void render(const RenderContext& ctx) const;
 };
 
 #endif // TILE_HPP

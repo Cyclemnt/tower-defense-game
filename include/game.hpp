@@ -82,10 +82,6 @@ public:
     /// @param deltaTime Time elapsed since last update.
     void update(float deltaTime);
 
-    /// @brief Render the current state of the game to the console.
-    /// Displays the map grid and entity states for debugging purposes.
-    void render() const;
-
     /// @brief Check if the game is over.
     /// The game ends if all the cores are permanently lost.
     /// @return true if the game is over.

@@ -5,4 +5,6 @@ Minion::Minion()
 
 Minion::~Minion() {}
 
-std::string Minion::getTypeName() const { return "Minion"; }
+std::string Minion::getTextureName(int frame) const {
+    return "creature_minion_" + std::to_string(frame) + ".png";
+}

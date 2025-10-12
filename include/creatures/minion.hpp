@@ -17,7 +17,7 @@ public:
     ~Minion();
 
     /// @return The type name of this creature ("Minion").
-    std::string getTypeName() const override;
+    std::string getTextureName(int frame) const override;
 };
 
 #endif // MINION_HPP
