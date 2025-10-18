@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../include/renderer.hpp"
+#include "../include/renderer/renderer.hpp"
 #include "../include/visual-effects/visualEffect.hpp"
 // MAP
 #include "../include/map/entryZone.hpp"

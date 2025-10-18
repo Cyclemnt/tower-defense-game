@@ -1,6 +1,6 @@
 #include "../../include/map/coreStorage.hpp"
 #include "../../include/resources/cores.hpp"
-#include "../../include/renderer.hpp"
+#include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
 CoreStorage::CoreStorage(int x, int y, Cores* coresptr)

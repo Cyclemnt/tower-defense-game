@@ -1,7 +1,7 @@
 #include <cmath>
 #include "../../include/towers/tower.hpp"
 #include "../../include/creatures/creature.hpp"
-#include "../../include/renderer.hpp"
+#include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 #include "../../include/visual-effects/tracerEffect.hpp"
 #include "../../include/visual-effects/visualEffect.hpp"

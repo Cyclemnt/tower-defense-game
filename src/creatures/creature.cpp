@@ -3,7 +3,7 @@
 #include "../../include/creatures/creature.hpp"
 #include "../../include/map/coreStorage.hpp"
 #include "../../include/map/exitZone.hpp"
-#include "../../include/renderer.hpp"
+#include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
 Creature::Creature(float hp, float sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)

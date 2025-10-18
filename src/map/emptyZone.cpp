@@ -1,5 +1,5 @@
 #include "../../include/map/emptyZone.hpp"
-#include "../../include/renderer.hpp"
+#include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
 EmptyZone::EmptyZone(int x, int y)

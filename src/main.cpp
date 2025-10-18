@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
 #include "../include/game.hpp"
-#include "../include/renderer.hpp"
+#include "../include/renderer/renderer.hpp"
 #include "../include/visual-effects/visualEffect.hpp"
 #include "../include/towers/tower.hpp"
 

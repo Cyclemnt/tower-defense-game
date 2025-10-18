@@ -1,5 +1,5 @@
 #include "../../include/map/tile.hpp"
-#include "../../include/renderer.hpp"
+#include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
 Tile::Tile(int x_, int y_)
