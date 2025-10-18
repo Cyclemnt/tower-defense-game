@@ -47,6 +47,7 @@ public:
     /// @return A string representing the type of this tile.
     virtual std::string getTextureName() const = 0;
     virtual void render(const RenderContext& ctx) const;
+    void setCoords(int x_, int y_);
 };
 
 #endif // TILE_HPP

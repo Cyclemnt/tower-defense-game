@@ -40,12 +40,10 @@ void Renderer::computeScaling(const Game& game) {
     const Map& map = game.getMap();
     const int mapWidth = map.getWidth();
     const int mapHeight = map.getHeight();
-
     sf::Vector2u winSize = ctx.window.getSize();
 
     float scaleX = static_cast<float>(winSize.x) / (mapWidth * ctx.tileSize);
     float scaleY = static_cast<float>(winSize.y) / (mapHeight * ctx.tileSize);
-
     // Choose lowest factor to keep proportions (square tiles)
     float scaleFactor = std::min(scaleX, scaleY);
     
@@ -54,13 +52,22 @@ void Renderer::computeScaling(const Game& game) {
     // Compute offset to center map into the window
     float mapWidthPx  = mapWidth  * ctx.tileSize;
     float mapHeightPx = mapHeight * ctx.tileSize;
-
     ctx.offset.x = (winSize.x - mapWidthPx) * 0.5f;
     ctx.offset.y = (winSize.y - mapHeightPx) * 0.5f;
+
+    // Set SFML view to window size
+    ctx.window.setView(sf::View(sf::FloatRect({0.0f, 0.0f}, {static_cast<float>(winSize.x), static_cast<float>(winSize.y)})));
 }
 
 void Renderer::render(const Game& game) {
     ctx.tick = game.getTick();
+
+    // Compute scaling if window size has changed
+    sf::Vector2u winSize = ctx.window.getSize();
+    if (winSize != ctx.lastWinSize) {
+        computeScaling(game);
+        ctx.lastWinSize = winSize;
+    }
 
     // Draw map
     game.getMap().render(ctx);

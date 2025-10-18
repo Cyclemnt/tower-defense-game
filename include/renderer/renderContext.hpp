@@ -8,6 +8,7 @@ class Renderer;
 class RenderContext {
 public:
     sf::RenderWindow& window;
+    sf::Vector2u lastWinSize;  ///< Stores window size to detect changes
     Renderer& renderer;
     float tileSize;
     sf::Vector2f offset;

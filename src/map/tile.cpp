@@ -19,3 +19,8 @@ void Tile::render(const RenderContext& ctx) const {
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.y});
     ctx.window.draw(sprite);
 }
+
+void Tile::setCoords(int x_, int y_) {
+    x = x_;
+    y = y_;
+}
