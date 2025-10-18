@@ -1,5 +1,6 @@
 #include <cstdint>
 #include "../../include/visual-effects/explosionEffect.hpp"
+#include "../../include/renderer/renderContext.hpp"
 
 ExplosionEffect::ExplosionEffect(std::array<float, 2> position, float radius)
         : pos(position[0], position[1]), maxRadius(radius) {}
@@ -9,7 +10,10 @@ void ExplosionEffect::update(float dt) {
     if (age >= lifetime) die();
 }
 
-void ExplosionEffect::render(sf::RenderWindow& w, float tileSize) {
+void ExplosionEffect::render(RenderContext& ctx) {
+    auto& w = ctx.window;
+    auto& tileSize = ctx.tileSize;
+
     float t = age / lifetime; // 0..1
     float r = maxRadius * (1.0f - (1.0f - t) * (1.0f - t)); // ease-out
     float px = (pos.x + 0.5f) * tileSize;

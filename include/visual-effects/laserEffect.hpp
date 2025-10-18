@@ -4,6 +4,7 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
+class RenderContext;
 
 class LaserEffect : public VisualEffect {
 private:
@@ -15,7 +16,7 @@ private:
 public:
     LaserEffect(std::array<float, 2> s, std::array<float, 2> e);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize);
+    void render(RenderContext& ctx);
 };
 
 

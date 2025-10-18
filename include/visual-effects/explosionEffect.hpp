@@ -4,6 +4,7 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
+class RenderContext;
 
 class ExplosionEffect : public VisualEffect {
 private:
@@ -15,7 +16,7 @@ private:
 public:
     ExplosionEffect(std::array<float, 2> position, float radius = 0.6f);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize) override;
+    void render(RenderContext& ctx) override;
 };
 
 #endif // EXPLOSION_EFFECT_HPP

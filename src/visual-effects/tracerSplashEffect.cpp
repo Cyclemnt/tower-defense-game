@@ -1,5 +1,6 @@
 #include <cmath>
 #include "../../include/visual-effects/tracerSplashEffect.hpp"
+#include "../../include/renderer/renderContext.hpp"
 
 TracerSplashEffect::TracerSplashEffect(std::array<float,2> position, sf::Color c)
     : pos(position[0], position[1]), color(c) {
@@ -20,7 +21,10 @@ void TracerSplashEffect::update(float dt) {
     if (age >= lifetime) die();
 }
 
-void TracerSplashEffect::render(sf::RenderWindow& w, float tileSize) {
+void TracerSplashEffect::render(RenderContext& ctx) {
+    auto& w = ctx.window;
+    auto& tileSize = ctx.tileSize;
+    
     float baseX = (pos.x + 0.5f) * tileSize;
     float baseY = (pos.y + 0.5f) * tileSize;
     for (const auto &p : parts) {

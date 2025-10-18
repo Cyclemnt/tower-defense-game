@@ -4,6 +4,7 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
+class RenderContext;
 
 class ShellEffect : public VisualEffect {
 private:
@@ -16,7 +17,7 @@ private:
 public:
     ShellEffect(std::array<float, 2> start, std::array<float, 2> end, float spd);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize);
+    void render(RenderContext& ctx);
     sf::Vector2f getPos() const;
 };
 

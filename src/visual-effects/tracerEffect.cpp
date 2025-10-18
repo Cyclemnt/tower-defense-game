@@ -3,6 +3,7 @@
 #include <ctime>
 #include <cmath>
 #include "../../include/visual-effects/tracerEffect.hpp"
+#include "../../include/renderer/renderContext.hpp"
 
 TracerEffect::TracerEffect(std::array<float, 2> start_, std::array<float, 2> end_)
     : start(start_[0], start_[1]), end(end_[0], end_[1]), color(generateRandomColor()), tse(end_, color) {
@@ -16,8 +17,11 @@ void TracerEffect::update(float dt) {
     if (age >= lifetime) die();
 }
 
-void TracerEffect::render(sf::RenderWindow& w, float tileSize) {
-    tse.render(w, tileSize);
+void TracerEffect::render(RenderContext& ctx) {
+    auto& w = ctx.window;
+    auto& tileSize = ctx.tileSize;
+    
+    tse.render(ctx);
     if (age >= 0.05f) return;
     
     sf::Vector2f startOffset = {0.5f, 0.3f};

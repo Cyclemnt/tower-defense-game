@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
 #include "tracerSplashEffect.hpp"
+class RenderContext;
 
 class TracerEffect : public VisualEffect {
 private:
@@ -18,7 +19,7 @@ private:
 public:
     TracerEffect(std::array<float, 2> start_, std::array<float, 2> end_);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize) override;
+    void render(RenderContext& ctx) override;
     sf::Color generateRandomColor() const;
 };
 

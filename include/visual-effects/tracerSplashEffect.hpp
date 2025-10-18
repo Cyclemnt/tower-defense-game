@@ -5,6 +5,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "visualEffect.hpp"
+class RenderContext;
 
 struct SimpleParticle {
     float vx, vy;   // direction unit
@@ -25,7 +26,7 @@ private:
 public:
     TracerSplashEffect(std::array<float,2> position, sf::Color c);
     void update(float dt) override;
-    void render(sf::RenderWindow& w, float tileSize) override;
+    void render(RenderContext& ctx) override;
 };
 
 #endif

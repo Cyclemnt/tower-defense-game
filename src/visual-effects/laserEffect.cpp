@@ -1,6 +1,7 @@
 #include <cmath>
 #include <SFML/System/Angle.hpp>
 #include "../../include/visual-effects/laserEffect.hpp"
+#include "../../include/renderer/renderContext.hpp"
 
 LaserEffect::LaserEffect(std::array<float, 2> s, std::array<float, 2> e)
     : start(s[0], s[1]), end(e[0], e[1]) {}
@@ -11,7 +12,10 @@ void LaserEffect::update(float dt) {
         die();
 }
 
-void LaserEffect::render(sf::RenderWindow& w, float tileSize) {
+void LaserEffect::render(RenderContext& ctx) {
+    auto& w = ctx.window;
+    auto& tileSize = ctx.tileSize;
+    
     sf::Vector2f startoffset = {0.5f, -0.2f};
     sf::Vector2f endOffset = {0.5f, 0.5f};
     sf::Vector2f startPoint = (start + startoffset) * tileSize;

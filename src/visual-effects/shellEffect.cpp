@@ -1,5 +1,6 @@
 #include <cmath>
 #include "../../include/visual-effects/shellEffect.hpp"
+#include "../../include/renderer/renderContext.hpp"
 
 ShellEffect::ShellEffect(std::array<float, 2> start, std::array<float, 2> end, float spd)
         : pos(start[0], start[1]), target(end[0], end[1]), speed(spd) {}
@@ -17,7 +18,10 @@ void ShellEffect::update(float dt) {
     }
 }
 
-void ShellEffect::render(sf::RenderWindow& w, float tileSize) {
+void ShellEffect::render(RenderContext& ctx) {
+    auto& w = ctx.window;
+    auto& tileSize = ctx.tileSize;
+    
     sf::CircleShape shape(radius * tileSize);
     shape.setOrigin({radius * tileSize, radius * tileSize});
     shape.setFillColor(sf::Color(180, 180, 180));
