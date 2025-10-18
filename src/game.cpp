@@ -80,8 +80,13 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
         return PlaceTowerResult::NotAffordable;
 
     player.pay(*tower);
-    towers.push_back(std::move(tower));
     openZoneTile->setOccupied(true);
+    // Insert tower depending on other towers y coordinate (to ensure right render order)
+    const float newY = static_cast<float>(tower->getY());
+    auto it = std::upper_bound(towers.begin(), towers.end(), newY, // upper_bound gives the first tower that getY() > newY so O(log(n))
+        [](float y, const std::unique_ptr<Tower>& t) { return y < static_cast<float>(t->getY()); }
+    );
+    towers.insert(it, std::move(tower)); // is O(log(n)) which gives O(log(n) + n) total time complexity of this sorting
 
     // Update every creature's path
     for (auto& c : creatures) {
