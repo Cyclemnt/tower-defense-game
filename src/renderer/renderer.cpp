@@ -13,11 +13,11 @@
 #include "../include/towers/laser.hpp"
 
 Renderer::Renderer(sf::RenderWindow& win, tgui::Gui& g)
-    : window(win), gui(g), ctx(window, *this, tileSize, 0) {}
+    : gui(g), ctx(win, *this, 1, 0) {}
 
 sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
-    float localX = (mouseX) / (tileSize);
-    float localY = (mouseY) / (tileSize);
+    float localX = (mouseX - ctx.offset.x) / (ctx.tileSize);
+    float localY = (mouseY - ctx.offset.y) / (ctx.tileSize);
     return { static_cast<int>(localX), static_cast<int>(localY) };
 }
 
@@ -41,16 +41,22 @@ void Renderer::computeScaling(const Game& game) {
     const int mapWidth = map.getWidth();
     const int mapHeight = map.getHeight();
 
-    sf::Vector2u winSize = window.getSize();
+    sf::Vector2u winSize = ctx.window.getSize();
 
-    float scaleX = static_cast<float>(winSize.x) / (mapWidth * tileSize);
-    float scaleY = static_cast<float>(winSize.y) / (mapHeight * tileSize);
+    float scaleX = static_cast<float>(winSize.x) / (mapWidth * ctx.tileSize);
+    float scaleY = static_cast<float>(winSize.y) / (mapHeight * ctx.tileSize);
 
-    // Choisir le plus petit facteur pour garder les proportions (tiles carrées)
-    scaleFactor = std::min(scaleX, scaleY);
+    // Choose lowest factor to keep proportions (square tiles)
+    float scaleFactor = std::min(scaleX, scaleY);
     
-    tileSize *= scaleFactor;
-    ctx.tileSize = tileSize;
+    ctx.tileSize *= scaleFactor;
+    
+    // Compute offset to center map into the window
+    float mapWidthPx  = mapWidth  * ctx.tileSize;
+    float mapHeightPx = mapHeight * ctx.tileSize;
+
+    ctx.offset.x = (winSize.x - mapWidthPx) * 0.5f;
+    ctx.offset.y = (winSize.y - mapHeightPx) * 0.5f;
 }
 
 void Renderer::render(const Game& game) {
@@ -58,36 +64,30 @@ void Renderer::render(const Game& game) {
 
     // Draw map
     game.getMap().render(ctx);
-    highlightTile(game); // Highlight tiles
-
+    // Highlight tiles
+    highlightTile(game);
     // Draw creatures
-    for (const auto& c : game.getCreatures())
-        c->render(ctx);
-
+    for (const auto& c : game.getCreatures()) c->render(ctx);
     // Draw Towers
-    for (const auto& t : game.getTowers())
-        t->render(ctx);
-        
+    for (const auto& t : game.getTowers()) t->render(ctx);
     // Draw visual effects
-    for (const auto& e : game.getVisualEffects())
-        e->render(ctx);
-
+    for (const auto& e : game.getVisualEffects()) e->render(ctx);
     // Draw HUD
     drawHUD(game);
 }
 
 void Renderer::highlightTile(const Game& game) {
     const Map& map = game.getMap();
-    sf::Vector2i mouse = sf::Mouse::getPosition(window);
+    sf::Vector2i mouse = sf::Mouse::getPosition(ctx.window);
     sf::Vector2i tilePos = screenToTile(mouse.x, mouse.y);
     if (tilePos.x >= 0 && tilePos.x < map.getWidth() &&
         tilePos.y >= 0 && tilePos.y < map.getHeight()) {
         Tile* hover = map.getTile(tilePos.x, tilePos.y);
         if (dynamic_cast<OpenZone*>(hover)) {
-            sf::RectangleShape highlight({tileSize, tileSize});
-            highlight.setPosition({tilePos.x * tileSize, tilePos.y * tileSize});
+            sf::RectangleShape highlight({ctx.tileSize, ctx.tileSize});
+            highlight.setPosition({tilePos.x * ctx.tileSize + ctx.offset.x, tilePos.y * ctx.tileSize + ctx.offset.y});
             highlight.setFillColor(sf::Color(255, 255, 0, 80));
-            window.draw(highlight);
+            ctx.window.draw(highlight);
         }
     }
 }
@@ -116,7 +116,7 @@ void Renderer::drawHUD(const Game& game) {
     const float panelHeight = 150.f;
 
     // --- RESPONSIVE CENTERING ---
-    sf::Vector2u winSize = window.getSize();
+    sf::Vector2u winSize = ctx.window.getSize();
     float panelX = (winSize.x - panelWidth) / 2.f;
     float panelY = 10.f; // always near top
 
@@ -126,7 +126,7 @@ void Renderer::drawHUD(const Game& game) {
     panel.setOutlineThickness(2.f);
     panel.setOutlineColor(sf::Color(80, 80, 80));
     panel.setPosition({panelX, panelY});
-    window.draw(panel);
+    ctx.window.draw(panel);
 
     // --- INTERNAL LAYOUT SETTINGS ---
     const float marginX = 10.f;
@@ -160,13 +160,13 @@ void Renderer::drawHUD(const Game& game) {
         icon.setScale(sf::Vector2f(iconSize / static_cast<float>(texSize.x),
                                    iconSize / static_cast<float>(texSize.y)));
         icon.setPosition({startX, res.yOffset});
-        window.draw(icon);
+        ctx.window.draw(icon);
 
         // Draw value
         sf::Text valueText(font, std::to_string(res.value), 18);
         valueText.setFillColor(sf::Color::White);
         valueText.setPosition({startX + textOffsetX, res.yOffset - 2.f});
-        window.draw(valueText);
+        ctx.window.draw(valueText);
     }
 
     // --- CORE DISPLAY AREA (no label) ---
@@ -212,7 +212,7 @@ void Renderer::drawHUD(const Game& game) {
         else
             circle.setFillColor(sf::Color(200, 50, 50));      // Red = lost
 
-        window.draw(circle);
+        ctx.window.draw(circle);
 
         x += spacing; // move to next X position
     }

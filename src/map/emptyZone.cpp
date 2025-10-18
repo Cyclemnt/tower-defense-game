@@ -33,9 +33,9 @@ const std::string EmptyZone::getRandomTextureName(int x, int y) const {
 void EmptyZone::render(const RenderContext& ctx) const {
     auto& renderer = ctx.renderer;
     const sf::Texture& tex = renderer.getTexture(getRandomTextureName(getX(), getY()));
-    
+
     sf::Sprite sprite(tex);
-    sprite.setPosition({getX() * ctx.tileSize, getY() * ctx.tileSize});
+    sprite.setPosition({getX() * ctx.tileSize + ctx.offset.x, getY() * ctx.tileSize + ctx.offset.y});
     auto sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.y});
     ctx.window.draw(sprite);

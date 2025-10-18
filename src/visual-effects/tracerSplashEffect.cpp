@@ -36,7 +36,7 @@ void TracerSplashEffect::render(RenderContext& ctx) {
         float r = p.radius * tileSize * (1.0f - t); // shrink
         sf::CircleShape dot(r);
         dot.setOrigin({r, r});
-        dot.setPosition({px, py});
+        dot.setPosition({px + ctx.offset.x, py + ctx.offset.y});
         std::uint8_t a = static_cast<std::uint8_t>(220 * (1.0f - t));
         dot.setFillColor(sf::Color(color.r, color.g, color.b, a));
         w.draw(dot);

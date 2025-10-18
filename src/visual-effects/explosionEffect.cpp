@@ -16,8 +16,8 @@ void ExplosionEffect::render(RenderContext& ctx) {
 
     float t = age / lifetime; // 0..1
     float r = maxRadius * (1.0f - (1.0f - t) * (1.0f - t)); // ease-out
-    float px = (pos.x + 0.5f) * tileSize;
-    float py = (pos.y + 0.5f) * tileSize;
+    float px = (pos.x + 0.5f) * tileSize + ctx.offset.x;
+    float py = (pos.y + 0.5f) * tileSize + ctx.offset.y;
 
     // glow (bigger, transparent)
     sf::CircleShape glow(r * tileSize * 1.6f);

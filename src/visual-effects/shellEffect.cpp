@@ -25,7 +25,7 @@ void ShellEffect::render(RenderContext& ctx) {
     sf::CircleShape shape(radius * tileSize);
     shape.setOrigin({radius * tileSize, radius * tileSize});
     shape.setFillColor(sf::Color(180, 180, 180));
-    shape.setPosition({(pos.x + 0.5f) * tileSize, (pos.y + 0.5f) * tileSize});
+    shape.setPosition({(pos.x + 0.5f) * tileSize + ctx.offset.x, (pos.y + 0.5f) * tileSize + ctx.offset.y});
     w.draw(shape);
 }
 

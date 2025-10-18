@@ -18,12 +18,12 @@ void LaserEffect::render(RenderContext& ctx) {
     
     sf::Vector2f startoffset = {0.5f, -0.2f};
     sf::Vector2f endOffset = {0.5f, 0.5f};
-    sf::Vector2f startPoint = (start + startoffset) * tileSize;
-    sf::Vector2f endPoint   = (end + endOffset) * tileSize;
+    sf::Vector2f startPoint = (start + startoffset) * tileSize + ctx.offset;
+    sf::Vector2f endPoint   = (end + endOffset) * tileSize + ctx.offset;
 
     sf::Vector2f diff = endPoint - startPoint;
     float length = std::sqrt(diff.x * diff.x + diff.y * diff.y);
-    float angleDeg = std::atan2(diff.y, diff.x) * 180.f / 3.1415926f;
+    float angleDeg = std::atan2(diff.y, diff.x) * 180.f * M_1_PIf;
 
     sf::RectangleShape glow(sf::Vector2f(length, tileSize * 0.12f));
     glow.setOrigin({0.0f, (tileSize * 0.12f) * 0.5f});

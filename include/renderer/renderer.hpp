@@ -17,16 +17,12 @@
  */
 class Renderer {
 private:
-    sf::RenderWindow& window;   ///< Main SFML render window
-    tgui::Gui& gui;             ///< GUI manager (TGUI)
-    RenderContext ctx;
-
-    float tileSize = 64.0f;         ///< Size of each tile (in pixels)
-    float scaleFactor = 1.0f;       ///< Ratio between window size and map size (no distortion)
+    tgui::Gui& gui;     ///< GUI manager (TGUI)
+    RenderContext ctx;  ///< Render context to give to every drawn entity
 
     bool paused = false; ///< flag for the state of the game (pause/play)
 
-    // Cache of textures to avoid reloading from disk
+    /// @brief Cache of textures to avoid reloading from disk
     std::unordered_map<std::string, sf::Texture> textures;
 
     // GUI panels

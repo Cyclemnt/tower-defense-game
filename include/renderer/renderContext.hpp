@@ -10,6 +10,7 @@ public:
     sf::RenderWindow& window;
     Renderer& renderer;
     float tileSize;
+    sf::Vector2f offset;
     int tick;
 
     RenderContext(sf::RenderWindow& w, Renderer& r, float ts, int t)

@@ -26,8 +26,8 @@ void TracerEffect::render(RenderContext& ctx) {
     
     sf::Vector2f startOffset = {0.5f, 0.3f};
     sf::Vector2f endOffset = {0.5f, 0.5f};
-    sf::Vector2f startPoint = (start + startOffset) * tileSize;
-    sf::Vector2f endPoint   = (end + endOffset) * tileSize;
+    sf::Vector2f startPoint = (start + startOffset) * tileSize + ctx.offset;
+    sf::Vector2f endPoint   = (end + endOffset) * tileSize + ctx.offset;
 
     sf::Vector2f diff = endPoint - startPoint;
     float length = std::sqrt(diff.x * diff.x + diff.y * diff.y);

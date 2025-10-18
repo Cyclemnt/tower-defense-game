@@ -48,7 +48,7 @@ int main() {
         // --- Update logic ---
         float deltaTime = clock.restart().asSeconds();
         if (!paused)
-            game.update(deltaTime);
+            game.update(deltaTime * 10);
 
         // --- Render ---
         window.clear();

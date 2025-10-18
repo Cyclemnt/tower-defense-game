@@ -77,13 +77,9 @@ Creature* Tower::selectTarget(const std::vector<std::unique_ptr<Creature>>& crea
         float dist = std::sqrt(dx*dx + dy*dy);
 
         if (dist <= range) {
-            if (!best) best = c.get();
-            else {
-                // Selecting the closest
-                if (dist < closest) {
-                    best = c.get();
-                    closest = dist;
-                }
+            if (!best || dist < closest) {
+                best = c.get();
+                closest = dist;
             }
         }
     }
@@ -109,7 +105,7 @@ void Tower::render(RenderContext& ctx) const {
     sf::Sprite sprite(tex);
     const auto& sz = tex.getSize();
 
-    sprite.setPosition({x * ctx.tileSize, ctx.tileSize * (y + 0.8f - static_cast<float>(sz.y) / sz.x)}); // y depends on image height
+    sprite.setPosition({x * ctx.tileSize + ctx.offset.x, ctx.tileSize * (y + 0.8f - static_cast<float>(sz.y) / sz.x) + ctx.offset.y}); // y depends on image height
 
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
     window.draw(sprite);

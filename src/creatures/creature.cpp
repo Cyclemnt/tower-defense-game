@@ -149,7 +149,7 @@ void Creature::render(RenderContext& ctx) const {
     const sf::Texture& tex = renderer.getTexture(filename);
 
     sf::Sprite sprite(tex);
-    sprite.setPosition({posX * ctx.tileSize, posY * ctx.tileSize});
+    sprite.setPosition({posX * ctx.tileSize + ctx.offset.x, posY * ctx.tileSize + ctx.offset.y});
     const auto& sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
     window.draw(sprite);
@@ -165,8 +165,8 @@ void Creature::drawHealthBar(RenderContext& ctx) const {
 
     const float barWidth = ctx.tileSize * 0.5f;
     const float barHeight = ctx.tileSize * 0.05f;
-    const float x = posX * ctx.tileSize + (ctx.tileSize - barWidth) * 0.5f;
-    const float baseY = posY * ctx.tileSize - barHeight - 4.0f;
+    const float x = posX * ctx.tileSize + (ctx.tileSize - barWidth) * 0.5f + ctx.offset.x;
+    const float baseY = posY * ctx.tileSize - barHeight - 4.0f + ctx.offset.y;
 
     // Shield bar
     if (baseShield > 0.0f) {

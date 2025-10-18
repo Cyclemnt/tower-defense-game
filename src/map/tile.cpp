@@ -14,7 +14,7 @@ void Tile::render(const RenderContext& ctx) const {
     const sf::Texture& tex = renderer.getTexture(getTextureName());
 
     sf::Sprite sprite(tex);
-    sprite.setPosition({x * ctx.tileSize, y * ctx.tileSize});
+    sprite.setPosition({x * ctx.tileSize + ctx.offset.x, y * ctx.tileSize + ctx.offset.y});
     auto sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.y});
     ctx.window.draw(sprite);
