@@ -129,7 +129,6 @@ void Game::update(float deltaTime) {
 
             // Exit reached
             else if (destination == map.getExits()[0] && current == destination) {
-                // TODO: make creature diseapear
                 cores.loseCore(c->dropCores());
                 c->leave();
             }
@@ -152,7 +151,7 @@ void Game::update(float deltaTime) {
                                 std::make_move_iterator(newVisualEffects.end()));
     }
 
-    // Rewards the player for dead creatures ang return cores to the storage
+    // Rewards the player for dead creatures and return cores to the storage
     for (auto& c : creatures) {
         if (!c->isAlive()) {
             cores.returnCore(c->dropCores());

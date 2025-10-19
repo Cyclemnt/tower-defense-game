@@ -88,7 +88,6 @@ void Creature::update(float deltaTime) {
             }
             else if (ExitZone* ex = dynamic_cast<ExitZone*>(next)) {
                 // if (coresCarried > 0) {
-                //     // TODO: Tell Game about lost cores
                 //     coresCarried = 0;
                 // }
             }
