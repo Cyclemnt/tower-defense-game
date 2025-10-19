@@ -32,6 +32,8 @@ const bool Game::isPaused() const { return paused; }
 
 void Game::setPaused(bool pause) { paused = pause; }
 
+void Game::togglePause() { paused = !paused; }
+
 const Player& Game::getPlayer() const { return player; };
 
 const Cores& Game::getCores() const { return cores; };

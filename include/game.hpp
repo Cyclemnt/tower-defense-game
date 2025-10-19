@@ -59,6 +59,7 @@ public:
     const unsigned long getTick() const;
     const bool isPaused() const;
     void setPaused(bool pause);
+    void togglePause();
     const Player& getPlayer() const;
     const Cores& getCores() const;
     const std::vector<std::unique_ptr<VisualEffect>>& getVisualEffects() const;

@@ -14,8 +14,9 @@ public:
     sf::Vector2f offset;
     int tick;
 
-    RenderContext(sf::RenderWindow& w, Renderer& r, float ts = 64.0f, int t = 0)
-        : window(w), renderer(r), tileSize(ts), tick(t), lastWinSize(window.getSize()) {}
+    RenderContext(sf::RenderWindow& w, Renderer& r, float ts = 64.0f, int t = 0);
+
+    sf::Vector2i screenToTile(int mouseX, int mouseY) const;
 };
 
 #endif // RENDER_CONTEXT_HPP

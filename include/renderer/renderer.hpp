@@ -16,13 +16,14 @@ class Game;
  */
 class Renderer {
 private:
+    const Game& game;
     RenderContext ctx;  ///< Rendering context shared with entities
 
     /// @brief Texture cache to avoid reloading from disk
     std::unordered_map<std::string, sf::Texture> textures;
 
 public:
-    explicit Renderer(sf::RenderWindow& win);
+    explicit Renderer(sf::RenderWindow& win, Game& game);
 
     /// @brief Returns the render context.
     RenderContext& getContext() { return ctx; }
@@ -31,16 +32,16 @@ public:
     const sf::Texture& getTexture(const std::string& name);
 
     /// @brief Computes map scaling and centering relative to window.
-    void computeScaling(const Game& game);
+    void computeScaling();
 
     /// @brief Converts mouse coordinates to tile coordinates.
     sf::Vector2i screenToTile(int mouseX, int mouseY) const;
 
     /// @brief Renders the entire game scene (map, entities, etc.).
-    void render(const Game& game);
+    void render();
 
     /// @brief Highlights the tile currently under the mouse.
-    void highlightTile(const Game& game);
+    void highlightTile();
 };
 
 #endif // RENDERER_HPP

@@ -4,13 +4,15 @@
 #include "../../include/gui/hud.hpp"
 #include "../../include/renderer/renderer.hpp"
 
-HUD::HUD() {
+HUD::HUD(RenderContext& ctx_, Game& game_)
+    : ctx(ctx_), game(game_)
+{
     if (!font.openFromFile("../assets/gui/arial.ttf")) {
         std::cerr << "[HUD] Could not load font ../assets/arial.ttf\n";
     }
 }
 
-void HUD::render(RenderContext& ctx, const Game& game, float deltaTime) {
+void HUD::draw(float deltaTime) {
     // Update FPS every 0.25s
     if (fpsClock.getElapsedTime().asSeconds() > 0.25f) {
         if (deltaTime > 1e-6f) lastFPS = 1.0f / deltaTime;
@@ -32,16 +34,16 @@ void HUD::render(RenderContext& ctx, const Game& game, float deltaTime) {
     panel.setOutlineColor(sf::Color(80,80,80));
     ctx.window.draw(panel);
 
-    drawResources(ctx, game);
+    drawResources();
 
     // cores area at bottom of panel
-    drawCores(ctx, game, panelX + 10.0f, panelY + 58.0f, panelW - 20.0f);
+    drawCores(panelX + 10.0f, panelY + 58.0f, panelW - 20.0f);
 
     // FPS top-left
-    drawFPS(ctx, 10.0f, 10.0f);
+    drawFPS(10.0f, 10.0f);
 }
 
-void HUD::drawResources(RenderContext& ctx, const Game& game) {
+void HUD::drawResources() {
     auto mats = game.getPlayer().getMaterials().getBalance();
     // icon positions
     float x = (ctx.window.getSize().x - 260.0f) * 0.5f + 12.0f;
@@ -71,7 +73,7 @@ void HUD::drawResources(RenderContext& ctx, const Game& game) {
     }
 }
 
-void HUD::drawCores(RenderContext& ctx, const Game& game, float x, float y, float width) {
+void HUD::drawCores(float x, float y, float width) {
     Cores cores = game.getCores();
     int safe = cores.getSafe();
     int stolen = cores.getStolen();
@@ -101,7 +103,7 @@ void HUD::drawCores(RenderContext& ctx, const Game& game, float x, float y, floa
     }
 }
 
-void HUD::drawFPS(RenderContext& ctx, float x, float y) {
+void HUD::drawFPS(float x, float y) {
     sf::Text t(font, "FPS: " + std::to_string((int) lastFPS), 14);
     t.setFillColor(sf::Color::White);
     t.setPosition({x, y});

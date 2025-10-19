@@ -5,8 +5,8 @@
 #include "../../include/towers/tower.hpp"
 #include "../../include/map/openZone.hpp"
 
-Renderer::Renderer(sf::RenderWindow& win)
-    : ctx(win, *this) {}
+Renderer::Renderer(sf::RenderWindow& win, Game& game)
+    : game(game), ctx(win, *this) { computeScaling(); }
 
 const sf::Texture& Renderer::getTexture(const std::string& filename) {
     auto it = textures.find(filename);
@@ -25,7 +25,7 @@ const sf::Texture& Renderer::getTexture(const std::string& filename) {
     return textures.at(filename);
 }
 
-void Renderer::computeScaling(const Game& game) {
+void Renderer::computeScaling() {
     const Map& map = game.getMap();
     const int mapWidth = map.getWidth();
     const int mapHeight = map.getHeight();
@@ -49,19 +49,13 @@ void Renderer::computeScaling(const Game& game) {
     ctx.window.setView(view);
 }
 
-sf::Vector2i Renderer::screenToTile(int mouseX, int mouseY) const {
-    float localX = (mouseX - ctx.offset.x) / ctx.tileSize;
-    float localY = (mouseY - ctx.offset.y) / ctx.tileSize;
-    return { static_cast<int>(localX), static_cast<int>(localY) };
-}
-
-void Renderer::render(const Game& game) {
+void Renderer::render() {
     ctx.tick = game.getTick();
 
     // Recalculate scaling if window size changed
     sf::Vector2u winSize = ctx.window.getSize();
     if (winSize != ctx.lastWinSize) {
-        computeScaling(game);
+        computeScaling();
         ctx.lastWinSize = winSize;
     }
 
@@ -69,7 +63,7 @@ void Renderer::render(const Game& game) {
     game.getMap().render(ctx);
 
     // --- Highlight tile under mouse ---
-    highlightTile(game);
+    highlightTile();
 
     // --- Draw creatures ---
     for (const auto& creature : game.getCreatures())
@@ -84,10 +78,10 @@ void Renderer::render(const Game& game) {
         effect->render(ctx);
 }
 
-void Renderer::highlightTile(const Game& game) {
+void Renderer::highlightTile() {
     const Map& map = game.getMap();
     sf::Vector2i mouse = sf::Mouse::getPosition(ctx.window);
-    sf::Vector2i tilePos = screenToTile(mouse.x, mouse.y);
+    sf::Vector2i tilePos = ctx.screenToTile(mouse.x, mouse.y);
 
     if (tilePos.x < 0 || tilePos.x >= map.getWidth() ||
         tilePos.y < 0 || tilePos.y >= map.getHeight())

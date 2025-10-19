@@ -11,14 +11,9 @@ int main() {
     sf::RenderWindow window(desktop, "Tower Defense", sf::State::Fullscreen);
     window.setFramerateLimit(60);
 
-    tgui::Gui gui(window);
-
     Game game;
-    Renderer renderer(window);
-    renderer.computeScaling(game);
-
-    HUD hud;
-    GuiManager guiManager(gui, game, renderer);
+    Renderer renderer(window, game);
+    GuiManager guiManager(window, game, renderer.getContext());
 
     sf::Clock clock;
     
@@ -37,10 +32,9 @@ int main() {
 
         // --- Render ---
         window.clear();
-        renderer.render(game);
-        hud.render(renderer.getContext(), game, deltaTime);
+        renderer.render();
+        guiManager.draw(deltaTime);
 
-        gui.draw();
         window.display();
     }
 

@@ -2,8 +2,8 @@
 #define HUD_HPP
 
 #include <SFML/Graphics.hpp>
-#include "game.hpp"
-#include "renderer/renderContext.hpp"
+#include "../game.hpp"
+#include "../renderer/renderContext.hpp"
 
 /**
  * HUD: draws player resources, cores and FPS using SFML primitives.
@@ -15,15 +15,18 @@ private:
     sf::Clock fpsClock;
     float lastFPS = 0.0f;
 
-    void drawResources(RenderContext& ctx, const Game& game);
-    void drawCores(RenderContext& ctx, const Game& game, float x, float y, float width);
-    void drawFPS(RenderContext& ctx, float x, float y);
+    const RenderContext& ctx;
+    const Game& game;
+
+    void drawResources();
+    void drawCores(float x, float y, float width);
+    void drawFPS(float x, float y);
 
 public:
-    HUD();
+    HUD(RenderContext& ctx_, Game& game_);
 
     /// Draw the HUD. ctx.window is used for drawing.
-    void render(RenderContext& ctx, const Game& game, float deltaTime);
+    void draw(float deltaTime);
 };
 
 #endif // HUD_HPP
