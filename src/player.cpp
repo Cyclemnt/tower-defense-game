@@ -7,6 +7,7 @@ Player::Player()
 Player::~Player() {}
 
 const Materials& Player::getMaterials() const { return materials; }
+Materials& Player::getMaterials() { return materials; }
 
 bool Player::canAfford(const Tower& tower) {
     for (size_t i = 0; i < 3; i++)

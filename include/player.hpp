@@ -21,6 +21,7 @@ public:
     ~Player();
     
     const Materials& getMaterials() const;
+    Materials& getMaterials();
 
     /// @brief Check if the player has enough resources for a tower.
     bool canAfford(const Tower& tower);

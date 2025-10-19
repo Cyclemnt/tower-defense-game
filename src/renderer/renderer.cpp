@@ -88,14 +88,17 @@ void Renderer::highlightTile() {
         return;
 
     Tile* tile = map.getTile(tilePos.x, tilePos.y);
-    if (!dynamic_cast<OpenZone*>(tile))
+    if (!tile->isBuildable())
         return;
 
+    OpenZone* openZoneTile = dynamic_cast<OpenZone*>(tile);
     sf::RectangleShape highlight({ctx.tileSize, ctx.tileSize});
     highlight.setPosition({
         tilePos.x * ctx.tileSize + ctx.offset.x,
         tilePos.y * ctx.tileSize + ctx.offset.y
     });
-    highlight.setFillColor(sf::Color(255, 255, 0, 80));
+    if (openZoneTile->isOccupied()) highlight.setFillColor(sf::Color(255, 50, 50, 80)); // Red
+    else highlight.setFillColor(sf::Color(50, 200, 50, 80)); // Green
+
     ctx.window.draw(highlight);
 }

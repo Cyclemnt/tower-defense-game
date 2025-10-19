@@ -44,7 +44,7 @@ void HUD::draw(float deltaTime) {
 }
 
 void HUD::drawResources() {
-    auto mats = game.getPlayer().getMaterials().getBalance();
+    const std::array<int, 3> mats = game.getPlayer().getMaterials().getBalance();
     // icon positions
     float x = (ctx.window.getSize().x - 260.0f) * 0.5f + 12.0f;
     float y = 16.0f;

@@ -95,6 +95,35 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     towers.insert(it, std::move(tower)); // is O(log(n)) which gives O(log(n) + n) total time complexity of this sorting
 
     // Update every creature's path
+    updatePaths();
+
+    return PlaceTowerResult::Success;
+}
+
+void Game::sellTowerAt(int x, int y) {
+    for (auto it = towers.begin(); it != towers.end(); ++it) {
+        Tower* tower = it->get();
+        if (tower->getX() == x && tower->getY() == y) {
+            // Refund: 50% of cost
+            std::array<int, 3> price = tower->getPrice();
+            for (size_t i = 0; i < price.size(); ++i) { price[i] = static_cast<int>(price[i] * 0.5f); }
+            player.getMaterials().add(price);
+
+            // Free the tile
+            if (auto* zone = dynamic_cast<OpenZone*>(map.getTile(x, y)))
+                zone->setOccupied(false);
+
+            // Remove tower
+            towers.erase(it);
+            break;
+        }
+    }
+
+    // Update every creature's path
+    updatePaths();
+}
+
+void Game::updatePaths() {
     for (auto& c : creatures) {
         Tile* start = c->getCurrentTile();
         Tile* goal = c->getDestinationTile();
@@ -102,8 +131,6 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
         if (newPath.empty()) newPath = pathfinder.findPath(start, goal, true);
         c->setPath(newPath);
     }
-
-    return PlaceTowerResult::Success;
 }
 
 void Game::update(float deltaTime) {

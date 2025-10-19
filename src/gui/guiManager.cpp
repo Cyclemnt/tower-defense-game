@@ -17,7 +17,7 @@ void GuiManager::processEvent(const sf::Event& event) {
     if (auto key = event.getIf<sf::Event::KeyPressed>())
         if (!towerMenu.isOn() && key->code == sf::Keyboard::Key::Escape)
             if (game.isPaused()) { pauseMenu.close(); game.setPaused(false); }
-            else                 { pauseMenu.open(); game.setPaused(true);  }
+            else                 { pauseMenu.open();  game.setPaused(true);  }
 
     if (auto mouse = event.getIf<sf::Event::MouseButtonPressed>())
         if (!game.isPaused() && mouse->button == sf::Mouse::Button::Left)
@@ -28,11 +28,10 @@ void GuiManager::handleLeftClick(int mouseX, int mouseY) {
     sf::Vector2i tile = ctx.screenToTile(mouseX, mouseY);
     const Map& map = game.getMap();
     Tile* clicked = map.getTile(tile.x, tile.y);
+
     if (auto* zone = dynamic_cast<OpenZone*>(clicked)) {
-        if (!zone->isOccupied()) {
-            game.setPaused(true);
-            towerMenu.open(tile);
-        }
+        towerMenu.open(tile, zone->isOccupied());
+        game.setPaused(true);
     }
 }
 
