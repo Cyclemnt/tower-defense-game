@@ -5,11 +5,8 @@
 #include "../../include/map/openZone.hpp"
 
 TowerMenu::TowerMenu(tgui::Gui& gui, Game& gm, RenderContext& ctx)
-    : Menu(gui, gm, ctx) {}
-
-void TowerMenu::open(sf::Vector2i tilePos) {
-    if (on) return;
-
+    : Menu(gui, gm, ctx)
+{
     float panelW = 220.f, panelH = 250.f;
     auto [panelX, panelY] = centerPanel(panelW, panelH);
 
@@ -22,6 +19,17 @@ void TowerMenu::open(sf::Vector2i tilePos) {
     title->getRenderer()->setTextColor(tgui::Color::White);
     title->setPosition({10, 10});
     panel->add(title);
+
+    // Cancel button
+    auto cancel = tgui::Button::create("Cancel");
+    cancel->setSize({"200", "34"});
+    cancel->setPosition({10, 202});
+    cancel->onPress([this]() { close(); game.setPaused(false); });
+    panel->add(cancel);
+}
+
+void TowerMenu::open(sf::Vector2i tilePos) {
+    if (on) return;
 
     auto addButton = [&](const std::string& name, auto factory, const std::string& cost, float y) {
         auto btn = tgui::Button::create(name + "\n" + cost);
@@ -46,17 +54,11 @@ void TowerMenu::open(sf::Vector2i tilePos) {
     addButton("Laser",   [](int x, int y){ return std::make_unique<Laser>(x, y); }, "10 Ag, 100 Cu", 106);
     addButton("Mortar",  [](int x, int y){ return std::make_unique<Mortar>(x, y); }, "75 Cu", 154);
 
-    auto cancel = tgui::Button::create("Cancel");
-    cancel->setSize({"200", "34"});
-    cancel->setPosition({10, 202});
-    cancel->onPress([this]() { close(); game.setPaused(false); });
-    panel->add(cancel);
-
     gui.add(panel);
     on = true;
 }
 
-void TowerMenu::showError(const std::string& message) {
+void TowerMenu::showError(const std::string& message) { // This shouldn't be here but isn't useful elsewhere for now
     auto errorPanel = tgui::Panel::create({"50%", "8%"});
     errorPanel->setPosition({"25%", "5%"});
     errorPanel->getRenderer()->setBackgroundColor({200, 50, 50, 230});

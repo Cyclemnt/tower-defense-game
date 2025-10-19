@@ -1,11 +1,8 @@
 #include "../../include/gui/pauseMenu.hpp"
 
 PauseMenu::PauseMenu(tgui::Gui& gui, Game& gm, RenderContext& ctx)
-    : Menu(gui, gm, ctx) {}
-
-void PauseMenu::open() {
-    if (on) return;
-
+    : Menu(gui, gm, ctx)
+{
     float panelW = 300.f, panelH = 200.f;
     auto [panelX, panelY] = centerPanel(panelW, panelH);
 
@@ -24,6 +21,10 @@ void PauseMenu::open() {
     resumeBtn->setPosition({"10", "150"});
     resumeBtn->onPress([this]() { close(); game.setPaused(false); });
     panel->add(resumeBtn);
+}
+
+void PauseMenu::open() {
+    if (on) return;
 
     gui.add(panel);
     on = true;

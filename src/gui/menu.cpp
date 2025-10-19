@@ -9,9 +9,6 @@ sf::Vector2f Menu::centerPanel(float w, float h) const {
 }
 
 void Menu::close() {
-    if (panel) {
-        gui.remove(panel);
-        panel.reset();
-    }
+    if (panel) gui.remove(panel);
     on = false;
 }
