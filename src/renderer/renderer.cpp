@@ -25,7 +25,7 @@ const sf::Texture& Renderer::getTexture(const std::string& filename) {
     static std::unordered_map<std::string, sf::Texture> cache;
     if (cache.find(filename) == cache.end()) {
         sf::Texture tex;
-        if (!tex.loadFromFile("../assets/" + filename)) {
+        if (!tex.loadFromFile("../assets/textures/" + filename)) {
             std::cerr << "[Renderer] Missing texture: " << filename << std::endl;
             if (!tex.loadFromFile("../assets/missing_texture.png"))
                 std::cerr << "Failed to load missing_texture.png as fallback.\n";
