@@ -4,13 +4,13 @@
 #include <vector>
 #include <memory>
 #include "map/map.hpp"
-#include "resources/cores.hpp"
 #include "pathfinder.hpp"
 #include "player.hpp"
+#include "resources/cores.hpp"
+#include "creatures/creature.hpp"
+#include "towers/tower.hpp"
+#include "visual-effects/visualEffect.hpp"
 #include "waveManager.hpp"
-class Creature;
-class Tower;
-class VisualEffect;
 
 enum class PlaceTowerResult {
     Success,
@@ -40,23 +40,25 @@ private:
 
     std::vector<std::unique_ptr<Creature>> creatures;   ///< List of active creatures
     std::vector<std::unique_ptr<Tower>> towers;         ///< List of placed towers
+    std::vector<std::unique_ptr<VisualEffect>> visualEffects;
 
     WaveManager waveManager;
 
-    std::vector<std::unique_ptr<VisualEffect>> visualEffects;
-
     unsigned long tick;                   ///< Current tick count (simulation time)
+    bool paused;
 
 public:
     /// @brief Construct a new Game object.
     Game();
 
-    // --- Getters for Renderer ---
+    // --- Getters and setters ---
     
     const Map& getMap() const;
     const std::vector<std::unique_ptr<Creature>>& getCreatures() const;
     const std::vector<std::unique_ptr<Tower>>& getTowers() const;
     const unsigned long getTick() const;
+    const bool isPaused() const;
+    void setPaused(bool pause);
     const Player& getPlayer() const;
     const Cores& getCores() const;
     const std::vector<std::unique_ptr<VisualEffect>>& getVisualEffects() const;

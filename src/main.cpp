@@ -1,58 +1,44 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
+#include <TGUI/Backend/SFML-Graphics.hpp>
 #include "../include/game.hpp"
 #include "../include/renderer/renderer.hpp"
-#include "../include/visual-effects/visualEffect.hpp"
-#include "../include/towers/tower.hpp"
+#include "../include/gui/guiManager.hpp"
+#include "../include/gui/hud.hpp"
 
 int main() {
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
     sf::RenderWindow window(desktop, "Tower Defense", sf::State::Fullscreen);
-
     window.setFramerateLimit(60);
 
     tgui::Gui gui(window);
+
     Game game;
-    Renderer renderer(window, gui);
+    Renderer renderer(window);
     renderer.computeScaling(game);
 
+    HUD hud;
+    GuiManager guiManager(gui, game, renderer);
+
     sf::Clock clock;
-    bool paused = false;
     
     while (window.isOpen()) {
         // --- Managing events ---
         while (auto event = window.pollEvent()) {
-            gui.handleEvent(*event);
-
-            // Closing window
-            if (event->is<sf::Event::Closed>()) {
-                window.close();
-            }
-
-            // Mouse clic
-            if (!paused) {
-                if (auto mouse = event->getIf<sf::Event::MouseButtonPressed>()) {
-                    renderer.handleMouseClick(mouse->position.x, mouse->position.y, game);
-                }
-            }
-
-            // ESC key
-            if (auto key = event->getIf<sf::Event::KeyPressed>()) {
-                if (key->code == sf::Keyboard::Key::Escape) {
-                    paused = !paused;
-                    renderer.togglePauseMenu(paused, game);
-                }
-            }
+            // feed our GuiManager
+            guiManager.processEvent(*event);
+            if (event->is<sf::Event::Closed>()) window.close();
         }
 
         // --- Update logic ---
         float deltaTime = clock.restart().asSeconds();
-        if (!paused)
-            game.update(deltaTime * 10);
+        if (!game.isPaused())
+            game.update(deltaTime);
 
         // --- Render ---
         window.clear();
         renderer.render(game);
+        hud.render(renderer.getContext(), game, deltaTime);
 
         gui.draw();
         window.display();

@@ -11,7 +11,7 @@
 #include "../include/visual-effects/visualEffect.hpp"
 
 Game::Game()
-    : map(), pathfinder(map), player(), cores(24), tick(0), waveManager() {
+    : map(), pathfinder(map), player(), cores(24), tick(0), waveManager(), paused(false) {
 
     try {
         MapLoader::loadFromFile(map, "../assets/maps/map1.txt", &cores);
@@ -27,6 +27,10 @@ const std::vector<std::unique_ptr<Creature>>& Game::getCreatures() const { retur
 const std::vector<std::unique_ptr<Tower>>& Game::getTowers() const { return towers; }
 
 const unsigned long Game::getTick() const { return tick; }
+
+const bool Game::isPaused() const { return paused; }
+
+void Game::setPaused(bool pause) { paused = pause; }
 
 const Player& Game::getPlayer() const { return player; };
 
@@ -102,7 +106,8 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
 
 void Game::update(float deltaTime) {
     tick++;
-waveManager.update(deltaTime, *this);
+    waveManager.update(deltaTime, *this);
+    
     // Update creatures
     for (auto& c : creatures) {
         if (c->isAlive()) {

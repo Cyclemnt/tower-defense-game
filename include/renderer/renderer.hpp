@@ -2,62 +2,45 @@
 #define RENDERER_HPP
 
 #include <SFML/Graphics.hpp>
-#include <TGUI/TGUI.hpp>
-#include <TGUI/Backend/SFML-Graphics.hpp>
+#include <unordered_map>
 #include <string>
-#include "game.hpp"
-#include "renderer/renderContext.hpp"
+#include "renderContext.hpp"
+class Game;
 
 /**
  * @class Renderer
- * @brief Handles all rendering and user interface interactions.
+ * @brief Handles all SFML rendering (map, creatures, towers, effects).
  *
- * The Renderer draws the map, creatures, and towers using textures.
- * It also manages the TGUI menus for tower selection and pause.
+ * The Renderer is responsible for all graphical elements of the game world.
+ * It no longer handles any TGUI components (handled by GuiManager).
  */
 class Renderer {
 private:
-    tgui::Gui& gui;     ///< GUI manager (TGUI)
-    RenderContext ctx;  ///< Render context to give to every drawn entity
+    RenderContext ctx;  ///< Rendering context shared with entities
 
-    bool paused = false; ///< flag for the state of the game (pause/play)
-
-    /// @brief Cache of textures to avoid reloading from disk
+    /// @brief Texture cache to avoid reloading from disk
     std::unordered_map<std::string, sf::Texture> textures;
 
-    // GUI panels
-    tgui::Panel::Ptr pausePanel;
-    tgui::Panel::Ptr towerMenu;
-
-    /// @brief Convert pixel coordinates to tile coordinates.
-    sf::Vector2i screenToTile(int mouseX, int mouseY) const;
-
 public:
-    Renderer(sf::RenderWindow& win, tgui::Gui& g);
+    explicit Renderer(sf::RenderWindow& win);
 
+    /// @brief Returns the render context.
+    RenderContext& getContext() { return ctx; }
+
+    /// @brief Loads and caches textures. Returns a reference.
     const sf::Texture& getTexture(const std::string& name);
 
+    /// @brief Computes map scaling and centering relative to window.
     void computeScaling(const Game& game);
 
-    /// @brief Draws the full game scene.
+    /// @brief Converts mouse coordinates to tile coordinates.
+    sf::Vector2i screenToTile(int mouseX, int mouseY) const;
+
+    /// @brief Renders the entire game scene (map, entities, etc.).
     void render(const Game& game);
 
+    /// @brief Highlights the tile currently under the mouse.
     void highlightTile(const Game& game);
-
-    /// @brief Draws the HUD.
-    void drawHUD(const Game& game);
-
-    /// @brief Handles left mouse click to open the tower selection menu.
-    void handleMouseClick(int mouseX, int mouseY, Game& game);
-
-    /// @brief Opens a menu to choose which tower to place.
-    void openTowerMenu(sf::Vector2i tilePos, Game& game);
-
-    /// @brief Toggles the pause menu on/off.
-    void togglePauseMenu(bool isPaused, Game& game);
-
-    /// @brief Shows an error message popup.
-    void showError(const std::string& msg);
 };
 
 #endif // RENDERER_HPP

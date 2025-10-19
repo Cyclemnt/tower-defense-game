@@ -28,9 +28,9 @@ int Map::getWidth() const { return width; }
 int Map::getHeight() const { return height; }
 
 Tile* Map::getTile(int x, int y) const {
-    if (x < 0 || x >= width || y < 0 || y >= height) {
-        throw std::out_of_range("Invalid tile coordinates");
-    }
+    if (x < 0 || x >= width || y < 0 || y >= height)
+        return nullptr;
+
     return grid[y][x].get();
 }
 
