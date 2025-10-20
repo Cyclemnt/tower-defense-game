@@ -183,6 +183,11 @@ void Game::update(float deltaTime) {
         if (!c->isAlive()) {
             cores.returnCore(c->dropCores());
             player.addMaterials(c->getLoot());
+
+            // Notify towers
+            for (auto& t : towers)
+                if (t->getTarget() == c.get())
+                    t->clearTarget();
         }
     }
 

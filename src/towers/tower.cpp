@@ -25,6 +25,8 @@ std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu};
 
 const Creature* Tower::getTarget() const {return target; }
 
+void Tower::clearTarget() { target = nullptr; }
+
 std::vector<std::unique_ptr<VisualEffect>> Tower::getVisualEffects() {
     // Moving visualEffects to temp
     std::vector<std::unique_ptr<VisualEffect>> temp = std::move(visualEffects);
@@ -34,7 +36,6 @@ std::vector<std::unique_ptr<VisualEffect>> Tower::getVisualEffects() {
 }
 
 void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
-    //std::cout << "twr cooldown: " << cooldown << std::endl;
     if (target || cooldown > 0.0f)
         cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
 
@@ -62,7 +63,7 @@ void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>
 
 void Tower::attack(Creature* target) {
     if (!target || !target->isAlive()) return;
-    target->takeDamage(damage);
+        target->takeDamage(damage);
 }
 
 Creature* Tower::selectTarget(const std::vector<std::unique_ptr<Creature>>& creatures) {

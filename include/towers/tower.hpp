@@ -77,6 +77,8 @@ public:
     
     /// @return The target of the tower.
     const Creature* getTarget() const;
+
+    void clearTarget();
     
     /// @brief Get and clear the visualEffects pile
     /// @return the visualEffects pile
