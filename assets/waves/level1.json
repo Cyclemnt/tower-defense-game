@@ -1,0 +1,51 @@
+{
+  "timeline": [
+    {
+      "wave": 1,
+      "start_delay_ms": 0,
+      "groups": [
+        { "enemy": "Minion", "count": 2, "interval_ms": 200 },
+        { "enemy": "Drone", "count": 3, "interval_ms": 300 }
+      ]
+    },
+    {
+      "wave": 2,
+      "start_delay_ms": 5000,
+      "groups": [
+        { "enemy": "Tank", "count": 3, "interval_ms": 1000 }
+      ]
+    },
+    {
+      "wave": 3,
+      "start_delay_ms": 3000,
+      "groups": [
+        { "enemy": "Drone", "count": 4, "interval_ms": 500 }
+      ]
+    },
+    {
+      "wave": 4,
+      "start_delay_ms": 0,
+      "groups": [
+        { "enemy": "Minion", "count": 10, "interval_ms": 700 },
+        { "enemy": "Drone", "count": 2, "interval_ms": 300 },
+        { "enemy": "Minion", "count": 3, "interval_ms": 700 }
+      ]
+    },
+    {
+      "wave": 5,
+      "start_delay_ms": 0,
+      "groups": [
+        { "enemy": "Tank", "count": 4, "interval_ms": 2000 },
+        { "enemy": "Drone", "count": 3, "interval_ms": 300 }
+      ]
+    },
+    {
+      "wave": 6,
+      "start_delay_ms": 0,
+      "groups": [
+        { "enemy": "Minion", "count": 5, "interval_ms": 700 },
+        { "enemy": "Drone", "count": 7, "interval_ms": 900 }
+      ]
+    }
+  ]
+}
