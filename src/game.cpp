@@ -9,15 +9,21 @@
 #include "../include/map/openZone.hpp"
 #include "../include/towers/tower.hpp"
 #include "../include/visual-effects/visualEffect.hpp"
+#include "../include/waves/waveManager.hpp"
+#include "../include/waves/jsonWaveSource.hpp"
+#include "../include/waves/autoWaveSource.hpp"
 
 Game::Game()
-    : map(), pathfinder(map), player(), cores(24), tick(0), waveManager(), paused(false) {
+    : map(), pathfinder(map), player(), cores(24), tick(0), paused(false) {
 
     try {
         MapLoader::loadFromFile(map, "../assets/maps/map1.txt", &cores);
     } catch (const std::exception& e) {
         std::cerr << "[Error] Failed to load map: " << e.what() << std::endl;
     }
+
+    waveManager = std::make_unique<WaveManager>(std::make_unique<JsonWaveSource>("../assets/waves/level1.json"));
+    //waveManager = std::make_unique<WaveManager>(std::make_unique<AutoWaveSource>());
 }
 
 const Map& Game::getMap() const { return map; }
@@ -135,7 +141,7 @@ void Game::updatePaths() {
 
 void Game::update(float deltaTime) {
     tick++;
-    waveManager.update(deltaTime, *this);
+    waveManager->update(deltaTime, *this);
     
     // Update creatures
     for (auto& c : creatures) {

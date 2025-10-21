@@ -10,7 +10,7 @@
 #include "creatures/creature.hpp"
 #include "towers/tower.hpp"
 #include "visual-effects/visualEffect.hpp"
-#include "waveManager.hpp"
+#include "waves/waveManager.hpp"
 
 enum class PlaceTowerResult {
     Success,
@@ -42,7 +42,7 @@ private:
     std::vector<std::unique_ptr<Tower>> towers;         ///< List of placed towers
     std::vector<std::unique_ptr<VisualEffect>> visualEffects;
 
-    WaveManager waveManager;
+    std::unique_ptr<WaveManager> waveManager;
 
     unsigned long tick;                   ///< Current tick count (simulation time)
     bool paused;

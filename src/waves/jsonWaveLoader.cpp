@@ -1,15 +1,15 @@
-#include "jsonWaveLoader.hpp"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <algorithm>
 #include <cctype>
+#include "../../include/waves/jsonWaveLoader.hpp"
 
 JsonWaveLoader::JsonWaveLoader(const std::string& filename) {
     loadJsonFile(filename);
 }
 
-// --- petits helpers internes ---
+// Helpers
 namespace {
     inline void trim(std::string& s) {
         s.erase(s.begin(), std::find_if(s.begin(), s.end(),
@@ -19,7 +19,7 @@ namespace {
     }
 
     inline std::string extractStringValue(const std::string& src, const std::string& key) {
-        // Cherche "key": "value"
+        // Search "key": "value"
         size_t pos = src.find("\"" + key + "\"");
         if (pos == std::string::npos) return "";
         pos = src.find(':', pos);
@@ -32,7 +32,7 @@ namespace {
     }
 
     inline int extractIntValue(const std::string& src, const std::string& key) {
-        // Cherche "key": nombre
+        // Search "key": number
         size_t pos = src.find("\"" + key + "\"");
         if (pos == std::string::npos) return 0;
         pos = src.find(':', pos);
@@ -44,7 +44,7 @@ namespace {
     }
 
     inline std::string extractArraySection(const std::string& src, const std::string& key) {
-        // Cherche "key": [ ... ]
+        // Search "key": [ ... ]
         size_t pos = src.find("\"" + key + "\"");
         if (pos == std::string::npos) return "";
         pos = src.find('[', pos);
@@ -61,7 +61,7 @@ namespace {
     }
 
     inline std::vector<std::string> splitObjects(const std::string& arrContent) {
-        // Découpe le contenu d’un tableau [ {..}, {..}, ... ]
+        // Split an array [ {..}, {..}, ... ]
         std::vector<std::string> objects;
         size_t pos = 0;
         while (pos < arrContent.size()) {
@@ -94,14 +94,14 @@ void JsonWaveLoader::loadJsonFile(const std::string& filename) {
     std::string jsonText = buffer.str();
     trim(jsonText);
 
-    // Trouver la section "timeline"
+    // Find "timeline" section
     std::string timelineSection = extractArraySection(jsonText, "timeline");
     if (timelineSection.empty()) {
         std::cerr << "[JsonWaveLoader] No timeline section found\n";
         return;
     }
 
-    // Découper chaque wave { ... }
+    // Split each wave { ... }
     auto waveObjects = splitObjects(timelineSection);
     for (const auto& waveText : waveObjects) {
         WaveData wave;
