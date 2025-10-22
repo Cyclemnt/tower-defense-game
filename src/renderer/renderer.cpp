@@ -28,7 +28,8 @@ const sf::Texture& Renderer::getTexture(const std::string& filename) {
             std::cerr << "Failed to load fallback texture.\n";
     }
 
-    tex.setSmooth(true);
+    // TODO: if creature, setSmooth true, else :
+    tex.setSmooth(false);
     textures[filename] = std::move(tex);
     return textures.at(filename);
 }
