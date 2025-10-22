@@ -59,6 +59,9 @@ void Game::spawnCreature(CreatureType type) {
         case CreatureType::Drone:
             creature = std::make_unique<Drone>();
             break;
+        case CreatureType::DroneB:
+            creature = std::make_unique<Drone>(true);
+            break;
         case CreatureType::Tank:
             creature = std::make_unique<Tank>();
             break;

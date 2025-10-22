@@ -11,6 +11,7 @@ enum class CreatureType {
     Minion,
     MinionB,
     Drone,
+    DroneB,
     Tank,
     TankB
 };

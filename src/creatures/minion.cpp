@@ -1,7 +1,7 @@
 #include "../../include/creatures/minion.hpp"   
 
 Minion::Minion(bool boost_)
-    : Creature(25 + boost_ * 100 /*hp*/, 0 /*shield*/, 1 /*speed*/, 1 /*coresCapacity*/, 0 /*au*/, 1 /*ag*/, 0 /*cu*/), boost(boost_) {}
+    : Creature(25 + boost_ * 100 /*hp*/, 0 /*shield*/, 1 /*speed*/, 1 /*coresCapacity*/, 0 /*au*/, 1 + boost_ * 4 /*ag*/, 5 + boost_ * 5 /*cu*/), boost(boost_) {}
 
 Minion::~Minion() {}
 

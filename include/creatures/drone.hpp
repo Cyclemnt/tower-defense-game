@@ -12,8 +12,10 @@
  * no special abilities. Used as the most common wave unit.
  */
 class Drone : public Creature {
+private:
+    bool boost;
 public:
-    Drone();
+    Drone(bool boost_= false);
     ~Drone();
 
     /// @return The type name of this creature ("Drone").
