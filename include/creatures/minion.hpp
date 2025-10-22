@@ -12,8 +12,11 @@
  * Typically used to overwhelm defenses by sheer numbers.
  */
 class Minion : public Creature {
+private:
+    bool boost;
+
 public:
-    Minion();
+    Minion(bool boost_= false);
     ~Minion();
 
     /// @return The type name of this creature ("Minion").

@@ -53,11 +53,17 @@ void Game::spawnCreature(CreatureType type) {
         case CreatureType::Minion:
             creature = std::make_unique<Minion>();
             break;
+        case CreatureType::MinionB:
+            creature = std::make_unique<Minion>(true);
+            break;
         case CreatureType::Drone:
             creature = std::make_unique<Drone>();
             break;
         case CreatureType::Tank:
             creature = std::make_unique<Tank>();
+            break;
+        case CreatureType::TankB:
+            creature = std::make_unique<Tank>(true);
             break;
     }
 

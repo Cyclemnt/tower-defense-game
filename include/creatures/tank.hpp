@@ -13,8 +13,11 @@
  * escorting other weaker enemies.
  */
 class Tank : public Creature {
+private:
+    bool boost ;
+    
 public:
-    Tank();
+    Tank(bool boost_= false);
     ~Tank();
 
     /// @return The type name of this creature ("Tank").

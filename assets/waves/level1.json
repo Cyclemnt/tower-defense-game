@@ -4,7 +4,7 @@
       "wave": 1,
       "start_delay_ms": 0,
       "groups": [
-        { "enemy": "Minion", "count": 2, "interval_ms": 200 },
+        { "enemy": "TankB", "count": 1, "interval_ms": 200 },
         { "enemy": "Drone", "count": 3, "interval_ms": 300 }
       ]
     },

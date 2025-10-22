@@ -8,7 +8,7 @@
 class AutoWaveSource : public IWaveSource {
 private:
     std::mt19937 gen{std::random_device{}()};
-    std::discrete_distribution<int> dist{50, 33, 17};
+    std::discrete_distribution<int> dist{490, 10, 330, 165, 5}; // ‰
     int currentWave = 0;
     int maxWaves = 10;
     float waveSizeCoef = 1.3f;

@@ -127,8 +127,10 @@ void JsonWaveLoader::loadJsonFile(const std::string& filename) {
 
 CreatureType JsonWaveLoader::parseCreatureType(const std::string& name) const {
     if (name == "Minion") return CreatureType::Minion;
-    if (name == "Drone")  return CreatureType::Drone;
-    if (name == "Tank")   return CreatureType::Tank;
+    else if (name == "MinionB") return CreatureType::MinionB;
+    else if (name == "Drone")  return CreatureType::Drone;
+    else if (name == "Tank")   return CreatureType::Tank;
+    else if (name == "TankB")   return CreatureType::TankB;
     return CreatureType::Minion;
 }
 

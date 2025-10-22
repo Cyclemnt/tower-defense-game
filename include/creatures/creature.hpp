@@ -9,8 +9,10 @@ class RenderContext;
 
 enum class CreatureType {
     Minion,
+    MinionB,
     Drone,
-    Tank
+    Tank,
+    TankB
 };
 
 /**
