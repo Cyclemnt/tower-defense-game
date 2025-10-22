@@ -6,7 +6,15 @@
 #include "../../include/map/openZone.hpp"
 
 Renderer::Renderer(sf::RenderWindow& win, Game& game)
-    : game(game), ctx(win, *this) { computeScaling(); }
+    : game(game), ctx(win, *this)
+{
+    // Set icon
+    sf::Texture iconSprite(getTexture("icon.png"));
+    sf::Image iconImage = iconSprite.copyToImage(); 
+    ctx.window.setIcon({iconImage.getSize().x, iconImage.getSize().y}, iconImage.getPixelsPtr());
+
+    computeScaling();
+}
 
 const sf::Texture& Renderer::getTexture(const std::string& filename) {
     auto it = textures.find(filename);
