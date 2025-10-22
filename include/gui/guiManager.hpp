@@ -9,6 +9,7 @@
 #include "../game.hpp"
 #include "../renderer/renderContext.hpp"
 #include "hud.hpp"
+#include "cameraController.hpp"
 
 class Game;
 class Renderer;
@@ -21,10 +22,12 @@ private:
     RenderContext& ctx;
     HUD hud;
 
+    CameraController cam;
+
     PauseMenu pauseMenu;
     TowerMenu towerMenu;
 
-    void handleLeftClick(int mouseX, int mouseY);
+    bool handleLeftClick(int mouseX, int mouseY);
 
 public:
     GuiManager(sf::RenderWindow& window, Game& game, RenderContext& ctx);
