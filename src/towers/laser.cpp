@@ -39,6 +39,7 @@ void Laser::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>
         if (cooldown < 0.0f)
             cooldown = 0.0f;  // Cooldown cannot be negative when target is lost
         target = selectTarget(creatures);
+        lockTime = 0.0f;
     }
 
     // Attack while cooldown let it
