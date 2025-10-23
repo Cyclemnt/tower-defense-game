@@ -29,13 +29,10 @@ public:
     RenderContext& getContext() { return ctx; }
 
     /// @brief Loads and caches textures. Returns a reference.
-    const sf::Texture& getTexture(const std::string& name);
+    const sf::Texture& getTexture(const std::string& name, bool smooth = false);
 
     /// @brief Computes map scaling and centering relative to window.
     void computeScaling();
-
-    /// @brief Converts mouse coordinates to tile coordinates.
-    sf::Vector2i screenToTile(int mouseX, int mouseY) const;
 
     /// @brief Renders the entire game scene (map, entities, etc.).
     void render();

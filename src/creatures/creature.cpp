@@ -145,7 +145,7 @@ void Creature::render(RenderContext& ctx) const {
     int frame = (ctx.tick / 8) % 4;
 
     std::string filename = getTextureName(frame);
-    const sf::Texture& tex = renderer.getTexture(filename);
+    const sf::Texture& tex = renderer.getTexture(filename, true);
 
     sf::Sprite sprite(tex);
     sprite.setPosition({posX * ctx.tileSize + ctx.offset.x, posY * ctx.tileSize + ctx.offset.y});

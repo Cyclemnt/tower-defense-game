@@ -16,7 +16,7 @@ Renderer::Renderer(sf::RenderWindow& win, Game& game)
     computeScaling();
 }
 
-const sf::Texture& Renderer::getTexture(const std::string& filename) {
+const sf::Texture& Renderer::getTexture(const std::string& filename, bool smooth) {
     auto it = textures.find(filename);
     if (it != textures.end())
         return it->second;
@@ -28,8 +28,7 @@ const sf::Texture& Renderer::getTexture(const std::string& filename) {
             std::cerr << "Failed to load fallback texture.\n";
     }
 
-    // TODO: if creature, setSmooth true, else :
-    tex.setSmooth(false);
+    tex.setSmooth(smooth);
     textures[filename] = std::move(tex);
     return textures.at(filename);
 }
