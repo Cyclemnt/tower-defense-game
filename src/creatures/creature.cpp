@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iostream>
 #include "../../include/map/tile.hpp"
 #include "../../include/creatures/creature.hpp"
 #include "../../include/map/coreStorage.hpp"
@@ -153,7 +154,40 @@ void Creature::render(RenderContext& ctx) const {
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
     window.draw(sprite);
 
+    drawFloatingCores(ctx);
+
     drawHealthBar(ctx);
+}
+
+void Creature::drawFloatingCores(RenderContext& ctx) const {
+    if (coresCarried <= 0) return;
+    
+    float baseX = posX * ctx.tileSize + ctx.offset.x + ctx.tileSize * 0.5f;
+    float baseY = posY * ctx.tileSize + ctx.offset.y + ctx.tileSize * 0.5f;
+
+    float orbitRadius = ctx.tileSize * 0.2f;
+    float angleStep = 2.0f * M_PIf / std::max(coresCarried, 1);
+    float time = ctx.tick * 0.03f; // rotation speed
+    float offset = static_cast<float>(reinterpret_cast<uintptr_t>(this) % 2048);
+    float coreRadius = ctx.tileSize * 0.03f;
+
+    for (int i = 0; i < coresCarried; ++i) {
+        float angle = time + i * angleStep + offset;
+        float x = baseX + std::cos(angle) * orbitRadius;
+        float y = baseY + std::sin(angle) * orbitRadius;
+
+        sf::CircleShape core(coreRadius, 16);
+        core.setOrigin(sf::Vector2f(coreRadius, coreRadius));
+        core.setPosition(sf::Vector2f(x, y));
+
+        sf::Color coreColor(100, 200, 255, 220);
+        core.setFillColor(coreColor);
+
+        core.setOutlineThickness(ctx.tileSize * 0.01f);
+        core.setOutlineColor(sf::Color(150, 220, 255, 100));
+
+        ctx.window.draw(core);
+    }
 }
 
 void Creature::drawHealthBar(RenderContext& ctx) const {

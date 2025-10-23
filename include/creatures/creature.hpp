@@ -145,6 +145,7 @@ public:
     virtual std::string getTextureName(int frame) const = 0;
 
     virtual void render(RenderContext& ctx) const;
+    void drawFloatingCores(RenderContext& ctx) const;
     virtual void drawHealthBar(RenderContext& ctx) const;
 };
 
