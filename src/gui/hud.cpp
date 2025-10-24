@@ -22,7 +22,7 @@ void HUD::draw(float deltaTime) {
     // Draw a small HUD in top center
     sf::Vector2u win = ctx.window.getSize();
     float panelW = 260.0f;
-    float panelH = 110.0f;
+    float panelH = 92.0f;
     float panelX = (win.x - panelW) * 0.5f;
     float panelY = 8.0f;
 
@@ -81,24 +81,33 @@ void HUD::drawCores(float x, float y, float width) {
     int total = safe + stolen + lost;
     if (total == 0) return;
 
-    const float radius = 6.0f;
-    float spacing = 14.0f;
-    float maxPerLine = std::floor(width / spacing);
-    float curX = x;
-    float curY = y;
-
+    const float spacing = 4.0f;
+    const int maxPerRow = 12;
+    const float rectHeight = 10.0f;
+    float rectWidth = (width - (maxPerRow - 1) * spacing) / maxPerRow;
+    float totalWidth = maxPerRow * (rectWidth + spacing) - spacing;
+    float startX = x + (width - totalWidth) * 0.5f;
+    
+    float curX = startX, curY = y;
     int i = 0;
+
+    // Draw cores
     for (int idx = 0; idx < total; ++idx) {
-        if (i >= (int)maxPerLine) { i = 0; curY += (radius*2 + 4.0f); curX = x; }
-        sf::CircleShape c(radius);
-        c.setPosition({curX, curY});
-        c.setOutlineThickness(1.0f);
-        c.setOutlineColor(sf::Color(200,200,200));
-        if (idx < safe) c.setFillColor(sf::Color(0,150,255));
-        else if (idx < safe + stolen) c.setFillColor(sf::Color(255,140,0));
-        else c.setFillColor(sf::Color(200,50,50));
-        ctx.window.draw(c);
-        curX += spacing;
+        if (i >= maxPerRow) { 
+            i = 0;
+            curY += rectHeight + spacing;
+            curX = startX;
+        }
+        
+        sf::RectangleShape rect({rectWidth, rectHeight});
+        rect.setPosition({curX, curY});
+
+        if (idx < safe) rect.setFillColor(sf::Color(0,150,255));  // Blue for safe
+        else if (idx < safe + stolen) rect.setFillColor(sf::Color(255,140,0));  // Orange for stolen
+        else rect.setFillColor(sf::Color(200,50,50));  // Red for lost
+
+        ctx.window.draw(rect);
+        curX += rectWidth + spacing;
         ++i;
     }
 }
