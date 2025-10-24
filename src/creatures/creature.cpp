@@ -165,10 +165,10 @@ void Creature::drawFloatingCores(RenderContext& ctx) const {
     float baseX = posX * ctx.tileSize + ctx.offset.x + ctx.tileSize * 0.5f;
     float baseY = posY * ctx.tileSize + ctx.offset.y + ctx.tileSize * 0.5f;
 
-    float orbitRadius = ctx.tileSize * 0.2f;
+    float orbitRadius = ctx.tileSize * 0.15f;
     float angleStep = 2.0f * M_PIf / std::max(coresCarried, 1);
-    float time = ctx.tick * 0.03f; // rotation speed
-    float offset = static_cast<float>(reinterpret_cast<uintptr_t>(this) % 2048);
+    float time = ctx.tick * 0.03f; // Rotation speed
+    float offset = static_cast<float>(reinterpret_cast<uintptr_t>(this) % 2048); // Some randomness
     float coreRadius = ctx.tileSize * 0.03f;
 
     for (int i = 0; i < coresCarried; ++i) {
