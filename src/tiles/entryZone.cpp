@@ -1,4 +1,4 @@
-#include "../../include/map/entryZone.hpp"
+#include "../../include/tiles/entryZone.hpp"
 
 EntryZone::EntryZone(int x, int y)
     : Tile(x, y) {}

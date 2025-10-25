@@ -1,4 +1,4 @@
-#include "../../include/map/exitZone.hpp"
+#include "../../include/tiles/exitZone.hpp"
 
 ExitZone::ExitZone(int x, int y)
     : Tile(x, y) {}

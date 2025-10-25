@@ -1,5 +1,5 @@
 #include "../../include/gui/guiManager.hpp"
-#include "../../include/map/openZone.hpp"
+#include "../../include/tiles/openZone.hpp"
 #include "../../include/renderer/renderer.hpp"
 
 GuiManager::GuiManager(sf::RenderWindow& window, Game& gm, RenderContext& ctx)
@@ -43,7 +43,6 @@ bool GuiManager::handleLeftClick(int mouseX, int mouseY) {
 
     if (OpenZone* zone = dynamic_cast<OpenZone*>(clicked)) {
         towerMenu.open(tile, zone->isOccupied());
-        // game.setPaused(true);
         return true;
     } else return false;
 }

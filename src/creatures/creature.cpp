@@ -1,9 +1,9 @@
 #include <cmath>
 #include <iostream>
-#include "../../include/map/tile.hpp"
+#include "../../include/tiles/tile.hpp"
 #include "../../include/creatures/creature.hpp"
-#include "../../include/map/coreStorage.hpp"
-#include "../../include/map/exitZone.hpp"
+#include "../../include/tiles/coreStorage.hpp"
+#include "../../include/tiles/exitZone.hpp"
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 

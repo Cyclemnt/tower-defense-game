@@ -1,4 +1,4 @@
-#include "../../include/map/path.hpp"
+#include "../../include/tiles/path.hpp"
 
 Path::Path(int x, int y)
     : Tile(x, y) {}

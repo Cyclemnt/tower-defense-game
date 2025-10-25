@@ -1,4 +1,4 @@
-#include "../../include/map/openZone.hpp"
+#include "../../include/tiles/openZone.hpp"
 
 OpenZone::OpenZone(int x, int y)
     : Tile(x, y), occupied(false) {}

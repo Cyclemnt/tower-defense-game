@@ -1,4 +1,4 @@
-#include "../../include/map/emptyZone.hpp"
+#include "../../include/tiles/emptyZone.hpp"
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 

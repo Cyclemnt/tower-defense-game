@@ -4,26 +4,20 @@
 #include "../include/creatures/minion.hpp"
 #include "../include/creatures/drone.hpp"
 #include "../include/creatures/tank.hpp"
-#include "../include/map/coreStorage.hpp"
-#include "../include/map/mapLoader.hpp"
-#include "../include/map/openZone.hpp"
+#include "../include/tiles/coreStorage.hpp"
+#include "../include/tiles/openZone.hpp"
 #include "../include/towers/tower.hpp"
 #include "../include/visual-effects/visualEffect.hpp"
 #include "../include/waves/waveManager.hpp"
 #include "../include/waves/jsonWaveSource.hpp"
 #include "../include/waves/autoWaveSource.hpp"
+#include "../include/map/txtMapSource.hpp"
 
 Game::Game()
-    : map(), pathfinder(map), player(), cores(24), tick(0), paused(false) {
+    : map(std::make_unique<TxtMapSource>("../assets/maps/map1.txt"), &cores), pathfinder(map), player(), cores() {
 
-    try {
-        MapLoader::loadFromFile(map, "../assets/maps/map1.txt", &cores);
-    } catch (const std::exception& e) {
-        std::cerr << "[Error] Failed to load map: " << e.what() << std::endl;
-    }
-
-    waveManager = std::make_unique<WaveManager>(std::make_unique<JsonWaveSource>("../assets/waves/level1.json"));
-    // waveManager = std::make_unique<WaveManager>(std::make_unique<AutoWaveSource>());
+    // waveManager = std::make_unique<WaveManager>(std::make_unique<JsonWaveSource>("../assets/waves/level1.json"));
+    waveManager = std::make_unique<WaveManager>(std::make_unique<AutoWaveSource>());
 }
 
 const Map& Game::getMap() const { return map; }

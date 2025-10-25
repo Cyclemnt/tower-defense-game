@@ -1,24 +1,18 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
-#include "../../include/map/coreStorage.hpp"
-#include "../../include/map/emptyZone.hpp"
-#include "../../include/map/entryZone.hpp"
-#include "../../include/map/exitZone.hpp"
+#include "../../include/tiles/coreStorage.hpp"
+#include "../../include/tiles/emptyZone.hpp"
+#include "../../include/tiles/entryZone.hpp"
+#include "../../include/tiles/exitZone.hpp"
+#include "../../include/tiles/openZone.hpp"
+#include "../../include/tiles/path.hpp"
 #include "../../include/map/map.hpp"
-#include "../../include/map/openZone.hpp"
-#include "../../include/map/path.hpp"
 #include "../../include/renderer/renderContext.hpp"
+#include "../../include/map/iMapSource.hpp"
 
-Map::Map(int w, int h) : width(w), height(h) {
-    grid.resize(height);
-    for (int y = 0; y < height; ++y) {
-        grid[y].resize(width);
-        for (int x = 0; x < width; ++x) {
-            grid[y][x] = std::make_unique<EmptyZone>(x, y);
-        }
-    }
-    grid[0][0] = std::make_unique<EmptyZone>(0, 0);
+Map::Map(std::unique_ptr<IMapSource> source, Cores* cores) {
+    if (source) source->buildMap(*this, cores);
 }
 
 Map::~Map() {}

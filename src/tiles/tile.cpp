@@ -1,4 +1,4 @@
-#include "../../include/map/tile.hpp"
+#include "../../include/tiles/tile.hpp"
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 

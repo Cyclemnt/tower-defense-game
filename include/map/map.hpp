@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <memory>
+class IMapSource;
+class Cores;
 class Tile;
 class CoreStorage;
 class RenderContext;
@@ -17,8 +19,8 @@ class RenderContext;
  */
 class Map {
 private:
-    int width; ///< The width of the map (number of columns).
-    int height; ///< The height of the map (number of rows).
+    int width = 0;  ///< The width of the map (number of columns).
+    int height = 0; ///< The height of the map (number of rows).
 
     /// @brief 2D grid representing the map's layout, with each cell containing a unique tile.
     std::vector<std::vector<std::unique_ptr<Tile>>> grid;
@@ -33,10 +35,8 @@ private:
     CoreStorage* coreStorage;
     
 public:
-    /// @brief Constructs a new map with given dimensions.
-    /// @param w The width of the map (number of columns).
-    /// @param h The height of the map (number of rows).
-    Map(int w = 1, int h = 1);
+    /// @brief Constructs a new map.
+    Map(std::unique_ptr<IMapSource> source, Cores* cores = nullptr);
 
     /// @brief Destroys the map object and frees any allocated resources.
     ~Map();

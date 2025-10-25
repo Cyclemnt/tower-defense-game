@@ -3,7 +3,7 @@
 #include "../../include/visual-effects/visualEffect.hpp"
 #include "../../include/game.hpp"
 #include "../../include/towers/tower.hpp"
-#include "../../include/map/openZone.hpp"
+#include "../../include/tiles/openZone.hpp"
 
 Renderer::Renderer(sf::RenderWindow& win, Game& game)
     : game(game), ctx(win, *this)

@@ -1,18 +1,22 @@
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
+#include <cctype>
 #include <vector>
-#include "../include/map/mapLoader.hpp"
-#include "../../include/map/coreStorage.hpp"
-#include "../../include/map/emptyZone.hpp"
-#include "../../include/map/entryZone.hpp"
-#include "../../include/map/exitZone.hpp"
+#include "../../include/map/txtMapSource.hpp"
 #include "../../include/map/map.hpp"
-#include "../../include/map/openZone.hpp"
-#include "../../include/map/path.hpp"
+#include "../../include/tiles/path.hpp"
+#include "../../include/tiles/openZone.hpp"
+#include "../../include/tiles/entryZone.hpp"
+#include "../../include/tiles/exitZone.hpp"
+#include "../../include/tiles/emptyZone.hpp"
+#include "../../include/tiles/coreStorage.hpp"
 #include "../../include/resources/cores.hpp"
 
+TxtMapSource::TxtMapSource(std::string path)
+    : filename(std::move(path)) {}
 
-void MapLoader::loadFromFile(Map& map, const std::string& filename, Cores* cores) {
+void TxtMapSource::buildMap(Map& map, Cores* cores) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         throw std::runtime_error("Cannot open map file: " + filename);

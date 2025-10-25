@@ -2,7 +2,7 @@
 #include "../../include/towers/gatling.hpp"
 #include "../../include/towers/laser.hpp"
 #include "../../include/towers/mortar.hpp"
-#include "../../include/map/openZone.hpp"
+#include "../../include/tiles/openZone.hpp"
 
 TowerMenu::TowerMenu(tgui::Gui& gui, Game& gm, RenderContext& ctx)
     : Menu(gui, gm, ctx) {}
@@ -54,7 +54,6 @@ void TowerMenu::buildSellPanel() {
     sellBtn->onPress([this]() {
         game.sellTowerAt(tilePos.x, tilePos.y);
         close();
-        // game.setPaused(false);
     });
     panel->add(sellBtn);
 }

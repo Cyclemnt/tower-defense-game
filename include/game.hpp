@@ -44,8 +44,8 @@ private:
 
     std::unique_ptr<WaveManager> waveManager;
 
-    unsigned long tick;                   ///< Current tick count (simulation time)
-    bool paused;
+    unsigned long tick = 0;                   ///< Current tick count (simulation time)
+    bool paused = false;
 
 public:
     /// @brief Construct a new Game object.
