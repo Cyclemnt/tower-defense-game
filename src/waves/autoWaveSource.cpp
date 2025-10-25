@@ -1,16 +1,20 @@
 #include "../../include/waves/autoWaveSource.hpp"
 
-bool AutoWaveSource::hasNextWave() const { return currentWave < maxWaves; }
+bool AutoWaveSource::hasMoreWaves() const { return waveIndex < maxWaves; }
 
-std::vector<WaveEntry> AutoWaveSource::nextWave() {
-    if (!hasNextWave()) return {};
+WaveData AutoWaveSource::nextWave() {
+    if (!hasMoreWaves()) return {};
+    ++waveIndex;
 
-    ++currentWave;
-    std::vector<WaveEntry> wave;
+    int totalUnits = static_cast<int>(2 + std::pow(waveIndex, waveSizeCoef));
 
-    int totalUnits = static_cast<int>(2 + std::pow(currentWave, waveSizeCoef));
-    for (int i = 0; i < totalUnits; ++i)
-        wave.push_back({ static_cast<CreatureType>(dist(gen)), 1 });
+    WaveData wave;
+    wave.delay = waveDelay;
+    wave.spawns.reserve(totalUnits);
+
+    for (int i = 0; i < totalUnits; ++i) {
+        wave.spawns.push_back({ static_cast<CreatureType>(dist(gen)), spawnInterval });
+    }
 
     return wave;
 }

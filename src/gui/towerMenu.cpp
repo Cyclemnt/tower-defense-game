@@ -54,7 +54,7 @@ void TowerMenu::buildSellPanel() {
     sellBtn->onPress([this]() {
         game.sellTowerAt(tilePos.x, tilePos.y);
         close();
-        game.setPaused(false);
+        // game.setPaused(false);
     });
     panel->add(sellBtn);
 }

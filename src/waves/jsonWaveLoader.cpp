@@ -6,7 +6,7 @@
 #include "../../include/waves/jsonWaveLoader.hpp"
 
 JsonWaveLoader::JsonWaveLoader(const std::string& filename) {
-    loadJsonFile(filename);
+    parseFile(filename);
 }
 
 // Helpers
@@ -82,7 +82,7 @@ namespace {
     }
 }
 
-void JsonWaveLoader::loadJsonFile(const std::string& filename) {
+void JsonWaveLoader::parseFile(const std::string& filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
         std::cerr << "[JsonWaveLoader] Failed to open file: " << filename << std::endl;
@@ -91,62 +91,57 @@ void JsonWaveLoader::loadJsonFile(const std::string& filename) {
 
     std::ostringstream buffer;
     buffer << file.rdbuf();
-    std::string jsonText = buffer.str();
-    trim(jsonText);
+    std::string json = buffer.str();
+    trim(json);
 
-    // Find "timeline" section
-    std::string timelineSection = extractArraySection(jsonText, "timeline");
-    if (timelineSection.empty()) {
-        std::cerr << "[JsonWaveLoader] No timeline section found\n";
-        return;
-    }
+    std::string timeline = extractArraySection(json, "timeline");
+    auto waveObjects = splitObjects(timeline);
 
-    // Split each wave { ... }
-    auto waveObjects = splitObjects(timelineSection);
-    for (const auto& waveText : waveObjects) {
-        WaveData wave;
-        wave.waveNumber   = extractIntValue(waveText, "wave");
-        wave.startDelayMs = extractIntValue(waveText, "start_delay_ms");
+    for (const auto& text : waveObjects) {
+        InternalWave w;
+        w.waveNumber = extractIntValue(text, "wave");
+        w.delay = extractIntValue(text, "start_delay_ms") * 0.001f;
 
-        std::string groupsSection = extractArraySection(waveText, "groups");
-        if (!groupsSection.empty()) {
-            auto groupObjects = splitObjects(groupsSection);
-            for (const auto& groupText : groupObjects) {
-                WaveGroup group;
-                group.type       = parseCreatureType(extractStringValue(groupText, "enemy"));
-                group.count      = extractIntValue(groupText, "count");
-                group.intervalMs = extractIntValue(groupText, "interval_ms");
-                wave.groups.push_back(group);
+        std::string groups = extractArraySection(text, "groups");
+        auto groupObjects = splitObjects(groups);
+
+        for (const auto& g : groupObjects) {
+            CreatureType t = parseType(extractStringValue(g, "enemy"));
+            int count = extractIntValue(g, "count");
+            float interval = extractIntValue(g, "interval_ms") * 0.001f;
+
+            for (int i = 0; i < count; ++i) {
+                w.spawns.push_back({ t, interval });
             }
         }
-        timeline.push_back(std::move(wave));
+
+        waves.push_back(std::move(w));
     }
 
-    std::cout << "[JsonWaveLoader] Loaded " << timeline.size() << " waves from " << filename << std::endl;
+    std::cout << "[JsonWaveLoader] Loaded " << waves.size() << " waves.\n";
 }
 
-CreatureType JsonWaveLoader::parseCreatureType(const std::string& name) const {
-    if (name == "Minion") return CreatureType::Minion;
-    else if (name == "MinionB") return CreatureType::MinionB;
-    else if (name == "Drone")  return CreatureType::Drone;
-    else if (name == "DroneB")  return CreatureType::DroneB;
-    else if (name == "Tank")   return CreatureType::Tank;
-    else if (name == "TankB")   return CreatureType::TankB;
+bool JsonWaveLoader::hasMore() const {
+    return index < waves.size();
+}
+
+WaveData JsonWaveLoader::next() {
+    if (!hasMore()) return {};
+
+    WaveData wave;
+    const JsonWaveLoader::InternalWave& w = waves[index++];
+    wave.spawns = w.spawns;
+    wave.delay = w.delay;
+
+    return wave;
+}
+
+CreatureType JsonWaveLoader::parseType(const std::string& n) const {
+    if (n == "Minion") return CreatureType::Minion;
+    if (n == "Drone")  return CreatureType::Drone;
+    if (n == "Tank")   return CreatureType::Tank;
+    if (n == "MinionB") return CreatureType::MinionB;
+    if (n == "DroneB") return CreatureType::DroneB;
+    if (n == "TankB")  return CreatureType::TankB;
     return CreatureType::Minion;
-}
-
-bool JsonWaveLoader::hasNextWave() const {
-    return currentWaveIndex < timeline.size();
-}
-
-std::vector<JsonWaveLoader::WaveEntry> JsonWaveLoader::getNextWave() {
-    if (!hasNextWave()) return {};
-
-    const WaveData& wave = timeline[currentWaveIndex++];
-    std::vector<WaveEntry> entries;
-
-    for (const auto& group : wave.groups)
-        entries.push_back({ group.type, group.count });
-
-    return entries;
 }

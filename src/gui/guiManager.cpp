@@ -43,7 +43,7 @@ bool GuiManager::handleLeftClick(int mouseX, int mouseY) {
 
     if (OpenZone* zone = dynamic_cast<OpenZone*>(clicked)) {
         towerMenu.open(tile, zone->isOccupied());
-        game.setPaused(true);
+        // game.setPaused(true);
         return true;
     } else return false;
 }

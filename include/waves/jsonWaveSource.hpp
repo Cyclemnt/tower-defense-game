@@ -6,14 +6,12 @@
 
 class JsonWaveSource : public IWaveSource {
 private:
-    std::unique_ptr<JsonWaveLoader> loader;
+    JsonWaveLoader loader;
 
 public:
-    explicit JsonWaveSource(const std::string& filename);
-
-    bool hasNextWave() const override;
-
-    std::vector<WaveEntry> nextWave() override;
+    explicit JsonWaveSource(const std::string& file);
+    bool hasMoreWaves() const override;
+    WaveData nextWave() override;
 };
 
 #endif // JSON_WAVE_SOURCE_HPP

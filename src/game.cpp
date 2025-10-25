@@ -23,7 +23,7 @@ Game::Game()
     }
 
     waveManager = std::make_unique<WaveManager>(std::make_unique<JsonWaveSource>("../assets/waves/level1.json"));
-    //waveManager = std::make_unique<WaveManager>(std::make_unique<AutoWaveSource>());
+    // waveManager = std::make_unique<WaveManager>(std::make_unique<AutoWaveSource>());
 }
 
 const Map& Game::getMap() const { return map; }
