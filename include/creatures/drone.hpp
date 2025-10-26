@@ -1,25 +1,32 @@
 #ifndef DRONE_HPP
 #define DRONE_HPP
 
-#include <string>
 #include "creature.hpp"
 
 /**
  * @class Drone
- * @brief Standard enemy type.
+ * @brief A balanced mid-tier enemy.
  *
- * A Drone represents the baseline enemy: average health, speed and
- * no special abilities. Used as the most common wave unit.
+ * The Drone is a versatile enemy type with average speed and durability.
+ * It serves as the core unit in most waves and represents the standard difficulty baseline.
+ *
+ * Boosted Drones have stronger shields and better loot.
  */
-class Drone : public Creature {
-private:
-    bool boost;
+class Drone final : public Creature {
 public:
-    Drone(bool boost_= false);
-    ~Drone();
+    /**
+     * @brief Constructs a Drone.
+     * @param boosted_ Whether this Drone is a boosted variant.
+     */
+    explicit Drone(bool boosted_ = false) noexcept;
 
-    /// @return The type name of this creature ("Drone").
-    std::string getTextureName(int frame) const override;
+    /// @brief Virtual destructor.
+    ~Drone() override = default;
+
+protected:
+    /// @brief Returns the texture name for this creature.
+    /// @param frame The animation frame index.
+    [[nodiscard]] std::string getTextureName(int frame) const override;
 };
 
 #endif // DRONE_HPP

@@ -23,9 +23,7 @@ protected:
     int x;              ///< X coordinate on the map grid.
     int y;              ///< Y coordinate on the map grid.
 
-    int priceAu;        ///< Gold cost (Au) to build the tower.
-    int priceAg;        ///< Silver cost (Ag) to build the tower.
-    int priceCu;        ///< Copper cost (Cu) to build the tower.
+    std::array<unsigned int, 3> cost; ///< Cost to build the tower.
 
     float damage;       ///< Damage dealt per attack.
     float range;        ///< Attack range (in tiles).
@@ -47,7 +45,7 @@ public:
     /// @param dmg Base damage per attack.
     /// @param rng Attack range in tiles.
     /// @param rate Number of attacks per second (fire rate).
-    Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate);
+    Tower(int x_, int y_, std::array<unsigned int, 3> cost_, int dmg, float rng, float rate);
 
     /// Virtual destructor.
     virtual ~Tower() = default;
@@ -73,7 +71,7 @@ public:
     float getFireRate() const;
 
     /// @return The price of the tower.
-    std::array<int, 3> getPrice() const;
+    std::array<unsigned int, 3> getCost() const;
     
     /// @return The target of the tower.
     const Creature* getTarget() const;

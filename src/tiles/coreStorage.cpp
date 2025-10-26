@@ -14,7 +14,7 @@ std::string CoreStorage::getTextureName() const { return "tile_core.png"; }
 
 int CoreStorage::getCoreCount() const { return cores->getSafe(); }
 
-int CoreStorage::takeCores(int requested) { return cores->stealCore(requested); }
+int CoreStorage::takeCores(int requested) const { return cores->stealCore(requested); }
 
 void CoreStorage::depositCores(int n) { cores->returnCore(n); }
 

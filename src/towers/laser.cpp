@@ -5,7 +5,7 @@
 #include "../../include/visual-effects/visualEffect.hpp"
 
 Laser::Laser(int x_, int y_)
-    : Tower(x_, y_, 0 /*au*/, 10 /*ag*/, 100 /*cu*/, 0.1f /*dmg*/, 3.0f /*rng*/, 15.0f /*rate*/),
+    : Tower(x_, y_, {0u /*au*/, 10u /*ag*/, 100u /*cu*/}, 0.1f /*dmg*/, 3.0f /*rng*/, 15.0f /*rate*/),
     damageScale(1.0f), baseDamage(0.1f) {}
 
 Laser::~Laser() {}

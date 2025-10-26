@@ -30,7 +30,7 @@ public:
     void pay(const Tower& tower);
 
     /// @brief Add materials to the player's balance.
-    void addMaterials(std::array<int, 3> loot);
+    void addMaterials(std::array<unsigned int, 3> loot);
 };
 
 #endif // PLAYER_HPP

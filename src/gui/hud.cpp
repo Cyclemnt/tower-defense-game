@@ -44,20 +44,20 @@ void HUD::draw(float deltaTime) {
 }
 
 void HUD::drawResources() {
-    const std::array<int, 3> mats = game.getPlayer().getMaterials().getBalance();
+    const std::array<unsigned int, 3> mats = game.getPlayer().getMaterials().getBalance();
     // icon positions
     float x = (ctx.window.getSize().x - 260.0f) * 0.5f + 12.0f;
     float y = 16.0f;
     const float iconS = 20.0f;
 
-    struct R { const char* file; int value; const char* name; };
+    struct R { const char* file; unsigned int value; const char* name; };
     R resources[3] = {
         { "icon_gold.png", mats[0], "Au" },
         { "icon_silver.png", mats[1], "Ag" },
         { "icon_copper.png", mats[2], "Cu" }
     };
 
-    for (int i=0;i<3;i++) {
+    for (int i = 0; i < 3; ++i) {
         const auto& tex = ctx.renderer.getTexture(std::string(resources[i].file));
         sf::Sprite spr(tex);
         auto sz = tex.getSize();

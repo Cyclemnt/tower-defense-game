@@ -1,11 +1,21 @@
-#include "../../include/creatures/tank.hpp"   
+#include "../../include/creatures/tank.hpp"
 
-Tank::Tank(bool boost_)
-    : Creature(125 + boost_ * 25 /*hp*/, 75 + boost_ * 225/*shield*/, 0.25f /*speed*/, 3 /*coresCapacity*/, 1 /*au*/, 2 /*ag*/, 10 + boost_ * 30 /*cu*/), boost(boost_) {}
+Tank::Tank(bool boosted_) noexcept
+    : Creature(
+        /* health */ boosted_ ? 150.f : 125.f,
+        /* shield */ boosted_ ? 300.f : 75.f,
+        /* speed */ 0.25f,
+        /* coresCapacity */ 3u,
+        /* loot */ {
+            1u,                    // Au
+            2u,                    // Ag
+            boosted_ ? 40u : 10u   // Cu
+        },
+        boosted_
+    ) {}
 
-Tank::~Tank() {}
-
-std::string Tank::getTextureName(int frame) const {
-    if (boost) return "creature_tank_b_" + std::to_string(frame) + ".png";
-    else return "creature_tank_" + std::to_string(frame) + ".png";
+std::string Tank::getTextureName(const int frame) const {
+    return boosted
+        ? "creature_tank_b_" + std::to_string(frame) + ".png"
+        : "creature_tank_"   + std::to_string(frame) + ".png";
 }

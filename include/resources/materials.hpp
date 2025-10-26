@@ -15,22 +15,20 @@
  */
 class Materials {
 private:
-    int au;     ///< Gold
-    int ag;     ///< Silver
-    int cu;     ///< Copper
+    std::array<unsigned int, 3> materials;
 
 public:
-    Materials(int initialAu = 100, int initialAg = 100, int initialCu = 100);
+    Materials(std::array<unsigned int, 3> materials_ = {100u, 100u, 100u});
     ~Materials();
 
     /// @return Current balance of resources {Au, Ag, Cu}.
-    std::array<int, 3> getBalance() const;
+    std::array<unsigned int, 3> getBalance() const;
 
     /// @brief Adds resources to the balance.
-    void add(std::array<int, 3> amounts);
+    void add(std::array<unsigned int, 3> amounts);
 
     /// @brief Spends resources from the balance.
-    void spend(std::array<int, 3> amounts);
+    void spend(std::array<unsigned int, 3> amounts);
 };
 
 #endif // MATERIALS_HPP

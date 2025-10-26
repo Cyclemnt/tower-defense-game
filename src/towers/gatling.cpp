@@ -4,7 +4,7 @@
 #include "../../include/creatures/creature.hpp"
 
 Gatling::Gatling(int x_, int y_)
-    : Tower(x_, y_, 0 /*au*/, 0 /*ag*/, 50 /*cu*/, 4 /*dmg*/, 3.0f /*rng*/, 4.0f /*rate*/) {}
+    : Tower(x_, y_, {0u /*au*/, 0u /*ag*/, 50u /*cu*/}, 4 /*dmg*/, 3.0f /*rng*/, 4.0f /*rate*/) {}
 
 Gatling::~Gatling() {}
 

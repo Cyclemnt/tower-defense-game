@@ -46,7 +46,7 @@ public:
     /// @brief Attempts to take a specified number of cores from the Game's cores.
     /// @param requested The number of cores to try and take.
     /// @return The actual number of cores taken (0 to requested).
-    int takeCores(int requested);
+    int takeCores(int requested) const;
 
     /// @brief Deposits a specified number of cores back into the Game's cores.
     /// @param n The number of cores to deposit.

@@ -73,10 +73,11 @@ void Game::spawnCreature(CreatureType type) {
     Tile* start = map.getEntries()[0];
     Tile* goal = map.getCoreStorage();
 
-    std::vector<Tile*> path = pathfinder.findPath(start, goal);
+    std::vector<const Tile*> path = pathfinder.findPath(start, goal);
     if (path.empty()) path = pathfinder.findPath(start, goal, true);
     creature->setPath(path);
-    creature->setPosition({start->getX(), start->getY()});
+    const std::array<int, 2>& startPos = {start->getX(), start->getY()};
+    creature->setPosition(startPos);
 
     creatures.push_back(std::move(creature));
 }
@@ -114,9 +115,9 @@ void Game::sellTowerAt(int x, int y) {
         Tower* tower = it->get();
         if (tower->getX() == x && tower->getY() == y) {
             // Refund: 50% of cost
-            std::array<int, 3> price = tower->getPrice();
-            for (size_t i = 0; i < price.size(); ++i) { price[i] = static_cast<int>(price[i] * 0.5f); }
-            player.getMaterials().add(price);
+            std::array<unsigned int, 3> cost = tower->getCost();
+            for (size_t i = 0; i < cost.size(); ++i) { cost[i] = static_cast<int>(cost[i] * 0.5f); }
+            player.getMaterials().add(cost);
 
             // Free the tile
             if (auto* zone = dynamic_cast<OpenZone*>(map.getTile(x, y)))
@@ -134,9 +135,9 @@ void Game::sellTowerAt(int x, int y) {
 
 void Game::updatePaths() {
     for (auto& c : creatures) {
-        Tile* start = c->getCurrentTile();
-        Tile* goal = c->getDestinationTile();
-        std::vector<Tile*> newPath = pathfinder.findPath(start, goal);
+        const Tile* start = c->getCurrentTile();
+        const Tile* goal = c->getDestinationTile();
+        std::vector<const Tile*> newPath = pathfinder.findPath(start, goal);
         if (newPath.empty()) newPath = pathfinder.findPath(start, goal, true);
         c->setPath(newPath);
     }
@@ -152,14 +153,14 @@ void Game::update(float deltaTime) {
 
             c->update(deltaTime);
 
-            Tile* current = c->getCurrentTile();
-            Tile* destination = c->getDestinationTile();
+            const Tile* current = c->getCurrentTile();
+            const Tile* destination = c->getDestinationTile();
             
             // CoreStorage reached
             if (destination == map.getCoreStorage() && current == destination) {
                 // New path to exit
                 Tile* goal = map.getExits()[0];
-                std::vector<Tile*> newPath = pathfinder.findPath(current, goal);
+                const std::vector<const Tile*> newPath = pathfinder.findPath(current, goal);
                 c->setPath(newPath);
             }
 

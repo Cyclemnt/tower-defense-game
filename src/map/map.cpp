@@ -72,8 +72,8 @@ const std::vector<Tile*>& Map::getExits() const { if (exits.empty()) return entr
 
 CoreStorage* Map::getCoreStorage() const { return coreStorage; }
 
-std::vector<Tile*> Map::getNeighbors(Tile* tile) const {
-    std::vector<Tile*> neighbors;
+const std::vector<const Tile*> Map::getNeighbors(const Tile* tile) const {
+    std::vector<const Tile*> neighbors;
     int x = tile->getX();
     int y = tile->getY();
 

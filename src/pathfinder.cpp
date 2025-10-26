@@ -9,27 +9,27 @@ Pathfinder::Pathfinder(const Map& m)
 
 Pathfinder::~Pathfinder() {}
 
-int Pathfinder::heuristic(Tile* a, Tile* b) const {
+int Pathfinder::heuristic(const Tile* a, const Tile* b) const {
     // Manhattan distance: sum of absolute differences between x and y coordinates.
     // Useful for grids with only horizontal/vertical movement (no diagonal).
     return std::abs(a->getX() - b->getX()) + std::abs(a->getY() - b->getY());
 }
 
-std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal, bool ignoreTowers) const {
+const std::vector<const Tile*> Pathfinder::findPath(const Tile* start, const Tile* goal, const bool ignoreTowers) const {
     if (!start || !goal) return {};  // Return an empty path if start or goal are invalid.
 
     // Comparator for the priority queue, sorts nodes by their total cost (fCost = gCost + hCost).
     auto cmp = [](Node* a, Node* b) { return a->fCost() > b->fCost(); };
     std::priority_queue<Node*, std::vector<Node*>, decltype(cmp)> openSet(cmp);  // Priority queue for nodes to explore.
 
-    std::unordered_map<Tile*, Node*> allNodes;  // Map to keep track of all explored nodes.
+    std::unordered_map<const Tile*, Node*> allNodes;  // Map to keep track of all explored nodes.
 
     // Initialize the start node: gCost = 0, hCost calculated using the heuristic function.
     Node* startNode = new Node{start, 0, heuristic(start, goal), nullptr};
     openSet.push(startNode);  // Add the start node to the priority queue.
     allNodes[start] = startNode;  // Record the start node in allNodes for fast access.
 
-    std::vector<Tile*> path;  // The final path to return.
+    std::vector<const Tile*> path;  // The final path to return.
 
     while (!openSet.empty()) {
         Node* current = openSet.top();  // Get the node with the lowest total cost (fCost).
@@ -47,7 +47,7 @@ std::vector<Tile*> Pathfinder::findPath(Tile* start, Tile* goal, bool ignoreTowe
         }
 
         // Explore the neighbors of the current node.
-        for (Tile* neighbor : map.getNeighbors(current->tile)) {
+        for (const Tile* neighbor : map.getNeighbors(current->tile)) {
             // If the neighbor is not walkable, skip it.
             // Or, if ignoreTowers == true, accept OpenZones regardless of occupation.
             if (!(neighbor->isWalkable() || (ignoreTowers && neighbor->isBuildable()))) continue;

@@ -1,27 +1,32 @@
 #ifndef TANK_HPP
 #define TANK_HPP
 
-#include <string>
 #include "creature.hpp"
 
 /**
  * @class Tank
- * @brief Heavy enemy type.
+ * @brief A slow, heavily armored enemy.
  *
- * A Tank has very high health and shield but moves slowly.
- * It is designed to absorb large amounts of damage while
- * escorting other weaker enemies.
+ * The Tank is a durable enemy unit with high health and strong shields,
+ * designed to absorb significant amounts of damage and protect weaker enemies.
+ *
+ * Boosted Tanks are even more resistant and yield greater rewards.
  */
-class Tank : public Creature {
-private:
-    bool boost ;
-    
+class Tank final : public Creature {
 public:
-    Tank(bool boost_= false);
-    ~Tank();
+    /**
+     * @brief Constructs a Tank.
+     * @param boosted_ Whether this Tank is a boosted variant.
+     */
+    explicit Tank(bool boosted_ = false) noexcept;
 
-    /// @return The type name of this creature ("Tank").
-    std::string getTextureName(int frame) const override;
+    /// @brief Virtual destructor.
+    ~Tank() override = default;
+
+protected:
+    /// @brief Returns the texture name for this creature.
+    /// @param frame The animation frame index.
+    [[nodiscard]] std::string getTextureName(int frame) const override;
 };
 
 #endif // TANK_HPP

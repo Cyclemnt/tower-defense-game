@@ -7,51 +7,30 @@
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-Creature::Creature(float hp, float sh, float spd, int coresCapacity_, int au_, int ag_, int cu_)
-    : health(hp), baseHealth(hp), shield(sh), baseShield(sh), speed(spd), coresCapacity(coresCapacity_), au(au_), ag(ag_), cu(cu_), coresCarried(0),
-    pathIndex(0), alive(true) {}
+Creature::Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, std::array<unsigned int, 3> loot_, bool boosted_)
+    : health(health_), baseHealth(health_), shield(shield_), baseShield(shield_), speed(speed_), coresCapacity(coresCapacity_), loot(loot_), boosted(boosted_) {}
 
-bool Creature::isAlive() const { return alive; }
-
-float Creature::getHealth() const { return health; }
-
-float Creature::getBaseHealth() const { return baseHealth; }
-
-float Creature::getShield() const { return shield; }
-
-float Creature::getBaseShield() const { return baseShield; }
-
-float Creature::getSpeed() const { return speed; }
-
-int Creature::getCoresCarried() const { return coresCarried; }
-
-std::array<int, 3> Creature::getLoot() const { return {au, ag, cu}; }
-
-void Creature::setPath(const std::vector<Tile*>& p) {
+void Creature::setPath(const std::vector<const Tile*>& p) {
     path = p;
     pathIndex = 0;
 }
 
-void Creature::setPosition(std::array<int, 2> pos) {
-    posX = pos[0];
-    posY = pos[1];
+void Creature::setPosition(const std::array<int, 2>& tileCoords) {
+    for (size_t i = 0; i < position.size(); ++i)
+        position[i] = static_cast<float>(tileCoords[i]);
 }
 
-std::array<float, 2> Creature::getPosition() const {
-    return {posX, posY};
-}
-
-Tile* Creature::getCurrentTile() const {
+const Tile* Creature::getCurrentTile() const noexcept {
     if (path.empty() || pathIndex >= (int)path.size()) return nullptr;
     return path[pathIndex];
 }
 
-Tile* Creature::getNextTile() const {
+const Tile* Creature::getNextTile() const noexcept {
     if (path.empty() || pathIndex + 1 >= (int)path.size()) return nullptr;
     return path[pathIndex + 1];
 }
 
-Tile* Creature::getDestinationTile() const {
+const Tile* Creature::getDestinationTile() const noexcept {
     if (path.empty()) return nullptr;
     return path.back();
 }
@@ -63,39 +42,37 @@ void Creature::update(float deltaTime) {
     float distanceToTravel = speed * deltaTime;
 
     while (distanceToTravel > 0.0f && pathIndex + 1 < (int)path.size()) {
-        Tile* current = path[pathIndex];
-        Tile* next = path[pathIndex + 1];
+        const Tile* current = path[pathIndex];
+        const Tile* next = path[pathIndex + 1];
 
         float targetX = next->getX();
         float targetY = next->getY();
 
-        float dx = targetX - posX;
-        float dy = targetY - posY;
+        float dx = targetX - position[0];
+        float dy = targetY - position[1];
         float distToNext = std::sqrt(dx * dx + dy * dy);
 
         if (distanceToTravel >= distToNext) {
             // Get to next Tile
-            posX = targetX;
-            posY = targetY;
+            position[0] = targetX;
+            position[1] = targetY;
             pathIndex++;
             distanceToTravel -= distToNext;
 
             // Events depending on Tile
-            if (CoreStorage* c = dynamic_cast<CoreStorage*>(next)) {
+            if (const CoreStorage* c = dynamic_cast<const CoreStorage*>(next)) {
                 if (coresCarried < coresCapacity) {
                     stealCores(c->takeCores(coresCapacity - coresCarried)); // Taking as many cores as possible
                     distanceToTravel = 0.0f; // Path will change
                 }
             }
-            else if (ExitZone* ex = dynamic_cast<ExitZone*>(next)) {
-                // if (coresCarried > 0) {
-                //     coresCarried = 0;
-                // }
+            else if (const ExitZone* ex = dynamic_cast<const ExitZone*>(next)) {
+                // Nothing to do, Game will do its job
             }
         } else {
             // Partially move thowards next Tile
-            posX += (dx / distToNext) * distanceToTravel;
-            posY += (dy / distToNext) * distanceToTravel;
+            position[0] += (dx / distToNext) * distanceToTravel;
+            position[1] += (dy / distToNext) * distanceToTravel;
             distanceToTravel = 0.0f;
         }
     }
@@ -111,7 +88,7 @@ void Creature::takeDamage(float dmg) {
         float absorbed = std::min(shield, remaining);
         shield -= absorbed;
         remaining -= absorbed;
-        return;
+        return; // Shield prevents taking damage to life once
     }
 
     // Then health
@@ -123,83 +100,49 @@ void Creature::takeDamage(float dmg) {
     }
 }
 
-void Creature::stealCores(int amount) {
-    coresCarried += amount;
+void Creature::stealCores(unsigned int amount) {
+    coresCarried = std::min(coresCarried + amount, coresCapacity);
 }
 
-int Creature::dropCores() {
-    int dropped = coresCarried;
+unsigned int Creature::dropCores() noexcept {
+    unsigned int dropped = coresCarried;
     coresCarried = 0;
     return dropped;
 }
 
-void Creature::leave() {
-    au = 0;
-    ag = 0;
-    cu = 0;
+void Creature::leave() noexcept {
+    loot.fill(0);
     alive = false;
 }
 
-void Creature::render(RenderContext& ctx) const {
-    auto& renderer = ctx.renderer;
-    auto& window = ctx.window;
+void Creature::render(const RenderContext& ctx) const {
+    Renderer& renderer = ctx.renderer;
+    sf::RenderWindow& window = ctx.window;
     int frame = (ctx.tick / 8) % 4;
 
     std::string filename = getTextureName(frame);
     const sf::Texture& tex = renderer.getTexture(filename, true);
 
     sf::Sprite sprite(tex);
-    sprite.setPosition({posX * ctx.tileSize + ctx.offset.x, posY * ctx.tileSize + ctx.offset.y});
+    sprite.setPosition({position[0] * ctx.tileSize + ctx.offset.x, position[1] * ctx.tileSize + ctx.offset.y});
     const auto& sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
     window.draw(sprite);
 
-    drawFloatingCores(ctx);
-
+    drawCarriedCores(ctx);
     drawHealthBar(ctx);
 }
 
-void Creature::drawFloatingCores(RenderContext& ctx) const {
-    if (coresCarried <= 0) return;
-    
-    float baseX = posX * ctx.tileSize + ctx.offset.x + ctx.tileSize * 0.5f;
-    float baseY = posY * ctx.tileSize + ctx.offset.y + ctx.tileSize * 0.5f;
-
-    float orbitRadius = ctx.tileSize * 0.15f;
-    float angleStep = 2.0f * M_PIf / std::max(coresCarried, 1);
-    float time = ctx.tick * 0.03f; // Rotation speed
-    float offset = static_cast<float>(reinterpret_cast<uintptr_t>(this) % 2048); // Some randomness
-    float coreRadius = ctx.tileSize * 0.03f;
-
-    for (int i = 0; i < coresCarried; ++i) {
-        float angle = time + i * angleStep + offset;
-        float x = baseX + std::cos(angle) * orbitRadius;
-        float y = baseY + std::sin(angle) * orbitRadius;
-
-        sf::CircleShape core(coreRadius, 16);
-        core.setOrigin(sf::Vector2f(coreRadius, coreRadius));
-        core.setPosition(sf::Vector2f(x, y));
-
-        sf::Color coreColor(100, 200, 255, 220);
-        core.setFillColor(coreColor);
-
-        core.setOutlineThickness(ctx.tileSize * 0.01f);
-        core.setOutlineColor(sf::Color(150, 220, 255, 100));
-
-        ctx.window.draw(core);
-    }
-}
-
-void Creature::drawHealthBar(RenderContext& ctx) const {
-    auto& window = ctx.window;
+void Creature::drawHealthBar(const RenderContext& ctx) const {
+    sf::RenderWindow& window = ctx.window;
 
     float hpRatio = health / baseHealth;
     float shieldRatio = baseShield > 0.0f ? shield / baseShield : 0.0f;
 
     const float barWidth = ctx.tileSize * 0.5f;
     const float barHeight = ctx.tileSize * 0.05f;
-    const float x = posX * ctx.tileSize + (ctx.tileSize - barWidth) * 0.5f + ctx.offset.x;
-    const float baseY = posY * ctx.tileSize - barHeight - 4.0f + ctx.offset.y;
+    const float x = position[0] * ctx.tileSize + (ctx.tileSize - barWidth) * 0.5f + ctx.offset.x;
+    const float baseY = position[1] * ctx.tileSize - barHeight - 4.0f + ctx.offset.y;
 
     // Shield bar
     if (baseShield > 0.0f) {
@@ -228,5 +171,36 @@ void Creature::drawHealthBar(RenderContext& ctx) const {
         hpBar.setFillColor(lifeColor);
         hpBar.setPosition({x, y});
         window.draw(hpBar);
+    }
+}
+
+void Creature::drawCarriedCores(const RenderContext& ctx) const {
+    if (coresCarried <= 0) return;
+    
+    float baseX = position[0] * ctx.tileSize + ctx.offset.x + ctx.tileSize * 0.5f;
+    float baseY = position[1] * ctx.tileSize + ctx.offset.y + ctx.tileSize * 0.5f;
+
+    float orbitRadius = ctx.tileSize * 0.15f;
+    float angleStep = 2.0f * M_PIf / std::max(coresCarried, 1u);
+    float time = ctx.tick * 0.03f; // Rotation speed
+    float offset = static_cast<float>(reinterpret_cast<uintptr_t>(this) % 2048); // Some randomness (we should find something else)
+    float coreRadius = ctx.tileSize * 0.03f;
+
+    for (int i = 0; i < coresCarried; ++i) {
+        float angle = time + i * angleStep + offset;
+        float x = baseX + std::cos(angle) * orbitRadius;
+        float y = baseY + std::sin(angle) * orbitRadius;
+
+        sf::CircleShape core(coreRadius, 16);
+        core.setOrigin(sf::Vector2f(coreRadius, coreRadius));
+        core.setPosition(sf::Vector2f(x, y));
+
+        sf::Color coreColor(100, 200, 255, 220);
+        core.setFillColor(coreColor);
+
+        core.setOutlineThickness(ctx.tileSize * 0.01f);
+        core.setOutlineColor(sf::Color(150, 220, 255, 100));
+
+        ctx.window.draw(core);
     }
 }

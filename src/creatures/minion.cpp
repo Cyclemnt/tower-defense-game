@@ -1,11 +1,21 @@
-#include "../../include/creatures/minion.hpp"   
+#include "../../include/creatures/minion.hpp"
 
-Minion::Minion(bool boost_)
-    : Creature(25 + boost_ * 100 /*hp*/, 0 /*shield*/, 1 /*speed*/, 1 /*coresCapacity*/, 0 /*au*/, 1 + boost_ * 4 /*ag*/, 5 + boost_ * 5 /*cu*/), boost(boost_) {}
+Minion::Minion(bool boosted_) noexcept
+    : Creature(
+        /* health */ boosted_ ? 125.f : 25.f,
+        /* shield */ 0.f,
+        /* speed */ 1.0f,
+        /* coresCapacity */ 1u,
+        /* loot */ {
+            0u,                     // Au (gold)
+            boosted_ ? 5u : 1u,     // Ag (silver)
+            boosted_ ? 10u : 5u     // Cu (copper)
+        },
+        boosted_
+    ) {}
 
-Minion::~Minion() {}
-
-std::string Minion::getTextureName(int frame) const {
-    if (boost) return "creature_minion_b_" + std::to_string(frame) + ".png";
-    else return "creature_minion_" + std::to_string(frame) + ".png";
+std::string Minion::getTextureName(const int frame) const {
+    return boosted
+        ? "creature_minion_b_" + std::to_string(frame) + ".png"
+        : "creature_minion_"   + std::to_string(frame) + ".png";
 }

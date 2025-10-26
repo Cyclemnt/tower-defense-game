@@ -1,29 +1,21 @@
 #include <stdexcept>
 #include "../../include/resources/materials.hpp"
 
-Materials::Materials(int initialAu, int initialAg, int initialCu)
-    : au(initialAu), ag(initialAg), cu(initialCu) {}
+Materials::Materials(std::array<unsigned int, 3> materials_)
+    : materials{materials_} {}
 
 Materials::~Materials() {}
 
-std::array<int, 3> Materials::getBalance() const {
-    return {au, ag, cu};
+std::array<unsigned int, 3> Materials::getBalance() const {
+    return materials;
 }
 
-void Materials::add(std::array<int, 3> amounts) {
-    if (amounts[0] < 0) throw std::runtime_error("Trying to add a negative amount of Au");
-    if (amounts[1] < 0) throw std::runtime_error("Trying to add a negative amount of Ag");
-    if (amounts[2] < 0) throw std::runtime_error("Trying to add a negative amount of Cu");
-    au += amounts[0];
-    ag += amounts[1];
-    cu += amounts[2];
+void Materials::add(std::array<unsigned int, 3> amounts) {
+    for (size_t i = 0; i < materials.size(); ++i)
+        materials[i] += amounts[i];
 }
 
-void Materials::spend(std::array<int, 3> amounts) {
-    if (amounts[0] > au || amounts[0] < 0) throw std::runtime_error("Trying to spend an incorect amount of Au");
-    if (amounts[1] > ag || amounts[1] < 0) throw std::runtime_error("Trying to spend an incorect amount of Ag");
-    if (amounts[2] > cu || amounts[2] < 0) throw std::runtime_error("Trying to spend an incorect amount of Cu");
-    au -= amounts[0];
-    ag -= amounts[1];
-    cu -= amounts[2];
+void Materials::spend(std::array<unsigned int, 3> amounts) {
+    for (size_t i = 0; i < materials.size(); ++i)
+        materials[i] -= amounts[i];
 }

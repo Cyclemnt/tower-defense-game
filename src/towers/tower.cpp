@@ -6,8 +6,8 @@
 #include "../../include/visual-effects/tracerEffect.hpp"
 #include "../../include/visual-effects/visualEffect.hpp"
 
-Tower::Tower(int x_, int y_, int au, int ag, int cu, int dmg, float rng, float rate)
-    : x(x_), y(y_), priceAu(au), priceAg(ag), priceCu(cu), damage(dmg), range(rng), fireRate(rate), level(1), cooldown(0.0f), target(nullptr) {}
+Tower::Tower(int x_, int y_, std::array<unsigned int, 3> cost_, int dmg, float rng, float rate)
+    : x(x_), y(y_), cost(cost_), damage(dmg), range(rng), fireRate(rate), level(1), cooldown(0.0f), target(nullptr) {}
 
 int Tower::getX() const { return x; }
 
@@ -21,7 +21,7 @@ float Tower::getRange() const { return range; }
 
 float Tower::getFireRate() const { return fireRate; }
 
-std::array<int, 3> Tower::getPrice() const { return {priceAu, priceAg, priceCu}; }
+std::array<unsigned int, 3> Tower::getCost() const { return cost; }
 
 const Creature* Tower::getTarget() const {return target; }
 

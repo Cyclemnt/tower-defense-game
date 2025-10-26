@@ -75,7 +75,7 @@ public:
     /// @brief Returns a list of neighboring tiles surrounding the given tile.
     /// @param tile The central tile to check neighbors for.
     /// @return A vector of pointers to neighboring tiles (adjacent horizontally or vertically).
-    std::vector<Tile*> getNeighbors(Tile* tile) const;
+    const std::vector<const Tile*> getNeighbors(const Tile* tile) const;
 
     /// @brief Changes the dimention of the map.
     /// @param w The width of the map (number of columns).

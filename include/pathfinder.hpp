@@ -13,7 +13,7 @@ private:
     /// @struct Node
     /// @brief A struct representing a node in the pathfinding algorithm.
     struct Node {
-        Tile* tile;     ///< The tile represented by this node.
+        const Tile* tile;     ///< The tile represented by this node.
         int gCost;      ///< The cost from the start tile to this node.
         int hCost;      ///< The heuristic cost from this node to the goal.
         Node* parent;   ///< The parent node, used for path reconstruction.
@@ -27,7 +27,7 @@ private:
     /// @param a The starting tile.
     /// @param b The goal tile.
     /// @return The heuristic cost between the two tiles.
-    int heuristic(Tile* a, Tile* b) const;
+    int heuristic(const Tile* a, const Tile* b) const;
 
 public:
     /// @brief Constructs a Pathfinder using the provided map.
@@ -41,7 +41,7 @@ public:
     /// @param start The start tile.
     /// @param goal The goal tile.
     /// @return A vector of tiles representing the path from start to goal or empty if none found.
-    std::vector<Tile*> findPath(Tile* start, Tile* goal, bool ignoreTowers = false) const;
+    const std::vector<const Tile*> findPath(const Tile* start, const Tile* goal, const bool ignoreTowers = false) const;
 };
 
 #endif // PATHFINDER_HPP
