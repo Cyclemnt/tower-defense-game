@@ -10,31 +10,6 @@
 Creature::Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, std::array<unsigned int, 3> loot_, bool boosted_)
     : health(health_), baseHealth(health_), shield(shield_), baseShield(shield_), speed(speed_), coresCapacity(coresCapacity_), loot(loot_), boosted(boosted_) {}
 
-void Creature::setPath(const std::vector<const Tile*>& p) {
-    path = p;
-    pathIndex = 0;
-}
-
-void Creature::setPosition(const std::array<int, 2>& tileCoords) {
-    for (size_t i = 0; i < position.size(); ++i)
-        position[i] = static_cast<float>(tileCoords[i]);
-}
-
-const Tile* Creature::getCurrentTile() const noexcept {
-    if (path.empty() || pathIndex >= (int)path.size()) return nullptr;
-    return path[pathIndex];
-}
-
-const Tile* Creature::getNextTile() const noexcept {
-    if (path.empty() || pathIndex + 1 >= (int)path.size()) return nullptr;
-    return path[pathIndex + 1];
-}
-
-const Tile* Creature::getDestinationTile() const noexcept {
-    if (path.empty()) return nullptr;
-    return path.back();
-}
-
 void Creature::update(float deltaTime) {
     if (!alive || path.empty() || pathIndex + 1 >= (int)path.size())
         return;
@@ -100,10 +75,6 @@ void Creature::takeDamage(float dmg) {
     }
 }
 
-void Creature::stealCores(unsigned int amount) {
-    coresCarried = std::min(coresCarried + amount, coresCapacity);
-}
-
 unsigned int Creature::dropCores() noexcept {
     unsigned int dropped = coresCarried;
     coresCarried = 0;
@@ -131,6 +102,35 @@ void Creature::render(const RenderContext& ctx) const {
 
     drawCarriedCores(ctx);
     drawHealthBar(ctx);
+}
+
+void Creature::setPath(const std::vector<const Tile*>& p) {
+    path = p;
+    pathIndex = 0;
+}
+
+void Creature::setPosition(const std::array<int, 2>& tileCoords) {
+    for (size_t i = 0; i < position.size(); ++i)
+        position[i] = static_cast<float>(tileCoords[i]);
+}
+
+const Tile* Creature::getCurrentTile() const noexcept {
+    if (path.empty() || pathIndex >= (int)path.size()) return nullptr;
+    return path[pathIndex];
+}
+
+const Tile* Creature::getDestinationTile() const noexcept {
+    if (path.empty()) return nullptr;
+    return path.back();
+}
+
+const Tile* Creature::getNextTile() const noexcept {
+    if (path.empty() || pathIndex + 1 >= (int)path.size()) return nullptr;
+    return path[pathIndex + 1];
+}
+
+void Creature::stealCores(unsigned int amount) {
+    coresCarried = std::min(coresCarried + amount, coresCapacity);
 }
 
 void Creature::drawHealthBar(const RenderContext& ctx) const {

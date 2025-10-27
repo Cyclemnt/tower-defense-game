@@ -14,16 +14,13 @@
  */
 class Minion final : public Creature {
 public:
-    /**
-     * @brief Constructs a Minion.
-     * @param boosted_ Whether this Minion is a boosted variant.
-     */
+    /// @brief Constructs a Minion.
+    /// @param boosted_ Whether this Minion is a boosted variant.
     explicit Minion(bool boosted_ = false) noexcept;
 
-    /// @brief Virtual destructor.
     ~Minion() override = default;
 
-protected:
+private:
     /// @brief Returns the texture name for this creature.
     /// @param frame The animation frame index.
     [[nodiscard]] std::string getTextureName(int frame) const override;

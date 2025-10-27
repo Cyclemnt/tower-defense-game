@@ -17,7 +17,7 @@ private:
     std::vector<InternalWave> waves;
     size_t index = 0;
 
-    CreatureType parseType(const std::string& name) const;
+    Creature::Type parseType(const std::string& name) const;
     void parseFile(const std::string& filename);
 
 public:

@@ -40,26 +40,26 @@ const Cores& Game::getCores() const { return cores; };
 
 const std::vector<std::unique_ptr<VisualEffect>>& Game::getVisualEffects() const { return visualEffects;}
 
-void Game::spawnCreature(CreatureType type) {
+void Game::spawnCreature(Creature::Type type) {
     std::unique_ptr<Creature> creature;
 
     switch (type) {
-        case CreatureType::Minion:
+        case Creature::Type::Minion:
             creature = std::make_unique<Minion>();
             break;
-        case CreatureType::MinionB:
+        case Creature::Type::MinionB:
             creature = std::make_unique<Minion>(true);
             break;
-        case CreatureType::Drone:
+        case Creature::Type::Drone:
             creature = std::make_unique<Drone>();
             break;
-        case CreatureType::DroneB:
+        case Creature::Type::DroneB:
             creature = std::make_unique<Drone>(true);
             break;
-        case CreatureType::Tank:
+        case Creature::Type::Tank:
             creature = std::make_unique<Tank>();
             break;
-        case CreatureType::TankB:
+        case Creature::Type::TankB:
             creature = std::make_unique<Tank>(true);
             break;
     }

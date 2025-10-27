@@ -14,13 +14,10 @@
  */
 class Tank final : public Creature {
 public:
-    /**
-     * @brief Constructs a Tank.
-     * @param boosted_ Whether this Tank is a boosted variant.
-     */
+    /// @brief Constructs a Tank.
+    /// @param boosted_ Whether this Tank is a boosted variant.
     explicit Tank(bool boosted_ = false) noexcept;
 
-    /// @brief Virtual destructor.
     ~Tank() override = default;
 
 protected:

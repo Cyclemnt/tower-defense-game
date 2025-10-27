@@ -68,7 +68,7 @@ public:
     /// The creature will automatically be assigned a path from the entry
     /// to the exit using the Pathfinder.
     /// @param creature A unique pointer to the creature to be spawned.
-    void spawnCreature(CreatureType type);
+    void spawnCreature(Creature::Type type);
 
     /// @brief Place a new tower on the map.
     /// This method should check if the tile is buildable and if the player

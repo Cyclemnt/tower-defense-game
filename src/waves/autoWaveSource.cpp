@@ -13,7 +13,7 @@ WaveData AutoWaveSource::nextWave() {
     wave.spawns.reserve(totalUnits);
 
     for (int i = 0; i < totalUnits; ++i) {
-        wave.spawns.push_back({ static_cast<CreatureType>(dist(gen)), spawnInterval });
+        wave.spawns.push_back({ static_cast<Creature::Type>(dist(gen)), spawnInterval });
     }
 
     return wave;

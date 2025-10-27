@@ -14,13 +14,10 @@
  */
 class Drone final : public Creature {
 public:
-    /**
-     * @brief Constructs a Drone.
-     * @param boosted_ Whether this Drone is a boosted variant.
-     */
+    /// @brief Constructs a Drone.
+    /// @param boosted_ Whether this Drone is a boosted variant.
     explicit Drone(bool boosted_ = false) noexcept;
 
-    /// @brief Virtual destructor.
     ~Drone() override = default;
 
 protected:

@@ -8,76 +8,61 @@ class Tile;
 class RenderContext;
 
 /**
- * @enum CreatureType
- * @brief Lists all enemy creature archetypes.
- */
-enum class CreatureType {
-    Minion,
-    MinionB,
-    Drone,
-    DroneB,
-    Tank,
-    TankB
-};
-
-/**
  * @class Creature
  * @brief Abstract base class for all enemy units.
  *
  * A Creature represents an enemy entity moving along a predefined path toward
  * the CoreStorage. It possesses health, shields, speed, and may carry cores.
  * When defeated, it drops its loot and any carried cores.
- *
- * Derived classes (e.g., Minion, Drone, Tank) define specific stats and textures.
  */
 class Creature {
 public:
-    // ------------------------------------------------------------------------
-    // Construction / Destruction
-    // ------------------------------------------------------------------------
+    /// @brief Lists all enemy creature archetypes.
+    enum class Type {
+        Minion, MinionB,
+        Drone, DroneB,
+        Tank, TankB
+    };
 
-    /**
-     * @brief Constructs a new creature with specified attributes.
-     * @param health_ Initial health value.
-     * @param shield_ Initial shield value.
-     * @param speed_ Movement speed in tiles per second.
-     * @param coresCapacity_ Maximum number of cores the creature can carry.
-     * @param loot_ Loot granted to the player upon death.
-     * @param boosted_ Whether this creature is a boosted variant.
-     */
+private:
+    // --- Spatial data ---
+    std::array<float, 2> position; ///< World-space coordinates (in tile units).
+
+    // --- Stats ---
+    const float baseHealth; ///< Initial health (for UI reference).
+    const float baseShield; ///< Initial shield (for UI reference).
+    float health;           ///< Current health.
+    float shield;           ///< Current shield.
+    float speed;            ///< Movement speed (tiles per second).
+
+    // --- Loot and cores ---
+    std::array<unsigned int, 3> loot; ///< Loot granted on death.
+    unsigned int coresCarried = 0;    ///< Number of cores currently carried.
+    const unsigned int coresCapacity; ///< Maximum number of cores that can be carried.
+
+    // --- Path following ---
+    std::vector<const Tile*> path; ///< Ordered list of tiles composing the route.
+    size_t pathIndex = 0;          ///< Current index in the path.
+
+    bool alive = true; ///< Whether the creature is alive.
+
+protected:
+    bool boosted = false; ///< Whether this creature is a boosted variant.
+
+public:
+    /// @brief Constructs a new creature with specified attributes.
+    /// @param health_ Initial health value.
+    /// @param shield_ Initial shield value.
+    /// @param speed_ Movement speed in tiles per second.
+    /// @param coresCapacity_ Maximum number of cores the creature can carry.
+    /// @param loot_ Loot granted to the player upon death.
+    /// @param boosted_ Whether this creature is a boosted variant.
     Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, std::array<unsigned int, 3> loot_, bool boosted_);
 
     /// @brief Virtual destructor.
     virtual ~Creature() = default;
 
-    // ------------------------------------------------------------------------
-    // Public API
-    // ------------------------------------------------------------------------
-
-    /// @brief Gets the current position in tile coordinates.
-    [[nodiscard]] std::array<float, 2> getPosition() const noexcept { return position; }
-
-    /// @brief Returns whether the creature is still alive.
-    [[nodiscard]] bool isAlive() const noexcept { return alive; }
-
-    /// @brief Returns the loot dropped when killed.
-    [[nodiscard]] std::array<unsigned int, 3> getLoot() const noexcept { return loot; }
-
-    /// @brief Sets the path for the creature to follow.
-    /// @param newPath The ordered list of tiles composing the path.
-    void setPath(const std::vector<const Tile*>& newPath);
-
-    /// @brief Sets the starting position of the creature (tile coordinates).
-    /// @param tileCoords The new position.
-    void setPosition(const std::array<int, 2>& tileCoords);
-
-    /// @brief Gets the current tile the creature occupies.
-    [[nodiscard]] const Tile* getCurrentTile() const noexcept;
-
-    /// @brief Gets the last tile on the path (destination).
-    [[nodiscard]] const Tile* getDestinationTile() const noexcept;
-
-    /// @brief Updates creature logic (movement, path following, etc.).
+    /// @brief Updates movement and interactions with the map.
     /// @param deltaTime Elapsed time since last update (in seconds).
     virtual void update(float deltaTime);
 
@@ -95,57 +80,25 @@ public:
     /// @brief Renders the creature to the screen.
     virtual void render(const RenderContext& ctx) const;
 
-protected:
-    // ------------------------------------------------------------------------
-    // Subclass API
-    // ------------------------------------------------------------------------
+    // --- Basic getters ---
+    [[nodiscard]] std::array<float, 2> getPosition() const noexcept { return position; }
+    [[nodiscard]] std::array<unsigned int, 3> getLoot() const noexcept { return loot; }
+    [[nodiscard]] bool isAlive() const noexcept { return alive; }
 
-    /// @brief Returns the texture name for the given animation frame.
-    [[nodiscard]] virtual std::string getTextureName(int frame) const = 0;
-
-    bool boosted = false; ///< Whether this creature is a boosted variant.
+    // --- Path handling ---
+    void setPath(const std::vector<const Tile*>& newPath);
+    void setPosition(const std::array<int, 2>& tileCoords);
+    [[nodiscard]] const Tile* getCurrentTile() const noexcept;
+    [[nodiscard]] const Tile* getDestinationTile() const noexcept;
 
 private:
-    // ------------------------------------------------------------------------
-    // Internal Helpers
-    // ------------------------------------------------------------------------
-
-    /// @brief Retrieves the next tile on the path (or nullptr if at end).
+    // --- Private helpers ---
+    [[nodiscard]] virtual std::string getTextureName(int frame) const = 0;
+    
     [[nodiscard]] const Tile* getNextTile() const noexcept;
-
-    /// @brief Attempts to steal cores from a CoreStorage.
     void stealCores(unsigned int amount);
-
-    /// @brief Draws the health and shield bars above the creature.
     void drawHealthBar(const RenderContext& ctx) const;
-
-    /// @brief Draws any carried cores orbiting around the creature.
     void drawCarriedCores(const RenderContext& ctx) const;
-
-    // ------------------------------------------------------------------------
-    // Data members
-    // ------------------------------------------------------------------------
-
-    // --- Spatial data ---
-    std::array<float, 2> position{}; ///< World-space coordinates (in tile units).
-
-    // --- Stats ---
-    float health;           ///< Current health.
-    float shield;           ///< Current shield.
-    const float baseHealth; ///< Initial health (for UI reference).
-    const float baseShield; ///< Initial shield (for UI reference).
-    float speed;            ///< Movement speed (tiles per second).
-
-    // --- Loot and cores ---
-    std::array<unsigned int, 3> loot; ///< Loot granted on death.
-    unsigned int coresCarried = 0;    ///< Number of cores currently carried.
-    const unsigned int coresCapacity; ///< Maximum number of cores that can be carried.
-
-    // --- Path following ---
-    std::vector<const Tile*> path; ///< Ordered list of tiles composing the route.
-    size_t pathIndex = 0;          ///< Current index in the path.
-
-    bool alive = true; ///< Whether the creature is alive.
 };
 
 #endif // CREATURE_HPP

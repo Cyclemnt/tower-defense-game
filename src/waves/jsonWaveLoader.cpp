@@ -106,7 +106,7 @@ void JsonWaveLoader::parseFile(const std::string& filename) {
         auto groupObjects = splitObjects(groups);
 
         for (const auto& g : groupObjects) {
-            CreatureType t = parseType(extractStringValue(g, "enemy"));
+            Creature::Type t = parseType(extractStringValue(g, "enemy"));
             int count = extractIntValue(g, "count");
             float interval = extractIntValue(g, "interval_ms") * 0.001f;
 
@@ -136,12 +136,12 @@ WaveData JsonWaveLoader::next() {
     return wave;
 }
 
-CreatureType JsonWaveLoader::parseType(const std::string& n) const {
-    if (n == "Minion") return CreatureType::Minion;
-    if (n == "Drone")  return CreatureType::Drone;
-    if (n == "Tank")   return CreatureType::Tank;
-    if (n == "MinionB") return CreatureType::MinionB;
-    if (n == "DroneB") return CreatureType::DroneB;
-    if (n == "TankB")  return CreatureType::TankB;
-    return CreatureType::Minion;
+Creature::Type JsonWaveLoader::parseType(const std::string& n) const {
+    if (n == "Minion") return Creature::Type::Minion;
+    else if (n == "Drone")  return Creature::Type::Drone;
+    else if (n == "Tank")   return Creature::Type::Tank;
+    else if (n == "MinionB") return Creature::Type::MinionB;
+    else if (n == "DroneB") return Creature::Type::DroneB;
+    else if (n == "TankB")  return Creature::Type::TankB;
+    else return Creature::Type::Minion;
 }

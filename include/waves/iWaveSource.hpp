@@ -6,7 +6,7 @@
 
 /// Represents one creature spawn order in a wave.
 struct SpawnCommand {
-    CreatureType type;
+    Creature::Type type;
     float delay = 0; // seconds to wait before spawning
 };
 
