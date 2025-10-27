@@ -2,25 +2,20 @@
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-Tile::Tile(int x_, int y_)
-    : x(x_), y(y_) {}
-
-int Tile::getX() const { return x; }
-
-int Tile::getY() const { return y; }
+Tile::Tile(sf::Vector2i position_)
+    : position(position_) {}
 
 void Tile::render(const RenderContext& ctx) const {
     auto& renderer = ctx.renderer;
     const sf::Texture& tex = renderer.getTexture(getTextureName());
 
     sf::Sprite sprite(tex);
-    sprite.setPosition({x * ctx.tileSize + ctx.offset.x, y * ctx.tileSize + ctx.offset.y});
+    sprite.setPosition(sf::Vector2f(position) * ctx.tileSize + ctx.offset);
     auto sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.y});
     ctx.window.draw(sprite);
 }
 
-void Tile::setCoords(int x_, int y_) {
-    x = x_;
-    y = y_;
+void Tile::setCoords(sf::Vector2i position_) {
+    position = position_;
 }

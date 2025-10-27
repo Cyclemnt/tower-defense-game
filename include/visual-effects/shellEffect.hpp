@@ -15,7 +15,7 @@ private:
     float radius = 0.1f;
 
 public:
-    ShellEffect(std::array<float, 2> start, std::array<float, 2> end, float spd);
+    ShellEffect(sf::Vector2f start, sf::Vector2f end, float spd);
     void update(float dt) override;
     void render(RenderContext& ctx);
     sf::Vector2f getPos() const;

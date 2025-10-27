@@ -2,6 +2,7 @@
 #define EXIT_ZONE_HPP
 
 #include <string>
+#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
@@ -15,7 +16,7 @@ public:
     /// @brief Constructs a new ExitZone at the specified coordinates.
     /// @param x The x-coordinate (column) of the exit zone.
     /// @param y The y-coordinate (row) of the exit zone.
-    ExitZone(int x, int y);
+    ExitZone(sf::Vector2i position_);
 
     /// @brief Destroys the ExitZone object.
     ~ExitZone();

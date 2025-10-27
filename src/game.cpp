@@ -76,14 +76,13 @@ void Game::spawnCreature(Creature::Type type) {
     std::vector<const Tile*> path = pathfinder.findPath(start, goal);
     if (path.empty()) path = pathfinder.findPath(start, goal, true);
     creature->setPath(path);
-    const std::array<int, 2>& startPos = {start->getX(), start->getY()};
-    creature->setPosition(startPos);
+    creature->setPosition(start->getPosition());
 
     creatures.push_back(std::move(creature));
 }
 
 PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
-    Tile* tile = map.getTile(tower->getX(), tower->getY());
+    Tile* tile = map.getTile(tower->getPosition());
 
     if (!tile->isBuildable())
         return PlaceTowerResult::NotBuildable;
@@ -98,9 +97,9 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     player.pay(*tower);
     openZoneTile->setOccupied(true);
     // Insert tower depending on other towers y coordinate (to ensure right render order)
-    const float newY = static_cast<float>(tower->getY());
+    const float newY = static_cast<float>(tower->getPosition().y);
     auto it = std::upper_bound(towers.begin(), towers.end(), newY, // upper_bound gives the first tower that getY() > newY so O(log(n))
-        [](float y, const std::unique_ptr<Tower>& t) { return y < static_cast<float>(t->getY()); }
+        [](float y, const std::unique_ptr<Tower>& t) { return y < static_cast<float>(t->getPosition().y); }
     );
     towers.insert(it, std::move(tower)); // is O(log(n)) which gives O(log(n) + n) total time complexity of this sorting
 
@@ -110,17 +109,17 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     return PlaceTowerResult::Success;
 }
 
-void Game::sellTowerAt(int x, int y) {
+void Game::sellTowerAt(sf::Vector2i position) {
     for (auto it = towers.begin(); it != towers.end(); ++it) {
         Tower* tower = it->get();
-        if (tower->getX() == x && tower->getY() == y) {
+        if (tower->getPosition() == position) {
             // Refund: 50% of cost
             std::array<unsigned int, 3> cost = tower->getCost();
             for (size_t i = 0; i < cost.size(); ++i) { cost[i] = static_cast<int>(cost[i] * 0.5f); }
             player.getMaterials().add(cost);
 
             // Free the tile
-            if (auto* zone = dynamic_cast<OpenZone*>(map.getTile(x, y)))
+            if (auto* zone = dynamic_cast<OpenZone*>(map.getTile(position)))
                 zone->setOccupied(false);
 
             // Remove tower

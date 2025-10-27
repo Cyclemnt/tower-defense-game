@@ -24,7 +24,7 @@ private:
     float lifetime = 0.6f;
 
 public:
-    TracerSplashEffect(std::array<float,2> position, sf::Color c);
+    TracerSplashEffect(sf::Vector2f position, sf::Color c);
     void update(float dt) override;
     void render(RenderContext& ctx) override;
 };

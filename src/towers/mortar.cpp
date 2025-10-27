@@ -1,81 +1,80 @@
 #include <cmath>
 #include "../../include/towers/mortar.hpp"
 #include "../../include/creatures/creature.hpp"
+#include "../../include/visual-effects/visualEffect.hpp"
 #include "../../include/visual-effects/explosionEffect.hpp"
 #include "../../include/visual-effects/shellEffect.hpp"
-#include "../../include/visual-effects/visualEffect.hpp"
 
-Mortar::Mortar(int x_, int y_)
-    : Tower(x_, y_, {0u /*au*/, 0u /*ag*/, 75u /*cu*/}, 48 /*dmg*/, 4.0f /*rng*/, 0.333333f /*rate*/) {}
-
-Mortar::~Mortar() {}
-
-const std::vector<Shell>& Mortar::getShells() const { return shells; }
+Mortar::Mortar(sf::Vector2i position_) noexcept
+        : Tower(position_,
+        /* cost */ {
+            0u,     // Au
+            0u,     // Ag
+            75u     // Cu
+        },
+        /*dmg*/ 48,
+        /*rng*/ 4.0f,
+        /*rate*/ 0.333333f
+    ) {}
 
 void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
     if (target || cooldown > 0.0f)
-        cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
+        cooldown -= deltaTime;
 
-    // Verify if actual target is still available
-    if (target && (!target->isAlive() || std::sqrt(std::pow(target->getPosition()[0] - x, 2) + std::pow(target->getPosition()[1] - y, 2)) > range)) {
-        target = nullptr; // Loosing lockdown
-    }
+    // Validate target
+    if (target && (!target->isAlive() || distance(sf::Vector2f(position), target->getPosition()) > range))
+        clearTarget();
 
-    // Selecting new target if required
+    // Acquire new target if needed
     if (!target) {
         if (cooldown < 0.0f)
             cooldown = 0.0f;  // Cooldown cannot be negative when target is lost
         target = selectTarget(creatures);
     }
 
-    // Update projectiles
+    // Update shells: move them and handle impact
     for (auto it = shells.begin(); it != shells.end(); ) {
-        Shell& s = *it;  // Get the element
+        Shell& s = *it; // Get the element
+        sf::Vector2f d = s.target - s.position;
+        float travelDist = d.length();
 
-        float dx = s.targetX - s.posX;
-        float dy = s.targetY - s.posY;
-        float dist = std::sqrt(dx*dx + dy*dy);
-        if (dist < s.speed * deltaTime) {
-            // Impact
-            for (auto& c : creatures) {
-                float dx = c->getPosition()[0] - s.targetX;
-                float dy = c->getPosition()[1] - s.targetY;
-                float distSquare = dx*dx + dy*dy;
-                float damageCoefficient = std::exp(-distSquare/(s.explosionRadius * s.explosionRadius / 4.0f)); // Gaussian distribution
-                if (distSquare < s.explosionRadius * s.explosionRadius)
+        if (travelDist < s.speed * deltaTime) {
+            // Impact: apply splash damage to creatures within explosionRadius
+            for (const std::unique_ptr<Creature>& c : creatures) {
+                float impactDist = distance(s.target, c->getPosition());
+                float damageCoefficient = std::exp(-(impactDist * impactDist) / (s.explosionRadius * s.explosionRadius * 0.25f)); // Gaussian distribution
+                if (impactDist < s.explosionRadius)
                     c->takeDamage(damage * damageCoefficient);
             }
-            std::array<float, 2> pos = {s.posX, s.posY};
-            visualEffects.push_back(std::make_unique<ExplosionEffect>(pos)); // Create explosion effect
-            it = shells.erase(it);  // Erease element and get new iterator
+
+            visualEffects.push_back(std::make_unique<ExplosionEffect>(s.target)); // Visual explosion at impact point
+
+            it = shells.erase(it); // Erease element and get new iterator
         } else {
-            s.posX += (dx/dist) * s.speed * deltaTime;
-            s.posY += (dy/dist) * s.speed * deltaTime;
-            ++it;  // If not ereased, go to next element
+            // advance projectile
+            s.position += (d / travelDist) * s.speed * deltaTime;
+            ++it; // Go to next element
         }
     }
 
     // Shoot shells while cooldown let it
     while (target && cooldown <= 0.0f) {
         // Create new projectile
-        Shell s{(float)x, (float)y, target->getPosition()[0], target->getPosition()[1], damage};
+        Shell s{static_cast<sf::Vector2f>(position) + sf::Vector2f(0.0f, -0.6f), target->getPosition(), damage};
         shells.push_back(s);
-        std::array<float, 2> pos = {s.posX, s.posY - 0.6f}, target = {s.targetX, s.targetY};
-        visualEffects.push_back(std::make_unique<ShellEffect>(pos, target, s.speed));
+        // Spawn a visual shell (ShellEffect expects start, end, speed)
+        visualEffects.push_back(std::make_unique<ShellEffect>(s.position, s.target, s.speed));
+        // Advance cooldown
         cooldown += 1.0f / (fireRate); // seconds
     }
 }
 
-std::string Mortar::getTextureName(int frame) const {
-    if (!target) return "tower_mortar_nw.png";
+std::string Mortar::getTextureName(int) const {
+    if (!target) return "tower_mortar_nw.png"; // default idle texture
 
-    float dx = target->getPosition()[0] - x;
+    const float dx = target->getPosition().x - static_cast<float>(position.x);
 
-    std::string texture = "tower_mortar_";
-    
-    if (dx < 0) texture += "nw.png";  // left
-    else if (dx > 0) texture += "ne.png";  // right
-    else texture += "n.png";  // up
-
-    return texture;
+    if (dx < -0.1f) return "tower_mortar_nw.png";
+    else if (dx >  0.1f) return "tower_mortar_ne.png";
+    else return "tower_mortar_n.png";
 }

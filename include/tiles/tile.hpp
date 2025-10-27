@@ -2,6 +2,7 @@
 #define TILE_HPP
 
 #include <string>
+#include <SFML/System.hpp>
 class RenderContext;
 
 /**
@@ -14,15 +15,13 @@ class RenderContext;
  * and CoreStorage.
  */
 class Tile {
-private:
-    int x;  ///< The x-coordinate (column) of the tile.
-    int y;  ///< The y-coordinate (row) of the tile.
+protected:
+    sf::Vector2i position; ///< The coordinates of the tile.
 
 public:
     /// @brief Constructs a new Tile at the specified coordinates.
-    /// @param x_ The x-coordinate (column) of the tile.
-    /// @param y_ The y-coordinate (row) of the tile.
-    Tile(int x_, int y_);
+    /// @param position_ The coordinates of the tile.
+    Tile(sf::Vector2i position_);
 
     /// @brief Virtual destructor for the Tile class.
     virtual ~Tile() = default;
@@ -37,17 +36,13 @@ public:
 
     /// @brief Retrieves the x-coordinate (column) of the tile.
     /// @return The x-coordinate of the tile.
-    int getX() const;
-
-    /// @brief Retrieves the y-coordinate (row) of the tile.
-    /// @return The y-coordinate of the tile.
-    int getY() const;
+    sf::Vector2i getPosition() const { return position; }
 
     /// @brief Retrieves the name/type of the tile.
     /// @return A string representing the type of this tile.
     virtual std::string getTextureName() const = 0;
     virtual void render(const RenderContext& ctx) const;
-    void setCoords(int x_, int y_);
+    void setCoords(sf::Vector2i position_);
 };
 
 #endif // TILE_HPP

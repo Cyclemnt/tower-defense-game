@@ -4,66 +4,69 @@
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 #include "../../include/visual-effects/tracerEffect.hpp"
-#include "../../include/visual-effects/visualEffect.hpp"
 
-Tower::Tower(int x_, int y_, std::array<unsigned int, 3> cost_, int dmg, float rng, float rate)
-    : x(x_), y(y_), cost(cost_), damage(dmg), range(rng), fireRate(rate), level(1), cooldown(0.0f), target(nullptr) {}
-
-int Tower::getX() const { return x; }
-
-int Tower::getY() const { return y; }
-
-int Tower::getLevel() const { return level; }
-
-float Tower::getDamage() const { return damage; }
-
-float Tower::getRange() const { return range; }
-
-float Tower::getFireRate() const { return fireRate; }
-
-std::array<unsigned int, 3> Tower::getCost() const { return cost; }
-
-const Creature* Tower::getTarget() const {return target; }
-
-void Tower::clearTarget() { target = nullptr; }
-
-std::vector<std::unique_ptr<VisualEffect>> Tower::getVisualEffects() {
-    // Moving visualEffects to temp
-    std::vector<std::unique_ptr<VisualEffect>> temp = std::move(visualEffects);
-    // Clearing visualEffects
-    visualEffects.clear();
-    return temp;
-}
+Tower::Tower(sf::Vector2i position_, std::array<unsigned int, 3> cost_, float damage_, float range_, float fireRate_) noexcept
+    : position(position_), cost(cost_), damage(damage_), range(range_), fireRate(fireRate_) {}
 
 void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
     if (target || cooldown > 0.0f)
-        cooldown -= deltaTime; // 1 tick = 1 time unit (1 frame)
+        cooldown -= deltaTime;
 
-    // Verify if actual target is still available
-    if (target && (!target->isAlive() || std::sqrt(std::pow(target->getPosition()[0] - x, 2) + std::pow(target->getPosition()[1] - y, 2)) > range)) {
-        target = nullptr; // Loosing lockdown
-    }
+    // Validate target
+    if (target && (!target->isAlive() || distance(static_cast<sf::Vector2f>(position), target->getPosition()) > range))
+        clearTarget();
 
-    // Selecting new target if required
+    // Acquire new target if needed
     if (!target) {
-        if (cooldown < 0.0f)
-            cooldown = 0.0f;  // Cooldown cannot be negative when target is lost
+        cooldown = std::max(cooldown, 0.0f);
         target = selectTarget(creatures);
     }
 
-    // Attack while cooldown let it
+    // Attack while cooldown allows
     while (target && cooldown <= 0.0f) {
         attack(target);
-        cooldown += 1.0f / (fireRate); // seconds
-        // Create tracer bullets
-        std::array<float, 2> pos = {static_cast<float>(x), static_cast<float>(y)};
-        visualEffects.push_back(std::make_unique<TracerEffect>(pos, target->getPosition()));
+        cooldown += 1.0f / fireRate;
+        visualEffects.push_back(std::make_unique<TracerEffect>(static_cast<sf::Vector2f>(position), target->getPosition()));
     }
 }
 
-void Tower::attack(Creature* target) {
-    if (!target || !target->isAlive()) return;
-        target->takeDamage(damage);
+void Tower::attack(Creature* target_) {
+    if (!target_ || !target_->isAlive()) return;
+    target_->takeDamage(damage);
+}
+
+void Tower::upgrade() {
+    // Basic upgrade rule, subclasses may override
+    level++;
+    damage *= 1.2f;
+    range *= 1.05f;
+    fireRate *= 1.1f;
+}
+
+void Tower::render(const RenderContext& ctx) const {
+    auto& renderer = ctx.renderer;
+    auto& window = ctx.window;
+
+    const int frame = (ctx.tick / 8) % 4;
+    const std::string filename = getTextureName(frame);
+    const sf::Texture& tex = renderer.getTexture(filename);
+
+    sf::Sprite sprite(tex);
+    const auto& sz = tex.getSize();
+
+    sprite.setPosition({
+        position.x * ctx.tileSize + ctx.offset.x,
+        ctx.tileSize * (position.y + 0.8f - static_cast<float>(sz.y) / sz.x) + ctx.offset.y
+    });
+
+    sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
+    window.draw(sprite);
+}
+
+std::vector<std::unique_ptr<VisualEffect>> Tower::getVisualEffects() noexcept {
+    auto temp = std::move(visualEffects);
+    visualEffects.clear();
+    return temp;
 }
 
 Creature* Tower::selectTarget(const std::vector<std::unique_ptr<Creature>>& creatures) {
@@ -72,42 +75,17 @@ Creature* Tower::selectTarget(const std::vector<std::unique_ptr<Creature>>& crea
 
     for (auto& c : creatures) {
         if (!c->isAlive()) continue;
-
-        float dx = c->getPosition()[0] - x;
-        float dy = c->getPosition()[1] - y;
-        float dist = std::sqrt(dx*dx + dy*dy);
-
-        if (dist <= range) {
-            if (!best || dist < closest) {
-                best = c.get();
-                closest = dist;
-            }
+        const float dist = distance(static_cast<sf::Vector2f>(position), c->getPosition());
+        if (dist <= range && dist < closest) {
+            closest = dist;
+            best = c.get();
         }
     }
 
     return best;
 }
 
-void Tower::upgrade() {
-    level++;
-    damage = static_cast<int>(damage * 1.5f);
-    range += 1.0f;
-    fireRate *= 1.2f;
-}
-
-void Tower::render(RenderContext& ctx) const {
-    auto& window = ctx.window;
-    auto& renderer = ctx.renderer;
-    int frame = (ctx.tick / 8) % 4;
-
-    std::string filename = getTextureName(frame);
-    const sf::Texture& tex = renderer.getTexture(filename);
-
-    sf::Sprite sprite(tex);
-    const auto& sz = tex.getSize();
-
-    sprite.setPosition({x * ctx.tileSize + ctx.offset.x, ctx.tileSize * (y + 0.8f - static_cast<float>(sz.y) / sz.x) + ctx.offset.y}); // y depends on image height
-
-    sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
-    window.draw(sprite);
+float Tower::distance(const sf::Vector2f& a, const sf::Vector2f& b) noexcept {
+    const sf::Vector2f d = b - a;
+    return std::sqrt(d.x * d.x + d.y * d.y);
 }

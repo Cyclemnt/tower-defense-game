@@ -95,7 +95,7 @@ void Renderer::highlightTile() {
         tilePos.y < 0 || tilePos.y >= map.getHeight())
         return;
 
-    Tile* tile = map.getTile(tilePos.x, tilePos.y);
+    Tile* tile = map.getTile(tilePos);
     if (!tile->isBuildable())
         return;
 

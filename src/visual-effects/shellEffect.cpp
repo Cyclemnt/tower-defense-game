@@ -2,8 +2,8 @@
 #include "../../include/visual-effects/shellEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-ShellEffect::ShellEffect(std::array<float, 2> start, std::array<float, 2> end, float spd)
-        : pos(start[0], start[1]), target(end[0], end[1]), speed(spd) {}
+ShellEffect::ShellEffect(sf::Vector2f start, sf::Vector2f end, float spd)
+        : pos(start), target(end), speed(spd) {}
 
 void ShellEffect::update(float dt) {
     lifetime -= dt;

@@ -2,8 +2,8 @@
 #include "../../include/visual-effects/tracerSplashEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-TracerSplashEffect::TracerSplashEffect(std::array<float,2> position, sf::Color c)
-    : pos(position[0], position[1]), color(c) {
+TracerSplashEffect::TracerSplashEffect(sf::Vector2f position, sf::Color c)
+    : pos(position), color(c) {
     int count = 6; // could be random
     parts.reserve(count);
     for (int i = 0; i < count; ++i) {

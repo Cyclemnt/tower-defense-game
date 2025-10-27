@@ -14,7 +14,7 @@ private:
     float maxRadius;
 
 public:
-    ExplosionEffect(std::array<float, 2> position, float radius = 0.6f);
+    ExplosionEffect(sf::Vector2f position, float radius = 0.6f);
     void update(float dt) override;
     void render(RenderContext& ctx) override;
 };

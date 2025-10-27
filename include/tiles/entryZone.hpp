@@ -2,6 +2,7 @@
 #define ENTRY_ZONE_HPP
 
 #include <string>
+#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
@@ -15,7 +16,7 @@ public:
     /// @brief Constructs a new EntryZone at the specified coordinates.
     /// @param x The x-coordinate (column) of the entry zone.
     /// @param y The y-coordinate (row) of the entry zone.
-    EntryZone(int x, int y);
+    EntryZone(sf::Vector2i position_);
 
     /// @brief Destroys the EntryZone object.
     ~EntryZone();

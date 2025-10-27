@@ -21,16 +21,16 @@ int Map::getWidth() const { return width; }
 
 int Map::getHeight() const { return height; }
 
-Tile* Map::getTile(int x, int y) const {
-    if (x < 0 || x >= width || y < 0 || y >= height)
+Tile* Map::getTile(sf::Vector2i position) const {
+    if (position.x < 0 || position.x >= width || position.y < 0 || position.y >= height)
         return nullptr;
 
-    return grid[y][x].get();
+    return grid[position.y][position.x].get();
 }
 
 void Map::placeTile(std::unique_ptr<Tile> tile) {
-    int x = tile->getX();
-    int y = tile->getY();
+    sf::Vector2i pos = tile->getPosition();
+    int x = pos.x, y = pos.y;
 
     if (x < 0 || x >= width || y < 0 || y >= height) {
         throw std::out_of_range("Invalid tile coordinates");
@@ -74,8 +74,8 @@ CoreStorage* Map::getCoreStorage() const { return coreStorage; }
 
 const std::vector<const Tile*> Map::getNeighbors(const Tile* tile) const {
     std::vector<const Tile*> neighbors;
-    int x = tile->getX();
-    int y = tile->getY();
+    sf::Vector2i pos = tile->getPosition();
+    int x = pos.x, y = pos.y;
 
     const int dx[4] = {1, -1, 0, 0};
     const int dy[4] = {0, 0, 1, -1};
@@ -96,7 +96,7 @@ void Map::resize(int w, int h) {
     for (int y = 0; y < height; ++y) {
         grid[y].resize(width);
         for (int x = 0; x < width; ++x) {
-            grid[y][x] = std::make_unique<EmptyZone>(x, y);
+            grid[y][x] = std::make_unique<EmptyZone>(sf::Vector2i(x, y));
         }
     }
 }
@@ -130,16 +130,16 @@ void Map::render(RenderContext& ctx) const {
     int tilesToAddRight  = std::ceil((ctx.window.getSize().x - (width * ctx.tileSize + ctx.offset.x)) / ctx.tileSize);
     int tilesToAddBottom = std::ceil((ctx.window.getSize().y - (height * ctx.tileSize + ctx.offset.y)) / ctx.tileSize);
 
-    EmptyZone tempEmpty(0, 0); // Temporary instance
+    EmptyZone tempEmpty({0, 0}); // Temporary instance
 
     // Top and bottom
     for (int x = -tilesToAddLeft; x < width + tilesToAddRight; ++x) {
         for (int y = -tilesToAddTop; y < 0; ++y) {
-            tempEmpty.setCoords(x, y);
+            tempEmpty.setCoords({x, y});
             tempEmpty.render(ctx);
         }
         for (int y = height; y < height + tilesToAddBottom; ++y) {
-            tempEmpty.setCoords(x, y);
+            tempEmpty.setCoords({x, y});
             tempEmpty.render(ctx);
         }
     }
@@ -147,11 +147,11 @@ void Map::render(RenderContext& ctx) const {
     // Left and right
     for (int y = 0; y < height; ++y) {
         for (int x = -tilesToAddLeft; x < 0; ++x) {
-            tempEmpty.setCoords(x, y);
+            tempEmpty.setCoords({x, y});
             tempEmpty.render(ctx);
         }
         for (int x = width; x < width + tilesToAddRight; ++x) {
-            tempEmpty.setCoords(x, y);
+            tempEmpty.setCoords({x, y});
             tempEmpty.render(ctx);
         }
     }

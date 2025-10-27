@@ -2,6 +2,7 @@
 #define CORE_STORAGE_HPP
 
 #include <string>
+#include <SFML/System.hpp>
 #include "tile.hpp"
 class Cores;
 class RenderContext;
@@ -22,7 +23,7 @@ public:
     /// @param x The x-coordinate (column) of the core storage.
     /// @param y The y-coordinate (row) of the core storage.
     /// @param coresptr A pointer to the Game's cores.
-    CoreStorage(int x, int y, Cores* coresptr);
+    CoreStorage(sf::Vector2i position_, Cores* coresptr);
 
     /// @brief Destroys the CoreStorage object.
     ~CoreStorage() override = default;

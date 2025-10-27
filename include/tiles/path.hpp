@@ -2,6 +2,7 @@
 #define PATH_HPP
 
 #include <string>
+#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
@@ -16,7 +17,7 @@ public:
     /// @brief Constructs a new Path at the specified coordinates.
     /// @param x The x-coordinate (column) of the path.
     /// @param y The y-coordinate (row) of the path.
-    Path(int x, int y);
+    Path(sf::Vector2i position_);
 
     /// @brief Destroys the Path object.
     ~Path();

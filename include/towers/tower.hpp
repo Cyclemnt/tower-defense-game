@@ -5,109 +5,84 @@
 #include <vector>
 #include <array>
 #include <memory>
+#include <SFML/System/Vector2.hpp>
+
 class Creature;
 class VisualEffect;
 class RenderContext;
 
 /**
  * @class Tower
- * @brief Base class for all towers in the tower defense game.
+ * @brief Abstract base class for all towers in the tower defense game.
  *
- * A Tower is placed on an OpenZone tile by the player. Towers have a cost,
- * stats such as damage, range, and fire rate, and can optionally deal
- * area damage. Towers automatically search for and attack enemies in range,
- * and can be upgraded to improve their stats.
+ * Towers are placed on map tiles and automatically attack nearby enemies.
+ * Each tower has attributes such as damage, range, and fire rate, and may
+ * produce visual effects when firing. Derived classes specialize behavior
+ * (e.g., Gatling, Laser, Mortar).
  */
 class Tower {
 protected:
-    int x;              ///< X coordinate on the map grid.
-    int y;              ///< Y coordinate on the map grid.
+    sf::Vector2i position; ///< Map tile coordinates.
 
-    std::array<unsigned int, 3> cost; ///< Cost to build the tower.
+    std::array<unsigned int, 3> cost; ///< Construction cost (Au, Ag, Cu).
 
-    float damage;       ///< Damage dealt per attack.
-    float range;        ///< Attack range (in tiles).
-    float fireRate;     ///< Attacks per second.
-    int level;          ///< Current upgrade level of the tower.
+    float damage;   ///< Damage per attack.
+    float range;    ///< Attack range (in tiles).
+    float fireRate; ///< Attacks per second.
+    unsigned int level = 1u; ///< Upgrade level (starts at 1).
 
-    float cooldown;     ///< Time left before the next attack.
+    float cooldown = 0.0f; ///< Time remaining before next attack (seconds).
 
-    Creature* target;   ///< Target locked.
-    std::vector<std::unique_ptr<VisualEffect>> visualEffects; ///< list of all visual effects to display
+    Creature* target = nullptr; ///< Currently locked target.
+
+    std::vector<std::unique_ptr<VisualEffect>> visualEffects; ///< Active visual effects.
 
 public:
-    /// @brief Construct a new Tower object with given stats.
-    /// @param x_ X coordinate on the map.
-    /// @param y_ Y coordinate on the map.
-    /// @param au Gold cost to build the tower.
-    /// @param ag Silver cost to build the tower.
-    /// @param cu Copper cost to build the tower.
-    /// @param dmg Base damage per attack.
-    /// @param rng Attack range in tiles.
-    /// @param rate Number of attacks per second (fire rate).
-    Tower(int x_, int y_, std::array<unsigned int, 3> cost_, int dmg, float rng, float rate);
+    /// @brief Constructs a tower with base stats.
+    Tower(sf::Vector2i position_, std::array<unsigned int, 3> cost_, float damage_, float range_, float fireRate_) noexcept;
 
-    /// Virtual destructor.
     virtual ~Tower() = default;
 
-    // --- Getters ---
-
-    /// @return X coordinate on the map grid.
-    int getX() const;
-
-    /// @return Y coordinate on the map grid.
-    int getY() const;
-
-    /// @return Current upgrade level of the tower.
-    int getLevel() const;
-
-    /// @return Attack damage of the tower.
-    float getDamage() const;
-
-    /// @return Attack range of the tower in tiles.
-    float getRange() const;
-
-    /// @return Fire rate (attacks per second).
-    float getFireRate() const;
-
-    /// @return The price of the tower.
-    std::array<unsigned int, 3> getCost() const;
-    
-    /// @return The target of the tower.
-    const Creature* getTarget() const;
-
-    void clearTarget();
-    
-    /// @brief Get and clear the visualEffects pile
-    /// @return the visualEffects pile
-    std::vector<std::unique_ptr<VisualEffect>> getVisualEffects();
-
-    // --- Actions ---
-
-    /// @brief Update tower logic each tick.
-    /// Checks cooldown and searches for enemies within range. If a valid
-    /// target is found, the tower attacks and resets its cooldown.
-    /// @param creatures List of all creatures currently on the map.
+    /// @brief Updates tower logic every tick.
     /// @param deltaTime Time elapsed since last update.
+    /// @param creatures All creatures currently active on the map.
     virtual void update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures);
 
-    /// @brief Attack a single creature target.
-    /// @param target Pointer to the target creature.
+    /// @brief Attacks a single creature.
+    /// @param target Target to hit (must not be null).
     virtual void attack(Creature* target);
-    
-    /// @brief Selecting the best target among the creatures.
-    /// Selects the strongest creature whithin range.
-    /// @param creatures List of all creatures currently on the map.
-    virtual Creature* selectTarget(const std::vector<std::unique_ptr<Creature>>& creatures);
 
-    /// @brief Upgrade the tower.
-    /// Increases stats such as damage, range, and fire rate. The upgrade
-    /// rules may be overridden in derived classes for specific behaviors.
+    /// @brief Upgrades the tower, increasing damage, range, and fire rate.
     virtual void upgrade();
 
-    virtual std::string getTextureName(int frame) const = 0;
-    virtual void render(RenderContext& ctx) const;
-};
+    /// @brief Renders the tower sprite.
+    virtual void render(const RenderContext& ctx) const;
 
+    // --- Getters ---
+    [[nodiscard]] sf::Vector2i getPosition() const noexcept { return position; }
+    [[nodiscard]] int getLevel() const noexcept { return level; }
+    [[nodiscard]] float getDamage() const noexcept { return damage; }
+    [[nodiscard]] float getRange() const noexcept { return range; }
+    [[nodiscard]] float getFireRate() const noexcept { return fireRate; }
+    [[nodiscard]] std::array<unsigned int, 3> getCost() const noexcept { return cost; }
+    [[nodiscard]] const Creature* getTarget() const noexcept { return target; }
+
+    /// @brief Clears current target.
+    void clearTarget() noexcept { target = nullptr; }
+
+    /// @brief Transfers and clears tower’s visual effects buffer.
+    [[nodiscard]] std::vector<std::unique_ptr<VisualEffect>> getVisualEffects() noexcept;
+
+protected:
+    // --- Protected helpers ---
+    /// @brief Selects the optimal target within range.
+    [[nodiscard]] virtual Creature* selectTarget(const std::vector<std::unique_ptr<Creature>>& creatures);
+
+    /// @brief Computes Euclidean distance between two points.
+    [[nodiscard]] static float distance(const sf::Vector2f& a, const sf::Vector2f& b) noexcept;
+
+    /// @brief Returns the texture name for the current frame.
+    [[nodiscard]] virtual std::string getTextureName(int frame) const = 0;
+};
 
 #endif // TOWER_HPP

@@ -2,8 +2,8 @@
 #include "../../include/visual-effects/explosionEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-ExplosionEffect::ExplosionEffect(std::array<float, 2> position, float radius)
-        : pos(position[0], position[1]), maxRadius(radius) {}
+ExplosionEffect::ExplosionEffect(sf::Vector2f position, float radius)
+        : pos(position), maxRadius(radius) {}
 
 void ExplosionEffect::update(float dt) {
     age += dt;

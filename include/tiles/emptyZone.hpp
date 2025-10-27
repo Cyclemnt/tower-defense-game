@@ -2,6 +2,7 @@
 #define EMPTY_ZONE_HPP
 
 #include <string>
+#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
@@ -13,12 +14,12 @@
 class EmptyZone : public Tile {
 private:
     const uint32_t emptyTileSeed = 0xA1B2C3D5; ///< Seed used for deterministic texture generation
-    const std::string getRandomTextureName(int x, int y) const;
+    const std::string getRandomTextureName(sf::Vector2i position) const;
 public:
     /// @brief Constructs a new EmptyZone at the specified coordinates.
     /// @param x The x-coordinate (column) of the empty zone.
     /// @param y The y-coordinate (row) of the empty zone.
-    EmptyZone(int x, int y);
+    EmptyZone(sf::Vector2i position_);
 
     /// @brief Destroys the EmptyZone object.
     ~EmptyZone();

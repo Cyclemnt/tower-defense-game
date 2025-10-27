@@ -2,6 +2,7 @@
 #define OPEN_ZONE_HPP
 
 #include <string>
+#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
@@ -19,7 +20,7 @@ public:
     /// @brief Constructs a new OpenZone at the specified coordinates.
     /// @param x The x-coordinate (column) of the open zone.
     /// @param y The y-coordinate (row) of the open zone.
-    OpenZone(int x, int y);
+    OpenZone(sf::Vector2i position_);
 
     /// @brief Destroys the OpenZone object.
     ~OpenZone();

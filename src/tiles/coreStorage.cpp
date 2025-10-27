@@ -3,8 +3,8 @@
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-CoreStorage::CoreStorage(int x, int y, Cores* coresptr)
-    : Tile(x, y), cores(coresptr) {}
+CoreStorage::CoreStorage(sf::Vector2i position_, Cores* coresptr)
+    : Tile(position_), cores(coresptr) {}
 
 bool CoreStorage::isWalkable() const { return true; }
 
@@ -34,7 +34,7 @@ void CoreStorage::render(const RenderContext& ctx) const {
     const sf::Texture& tex = renderer.getTexture(texName);
 
     sf::Sprite sprite(tex);
-    sprite.setPosition({getX() * ctx.tileSize + ctx.offset.x, getY() * ctx.tileSize + ctx.offset.y});
+    sprite.setPosition(sf::Vector2f(position) * ctx.tileSize + ctx.offset);
     sf::Vector2<unsigned int> sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.y});
     ctx.window.draw(sprite);

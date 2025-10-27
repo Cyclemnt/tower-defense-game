@@ -1,23 +1,20 @@
 #ifndef GATLING_HPP
 #define GATLING_HPP
 
-#include <string>
+#include <SFML/System/Vector2.hpp>
 #include "tower.hpp"
 
 /**
  * @class Gatling
- * @brief Rapid-fire tower type.
- *
- * Fires bullets quickly with low damage per shot,
- * effective against swarms of weak enemies.
+ * @brief Rapid-fire, low-damage tower ideal against swarms.
  */
-class Gatling : public Tower {
+class Gatling final : public Tower {
 public:
-    Gatling(int x_, int y_);
-    ~Gatling();
+    explicit Gatling(sf::Vector2i position_) noexcept;
+    ~Gatling() override = default;
 
-    /// @return The type name of this tower ("Gatling").
-    std::string getTextureName(int frame) const override;
+protected:
+    [[nodiscard]] std::string getTextureName(int frame) const override;
 };
 
 #endif // GATLING_HPP

@@ -37,12 +37,12 @@ void GuiManager::processEvent(const sf::Event& event) {
 }
 
 bool GuiManager::handleLeftClick(int mouseX, int mouseY) {
-    sf::Vector2i tile = ctx.screenToTile(mouseX, mouseY);
+    sf::Vector2i tilePos = ctx.screenToTile(mouseX, mouseY);
     const Map& map = game.getMap();
-    Tile* clicked = map.getTile(tile.x, tile.y);
+    Tile* clicked = map.getTile(tilePos);
 
     if (OpenZone* zone = dynamic_cast<OpenZone*>(clicked)) {
-        towerMenu.open(tile, zone->isOccupied());
+        towerMenu.open(tilePos, zone->isOccupied());
         return true;
     } else return false;
 }

@@ -36,9 +36,9 @@ void TowerMenu::buildBuildPanel() {
     title->setPosition({10, 10});
     panel->add(title);
 
-    addTowerButton("Gatling", [](int x, int y){ return std::make_unique<Gatling>(x, y); }, "50 Cu", 58);
-    addTowerButton("Laser",   [](int x, int y){ return std::make_unique<Laser>(x, y); }, "10 Ag, 100 Cu", 106);
-    addTowerButton("Mortar",  [](int x, int y){ return std::make_unique<Mortar>(x, y); }, "75 Cu", 154);
+    addTowerButton("Gatling", [](sf::Vector2i pos){ return std::make_unique<Gatling>(pos); }, "50 Cu", 58);
+    addTowerButton("Laser",   [](sf::Vector2i pos){ return std::make_unique<Laser>(pos); }, "10 Ag, 100 Cu", 106);
+    addTowerButton("Mortar",  [](sf::Vector2i pos){ return std::make_unique<Mortar>(pos); }, "75 Cu", 154);
 }
 
 void TowerMenu::buildSellPanel() {
@@ -52,21 +52,21 @@ void TowerMenu::buildSellPanel() {
     sellBtn->setSize({"200", "38"});
     sellBtn->setPosition({10, 58});
     sellBtn->onPress([this]() {
-        game.sellTowerAt(tilePos.x, tilePos.y);
+        game.sellTowerAt(tilePos);
         close();
     });
     panel->add(sellBtn);
 }
 
 void TowerMenu::addTowerButton(const std::string& name,
-                               std::function<std::unique_ptr<Tower>(int, int)> factory,
+                               std::function<std::unique_ptr<Tower>(sf::Vector2i)> factory,
                                const std::string& cost,
                                float y) {
     auto btn = tgui::Button::create(name + "\n" + cost);
     btn->setSize({"200", "38"});
     btn->setPosition({10, y});
     btn->onPress([this, factory]() {
-        auto tower = factory(tilePos.x, tilePos.y);
+        auto tower = factory(tilePos);
         auto result = game.placeTower(std::move(tower));
         switch (result) {
             case PlaceTowerResult::NotBuildable: showError("Cannot build here."); break;

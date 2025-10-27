@@ -2,8 +2,8 @@
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-EmptyZone::EmptyZone(int x, int y)
-    : Tile(x, y) {}
+EmptyZone::EmptyZone(sf::Vector2i position_)
+    : Tile(position_) {}
 
 EmptyZone::~EmptyZone() {}
 
@@ -13,9 +13,9 @@ bool EmptyZone::isBuildable() const { return false; }
 
 std::string EmptyZone::getTextureName() const { return "tile_empty.png"; }
 
-const std::string EmptyZone::getRandomTextureName(int x, int y) const {
+const std::string EmptyZone::getRandomTextureName(sf::Vector2i position) const {
     // Combine data with multiplication and bit shift
-    uint32_t combined = (x * 73857093U) ^ (y * 19349663U);
+    uint32_t combined = (position.x * 73857093U) ^ (position.y * 19349663U);
     combined += emptyTileSeed & 0xFFFFFFFF; // Add seed
     uint32_t rnd = combined % 100;
 
@@ -33,10 +33,10 @@ const std::string EmptyZone::getRandomTextureName(int x, int y) const {
 
 void EmptyZone::render(const RenderContext& ctx) const {
     auto& renderer = ctx.renderer;
-    const sf::Texture& tex = renderer.getTexture(getRandomTextureName(getX(), getY()));
+    const sf::Texture& tex = renderer.getTexture(getRandomTextureName(position));
 
     sf::Sprite sprite(tex);
-    sprite.setPosition({getX() * ctx.tileSize + ctx.offset.x, getY() * ctx.tileSize + ctx.offset.y});
+    sprite.setPosition(sf::Vector2f(position) * ctx.tileSize + ctx.offset);
     auto sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.y});
     ctx.window.draw(sprite);

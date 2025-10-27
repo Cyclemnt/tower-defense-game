@@ -1,7 +1,7 @@
 #include "../../include/tiles/openZone.hpp"
 
-OpenZone::OpenZone(int x, int y)
-    : Tile(x, y), occupied(false) {}
+OpenZone::OpenZone(sf::Vector2i position_)
+    : Tile(position_), occupied(false) {}
 
 OpenZone::~OpenZone() {}
 

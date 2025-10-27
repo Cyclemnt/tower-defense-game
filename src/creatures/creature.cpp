@@ -16,23 +16,20 @@ void Creature::update(float deltaTime) {
 
     float distanceToTravel = speed * deltaTime;
 
-    while (distanceToTravel > 0.0f && pathIndex + 1 < (int)path.size()) {
+    while (distanceToTravel > 0.0f && pathIndex + 1 < path.size()) {
         const Tile* current = path[pathIndex];
         const Tile* next = path[pathIndex + 1];
 
-        float targetX = next->getX();
-        float targetY = next->getY();
+        sf::Vector2i target = next->getPosition();
 
-        float dx = targetX - position[0];
-        float dy = targetY - position[1];
-        float distToNext = std::sqrt(dx * dx + dy * dy);
+        sf::Vector2f d = sf::Vector2f(target) - position;
+        float distanceToNextTile = d.length();
 
-        if (distanceToTravel >= distToNext) {
+        if (distanceToTravel >= distanceToNextTile) {
             // Get to next Tile
-            position[0] = targetX;
-            position[1] = targetY;
+            position = sf::Vector2f(target);
             pathIndex++;
-            distanceToTravel -= distToNext;
+            distanceToTravel -= distanceToNextTile;
 
             // Events depending on Tile
             if (const CoreStorage* c = dynamic_cast<const CoreStorage*>(next)) {
@@ -46,8 +43,7 @@ void Creature::update(float deltaTime) {
             }
         } else {
             // Partially move thowards next Tile
-            position[0] += (dx / distToNext) * distanceToTravel;
-            position[1] += (dy / distToNext) * distanceToTravel;
+            position += (d / distanceToNextTile) * distanceToTravel;
             distanceToTravel = 0.0f;
         }
     }
@@ -95,7 +91,7 @@ void Creature::render(const RenderContext& ctx) const {
     const sf::Texture& tex = renderer.getTexture(filename, true);
 
     sf::Sprite sprite(tex);
-    sprite.setPosition({position[0] * ctx.tileSize + ctx.offset.x, position[1] * ctx.tileSize + ctx.offset.y});
+    sprite.setPosition({position.x * ctx.tileSize + ctx.offset.x, position.y * ctx.tileSize + ctx.offset.y});
     const auto& sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.x});
     window.draw(sprite);
@@ -107,11 +103,6 @@ void Creature::render(const RenderContext& ctx) const {
 void Creature::setPath(const std::vector<const Tile*>& p) {
     path = p;
     pathIndex = 0;
-}
-
-void Creature::setPosition(const std::array<int, 2>& tileCoords) {
-    for (size_t i = 0; i < position.size(); ++i)
-        position[i] = static_cast<float>(tileCoords[i]);
 }
 
 const Tile* Creature::getCurrentTile() const noexcept {
@@ -141,8 +132,8 @@ void Creature::drawHealthBar(const RenderContext& ctx) const {
 
     const float barWidth = ctx.tileSize * 0.5f;
     const float barHeight = ctx.tileSize * 0.05f;
-    const float x = position[0] * ctx.tileSize + (ctx.tileSize - barWidth) * 0.5f + ctx.offset.x;
-    const float baseY = position[1] * ctx.tileSize - barHeight - 4.0f + ctx.offset.y;
+    const float x = position.x * ctx.tileSize + (ctx.tileSize - barWidth) * 0.5f + ctx.offset.x;
+    const float baseY = position.y * ctx.tileSize - barHeight - 4.0f + ctx.offset.y;
 
     // Shield bar
     if (baseShield > 0.0f) {
@@ -177,8 +168,8 @@ void Creature::drawHealthBar(const RenderContext& ctx) const {
 void Creature::drawCarriedCores(const RenderContext& ctx) const {
     if (coresCarried <= 0) return;
     
-    float baseX = position[0] * ctx.tileSize + ctx.offset.x + ctx.tileSize * 0.5f;
-    float baseY = position[1] * ctx.tileSize + ctx.offset.y + ctx.tileSize * 0.5f;
+    float baseX = position.x * ctx.tileSize + ctx.offset.x + ctx.tileSize * 0.5f;
+    float baseY = position.y * ctx.tileSize + ctx.offset.y + ctx.tileSize * 0.5f;
 
     float orbitRadius = ctx.tileSize * 0.15f;
     float angleStep = 2.0f * M_PIf / std::max(coresCarried, 1u);

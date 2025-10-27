@@ -4,6 +4,8 @@
 #include <string>
 #include <array>
 #include <vector>
+#include <SFML/System/Vector2.hpp>
+
 class Tile;
 class RenderContext;
 
@@ -26,7 +28,7 @@ public:
 
 private:
     // --- Spatial data ---
-    std::array<float, 2> position; ///< World-space coordinates (in tile units).
+    sf::Vector2f position; ///< World-space coordinates (in tile units).
 
     // --- Stats ---
     const float baseHealth; ///< Initial health (for UI reference).
@@ -81,13 +83,13 @@ public:
     virtual void render(const RenderContext& ctx) const;
 
     // --- Basic getters ---
-    [[nodiscard]] std::array<float, 2> getPosition() const noexcept { return position; }
+    [[nodiscard]] sf::Vector2f getPosition() const noexcept { return position; }
     [[nodiscard]] std::array<unsigned int, 3> getLoot() const noexcept { return loot; }
     [[nodiscard]] bool isAlive() const noexcept { return alive; }
 
     // --- Path handling ---
     void setPath(const std::vector<const Tile*>& newPath);
-    void setPosition(const std::array<int, 2>& tileCoords);
+    void setPosition(const sf::Vector2i tileCoords) { position = sf::Vector2f(tileCoords); }
     [[nodiscard]] const Tile* getCurrentTile() const noexcept;
     [[nodiscard]] const Tile* getDestinationTile() const noexcept;
 

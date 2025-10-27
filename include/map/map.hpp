@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <SFML/System.hpp>
 class IMapSource;
 class Cores;
 class Tile;
@@ -54,7 +55,7 @@ public:
     /// @param y The y-coordinate (row) of the tile.
     /// @return A pointer to the tile located at the specified coordinates.
     /// @throws std::out_of_range If the provided coordinates are outside the map's bounds.
-    Tile* getTile(int x, int y) const;
+    Tile* getTile(sf::Vector2i position) const;
 
     /// @brief Places a new tile at the correct position on the grid.
     /// @param tile A unique pointer to the tile object to be placed on the map.

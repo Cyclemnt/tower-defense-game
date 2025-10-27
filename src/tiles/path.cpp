@@ -1,7 +1,7 @@
 #include "../../include/tiles/path.hpp"
 
-Path::Path(int x, int y)
-    : Tile(x, y) {}
+Path::Path(sf::Vector2i position_)
+    : Tile(position_) {}
 
 Path::~Path() {}
 

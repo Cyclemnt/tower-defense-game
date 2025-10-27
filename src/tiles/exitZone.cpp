@@ -1,7 +1,7 @@
 #include "../../include/tiles/exitZone.hpp"
 
-ExitZone::ExitZone(int x, int y)
-    : Tile(x, y) {}
+ExitZone::ExitZone(sf::Vector2i position_)
+    : Tile(position_) {}
 
 ExitZone::~ExitZone() {}
 

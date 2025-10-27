@@ -1,32 +1,34 @@
 #include <cmath>
 #include "../../include/towers/gatling.hpp"
-#include "../../include/visual-effects/visualEffect.hpp"
 #include "../../include/creatures/creature.hpp"
+#include "../../include/visual-effects/visualEffect.hpp"
 
-Gatling::Gatling(int x_, int y_)
-    : Tower(x_, y_, {0u /*au*/, 0u /*ag*/, 50u /*cu*/}, 4 /*dmg*/, 3.0f /*rng*/, 4.0f /*rate*/) {}
+Gatling::Gatling(sf::Vector2i position_) noexcept
+    : Tower(position_,
+        /* cost */ {
+            0u,     // Au
+            0u,     // Ag
+            50u     // Cu
+        },
+        /*dmg*/ 4,
+        /*rng*/ 3.0f,
+        /*rate*/ 4.0f
+    ) {}
 
-Gatling::~Gatling() {}
+std::string Gatling::getTextureName(int) const {
+    if (!target)
+        return "tower_gatling_s.png";
 
-std::string Gatling::getTextureName(int frame) const {
-    std::string texture = "tower_gatling_";
+    const sf::Vector2f d = target->getPosition() - static_cast<sf::Vector2f>(position);
+    const float angle = std::fmod(std::atan2(d.y, d.x) + 2.0f * M_PIf, 2.0f * M_PIf);
 
-    if (!target) texture += "s.png";
-    else {    
-        float dx = target->getPosition()[0] - x;
-        float dy = target->getPosition()[1] - y;
-        float angle = std::fmod(std::atan2(dy, dx) + (2.0f * M_PIf), 2.0f * M_PIf);
-        
-        if (angle < 0.3926991f) texture += "e.png";
-        else if (angle < 1.169371f) texture += "se.png";
-        else if (angle < 1.9547688f) texture += "s.png";
-        else if (angle < 2.7401669f) texture += "sw.png";
-        else if (angle < 3.5255651f) texture += "w.png";
-        else if (angle < 4.3109633f) texture += "nw.png";
-        else if (angle < 5.0963614f) texture += "n.png";
-        else if (angle < 5.8817596f) texture += "ne.png";
-        else texture += "e.png";    
-    }
-
-    return texture;
+    if (angle < 0.3927f) return "tower_gatling_e.png";
+    if (angle < 1.169f)  return "tower_gatling_se.png";
+    if (angle < 1.955f)  return "tower_gatling_s.png";
+    if (angle < 2.740f)  return "tower_gatling_sw.png";
+    if (angle < 3.526f)  return "tower_gatling_w.png";
+    if (angle < 4.311f)  return "tower_gatling_nw.png";
+    if (angle < 5.097f)  return "tower_gatling_n.png";
+    if (angle < 5.882f)  return "tower_gatling_ne.png";
+    return "tower_gatling_e.png";
 }

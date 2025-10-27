@@ -57,21 +57,22 @@ void TxtMapSource::buildMap(Map& map, Cores* cores) {
         for (int x = 0; x < width; ++x) {
             char c = lines[y][x];
             std::unique_ptr<Tile> tile;
+            sf::Vector2i pos = {x, y};
 
             switch (c) {
-                case '#': tile = std::make_unique<Path>(x, y); break;
-                case 'O': tile = std::make_unique<OpenZone>(x, y); break;
-                case 'E': tile = std::make_unique<EntryZone>(x, y); break;
-                case 'X': tile = std::make_unique<ExitZone>(x, y); break;
+                case '#': tile = std::make_unique<Path>(pos); break;
+                case 'O': tile = std::make_unique<OpenZone>(pos); break;
+                case 'E': tile = std::make_unique<EntryZone>(pos); break;
+                case 'X': tile = std::make_unique<ExitZone>(pos); break;
                 case 'C':
                     if (cores)
-                        tile = std::make_unique<CoreStorage>(x, y, cores);
+                        tile = std::make_unique<CoreStorage>(pos, cores);
                     else
-                        tile = std::make_unique<EmptyZone>(x, y);
+                        tile = std::make_unique<EmptyZone>(pos);
                     break;
                 case '.': [[fallthrough]];
                 default:
-                    tile = std::make_unique<EmptyZone>(x, y);
+                    tile = std::make_unique<EmptyZone>(pos);
                     break;
             }
 

@@ -76,7 +76,7 @@ public:
     /// @param tower A unique pointer to the tower to be placed.
     /// @return The result of trying to place a tower (success or not).
     PlaceTowerResult placeTower(std::unique_ptr<Tower> tower);
-    void sellTowerAt(int x, int y);
+    void sellTowerAt(sf::Vector2i position);
     void updatePaths();
 
     /// @brief Update the game state for one tick.

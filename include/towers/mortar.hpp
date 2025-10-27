@@ -1,50 +1,40 @@
 #ifndef MORTAR_HPP
 #define MORTAR_HPP
 
-#include <string>
-#include <memory>
-#include <vector>
+#include <SFML/System/Vector2.hpp>
 #include "tower.hpp"
-class Creature;
 
-/// @struct Shell
-/// @brief Represents a projectile fired by the Mortar.
+/**
+ * @struct Shell
+ * @brief Represents a projectile fired by the Mortar.
+ */
 struct Shell {
-    float posX, posY;           ///< Current projectile position
-    float targetX, targetY;     ///< Target coordinates
-    float damage;               ///< Damage on impact
-    float speed = 4.0f;         ///< Speed in tiles/second
-    float explosionRadius = 0.6f;   ///< Explosion radius in tiles
-    bool active = true;         ///< Is the shell still flying?
+    sf::Vector2f position;
+    sf::Vector2f target;
+    float damage;
+    float speed = 4.0f;
+    float explosionRadius = 0.6f;
+    bool active = true;
 };
 
 /**
  * @class Mortar
- * @brief Area-of-effect tower type.
- *
- * The Mortar fires shells that travel through the map
- * and explode on impact, dealing damage in an area.
+ * @brief Area-of-effect tower that fires explosive shells.
  */
-class Mortar : public Tower {
+class Mortar final : public Tower {
 private:
-    std::vector<Shell> shells;  ///< All active projectiles fired by this mortar
+    std::vector<Shell> shells;
 
 public:
-    Mortar(int x_, int y_);
-    ~Mortar();
+    explicit Mortar(sf::Vector2i position_) noexcept;
+    ~Mortar() override = default;
 
-    const std::vector<Shell>& getShells() const;
-
-    /// @brief Update tower logic each tick.
-    /// - Fires new shells at enemies in range
-    /// - Updates projectile positions
-    /// - Applies area damage on impact
-    /// @param deltaTime Time elapsed since last update
-    /// @param creatures All creatures currently on the map
     void update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) override;
 
-    /// @return The type name of this tower ("Mortar").
-    std::string getTextureName(int frame) const override;
+    [[nodiscard]] const std::vector<Shell>& getShells() const noexcept { return shells; }
+
+protected:
+    [[nodiscard]] std::string getTextureName(int frame) const override;
 };
 
 #endif // MORTAR_HPP

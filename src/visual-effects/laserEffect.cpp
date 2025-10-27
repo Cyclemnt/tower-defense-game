@@ -3,8 +3,8 @@
 #include "../../include/visual-effects/laserEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-LaserEffect::LaserEffect(std::array<float, 2> s, std::array<float, 2> e)
-    : start(s[0], s[1]), end(e[0], e[1]) {}
+LaserEffect::LaserEffect(sf::Vector2f s, sf::Vector2f e)
+    : start(s), end(e) {}
 
 void LaserEffect::update(float dt) {
     age += dt;

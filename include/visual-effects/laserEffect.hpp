@@ -14,7 +14,7 @@ private:
     float age = 0.0f;
     
 public:
-    LaserEffect(std::array<float, 2> s, std::array<float, 2> e);
+    LaserEffect(sf::Vector2f s, sf::Vector2f e);
     void update(float dt) override;
     void render(RenderContext& ctx);
 };

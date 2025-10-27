@@ -3,6 +3,7 @@
 
 #include <array>
 #include <SFML/Graphics.hpp>
+#include <eigen3/Eigen/Dense>
 #include "visualEffect.hpp"
 #include "tracerSplashEffect.hpp"
 class RenderContext;
@@ -17,7 +18,7 @@ private:
     TracerSplashEffect tse;
 
 public:
-    TracerEffect(std::array<float, 2> start_, std::array<float, 2> end_);
+    TracerEffect(sf::Vector2f start_, sf::Vector2f end_);
     void update(float dt) override;
     void render(RenderContext& ctx) override;
     sf::Color generateRandomColor() const;

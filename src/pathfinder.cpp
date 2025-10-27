@@ -1,6 +1,7 @@
 #include <queue>
 #include <algorithm> // std::reverse
 #include <unordered_map>
+#include <SFML/System.hpp>
 #include "../include/pathfinder.hpp"
 #include "../include/tiles/tile.hpp"
 
@@ -12,7 +13,8 @@ Pathfinder::~Pathfinder() {}
 int Pathfinder::heuristic(const Tile* a, const Tile* b) const {
     // Manhattan distance: sum of absolute differences between x and y coordinates.
     // Useful for grids with only horizontal/vertical movement (no diagonal).
-    return std::abs(a->getX() - b->getX()) + std::abs(a->getY() - b->getY());
+    sf::Vector2i d = b->getPosition() - a->getPosition();
+    return std::abs(d.x) + std::abs(d.y);
 }
 
 const std::vector<const Tile*> Pathfinder::findPath(const Tile* start, const Tile* goal, const bool ignoreTowers) const {

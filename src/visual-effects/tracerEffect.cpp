@@ -5,8 +5,8 @@
 #include "../../include/visual-effects/tracerEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-TracerEffect::TracerEffect(std::array<float, 2> start_, std::array<float, 2> end_)
-    : start(start_[0], start_[1]), end(end_[0], end_[1]), color(generateRandomColor()), tse(end_, color) {
+TracerEffect::TracerEffect(sf::Vector2f start_, sf::Vector2f end_)
+    : start(start_), end(end_), color(generateRandomColor()), tse(end_, color) {
         jitterX = ((std::rand() % 200) * 0.001f - 0.1f);
         jitterY = ((std::rand() % 200) * 0.001f - 0.1f);
 }

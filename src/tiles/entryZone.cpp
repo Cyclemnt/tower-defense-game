@@ -1,7 +1,7 @@
 #include "../../include/tiles/entryZone.hpp"
 
-EntryZone::EntryZone(int x, int y)
-    : Tile(x, y) {}
+EntryZone::EntryZone(sf::Vector2i position_)
+    : Tile(position_) {}
 
 EntryZone::~EntryZone() {}
 

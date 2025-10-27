@@ -17,7 +17,7 @@ private:
     void buildSellPanel();
     void addCancelButton();
     void addTowerButton(const std::string& name,
-                        std::function<std::unique_ptr<Tower>(int, int)> factory,
+                        std::function<std::unique_ptr<Tower>(sf::Vector2i)> factory,
                         const std::string& cost,
                         float y);
 
