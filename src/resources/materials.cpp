@@ -1,21 +1,17 @@
 #include <stdexcept>
 #include "../../include/resources/materials.hpp"
 
-Materials::Materials(std::array<unsigned int, 3> materials_)
-    : materials{materials_} {}
+Materials::Materials(Quantities initial) : quantities(initial) {}
 
-Materials::~Materials() {}
+const Materials::Quantities& Materials::getQuantities() const { return quantities; }
 
-std::array<unsigned int, 3> Materials::getBalance() const {
-    return materials;
+void Materials::add(const Quantities& other) { quantities += other; }
+
+void Materials::spend(const Quantities& other) {
+    if (canAfford(other)) quantities -= other;
+    else throw std::runtime_error("Tring to spend more materials than available");
 }
 
-void Materials::add(std::array<unsigned int, 3> amounts) {
-    for (size_t i = 0; i < materials.size(); ++i)
-        materials[i] += amounts[i];
-}
-
-void Materials::spend(std::array<unsigned int, 3> amounts) {
-    for (size_t i = 0; i < materials.size(); ++i)
-        materials[i] -= amounts[i];
+bool Materials::canAfford(const Quantities& costs) const {
+    return (quantities.au >= costs.au && quantities.ag >= costs.ag && quantities.cu >= costs.cu);
 }

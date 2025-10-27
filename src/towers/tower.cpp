@@ -5,7 +5,7 @@
 #include "../../include/renderer/renderContext.hpp"
 #include "../../include/visual-effects/tracerEffect.hpp"
 
-Tower::Tower(sf::Vector2i position_, std::array<unsigned int, 3> cost_, float damage_, float range_, float fireRate_) noexcept
+Tower::Tower(sf::Vector2i position_, Materials::Quantities cost_, float damage_, float range_, float fireRate_) noexcept
     : position(position_), cost(cost_), damage(damage_), range(range_), fireRate(fireRate_) {}
 
 void Tower::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {

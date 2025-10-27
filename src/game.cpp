@@ -94,7 +94,7 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     if (!player.canAfford(*tower))
         return PlaceTowerResult::NotAffordable;
 
-    player.pay(*tower);
+    player.buy(*tower);
     openZoneTile->setOccupied(true);
     // Insert tower depending on other towers y coordinate (to ensure right render order)
     const float newY = static_cast<float>(tower->getPosition().y);
@@ -114,9 +114,8 @@ void Game::sellTowerAt(sf::Vector2i position) {
         Tower* tower = it->get();
         if (tower->getPosition() == position) {
             // Refund: 50% of cost
-            std::array<unsigned int, 3> cost = tower->getCost();
-            for (size_t i = 0; i < cost.size(); ++i) { cost[i] = static_cast<int>(cost[i] * 0.5f); }
-            player.getMaterials().add(cost);
+            Materials::Quantities refund = tower->getCost() * 0.5f;
+            player.addMaterials(refund);
 
             // Free the tile
             if (auto* zone = dynamic_cast<OpenZone*>(map.getTile(position)))

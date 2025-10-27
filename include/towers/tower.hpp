@@ -6,6 +6,7 @@
 #include <array>
 #include <memory>
 #include <SFML/System/Vector2.hpp>
+#include "../resources/materials.hpp"
 
 class Creature;
 class VisualEffect;
@@ -24,7 +25,7 @@ class Tower {
 protected:
     sf::Vector2i position; ///< Map tile coordinates.
 
-    std::array<unsigned int, 3> cost; ///< Construction cost (Au, Ag, Cu).
+    Materials::Quantities cost; ///< Construction cost (Au, Ag, Cu).
 
     float damage;   ///< Damage per attack.
     float range;    ///< Attack range (in tiles).
@@ -39,7 +40,7 @@ protected:
 
 public:
     /// @brief Constructs a tower with base stats.
-    Tower(sf::Vector2i position_, std::array<unsigned int, 3> cost_, float damage_, float range_, float fireRate_) noexcept;
+    Tower(sf::Vector2i position_, Materials::Quantities cost_, float damage_, float range_, float fireRate_) noexcept;
 
     virtual ~Tower() = default;
 
@@ -64,7 +65,7 @@ public:
     [[nodiscard]] float getDamage() const noexcept { return damage; }
     [[nodiscard]] float getRange() const noexcept { return range; }
     [[nodiscard]] float getFireRate() const noexcept { return fireRate; }
-    [[nodiscard]] std::array<unsigned int, 3> getCost() const noexcept { return cost; }
+    [[nodiscard]] Materials::Quantities getCost() const noexcept { return cost; }
     [[nodiscard]] const Creature* getTarget() const noexcept { return target; }
 
     /// @brief Clears current target.

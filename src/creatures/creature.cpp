@@ -7,7 +7,7 @@
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-Creature::Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, std::array<unsigned int, 3> loot_, bool boosted_)
+Creature::Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, Materials::Quantities loot_, bool boosted_)
     : health(health_), baseHealth(health_), shield(shield_), baseShield(shield_), speed(speed_), coresCapacity(coresCapacity_), loot(loot_), boosted(boosted_) {}
 
 void Creature::update(float deltaTime) {
@@ -78,7 +78,7 @@ unsigned int Creature::dropCores() noexcept {
 }
 
 void Creature::leave() noexcept {
-    loot.fill(0);
+    loot = 0u;
     alive = false;
 }
 

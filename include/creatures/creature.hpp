@@ -5,6 +5,7 @@
 #include <array>
 #include <vector>
 #include <SFML/System/Vector2.hpp>
+#include "../resources/materials.hpp"
 
 class Tile;
 class RenderContext;
@@ -38,7 +39,7 @@ private:
     float speed;            ///< Movement speed (tiles per second).
 
     // --- Loot and cores ---
-    std::array<unsigned int, 3> loot; ///< Loot granted on death.
+    Materials::Quantities loot;       ///< Loot granted on death.
     unsigned int coresCarried = 0;    ///< Number of cores currently carried.
     const unsigned int coresCapacity; ///< Maximum number of cores that can be carried.
 
@@ -59,7 +60,7 @@ public:
     /// @param coresCapacity_ Maximum number of cores the creature can carry.
     /// @param loot_ Loot granted to the player upon death.
     /// @param boosted_ Whether this creature is a boosted variant.
-    Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, std::array<unsigned int, 3> loot_, bool boosted_);
+    Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, Materials::Quantities loot_, bool boosted_);
 
     /// @brief Virtual destructor.
     virtual ~Creature() = default;
@@ -84,7 +85,7 @@ public:
 
     // --- Basic getters ---
     [[nodiscard]] sf::Vector2f getPosition() const noexcept { return position; }
-    [[nodiscard]] std::array<unsigned int, 3> getLoot() const noexcept { return loot; }
+    [[nodiscard]] Materials::Quantities getLoot() const noexcept { return loot; }
     [[nodiscard]] bool isAlive() const noexcept { return alive; }
 
     // --- Path handling ---

@@ -2,6 +2,7 @@
 #define MATERIALS_HPP
 
 #include <array>
+#include <stdexcept>
 
 /**
  * @class Materials
@@ -14,21 +15,55 @@
  * - Copper (Cu)
  */
 class Materials {
+public:
+    struct Quantities {
+        unsigned int au = 0;
+        unsigned int ag = 0;
+        unsigned int cu = 0;
+
+        Quantities& operator+=(const Quantities& other) {
+            au += other.au;
+            ag += other.ag;
+            cu += other.cu;
+            return *this;
+        }
+
+        Quantities& operator-=(const Quantities& other) {
+            au -= other.au;
+            ag -= other.ag;
+            cu -= other.cu;
+            return *this;
+        }
+        
+        Quantities& operator*(const float value) {
+            au *= value;
+            ag *= value;
+            cu *= value;
+            return *this;
+        }
+
+        Quantities& operator=(const int other) {
+            au = other;
+            ag = other;
+            cu = other;
+            return *this;
+        }
+    };
+
+    
 private:
-    std::array<unsigned int, 3> materials;
+    Quantities quantities;
 
 public:
-    Materials(std::array<unsigned int, 3> materials_ = {100u, 100u, 100u});
-    ~Materials();
+    Materials(Quantities initial = {100, 100, 100});
 
-    /// @return Current balance of resources {Au, Ag, Cu}.
-    std::array<unsigned int, 3> getBalance() const;
+    const Quantities& getQuantities() const;
 
-    /// @brief Adds resources to the balance.
-    void add(std::array<unsigned int, 3> amounts);
+    void add(const Quantities& other);
 
-    /// @brief Spends resources from the balance.
-    void spend(std::array<unsigned int, 3> amounts);
+    void spend(const Quantities& other);
+
+    bool canAfford(const Quantities& costs) const;
 };
 
 #endif // MATERIALS_HPP

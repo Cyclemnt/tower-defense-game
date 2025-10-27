@@ -70,7 +70,7 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
 }
 
 std::string Mortar::getTextureName(int) const {
-    if (!target) return "tower_mortar_nw.png"; // default idle texture
+    if (!target) return "tower_mortar_n.png"; // default idle texture
 
     const float dx = target->getPosition().x - static_cast<float>(position.x);
 

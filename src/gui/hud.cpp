@@ -3,6 +3,7 @@
 #include <cmath>
 #include "../../include/gui/hud.hpp"
 #include "../../include/renderer/renderer.hpp"
+#include "../../include/resources/materials.hpp"
 
 HUD::HUD(RenderContext& ctx_, Game& game_)
     : ctx(ctx_), game(game_)
@@ -44,7 +45,7 @@ void HUD::draw(float deltaTime) {
 }
 
 void HUD::drawResources() {
-    const std::array<unsigned int, 3> mats = game.getPlayer().getMaterials().getBalance();
+    const Materials::Quantities mats = game.getPlayer().getBalance();
     // icon positions
     float x = (ctx.window.getSize().x - 260.0f) * 0.5f + 12.0f;
     float y = 16.0f;
@@ -52,9 +53,9 @@ void HUD::drawResources() {
 
     struct R { const char* file; unsigned int value; const char* name; };
     R resources[3] = {
-        { "icon_gold.png", mats[0], "Au" },
-        { "icon_silver.png", mats[1], "Ag" },
-        { "icon_copper.png", mats[2], "Cu" }
+        { "icon_gold.png", mats.au, "Au" },
+        { "icon_silver.png", mats.ag, "Ag" },
+        { "icon_copper.png", mats.cu, "Cu" }
     };
 
     for (int i = 0; i < 3; ++i) {

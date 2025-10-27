@@ -1,26 +1,19 @@
 #include "../include/player.hpp"
 #include "../include/towers/tower.hpp"
 
-Player::Player()
-    : materials() {}
+Player::Player(Materials balance_)
+    : balance(balance_) {}
 
 Player::~Player() {}
 
-const Materials& Player::getMaterials() const { return materials; }
-Materials& Player::getMaterials() { return materials; }
-
 bool Player::canAfford(const Tower& tower) {
-    for (size_t i = 0; i < 3; ++i)
-        if (materials.getBalance()[i] < tower.getCost()[i])
-            return false;
-    
-    return true;
+    return balance.canAfford(tower.getCost());
 }
 
-void Player::pay(const Tower& tower) {
-    materials.spend(tower.getCost());
+void Player::buy(const Tower& tower) {
+    balance.spend(tower.getCost());
 }
 
-void Player::addMaterials(std::array<unsigned int, 3> loot) {
-    materials.add(loot);
+void Player::addMaterials(const Materials::Quantities& loot) {
+    balance.add(loot);
 }
