@@ -85,12 +85,12 @@ public:
 
     // --- Basic getters ---
     [[nodiscard]] sf::Vector2f getPosition() const noexcept { return position; }
-    [[nodiscard]] Materials::Quantities getLoot() const noexcept { return loot; }
+    [[nodiscard]] const Materials::Quantities& getLoot() const noexcept { return loot; }
     [[nodiscard]] bool isAlive() const noexcept { return alive; }
 
     // --- Path handling ---
     void setPath(const std::vector<const Tile*>& newPath);
-    void setPosition(const sf::Vector2i tileCoords) { position = sf::Vector2f(tileCoords); }
+    void setPosition(const sf::Vector2i& tileCoords) { position = static_cast<sf::Vector2f>(tileCoords); }
     [[nodiscard]] const Tile* getCurrentTile() const noexcept;
     [[nodiscard]] const Tile* getDestinationTile() const noexcept;
 

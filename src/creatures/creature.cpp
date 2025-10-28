@@ -83,6 +83,8 @@ void Creature::leave() noexcept {
 }
 
 void Creature::render(const RenderContext& ctx) const {
+    if (!ctx.isOnScreen(position)) return;
+
     Renderer& renderer = ctx.renderer;
     sf::RenderWindow& window = ctx.window;
     int frame = (ctx.tick / 8) % 4;

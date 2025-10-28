@@ -16,12 +16,12 @@ class RenderContext;
  */
 class Tile {
 protected:
-    sf::Vector2i position; ///< The coordinates of the tile.
+    const sf::Vector2i position; ///< The coordinates of the tile.
 
 public:
     /// @brief Constructs a new Tile at the specified coordinates.
     /// @param position_ The coordinates of the tile.
-    Tile(sf::Vector2i position_);
+    Tile(sf::Vector2i position_ = {0, 0});
 
     /// @brief Virtual destructor for the Tile class.
     virtual ~Tile() = default;
@@ -42,7 +42,6 @@ public:
     /// @return A string representing the type of this tile.
     virtual std::string getTextureName() const = 0;
     virtual void render(const RenderContext& ctx) const;
-    void setCoords(sf::Vector2i position_);
 };
 
 #endif // TILE_HPP

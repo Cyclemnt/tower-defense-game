@@ -44,6 +44,8 @@ void Tower::upgrade() {
 }
 
 void Tower::render(const RenderContext& ctx) const {
+    if (!ctx.isOnScreen(static_cast<sf::Vector2f>(position))) return;
+    
     auto& renderer = ctx.renderer;
     auto& window = ctx.window;
 

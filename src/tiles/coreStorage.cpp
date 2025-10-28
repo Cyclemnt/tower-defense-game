@@ -19,6 +19,8 @@ int CoreStorage::takeCores(int requested) const { return cores->stealCore(reques
 void CoreStorage::depositCores(int n) { cores->returnCore(n); }
 
 void CoreStorage::render(const RenderContext& ctx) const {
+    if (!ctx.isOnScreen(static_cast<sf::Vector2f>(position))) return;
+    
     float ratio = 1.0f;
     int safe = cores->getSafe(), stolen = cores->getStolen(), lost = cores->getLost();
     int total = safe + stolen + lost;

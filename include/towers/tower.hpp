@@ -60,7 +60,7 @@ public:
     virtual void render(const RenderContext& ctx) const;
 
     // --- Getters ---
-    [[nodiscard]] sf::Vector2i getPosition() const noexcept { return position; }
+    [[nodiscard]] const sf::Vector2i& getPosition() const noexcept { return position; }
     [[nodiscard]] int getLevel() const noexcept { return level; }
     [[nodiscard]] float getDamage() const noexcept { return damage; }
     [[nodiscard]] float getRange() const noexcept { return range; }

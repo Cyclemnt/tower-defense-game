@@ -17,6 +17,8 @@ public:
     RenderContext(sf::RenderWindow& w, Renderer& r, float ts = 64.0f, int t = 0);
 
     sf::Vector2i screenToTile(int mouseX, int mouseY) const;
+
+    bool isOnScreen(const sf::Vector2f& position) const;
 };
 
 #endif // RENDER_CONTEXT_HPP

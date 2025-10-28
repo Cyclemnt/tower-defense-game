@@ -130,16 +130,14 @@ void Map::render(RenderContext& ctx) const {
     int tilesToAddRight  = std::ceil((ctx.window.getSize().x - (width * ctx.tileSize + ctx.offset.x)) / ctx.tileSize);
     int tilesToAddBottom = std::ceil((ctx.window.getSize().y - (height * ctx.tileSize + ctx.offset.y)) / ctx.tileSize);
 
-    EmptyZone tempEmpty({0, 0}); // Temporary instance
-
     // Top and bottom
     for (int x = -tilesToAddLeft; x < width + tilesToAddRight; ++x) {
         for (int y = -tilesToAddTop; y < 0; ++y) {
-            tempEmpty.setCoords({x, y});
+            EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }
         for (int y = height; y < height + tilesToAddBottom; ++y) {
-            tempEmpty.setCoords({x, y});
+            EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }
     }
@@ -147,11 +145,11 @@ void Map::render(RenderContext& ctx) const {
     // Left and right
     for (int y = 0; y < height; ++y) {
         for (int x = -tilesToAddLeft; x < 0; ++x) {
-            tempEmpty.setCoords({x, y});
+            EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }
         for (int x = width; x < width + tilesToAddRight; ++x) {
-            tempEmpty.setCoords({x, y});
+            EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }
     }

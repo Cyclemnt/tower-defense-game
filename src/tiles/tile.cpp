@@ -6,6 +6,8 @@ Tile::Tile(sf::Vector2i position_)
     : position(position_) {}
 
 void Tile::render(const RenderContext& ctx) const {
+    if (!ctx.isOnScreen(static_cast<sf::Vector2f>(position))) return;
+    
     auto& renderer = ctx.renderer;
     const sf::Texture& tex = renderer.getTexture(getTextureName());
 
@@ -14,8 +16,4 @@ void Tile::render(const RenderContext& ctx) const {
     auto sz = tex.getSize();
     sprite.setScale({ctx.tileSize / sz.x, ctx.tileSize / sz.y});
     ctx.window.draw(sprite);
-}
-
-void Tile::setCoords(sf::Vector2i position_) {
-    position = position_;
 }
