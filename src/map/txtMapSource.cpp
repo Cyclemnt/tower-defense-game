@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <cctype>
 #include <vector>
+#include <iostream>
 #include "../../include/map/txtMapSource.hpp"
 #include "../../include/map/map.hpp"
 #include "../../include/tiles/path.hpp"
@@ -18,41 +19,40 @@ TxtMapSource::TxtMapSource(std::string path)
 
 void TxtMapSource::buildMap(Map& map, Cores* cores) {
     std::ifstream file(filename);
-    if (!file.is_open()) {
+    if (!file.is_open())
         throw std::runtime_error("Cannot open map file: " + filename);
-    }
 
     std::vector<std::string> lines;
     std::string line;
 
     // --- Read all lines first ---
     while (std::getline(file, line)) {
-        // Remove leading/trailing spaces
-        if (line.empty()) continue;
-        std::istringstream iss(line);
         std::string filtered;
-        char c;
-        while (iss >> c) filtered.push_back(c); // ignore spaces and tabs
+        for (char c : line)
+            if (!std::isspace(static_cast<unsigned char>(c)))
+                filtered.push_back(c);
+
         if (!filtered.empty())
-            lines.push_back(filtered);
+            lines.push_back(std::move(filtered));
     }
 
     file.close();
 
     if (lines.empty())
-        throw std::runtime_error("Map file is empty: " + filename);
+        throw std::runtime_error("[TxtMapSource] Map file is empty: " + filename);
 
     // --- Determine width and height ---
     int height = static_cast<int>(lines.size());
     int width = static_cast<int>(lines[0].size());
+
     for (const auto& l : lines)
-        if ((int)l.size() != width)
+        if (static_cast<int>(l.size()) != width)
             throw std::runtime_error("Inconsistent line width in map file: " + filename);
 
-    // --- Resize map dynamically ---
+    // --- Resize map ---
     map.resize(width, height);
 
-    // --- Parse and place tiles ---
+    // --- Parse and instantiate tiles ---
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             char c = lines[y][x];
@@ -65,15 +65,11 @@ void TxtMapSource::buildMap(Map& map, Cores* cores) {
                 case 'E': tile = std::make_unique<EntryZone>(pos); break;
                 case 'X': tile = std::make_unique<ExitZone>(pos); break;
                 case 'C':
-                    if (cores)
-                        tile = std::make_unique<CoreStorage>(pos, cores);
-                    else
-                        tile = std::make_unique<EmptyZone>(pos);
+                    if (cores) tile = std::make_unique<CoreStorage>(pos, cores);
+                    else throw std::runtime_error("[TxtMapSource] Invalid Core ptr");
                     break;
                 case '.': [[fallthrough]];
-                default:
-                    tile = std::make_unique<EmptyZone>(pos);
-                    break;
+                default: tile = std::make_unique<EmptyZone>(pos); break;
             }
 
             map.placeTile(std::move(tile));
