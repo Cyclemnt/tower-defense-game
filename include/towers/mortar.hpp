@@ -5,23 +5,21 @@
 #include "tower.hpp"
 
 /**
- * @struct Shell
- * @brief Represents a projectile fired by the Mortar.
- */
-struct Shell {
-    sf::Vector2f position;
-    sf::Vector2f target;
-    float damage;
-    float speed = 4.0f;
-    float explosionRadius = 0.6f;
-    bool active = true;
-};
-
-/**
  * @class Mortar
  * @brief Area-of-effect tower that fires explosive shells.
  */
 class Mortar final : public Tower {
+public:
+    /// @brief Represents a projectile fired by the Mortar.
+    struct Shell {
+        sf::Vector2f position;
+        sf::Vector2f target;
+        float damage;
+        float speed = 4.0f;
+        float explosionRadius = 0.6f;
+        bool active = true;
+    };
+
 private:
     std::vector<Shell> shells;
 
