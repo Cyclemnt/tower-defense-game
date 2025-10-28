@@ -1,46 +1,40 @@
-#include <SFML/System/Angle.hpp>
-#include <cstdlib>
-#include <ctime>
 #include <cmath>
+#include <cstdlib>
 #include "../../include/visual-effects/tracerEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
 TracerEffect::TracerEffect(sf::Vector2f start_, sf::Vector2f end_)
-    : start(start_), end(end_), color(generateRandomColor()), tse(end_, color) {
-        jitterX = ((std::rand() % 200) * 0.001f - 0.1f);
-        jitterY = ((std::rand() % 200) * 0.001f - 0.1f);
+    : start(start_), end(end_), color(generateRandomColor()), splash(end_, color)
+{
+    jitterX = ((std::rand() % 200) * 0.001f - 0.1f);
+    jitterY = ((std::rand() % 200) * 0.001f - 0.1f);
 }
 
 void TracerEffect::update(float dt) {
-    tse.update(dt);
+    splash.update(dt);
     age += dt;
     if (age >= lifetime) die();
 }
 
-void TracerEffect::render(RenderContext& ctx) {
-    auto& w = ctx.window;
-    auto& tileSize = ctx.tileSize;
-    
-    tse.render(ctx);
+void TracerEffect::render(const RenderContext& ctx) {
+    splash.render(ctx);
     if (age >= 0.05f) return;
-    
-    sf::Vector2f startOffset = {0.5f, 0.3f};
-    sf::Vector2f endOffset = {0.5f, 0.5f};
-    sf::Vector2f startPoint = (start + startOffset) * tileSize + ctx.offset;
-    sf::Vector2f endPoint   = (end + endOffset) * tileSize + ctx.offset;
 
-    sf::Vector2f diff = endPoint - startPoint;
-    float length = std::sqrt(diff.x * diff.x + diff.y * diff.y);
-    float angleDeg = std::atan2(diff.y, diff.x) * 180.f * M_1_PIf; // atan * 180 / pi
+    const sf::Vector2f startOffset{0.5f, 0.3f};
+    const sf::Vector2f endOffset{0.5f, 0.5f};
+    const sf::Vector2f startPoint = (start + startOffset) * ctx.tileSize + ctx.offset;
+    const sf::Vector2f endPoint   = (end + endOffset) * ctx.tileSize + ctx.offset;
 
-    sf::RectangleShape line(sf::Vector2f(length, 2.5f));
-    line.setOrigin({0.0f, 1.25f});
-    line.setPosition(startPoint);
+    const sf::Vector2f diff = endPoint - startPoint;
+    const float length = diff.length();
 
-    line.setRotation(sf::degrees(angleDeg));
+    sf::RectangleShape beam({length, 2.5f});
+    beam.setOrigin({0.0f, 1.25f});
+    beam.setPosition(startPoint);
+    beam.setRotation(diff.angle());
+    beam.setFillColor(color);
 
-    line.setFillColor(color);
-    w.draw(line);
+    ctx.window.draw(beam);
 }
 
 sf::Color TracerEffect::generateRandomColor() const {

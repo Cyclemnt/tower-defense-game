@@ -2,31 +2,29 @@
 #include "../../include/visual-effects/shellEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-ShellEffect::ShellEffect(sf::Vector2f start, sf::Vector2f end, float spd)
-        : pos(start), target(end), speed(spd) {}
+ShellEffect::ShellEffect(sf::Vector2f start_, sf::Vector2f end_, float speed_)
+    : position(start_), target(end_), speed(speed_) {}
 
 void ShellEffect::update(float dt) {
     lifetime -= dt;
     if (lifetime <= 0.f) die();
 
-    sf::Vector2f dir = target - pos;
-    float dist = std::sqrt(dir.x * dir.x + dir.y * dir.y);
-    if (dist <= speed * dt) die(); // impact
+    sf::Vector2f dir = target - position;
+    const float dist = dir.length();
+
+    if (dist <= speed * dt) die(); // reached target
     else {
         dir /= dist;
-        pos += dir * (speed * dt);
+        position += dir * (speed * dt);
     }
 }
 
-void ShellEffect::render(RenderContext& ctx) {
-    auto& w = ctx.window;
-    auto& tileSize = ctx.tileSize;
-    
-    sf::CircleShape shape(radius * tileSize);
-    shape.setOrigin({radius * tileSize, radius * tileSize});
+void ShellEffect::render(const RenderContext& ctx) {
+    sf::CircleShape shape(radius * ctx.tileSize);
+    shape.setOrigin({radius * ctx.tileSize, radius * ctx.tileSize});
     shape.setFillColor(sf::Color(180, 180, 180));
-    shape.setPosition({(pos.x + 0.5f) * tileSize + ctx.offset.x, (pos.y + 0.5f) * tileSize + ctx.offset.y});
-    w.draw(shape);
-}
+    sf::Vector2f pos = (position + sf::Vector2f(0.5f, 0.5f)) * ctx.tileSize + ctx.offset;
+    shape.setPosition(pos);
 
-sf::Vector2f ShellEffect::getPos() const { return pos; }
+    ctx.window.draw(shape);
+}

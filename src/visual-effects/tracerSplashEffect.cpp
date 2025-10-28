@@ -2,43 +2,39 @@
 #include "../../include/visual-effects/tracerSplashEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
 
-TracerSplashEffect::TracerSplashEffect(sf::Vector2f position, sf::Color c)
-    : pos(position), color(c) {
-    int count = 6; // could be random
-    parts.reserve(count);
+TracerSplashEffect::TracerSplashEffect(sf::Vector2f position_, sf::Color color_)
+    : position(position_), color(color_)
+{
+    constexpr int count = 6;
+    particles.reserve(count);
     for (int i = 0; i < count; ++i) {
-        float ang = (std::rand() % 360 + i) * M_PIf * 0.005555; // rand * pi / 180
-        float spd = 0.6f + (std::rand() % 100) * 0.002f; // 0.6..0.8 tiles/sec
-        float rad = 0.02f + (std::rand() % 30) * 0.001f; // 0.02..0.05 tile
-        SimpleParticle sp{std::cos(ang), std::sin(ang), spd, rad, 0.0f, 0.12f + (std::rand() % 40) * 0.002f};
-        parts.push_back(sp);
+        const float ang = (std::rand() % 360) * static_cast<float>(M_PI) / 180.0f;
+        const float spd = 1.2f + (std::rand() % 100) * 0.002f;
+        const float rad = 0.02f + (std::rand() % 30) * 0.001f;
+        particles.push_back({{std::cos(ang), std::sin(ang)}, spd, rad, 0.0f, 0.12f + (std::rand() % 40) * 0.002f});
     }
 }
 
 void TracerSplashEffect::update(float dt) {
     age += dt;
-    for (auto &p : parts) p.age += dt;
+    for (auto& p : particles) p.age += dt;
     if (age >= lifetime) die();
 }
 
-void TracerSplashEffect::render(RenderContext& ctx) {
-    auto& w = ctx.window;
-    auto& tileSize = ctx.tileSize;
-    
-    float baseX = (pos.x + 0.5f) * tileSize;
-    float baseY = (pos.y + 0.5f) * tileSize;
-    for (const auto &p : parts) {
-        float t = p.age / p.lifetime;
+void TracerSplashEffect::render(const RenderContext& ctx) {
+    for (const auto& p : particles) {
+        const float t = p.age / p.lifetime;
         if (t > 1.f) continue;
-        float dist = p.speed * p.age * tileSize * 0.6f; // mm factor for visual scaling
-        float px = baseX + p.vx * dist;
-        float py = baseY + p.vy * dist;
-        float r = p.radius * tileSize * (1.0f - t); // shrink
+
+        const float dist = p.speed * p.age * ctx.tileSize * 0.6f;
+        const float r = p.radius * ctx.tileSize * (1.f - t);
+        const sf::Vector2f pos = (position + sf::Vector2f(0.5f, 0.5f) + p.v * dist / ctx.tileSize) * ctx.tileSize + ctx.offset;
+
         sf::CircleShape dot(r);
         dot.setOrigin({r, r});
-        dot.setPosition({px + ctx.offset.x, py + ctx.offset.y});
+        dot.setPosition(pos);
         std::uint8_t a = static_cast<std::uint8_t>(220 * (1.0f - t));
-        dot.setFillColor(sf::Color(color.r, color.g, color.b, a));
-        w.draw(dot);
+        dot.setFillColor({color.r, color.g, color.b, a});
+        ctx.window.draw(dot);
     }
 }
