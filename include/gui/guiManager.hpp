@@ -27,7 +27,7 @@ private:
     PauseMenu pauseMenu;
     TowerMenu towerMenu;
 
-    bool handleLeftClick(int mouseX, int mouseY);
+    bool handleLeftClick(sf::Vector2i mousePos);
 
 public:
     GuiManager(sf::RenderWindow& window, Game& game, RenderContext& ctx);

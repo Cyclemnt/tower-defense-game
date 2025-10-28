@@ -4,21 +4,21 @@
 #include "../../include/game.hpp"
 #include "../../include/towers/tower.hpp"
 #include "../../include/tiles/openZone.hpp"
+#include "../../include/map/map.hpp"
 
-Renderer::Renderer(sf::RenderWindow& win, Game& game)
-    : game(game), ctx(win, *this)
+Renderer::Renderer(sf::RenderWindow& win, Game& game_)
+    : game(game_), ctx(win, *this)
 {
-    // Set icon
-    sf::Texture iconSprite(getTexture("icon.png"));
-    sf::Image iconImage = iconSprite.copyToImage(); 
-    ctx.window.setIcon({iconImage.getSize().x, iconImage.getSize().y}, iconImage.getPixelsPtr());
+    // Load and set window icon
+    const sf::Texture& iconTex = getTexture("icon.png");
+    const sf::Image icon = iconTex.copyToImage();
+    ctx.window.setIcon(icon.getSize(), icon.getPixelsPtr());
 
     computeScaling();
 }
 
 const sf::Texture& Renderer::getTexture(const std::string& filename, bool smooth) {
-    auto it = textures.find(filename);
-    if (it != textures.end())
+    if (auto it = textures.find(filename); it != textures.end())
         return it->second;
 
     sf::Texture tex;
@@ -29,20 +29,19 @@ const sf::Texture& Renderer::getTexture(const std::string& filename, bool smooth
     }
 
     tex.setSmooth(smooth);
-    textures[filename] = std::move(tex);
-    return textures.at(filename);
+    auto [insertedIt, _] = textures.emplace(filename, std::move(tex));
+    return insertedIt->second;
 }
 
 void Renderer::computeScaling() {
     const Map& map = game.getMap();
     const sf::Vector2u mapSize = map.getSize();
-
     sf::Vector2f winSize = static_cast<sf::Vector2f>(ctx.window.getSize());
 
     float scaleX = winSize.x / (mapSize.x * ctx.tileSize);
     float scaleY = winSize.y / (mapSize.y * ctx.tileSize);
-
     float scaleFactor = std::min(scaleX, scaleY);
+    
     ctx.tileSize *= scaleFactor;
 
     // Center the map inside the window
@@ -85,20 +84,16 @@ void Renderer::render() {
 
 void Renderer::highlightTile() {
     const Map& map = game.getMap();
-    sf::Vector2i mouse = sf::Mouse::getPosition(ctx.window);
-    sf::Vector2i tilePos = ctx.screenToTile(mouse.x, mouse.y);
+    sf::Vector2i mousePos = sf::Mouse::getPosition(ctx.window);
+    sf::Vector2i tilePos = ctx.screenToTile(mousePos);
 
     Tile* tile = map.getTile(tilePos);
     if (!tile) return;
-    if (!tile->isBuildable())
-        return;
+    if (!tile->isBuildable()) return;
 
     OpenZone* openZoneTile = dynamic_cast<OpenZone*>(tile);
     sf::RectangleShape highlight({ctx.tileSize, ctx.tileSize});
-    highlight.setPosition({
-        tilePos.x * ctx.tileSize + ctx.offset.x,
-        tilePos.y * ctx.tileSize + ctx.offset.y
-    });
+    highlight.setPosition(static_cast<sf::Vector2f>(tilePos) * ctx.tileSize + ctx.offset);
     if (openZoneTile->isOccupied()) highlight.setFillColor(sf::Color(255, 50, 50, 80)); // Red
     else highlight.setFillColor(sf::Color(50, 200, 50, 80)); // Green
 

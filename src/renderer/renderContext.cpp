@@ -1,19 +1,17 @@
 #include "../../include/renderer/renderContext.hpp"
+#include "../../include/renderer/renderer.hpp"
 
-RenderContext::RenderContext(sf::RenderWindow& w, Renderer& r, float ts, int t)
-        : window(w), renderer(r), tileSize(ts), tick(t), lastWinSize(window.getSize()) {}
+RenderContext::RenderContext(sf::RenderWindow& w, Renderer& r, float ts, unsigned long t) noexcept
+    : window(w), renderer(r), tileSize(ts), tick(t), lastWinSize(window.getSize()) {}
 
-sf::Vector2i RenderContext::screenToTile(int mouseX, int mouseY) const {
-    float localX = (mouseX - offset.x) / tileSize;
-    float localY = (mouseY - offset.y) / tileSize;
-    return { static_cast<int>(localX), static_cast<int>(localY) };
+sf::Vector2i RenderContext::screenToTile(sf::Vector2i& mousePos) const noexcept {
+    const sf::Vector2i tilePos = static_cast<sf::Vector2i>((static_cast<sf::Vector2f>(mousePos) - offset) / tileSize);
+    return tilePos;
 }
 
-bool RenderContext::isOnScreen(const sf::Vector2f& position) const {
-    sf::Vector2f pixelsFromWindowOrigin = position * tileSize + offset;
+bool RenderContext::isOnScreen(const sf::Vector2f& position) const noexcept {
+    const sf::Vector2f pixels = position * tileSize + offset;
+    const sf::Vector2u win = window.getSize();
 
-    if (pixelsFromWindowOrigin.x > window.getSize().x || pixelsFromWindowOrigin.y > window.getSize().y ||
-        pixelsFromWindowOrigin.x < -tileSize || pixelsFromWindowOrigin.y < -tileSize)
-        return false;
-    else return true;
+    return !(pixels.x > win.x || pixels.y > win.y || pixels.x < -tileSize || pixels.y < -tileSize);
 }

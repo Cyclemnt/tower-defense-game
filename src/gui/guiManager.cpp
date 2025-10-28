@@ -18,17 +18,19 @@ void GuiManager::processEvent(const sf::Event& event) {
         if (!towerMenu.isOn() && key->code == sf::Keyboard::Key::Escape)
             if (game.isPaused()) { pauseMenu.close(); game.setPaused(false); }
             else                 { pauseMenu.open();  game.setPaused(true);  }
+        else towerMenu.close();
 
     bool clickConsumed = false;
 
     if (auto mouse = event.getIf<sf::Event::MouseButtonPressed>())
         if (!game.isPaused() && mouse->button == sf::Mouse::Button::Left)
-            clickConsumed = handleLeftClick(mouse->position.x, mouse->position.y);
+            clickConsumed = handleLeftClick(mouse->position); // TODO: when click outside towerMenu, close it.
 
-    cam.handleZoom(event);
+    if (!game.isPaused())
+        cam.handleZoom(event);
 
     // Only drag if click not used for tower/menu
-    if (!clickConsumed)
+    if (!clickConsumed && !game.isPaused())
         cam.handleDrag(event);
 
     if (auto mouse = event.getIf<sf::Event::MouseButtonPressed>())
@@ -36,8 +38,8 @@ void GuiManager::processEvent(const sf::Event& event) {
             cam.resetView();
 }
 
-bool GuiManager::handleLeftClick(int mouseX, int mouseY) {
-    sf::Vector2i tilePos = ctx.screenToTile(mouseX, mouseY);
+bool GuiManager::handleLeftClick(sf::Vector2i mousePos) {
+    sf::Vector2i tilePos = ctx.screenToTile(mousePos);
     const Map& map = game.getMap();
     Tile* clicked = map.getTile(tilePos);
 
