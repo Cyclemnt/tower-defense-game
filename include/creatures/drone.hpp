@@ -20,7 +20,7 @@ public:
 
     ~Drone() override = default;
 
-protected:
+private:
     /// @brief Returns the texture name for this creature.
     /// @param frame The animation frame index.
     [[nodiscard]] std::string getTextureName(int frame) const override;
