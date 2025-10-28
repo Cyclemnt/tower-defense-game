@@ -27,22 +27,6 @@ const std::vector<Tile*>& Map::getExits() const noexcept {
     return exits.empty() ? entries : exits;
 }
 
-std::vector<const Tile*> Map::getNeighbors(const Tile* tile) const noexcept {
-    std::vector<const Tile*> neighbors;
-    const sf::Vector2i pos = tile->getPosition();
-
-    const int dx[4] = {1, -1, 0, 0};
-    const int dy[4] = {0, 0, 1, -1};
-
-    for (int i = 0; i < 4; ++i) {
-        const int nx = pos.x + dx[i];
-        const int ny = pos.y + dy[i];
-        if (nx >= 0 && ny >= 0 && nx < static_cast<int>(size.x) && ny < static_cast<int>(size.y))
-            neighbors.push_back(grid[ny][nx].get());
-    }
-    return neighbors;
-}
-
 void Map::resize(unsigned int w, unsigned int h) {
     size = {w, h};
     grid.resize(h);
@@ -79,6 +63,22 @@ void Map::placeTile(std::unique_ptr<Tile> tile) {
         exits.push_back(ex);
     else if (auto c = dynamic_cast<CoreStorage*>(t))
         coreStorage = c;
+}
+
+std::vector<const Tile*> Map::getNeighbors(const Tile* tile) const noexcept {
+    std::vector<const Tile*> neighbors;
+    const sf::Vector2i pos = tile->getPosition();
+
+    const int dx[4] = {1, -1, 0, 0};
+    const int dy[4] = {0, 0, 1, -1};
+
+    for (int i = 0; i < 4; ++i) {
+        const int nx = pos.x + dx[i];
+        const int ny = pos.y + dy[i];
+        if (nx >= 0 && ny >= 0 && nx < static_cast<int>(size.x) && ny < static_cast<int>(size.y))
+            neighbors.push_back(grid[ny][nx].get());
+    }
+    return neighbors;
 }
 
 void Map::printMap() const {
