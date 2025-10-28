@@ -2,46 +2,45 @@
 #define PATHFINDER_HPP
 
 #include <vector>
+#include <memory>
 #include "map/map.hpp"
 class Tile;
 
-/// @brief A pathfinding utility that calculates the best path from a start tile to a goal tile using the A* algorithm.
+/**
+ * @class Pathfinder
+ * @brief A utility class that computes paths using the A* algorithm.
+ *
+ * The Pathfinder calculates the optimal route between two tiles on a map.
+ * It supports optional tower-ignoring mode, allowing pathfinding even when
+ * buildable tiles are occupied.
+ */
 class Pathfinder {
 private:
-    const Map& map;     ///< Reference to the map used for pathfinding.
+    const Map& map; ///< Reference to the map used for pathfinding.
 
-    /// @struct Node
-    /// @brief A struct representing a node in the pathfinding algorithm.
+    /// @brief Represents a node in the A* search process.
     struct Node {
-        const Tile* tile;     ///< The tile represented by this node.
-        int gCost;      ///< The cost from the start tile to this node.
-        int hCost;      ///< The heuristic cost from this node to the goal.
-        Node* parent;   ///< The parent node, used for path reconstruction.
+        const Tile* tile;  ///< Tile corresponding to this node.
+        int gCost;         ///< Cost from start to this node.
+        int hCost;         ///< Heuristic cost to goal.
+        Node* parent;      ///< Parent node for path reconstruction.
 
-        /// @brief Calculates the total cost (g + h).
-        /// @return The total cost of this node.
-        int fCost() const { return gCost + hCost; }
+        [[nodiscard]] constexpr int fCost() const noexcept { return gCost + hCost; }
     };
 
-    /// @brief Heuristic function to estimate the cost from a given tile to the goal tile.
-    /// @param a The starting tile.
-    /// @param b The goal tile.
-    /// @return The heuristic cost between the two tiles.
-    int heuristic(const Tile* a, const Tile* b) const;
+    /// @brief Heuristic cost estimation between two tiles (Manhattan distance).
+    [[nodiscard]] int heuristic(const Tile* a, const Tile* b) const noexcept;
 
 public:
-    /// @brief Constructs a Pathfinder using the provided map.
-    /// @param m The map to perform pathfinding on.
-    Pathfinder(const Map& m);
+    /// @brief Constructs a Pathfinder operating on the given map.
+    explicit Pathfinder(const Map& m) noexcept;
 
-    /// @brief Destroys the Pathfinder object.
-    ~Pathfinder();
-
-    /// @brief Search the shortest path between a start tile and a goal tile using the A* algorithm.
-    /// @param start The start tile.
-    /// @param goal The goal tile.
-    /// @return A vector of tiles representing the path from start to goal or empty if none found.
-    const std::vector<const Tile*> findPath(const Tile* start, const Tile* goal, const bool ignoreTowers = false) const;
+    /// @brief Computes a path between two tiles using A*.
+    /// @param start Starting tile.
+    /// @param goal Destination tile.
+    /// @param ignoreTowers If true, buildable tiles are considered walkable.
+    /// @return A list of tiles forming the path from start to goal, or empty if none.
+    [[nodiscard]] std::vector<const Tile*> findPath(const Tile* start, const Tile* goal, bool ignoreTowers = false) const;
 };
 
 #endif // PATHFINDER_HPP
