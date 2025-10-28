@@ -4,54 +4,37 @@
 #include <string>
 #include <SFML/System.hpp>
 #include "tile.hpp"
+
 class Cores;
 class RenderContext;
 
 /**
  * @class CoreStorage
- * @brief Represents the core storage location on the map.
+ * @brief Special tile representing the player's core repository.
  *
- * CoreStorage tiles contain the cores that creatures attempt to steal.
- * Losing all cores results in the player's defeat.
+ * The CoreStorage is where creatures attempt to steal cores. Losing all cores
+ * results in the player’s defeat.
  */
-class CoreStorage : public Tile {
+class CoreStorage final : public Tile {
 private:
-    Cores* cores; ///< Pointer to the cores of the game, to take/deposit.
+    Cores* cores = nullptr; ///< Pointer to the global core manager.
 
 public:
-    /// @brief Constructs a new CoreStorage at the specified coordinates with an initial core count.
-    /// @param x The x-coordinate (column) of the core storage.
-    /// @param y The y-coordinate (row) of the core storage.
-    /// @param coresptr A pointer to the Game's cores.
-    CoreStorage(sf::Vector2i position_, Cores* coresptr);
+    /// @brief Constructs a CoreStorage tile.
+    /// @param position_ Position in the grid.
+    /// @param coresPtr Pointer to the core storage manager.
+    explicit CoreStorage(sf::Vector2i position_, Cores* coresPtr) noexcept;
 
-    /// @brief Destroys the CoreStorage object.
     ~CoreStorage() override = default;
 
-    /// @brief Determines if the core storage is walkable by creatures.
-    /// @return true, as core storage areas are walkable.
-    bool isWalkable() const override;
+    [[nodiscard]] bool isWalkable() const noexcept override { return true; }
+    [[nodiscard]] bool isBuildable() const noexcept override { return false; }
+    [[nodiscard]] std::string getTextureName() const override { return "tile_core.png"; }
 
-    /// @brief Determines if the core storage is buildable.
-    /// @return false, as core storage areas are not buildable.
-    bool isBuildable() const override;
-
-    /// @brief Retrieves the name/type of this tile.
-    /// @return A string representing the type of this tile ("CoreStorage").
-    std::string getTextureName() const override;
-
-    /// @brief Returns the current number of cores stored on this tile.
-    /// @return The number of cores in storage.
-    int getCoreCount() const;
-
-    /// @brief Attempts to take a specified number of cores from the Game's cores.
-    /// @param requested The number of cores to try and take.
-    /// @return The actual number of cores taken (0 to requested).
-    int takeCores(int requested) const;
-
-    /// @brief Deposits a specified number of cores back into the Game's cores.
-    /// @param n The number of cores to deposit.
-    void depositCores(int n);
+    /// @brief Attempts to steal a given number of cores.
+    /// @param requested Number of cores to steal.
+    /// @return Actual number of cores stolen.
+    unsigned int takeCores(unsigned int requested) const noexcept;
 
     void render(const RenderContext& ctx) const override;
 };

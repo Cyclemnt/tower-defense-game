@@ -2,39 +2,28 @@
 #define EMPTY_ZONE_HPP
 
 #include <string>
-#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
  * @class EmptyZone
- * @brief Represents an unused tile on the map.
+ * @brief Represents an unused, non-walkable map tile.
  *
- * EmptyZone tiles are neither walkable by creatures nor buildable by towers.
+ * EmptyZone tiles are visual fillers used outside the playable area
+ * or as decorative terrain.
  */
-class EmptyZone : public Tile {
+class EmptyZone final : public Tile {
 private:
-    const uint32_t emptyTileSeed = 0xA1B2C3D5; ///< Seed used for deterministic texture generation
-    const std::string getRandomTextureName(sf::Vector2i position) const;
+    static constexpr uint32_t kSeed = 0x4470f446u; ///< Randomization seed for texture variation.
+
+    [[nodiscard]] std::string getRandomTextureName() const noexcept;
+
 public:
-    /// @brief Constructs a new EmptyZone at the specified coordinates.
-    /// @param x The x-coordinate (column) of the empty zone.
-    /// @param y The y-coordinate (row) of the empty zone.
-    EmptyZone(sf::Vector2i position_);
+    explicit EmptyZone(sf::Vector2i position_) noexcept;
+    ~EmptyZone() override = default;
 
-    /// @brief Destroys the EmptyZone object.
-    ~EmptyZone();
-
-    /// @brief Determines if the empty zone is walkable by creatures.
-    /// @return false, as an empty zone is not walkable.
-    bool isWalkable() const override;
-
-    /// @brief Determines if the empty zone is buildable.
-    /// @return false, as empty zones cannot be built on.
-    bool isBuildable() const override;
-
-    /// @brief Retrieves the name/type of this tile.
-    /// @return A string representing the type of this tile ("EmptyZone").
-    std::string getTextureName() const override;
+    [[nodiscard]] bool isWalkable() const noexcept override { return false; }
+    [[nodiscard]] bool isBuildable() const noexcept override { return false; }
+    [[nodiscard]] std::string getTextureName() const override { return "tile_empty.png"; }
 
     void render(const RenderContext& ctx) const override;
 };

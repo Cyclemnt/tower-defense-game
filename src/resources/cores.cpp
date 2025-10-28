@@ -1,31 +1,24 @@
 #include <cmath>
 #include "../../include/resources/cores.hpp"
 
-Cores::Cores(int initial)
-    : safe(initial), stolen(0), lost(0) {}
+Cores::Cores(unsigned int initial)
+    : safe(initial) {}
 
 Cores::~Cores() {}
 
-int Cores::getSafe() const { return safe; }
-int Cores::getStolen() const { return stolen; }
-int Cores::getLost() const { return lost; }
-
-int Cores::stealCore(int n) {
-    if (n <= 0) return 0;
+unsigned int Cores::stealCore(unsigned int n) {
     int taken = std::min(n, safe);
     safe -= taken;
     stolen += taken;
     return taken;
 }
 
-void Cores::returnCore(int n) {
-    if (n <= 0) return;
+void Cores::returnCore(unsigned int n) {
     stolen -= n;
     safe += n;
 }
 
-void Cores::loseCore(int n) {
-    if (n <= 0) return;
+void Cores::loseCore(unsigned int n) {
     stolen -= n;
     lost += n;
 }

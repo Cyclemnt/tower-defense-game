@@ -35,25 +35,22 @@ const sf::Texture& Renderer::getTexture(const std::string& filename, bool smooth
 
 void Renderer::computeScaling() {
     const Map& map = game.getMap();
-    const int mapWidth = map.getWidth();
-    const int mapHeight = map.getHeight();
+    const sf::Vector2u mapSize = map.getSize();
 
-    sf::Vector2u winSize = ctx.window.getSize();
+    sf::Vector2f winSize = static_cast<sf::Vector2f>(ctx.window.getSize());
 
-    float scaleX = static_cast<float>(winSize.x) / (mapWidth * ctx.tileSize);
-    float scaleY = static_cast<float>(winSize.y) / (mapHeight * ctx.tileSize);
+    float scaleX = winSize.x / (mapSize.x * ctx.tileSize);
+    float scaleY = winSize.y / (mapSize.y * ctx.tileSize);
 
     float scaleFactor = std::min(scaleX, scaleY);
     ctx.tileSize *= scaleFactor;
 
     // Center the map inside the window
-    float mapWidthPx  = mapWidth  * ctx.tileSize;
-    float mapHeightPx = mapHeight * ctx.tileSize;
-    ctx.offset.x = (winSize.x - mapWidthPx) * 0.5f;
-    ctx.offset.y = (winSize.y - mapHeightPx) * 0.5f;
+    sf::Vector2f mapSizePx = static_cast<sf::Vector2f>(mapSize) * ctx.tileSize;
+    ctx.offset = (static_cast<sf::Vector2f>(winSize) - mapSizePx) * 0.5f;
 
     // Adjust SFML view (maintains correct aspect ratio)
-    sf::View view(sf::FloatRect({0, 0}, {static_cast<float>(winSize.x), static_cast<float>(winSize.y)}));
+    sf::View view(sf::FloatRect({0, 0}, winSize));
     ctx.window.setView(view);
 }
 
@@ -91,11 +88,8 @@ void Renderer::highlightTile() {
     sf::Vector2i mouse = sf::Mouse::getPosition(ctx.window);
     sf::Vector2i tilePos = ctx.screenToTile(mouse.x, mouse.y);
 
-    if (tilePos.x < 0 || tilePos.x >= map.getWidth() ||
-        tilePos.y < 0 || tilePos.y >= map.getHeight())
-        return;
-
     Tile* tile = map.getTile(tilePos);
+    if (!tile) return;
     if (!tile->isBuildable())
         return;
 

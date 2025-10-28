@@ -1,37 +1,22 @@
 #ifndef ENTRY_ZONE_HPP
 #define ENTRY_ZONE_HPP
 
-#include <string>
-#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
  * @class EntryZone
- * @brief Represents a creature spawn point.
+ * @brief Represents an enemy spawn tile.
  *
- * EntryZone tiles are the starting locations where enemy creatures enter the map.
+ * Creatures enter the map through EntryZone tiles.
  */
-class EntryZone : public Tile {
+class EntryZone final : public Tile {
 public:
-    /// @brief Constructs a new EntryZone at the specified coordinates.
-    /// @param x The x-coordinate (column) of the entry zone.
-    /// @param y The y-coordinate (row) of the entry zone.
-    EntryZone(sf::Vector2i position_);
+    explicit EntryZone(sf::Vector2i position_) noexcept;
+    ~EntryZone() override = default;
 
-    /// @brief Destroys the EntryZone object.
-    ~EntryZone();
-
-    /// @brief Determines if the entry zone is walkable by creatures.
-    /// @return true, as entry zones are walkable.
-    bool isWalkable() const override;
-
-    /// @brief Determines if the entry zone is buildable.
-    /// @return false, as entry zones cannot be built on.
-    bool isBuildable() const override;
-
-    /// @brief Retrieves the name/type of this tile.
-    /// @return A string representing the type of this tile ("EntryZone").
-    std::string getTextureName() const override;
+    [[nodiscard]] bool isWalkable() const noexcept override { return true; }
+    [[nodiscard]] bool isBuildable() const noexcept override { return false; }
+    [[nodiscard]] std::string getTextureName() const override { return "tile_entry.png"; }
 };
 
 #endif // ENTRY_ZONE_HPP

@@ -1,37 +1,22 @@
 #ifndef EXIT_ZONE_HPP
 #define EXIT_ZONE_HPP
 
-#include <string>
-#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
  * @class ExitZone
- * @brief Represents a creature exit point.
+ * @brief Represents a destination tile for enemies.
  *
- * ExitZone tiles are the goal locations that creatures attempt to reach after stealing cores from the base.
+ * After stealing cores, creatures leave the map via ExitZones.
  */
-class ExitZone : public Tile {
+class ExitZone final : public Tile {
 public:
-    /// @brief Constructs a new ExitZone at the specified coordinates.
-    /// @param x The x-coordinate (column) of the exit zone.
-    /// @param y The y-coordinate (row) of the exit zone.
-    ExitZone(sf::Vector2i position_);
+    explicit ExitZone(sf::Vector2i position_) noexcept;
+    ~ExitZone() override = default;
 
-    /// @brief Destroys the ExitZone object.
-    ~ExitZone();
-
-    /// @brief Determines if the exit zone is walkable by creatures.
-    /// @return true, as exit zones are walkable.
-    bool isWalkable() const override;
-
-    /// @brief Determines if the exit zone is buildable.
-    /// @return false, as exit zones cannot be built on.
-    bool isBuildable() const override;
-
-    /// @brief Retrieves the name/type of this tile.
-    /// @return A string representing the type of this tile ("ExitZone").
-    std::string getTextureName() const override;
+    [[nodiscard]] bool isWalkable() const noexcept override { return true; }
+    [[nodiscard]] bool isBuildable() const noexcept override { return false; }
+    [[nodiscard]] std::string getTextureName() const override { return "tile_exit.png"; }
 };
 
 #endif // EXIT_ZONE_HPP

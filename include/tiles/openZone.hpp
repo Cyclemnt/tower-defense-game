@@ -1,49 +1,28 @@
 #ifndef OPEN_ZONE_HPP
 #define OPEN_ZONE_HPP
 
-#include <string>
-#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
  * @class OpenZone
- * @brief Represents a buildable tile on the map.
+ * @brief Represents a buildable area for player towers.
  *
- * OpenZone tiles allow the player to place towers. They are not walkable
- * for creatures and may be marked as occupied once a tower is built.
+ * OpenZone tiles can host a tower, and are not walkable by creatures.
  */
-class OpenZone : public Tile {
+class OpenZone final : public Tile {
 private:
-    bool occupied; ///< Indicates if the zone is currently occupied by a tower.
+    bool occupied = false; ///< Whether the tile currently hosts a tower.
 
 public:
-    /// @brief Constructs a new OpenZone at the specified coordinates.
-    /// @param x The x-coordinate (column) of the open zone.
-    /// @param y The y-coordinate (row) of the open zone.
-    OpenZone(sf::Vector2i position_);
+    explicit OpenZone(sf::Vector2i position_) noexcept;
+    ~OpenZone() override = default;
 
-    /// @brief Destroys the OpenZone object.
-    ~OpenZone();
+    [[nodiscard]] bool isWalkable() const noexcept override { return !occupied; }
+    [[nodiscard]] bool isBuildable() const noexcept override { return true; }
+    [[nodiscard]] std::string getTextureName() const override { return "tile_open.png"; }
 
-    /// @brief Determines if the open zone is walkable by creatures.
-    /// @return true if the zone is not occupied, false otherwise.
-    bool isWalkable() const override;
-
-    /// @brief Determines if the open zone is buildable.
-    /// @return true if the zone is not occupied, false otherwise.
-    bool isBuildable() const override;
-
-    /// @brief Retrieves the name/type of this tile.
-    /// @return A string representing the type of this tile ("OpenZone").
-    std::string getTextureName() const override;
-
-    /// @brief Checks if the open zone is currently occupied.
-    /// @return true if the zone is occupied, false otherwise.
-    bool isOccupied() const;
-
-    /// @brief Sets the occupation status of the open zone.
-    /// @param value The occupation status to set (true for occupied, false for not).
-    void setOccupied(bool value);
+    [[nodiscard]] bool isOccupied() const noexcept { return occupied; }
+    void setOccupied(bool value) noexcept { occupied = value; }
 };
 
 #endif // OPEN_ZONE_HPP

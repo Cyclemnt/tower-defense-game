@@ -9,38 +9,23 @@ class RenderContext;
  * @class Tile
  * @brief Abstract base class for all map tiles.
  *
- * A Tile represents a cell on the game map grid. Each type of tile defines
- * whether it can be walked on by creatures and/or built upon by towers.
- * Derived classes include EmptyZone, Path, OpenZone, EntryZone, ExitZone,
- * and CoreStorage.
+ * Each Tile represents a cell of the grid. Derived classes
+ * define whether the tile can be walked on or built upon.
  */
 class Tile {
 protected:
-    const sf::Vector2i position; ///< The coordinates of the tile.
+    const sf::Vector2i position; ///< Coordinates in grid (x, y).
 
 public:
-    /// @brief Constructs a new Tile at the specified coordinates.
-    /// @param position_ The coordinates of the tile.
-    Tile(sf::Vector2i position_ = {0, 0});
-
-    /// @brief Virtual destructor for the Tile class.
+    explicit Tile(sf::Vector2i position_ = {0, 0}) noexcept;
     virtual ~Tile() = default;
 
-    /// @brief Determines if the tile is walkable.
-    /// @return true if the tile is walkable, false otherwise.
-    virtual bool isWalkable() const = 0;
+    [[nodiscard]] const sf::Vector2i& getPosition() const noexcept { return position; }
 
-    /// @brief Determines if the tile is buildable.
-    /// @return true if the tile is buildable, false otherwise.
-    virtual bool isBuildable() const = 0;
+    [[nodiscard]] virtual bool isWalkable() const noexcept = 0;
+    [[nodiscard]] virtual bool isBuildable() const noexcept = 0;
+    [[nodiscard]] virtual std::string getTextureName() const = 0;
 
-    /// @brief Retrieves the x-coordinate (column) of the tile.
-    /// @return The x-coordinate of the tile.
-    sf::Vector2i getPosition() const { return position; }
-
-    /// @brief Retrieves the name/type of the tile.
-    /// @return A string representing the type of this tile.
-    virtual std::string getTextureName() const = 0;
     virtual void render(const RenderContext& ctx) const;
 };
 

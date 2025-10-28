@@ -70,8 +70,8 @@ void Game::spawnCreature(Creature::Type type) {
     if (map.getEntries().empty() || map.getCoreStorage() == nullptr)
         throw std::runtime_error("Map missing entry or core storage");
 
-    Tile* start = map.getEntries()[0];
-    Tile* goal = map.getCoreStorage();
+    const Tile* start = map.getEntries()[0];
+    const Tile* goal = map.getCoreStorage();
 
     std::vector<const Tile*> path = pathfinder.findPath(start, goal);
     if (path.empty()) path = pathfinder.findPath(start, goal, true);

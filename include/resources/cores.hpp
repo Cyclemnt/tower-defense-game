@@ -13,30 +13,30 @@
  */
 class Cores {
 private:
-    int safe;       ///< Number of cores safe in the base
-    int stolen;     ///< Number of cores currently carried by enemies
-    int lost;       ///< Number of cores permanently lost
+    unsigned int safe = 0;       ///< Number of cores safe in the base
+    unsigned int stolen = 0;     ///< Number of cores currently carried by enemies
+    unsigned int lost = 0;       ///< Number of cores permanently lost
 
 public:
-    Cores(int initial = 24);
+    Cores(unsigned int initial = 24u);
     ~Cores();
 
-    int getSafe() const;
-    int getStolen() const;
-    int getLost() const;
+    unsigned int getSafe() const { return safe; }
+    unsigned int getStolen() const { return stolen; }
+    unsigned int getLost() const { return lost; }
     
     /// @brief Enemy steals cores from the base.
     /// @param n Number of cores attempted to be stolen.
     /// @return Number of cores actually stolen (limited by what is available).
-    int stealCore(int n);
+    unsigned int stealCore(unsigned int n);
 
     /// @brief Cores return to the base (enemy killed while carrying them).
     /// @param n Number of cores returning.
-    void returnCore(int n);
+    void returnCore(unsigned int n);
 
     /// @brief Enemy exits the map with cores.
     /// @param n Number of cores permanently lost.
-    void loseCore(int n);
+    void loseCore(unsigned int n);
 };
 
 #endif // CORES_HPP

@@ -1,154 +1,134 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include "../../include/map/map.hpp"
+#include "../../include/map/iMapSource.hpp"
 #include "../../include/tiles/coreStorage.hpp"
-#include "../../include/tiles/emptyZone.hpp"
 #include "../../include/tiles/entryZone.hpp"
 #include "../../include/tiles/exitZone.hpp"
 #include "../../include/tiles/openZone.hpp"
+#include "../../include/tiles/emptyZone.hpp"
 #include "../../include/tiles/path.hpp"
-#include "../../include/map/map.hpp"
 #include "../../include/renderer/renderContext.hpp"
-#include "../../include/map/iMapSource.hpp"
 
 Map::Map(std::unique_ptr<IMapSource> source, Cores* cores) {
     if (source) source->buildMap(*this, cores);
 }
 
-Map::~Map() {}
+Map::~Map() = default;
 
-int Map::getWidth() const { return width; }
-
-int Map::getHeight() const { return height; }
-
-Tile* Map::getTile(sf::Vector2i position) const {
-    if (position.x < 0 || position.x >= width || position.y < 0 || position.y >= height)
+Tile* Map::getTile(const sf::Vector2i& pos) const noexcept {
+    if (pos.x < 0 || pos.y < 0 || pos.x >= static_cast<int>(size.x) || pos.y >= static_cast<int>(size.y))
         return nullptr;
-
-    return grid[position.y][position.x].get();
+    return grid[pos.y][pos.x].get();
 }
 
-void Map::placeTile(std::unique_ptr<Tile> tile) {
-    sf::Vector2i pos = tile->getPosition();
-    int x = pos.x, y = pos.y;
-
-    if (x < 0 || x >= width || y < 0 || y >= height) {
-        throw std::out_of_range("Invalid tile coordinates");
-    }
-
-    // If it was an interest point, remove from the right vector
-    if (EntryZone* e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
-        // Using std::find to find the tile to delete
-        auto it = std::find(entries.begin(), entries.end(), e);
-        if (it != entries.end()) {
-            entries.erase(it);
-        }
-    } else if (ExitZone* ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
-        // Using std::find to find the tile to delete
-        auto it = std::find(exits.begin(), exits.end(), ex);
-        if (it != exits.end()) {
-            exits.erase(it);
-        }
-    } else if (CoreStorage* c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
-        coreStorage = nullptr;
-    }
-
-    // Replace the tile
-    grid[y][x] = std::move(tile);
-
-    // If it is an interest point, add to the right vector
-    if (EntryZone* e = dynamic_cast<EntryZone*>(grid[y][x].get())) {
-        entries.push_back(e);
-    } else if (ExitZone* ex = dynamic_cast<ExitZone*>(grid[y][x].get())) {
-        exits.push_back(ex);
-    } else if (CoreStorage* c = dynamic_cast<CoreStorage*>(grid[y][x].get())) {
-        coreStorage = c;
-    }
+const std::vector<Tile*>& Map::getExits() const noexcept {
+    return exits.empty() ? entries : exits;
 }
 
-const std::vector<Tile*>& Map::getEntries() const { return entries; }
-
-const std::vector<Tile*>& Map::getExits() const { if (exits.empty()) return entries; else return exits; }
-
-CoreStorage* Map::getCoreStorage() const { return coreStorage; }
-
-const std::vector<const Tile*> Map::getNeighbors(const Tile* tile) const {
+std::vector<const Tile*> Map::getNeighbors(const Tile* tile) const noexcept {
     std::vector<const Tile*> neighbors;
-    sf::Vector2i pos = tile->getPosition();
-    int x = pos.x, y = pos.y;
+    const sf::Vector2i pos = tile->getPosition();
 
     const int dx[4] = {1, -1, 0, 0};
     const int dy[4] = {0, 0, 1, -1};
 
     for (int i = 0; i < 4; ++i) {
-        int nx = x + dx[i];
-        int ny = y + dy[i];
-        if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
+        const int nx = pos.x + dx[i];
+        const int ny = pos.y + dy[i];
+        if (nx >= 0 && ny >= 0 && nx < static_cast<int>(size.x) && ny < static_cast<int>(size.y))
             neighbors.push_back(grid[ny][nx].get());
-        }
     }
     return neighbors;
 }
 
-void Map::resize(int w, int h) {
-    width = w; height = h;
-    grid.resize(height);
-    for (int y = 0; y < height; ++y) {
-        grid[y].resize(width);
-        for (int x = 0; x < width; ++x) {
-            grid[y][x] = std::make_unique<EmptyZone>(sf::Vector2i(x, y));
-        }
+void Map::resize(unsigned int w, unsigned int h) {
+    size = {w, h};
+    grid.resize(h);
+    for (auto& row : grid) {
+        row.clear();
+        row.reserve(w);
+        for (unsigned int x = 0; x < w; ++x)
+            row.push_back(std::make_unique<EmptyZone>(sf::Vector2i(x, static_cast<int>(&row - &grid[0]))));
     }
+}
+
+void Map::placeTile(std::unique_ptr<Tile> tile) {
+    const sf::Vector2i pos = tile->getPosition();
+    if (pos.x < 0 || pos.y < 0 || pos.x >= static_cast<int>(size.x) || pos.y >= static_cast<int>(size.y))
+        return;
+
+    // Remove previous tile type references
+    if (auto old = grid[pos.y][pos.x].get()) {
+        if (auto e = dynamic_cast<EntryZone*>(old))
+            entries.erase(std::remove(entries.begin(), entries.end(), e), entries.end());
+        else if (auto ex = dynamic_cast<ExitZone*>(old))
+            exits.erase(std::remove(exits.begin(), exits.end(), ex), exits.end());
+        else if (dynamic_cast<CoreStorage*>(old))
+            coreStorage = nullptr;
+    }
+
+    grid[pos.y][pos.x] = std::move(tile);
+    Tile* t = grid[pos.y][pos.x].get();
+
+    // Add new references
+    if (auto e = dynamic_cast<EntryZone*>(t))
+        entries.push_back(e);
+    else if (auto ex = dynamic_cast<ExitZone*>(t))
+        exits.push_back(ex);
+    else if (auto c = dynamic_cast<CoreStorage*>(t))
+        coreStorage = c;
 }
 
 void Map::printMap() const {
-    for (int y = 0; y < height; ++y) {
-        for (int x = 0; x < width; ++x) {
+    for (unsigned int y = 0; y < size.y; ++y) {
+        for (unsigned int x = 0; x < size.x; ++x) {
+            const Tile* t = grid[y][x].get();
             char symbol = '.';
-            if (dynamic_cast<Path*>(grid[y][x].get())) symbol = '#';
-            else if (dynamic_cast<OpenZone*>(grid[y][x].get())) symbol = 'O';
-            else if (dynamic_cast<EntryZone*>(grid[y][x].get())) symbol = 'E';
-            else if (dynamic_cast<ExitZone*>(grid[y][x].get())) symbol = 'X';
-            else if (dynamic_cast<CoreStorage*>(grid[y][x].get())) symbol = 'C';
-
-            std::cout << symbol << " ";
+            if (dynamic_cast<const Path*>(t)) symbol = '#';
+            else if (dynamic_cast<const OpenZone*>(t)) symbol = 'O';
+            else if (dynamic_cast<const EntryZone*>(t)) symbol = 'E';
+            else if (dynamic_cast<const ExitZone*>(t)) symbol = 'X';
+            else if (dynamic_cast<const CoreStorage*>(t)) symbol = 'C';
+            std::cout << symbol << ' ';
         }
-        std::cout << "\n";
+        std::cout << '\n';
     }
 }
 
-void Map::render(RenderContext& ctx) const {
-    // Render every Tile
-    for (int y = 0; y < height; ++y)
-        for (int x = 0; x < width; ++x)
+void Map::render(const RenderContext& ctx) const {
+    // Draw all tiles
+    for (unsigned int y = 0; y < size.y; ++y)
+        for (unsigned int x = 0; x < size.x; ++x)
             if (Tile* t = grid[y][x].get())
                 t->render(ctx);
 
-    // Compute the number of ghost tiles (on the sides)
-    int tilesToAddLeft   = std::ceil(ctx.offset.x / ctx.tileSize);
-    int tilesToAddTop    = std::ceil(ctx.offset.y / ctx.tileSize);
-    int tilesToAddRight  = std::ceil((ctx.window.getSize().x - (width * ctx.tileSize + ctx.offset.x)) / ctx.tileSize);
-    int tilesToAddBottom = std::ceil((ctx.window.getSize().y - (height * ctx.tileSize + ctx.offset.y)) / ctx.tileSize);
+    // Compute filler around edges (empty tiles beyond visible area)
+    const int tilesLeft   = std::ceil(ctx.offset.x / ctx.tileSize);
+    const int tilesTop    = std::ceil(ctx.offset.y / ctx.tileSize);
+    const int tilesRight  = std::ceil((ctx.window.getSize().x - (size.x * ctx.tileSize + ctx.offset.x)) / ctx.tileSize);
+    const int tilesBottom = std::ceil((ctx.window.getSize().y - (size.y * ctx.tileSize + ctx.offset.y)) / ctx.tileSize);
 
     // Top and bottom
-    for (int x = -tilesToAddLeft; x < width + tilesToAddRight; ++x) {
-        for (int y = -tilesToAddTop; y < 0; ++y) {
+    for (int x = -tilesLeft; x < static_cast<int>(size.x) + tilesRight; ++x) {
+        for (int y = -tilesTop; y < 0; ++y) {
             EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }
-        for (int y = height; y < height + tilesToAddBottom; ++y) {
+        for (int y = static_cast<int>(size.y); y < static_cast<int>(size.y) + tilesBottom; ++y) {
             EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }
     }
 
     // Left and right
-    for (int y = 0; y < height; ++y) {
-        for (int x = -tilesToAddLeft; x < 0; ++x) {
+    for (int y = 0; y < static_cast<int>(size.y); ++y) {
+        for (int x = -tilesLeft; x < 0; ++x) {
             EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }
-        for (int x = width; x < width + tilesToAddRight; ++x) {
+        for (int x = static_cast<int>(size.x); x < static_cast<int>(size.x) + tilesRight; ++x) {
             EmptyZone tempEmpty({x, y});
             tempEmpty.render(ctx);
         }

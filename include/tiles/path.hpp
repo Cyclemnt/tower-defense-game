@@ -1,38 +1,22 @@
 #ifndef PATH_HPP
 #define PATH_HPP
 
-#include <string>
-#include <SFML/System.hpp>
 #include "tile.hpp"
 
 /**
  * @class Path
- * @brief Represents a walkable tile on the map.
+ * @brief Represents a walkable route for enemies.
  *
- * Path tiles define the routes creatures can follow from entry points
- * to the core storage and eventually to exit points.
+ * Path tiles define the roads used by creatures from entries to exits.
  */
-class Path : public Tile {
+class Path final : public Tile {
 public:
-    /// @brief Constructs a new Path at the specified coordinates.
-    /// @param x The x-coordinate (column) of the path.
-    /// @param y The y-coordinate (row) of the path.
-    Path(sf::Vector2i position_);
+    explicit Path(sf::Vector2i position_) noexcept;
+    ~Path() override = default;
 
-    /// @brief Destroys the Path object.
-    ~Path();
-
-    /// @brief Determines if the path is walkable by creatures.
-    /// @return true, as paths are walkable.
-    bool isWalkable() const override;
-
-    /// @brief Determines if the path is buildable.
-    /// @return false, as paths cannot be built on.
-    bool isBuildable() const override;
-
-    /// @brief Retrieves the name/type of this tile.
-    /// @return A string representing the type of this tile ("Path").
-    std::string getTextureName() const override;
+    [[nodiscard]] bool isWalkable() const noexcept override { return true; }
+    [[nodiscard]] bool isBuildable() const noexcept override { return false; }
+    [[nodiscard]] std::string getTextureName() const override { return "tile_path.png"; }
 };
 
 #endif // PATH_HPP

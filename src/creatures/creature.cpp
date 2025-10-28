@@ -34,6 +34,7 @@ void Creature::update(float deltaTime) {
             // Events depending on Tile
             if (const CoreStorage* c = dynamic_cast<const CoreStorage*>(next)) {
                 if (coresCarried < coresCapacity) {
+                    if (coresCapacity - coresCarried < 0) throw std::runtime_error("Creature carries more cores than its capacity");
                     stealCores(c->takeCores(coresCapacity - coresCarried)); // Taking as many cores as possible
                     distanceToTravel = 0.0f; // Path will change
                 }
