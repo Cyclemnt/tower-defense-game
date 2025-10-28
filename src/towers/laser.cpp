@@ -13,7 +13,7 @@ Laser::Laser(sf::Vector2i position_) noexcept
         /*dmg*/ 0.1f,
         /*rng*/ 3.0f,
         /*rate*/ 15.0f
-    ), damageScale(1.0f), baseDamage(0.1f) {}
+    ) {}
 
 void Laser::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>& creatures) {
     if (target || cooldown > 0.0f)

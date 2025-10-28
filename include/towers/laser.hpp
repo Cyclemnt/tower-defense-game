@@ -10,9 +10,9 @@
  */
 class Laser final : public Tower {
 private:
-    float baseDamage;  ///< Damage at start of lock.
-    float damageScale; ///< Scales up over lock duration.
-    float lockTime;    ///< Time spent locked on target.
+    float baseDamage = 0.1f;  ///< Damage at start of lock.
+    float damageScale = 1.0f; ///< Scales up over lock duration.
+    float lockTime = 0.0f;    ///< Time spent locked on target.
 
 public:
     explicit Laser(sf::Vector2i position_) noexcept;
