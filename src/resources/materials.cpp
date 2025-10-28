@@ -1,17 +1,14 @@
 #include <stdexcept>
 #include "../../include/resources/materials.hpp"
 
-Materials::Materials(Quantities initial) : quantities(initial) {}
+Materials::Materials(Quantities initial) noexcept
+    : quantities(initial) {}
 
-const Materials::Quantities& Materials::getQuantities() const { return quantities; }
-
-void Materials::add(const Quantities& other) { quantities += other; }
-
-void Materials::spend(const Quantities& other) {
-    if (canAfford(other)) quantities -= other;
-    else throw std::runtime_error("Tring to spend more materials than available");
+void Materials::spend(const Quantities& cost) {
+    if (!canAfford(cost)) throw std::runtime_error("Attempting to spend more materials than available.");
+    quantities -= cost;
 }
 
-bool Materials::canAfford(const Quantities& costs) const {
-    return (quantities.au >= costs.au && quantities.ag >= costs.ag && quantities.cu >= costs.cu);
+[[nodiscard]] bool Materials::canAfford(const Quantities& cost) const noexcept {
+    return (quantities.au >= cost.au && quantities.ag >= cost.ag && quantities.cu >= cost.cu);
 }

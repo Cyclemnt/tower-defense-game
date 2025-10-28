@@ -1,42 +1,50 @@
 #ifndef CORES_HPP
 #define CORES_HPP
 
+#include <algorithm>
+
 /**
  * @class Cores
  * @brief Tracks the state of cores in the game.
  *
- * Cores represent the objectives the player must defend.
- * They can be in three states:
- * - safe: still in the base
- * - stolen: currently carried by enemies
- * - lost: permanently lost after an enemy exits the map
+ * Cores represent the central objective the player must protect.
+ * They exist in three states:
+ * - **Safe**: still in the base.
+ * - **Stolen**: currently carried by enemies.
+ * - **Lost**: permanently lost when an enemy escapes with them.
  */
 class Cores {
 private:
-    unsigned int safe = 0;       ///< Number of cores safe in the base
-    unsigned int stolen = 0;     ///< Number of cores currently carried by enemies
-    unsigned int lost = 0;       ///< Number of cores permanently lost
+    unsigned int safe   = 0; ///< Number of cores safe in the base.
+    unsigned int stolen = 0; ///< Number of cores currently carried by enemies.
+    unsigned int lost   = 0; ///< Number of cores permanently lost.
 
 public:
-    Cores(unsigned int initial = 24u);
-    ~Cores();
+    /// @brief Constructs a new Cores tracker.
+    /// @param initial Number of cores initially stored safely in the base.
+    explicit Cores(unsigned int initial = 24u) noexcept;
 
-    unsigned int getSafe() const { return safe; }
-    unsigned int getStolen() const { return stolen; }
-    unsigned int getLost() const { return lost; }
-    
-    /// @brief Enemy steals cores from the base.
-    /// @param n Number of cores attempted to be stolen.
-    /// @return Number of cores actually stolen (limited by what is available).
-    unsigned int stealCore(unsigned int n);
+    /// @brief Default destructor.
+    ~Cores() = default;
 
-    /// @brief Cores return to the base (enemy killed while carrying them).
-    /// @param n Number of cores returning.
-    void returnCore(unsigned int n);
+    // --- Getters ---
+    [[nodiscard]] unsigned int getSafe()   const noexcept { return safe; }
+    [[nodiscard]] unsigned int getStolen() const noexcept { return stolen; }
+    [[nodiscard]] unsigned int getLost()   const noexcept { return lost; }
 
-    /// @brief Enemy exits the map with cores.
-    /// @param n Number of cores permanently lost.
-    void loseCore(unsigned int n);
+    // --- Core logic ---
+    /// @brief Attempts to steal a given number of cores.
+    /// @param n Number of cores requested.
+    /// @return Number of cores actually stolen (limited by availability).
+    unsigned int stealCore(unsigned int n) noexcept;
+
+    /// @brief Returns stolen cores to the base (enemy killed before escaping).
+    /// @param n Number of cores recovered.
+    void returnCore(unsigned int n) noexcept;
+
+    /// @brief Marks cores as permanently lost (enemy escaped).
+    /// @param n Number of cores lost.
+    void loseCore(unsigned int n) noexcept;
 };
 
 #endif // CORES_HPP
