@@ -117,26 +117,20 @@ void JsonWaveLoader::parseFile(const std::string& filename) {
 
         waves.push_back(std::move(w));
     }
-
-    std::cout << "[JsonWaveLoader] Loaded " << waves.size() << " waves.\n";
 }
 
-bool JsonWaveLoader::hasMore() const {
-    return index < waves.size();
+bool JsonWaveLoader::hasMore() const noexcept {
+    return waveIndex < waves.size();
 }
 
 WaveData JsonWaveLoader::next() {
     if (!hasMore()) return {};
 
-    WaveData wave;
-    const JsonWaveLoader::InternalWave& w = waves[index++];
-    wave.spawns = w.spawns;
-    wave.delay = w.delay;
-
-    return wave;
+    const InternalWave& w = waves[waveIndex++];
+    return WaveData{ w.spawns, w.delay };
 }
 
-Creature::Type JsonWaveLoader::parseType(const std::string& n) const {
+Creature::Type JsonWaveLoader::parseType(const std::string& n) const noexcept {
     if (n == "Minion") return Creature::Type::Minion;
     else if (n == "Drone")  return Creature::Type::Drone;
     else if (n == "Tank")   return Creature::Type::Tank;

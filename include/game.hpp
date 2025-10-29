@@ -51,10 +51,11 @@ private:
     std::vector<std::unique_ptr<VisualEffect>> visualEffects; ///< Active VFX.
 
     // --- Wave control ---
-    std::unique_ptr<WaveManager> waveManager; ///< Wave and timing system.
+    WaveManager waveManager; ///< Wave and timing system.
 
     // --- Game state ---
     unsigned long tick = 0; ///< Simulation tick counter.
+    unsigned int speed = 1; ///< Time acceleration coefficient.
     bool paused = false;    ///< Whether the game is paused.
 
 public:
@@ -68,9 +69,11 @@ public:
     [[nodiscard]] unsigned long getTick() const noexcept { return tick; }
     [[nodiscard]] bool isPaused() const noexcept { return paused; }
     void setPaused(bool value) noexcept { paused = value; }
+    void setSpeed(unsigned int value) noexcept { speed = value; }
     [[nodiscard]] const Player& getPlayer() const noexcept { return player; }
     [[nodiscard]] const Cores& getCores() const noexcept { return cores; }
     [[nodiscard]] const std::vector<std::unique_ptr<VisualEffect>>& getVisualEffects() const noexcept { return visualEffects; }
+    [[nodiscard]] const WaveManager& getWaveManager() const noexcept { return waveManager; }
 
     // --- Entity management ---
     /// @brief Spawns a new creature of a given type and assigns it a path.

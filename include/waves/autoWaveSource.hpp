@@ -5,19 +5,24 @@
 #include <cmath>
 #include "iWaveSource.hpp"
 
+/**
+ * @class AutoWaveSource
+ * @brief Procedurally generates waves with increasing difficulty.
+ *
+ * Each wave’s size increases according to a power function.
+ * Creature types are chosen randomly using a weighted distribution.
+ */
 class AutoWaveSource : public IWaveSource {
 private:
-    std::mt19937 gen{std::random_device{}()};
-    std::discrete_distribution<int> dist{490, 10, 320, 10, 165, 5}; // ‰
-    int waveIndex = 0;
-    const int maxWaves = 10;
-    const float waveSizeCoef = 1.3f;
+    std::mt19937 gen{ std::random_device{}() }; ///< Random number generator
+    std::discrete_distribution<int> dist{490, 10, 320, 10, 165, 5}; ///< Weighted creature distribution
 
-    constexpr static float spawnInterval = 1.0f;
-    constexpr static float waveDelay = 10.0f;
+    const float waveSizeCoef = 1.3f;
+    const float spawnInterval = 1.0f;
+    const float waveDelay = 10.0f;
 
 public:
-    bool hasMoreWaves() const override;
+    [[nodiscard]] bool hasMoreWaves() const noexcept override;
     WaveData nextWave() override;
 };
 

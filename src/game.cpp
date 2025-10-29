@@ -16,11 +16,10 @@ Game::Game()
       pathfinder(map),
       player(),
       cores(),
-      waveManager(std::make_unique<WaveManager>(std::make_unique<AutoWaveSource>())) 
+      waveManager(std::make_unique<JsonWaveSource>("../assets/waves/level1.json")) 
 {
     // Optionally, load from JSON:
-    // waveManager = std::make_unique<WaveManager>(
-    //     std::make_unique<JsonWaveSource>("../assets/waves/level1.json"));
+    // waveManager = std::make_unique<JsonWaveSource>("../assets/waves/level1.json");
 }
 
 void Game::spawnCreature(Creature::Type type) {
@@ -101,8 +100,10 @@ void Game::updatePaths() {
 
 void Game::update(float deltaTime) {
     if (paused) return;
+    deltaTime *= speed;
     ++tick;
-    waveManager->update(deltaTime, *this);
+
+    waveManager.update(deltaTime, *this);
 
     // Update creatures
     for (std::unique_ptr<Creature>& c : creatures) {

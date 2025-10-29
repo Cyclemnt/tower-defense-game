@@ -8,8 +8,8 @@
 HUD::HUD(const RenderContext& ctx_, const Game& game_)
     : ctx(ctx_), game(game_)
 {
-    if (!font.openFromFile("../assets/gui/arial.ttf")) {
-        std::cerr << "[HUD] Failed to load font ../assets/arial.ttf\n";
+    if (!font.openFromFile("../assets/gui/Lexend-Black.ttf")) {
+        std::cerr << "[HUD] Failed to load font ../assets/Lexend-Black.ttf\n";
     }
 }
 
@@ -112,20 +112,9 @@ void HUD::drawCores(sf::Vector2f position, float width) const {
 }
 
 void HUD::drawWaveInfo(sf::Vector2f position) const {
-    int currentWave = 5;
-    int totalWaves = 10;
-    float timeToNext = 50.0f;
-
-    // TO IMPLEMENT:
-    // const auto& wm = game_.getWaveManager();
-    // currentWave = wm.getCurrentWave();
-    // totalWaves  = wm.getTotalWaves();
-    // timeToNext  = wm.getTimeUntilNextWave();
-
-    // OR:
-    // currentWave = game.getCurrentWave();
-    // totalWaves  = game.getTotalWaves();
-    // timeToNext  = game.getTimeUntilNextWave();
+    int currentWave = game.getWaveManager().getWaveNumber();
+    int totalWaves = game.getWaveManager().getWavesQuantity();
+    int timeToNext = game.getWaveManager().getTimeBeforeNext();
 
     std::ostringstream ss;
     if (totalWaves > 0)
@@ -133,11 +122,8 @@ void HUD::drawWaveInfo(sf::Vector2f position) const {
     else
         ss << "Wave: " << currentWave;
 
-    if (timeToNext < 0.01f || timeToNext > 9999.0f) {
-        ss << "  Next: 0.0s";
-    } else {
-        ss << "  Next: " << std::fixed << std::setprecision(1) << timeToNext << "s";
-    }
+    if (timeToNext > 0)
+        ss << "  Next: " << timeToNext << "s";
 
     sf::Text txt(font, ss.str(), 14);
     txt.setFillColor(sf::Color::White);
