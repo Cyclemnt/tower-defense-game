@@ -2,8 +2,8 @@
 
 Tank::Tank(bool boosted_) noexcept
     : Creature(
-        /* health */ boosted_ ? 150.f : 125.f,
-        /* shield */ boosted_ ? 300.f : 75.f,
+        /* health */ boosted_ ? 150.0f : 125.0f,
+        /* shield */ boosted_ ? 300.0f : 75.0f,
         /* speed */ 0.25f,
         /* coresCapacity */ 3u,
         /* loot */ {

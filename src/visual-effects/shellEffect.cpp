@@ -7,7 +7,7 @@ ShellEffect::ShellEffect(sf::Vector2f start_, sf::Vector2f end_, float speed_)
 
 void ShellEffect::update(float dt) {
     lifetime -= dt;
-    if (lifetime <= 0.f) die();
+    if (lifetime <= 0.0f) die();
 
     sf::Vector2f dir = target - position;
     const float dist = dir.length();

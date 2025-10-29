@@ -2,8 +2,8 @@
 
 Minion::Minion(bool boosted_) noexcept
     : Creature(
-        /* health */ boosted_ ? 125.f : 25.f,
-        /* shield */ 0.f,
+        /* health */ boosted_ ? 125.0f : 25.0f,
+        /* shield */ 0.0f,
         /* speed */ 1.0f,
         /* coresCapacity */ 1u,
         /* loot */ {

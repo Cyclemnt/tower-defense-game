@@ -18,6 +18,7 @@ private:
     sf::Font font;        ///< Font used for textual HUD elements
     sf::Clock fpsClock;   ///< Small clock used to throttle FPS calculation
     float lastFPS = 0.0f; ///< Last computed FPS value (integer-ish for display)
+    float lastMemoryMB = 0.0f;
 
     const RenderContext& ctx; ///< Render context (tileSize, offset, window)
     const Game& game;         ///< Read-only reference to the game state

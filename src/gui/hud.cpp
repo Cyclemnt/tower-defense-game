@@ -14,8 +14,8 @@ HUD::HUD(const RenderContext& ctx_, const Game& game_)
 }
 
 void HUD::draw(float deltaTime) {
-    // Refresh FPS every 0.25s
-    if (fpsClock.getElapsedTime().asSeconds() > 0.25f) {
+    // Refresh FPS every second
+    if (fpsClock.getElapsedTime().asSeconds() > 1.0f) {
         if (deltaTime > 1e-6f) lastFPS = 1.0f / deltaTime;
         fpsClock.restart();
     }
