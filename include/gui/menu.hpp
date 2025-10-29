@@ -6,25 +6,35 @@
 #include "../game.hpp"
 #include "../renderer/renderContext.hpp"
 
+/**
+ * @class Menu
+ * @brief Lightweight base class for TGUI menus (panel-centered).
+ *
+ * Provides common helpers for derived menus (centering, open/close).
+ * Derived classes should implement open() to build widgets.
+ */
 class Menu {
 protected:
     tgui::Gui& gui;
     Game& game;
-    RenderContext& ctx;
-    tgui::Panel::Ptr panel;
-    bool on = false;
+    const RenderContext& ctx;
+    tgui::Panel::Ptr panel;    ///< Main panel widget
+    bool on = false;           ///< Is currently shown?
 
-    // Utility: center a panel of given size
-    sf::Vector2f centerPanel(float w, float h) const;
+    /// @brief Compute position to center a panel of given size in the window.
+    [[nodiscard]] sf::Vector2f centerPanel(const sf::Vector2f& size) const noexcept;
 
 public:
-    Menu(tgui::Gui& g, Game& gm, RenderContext& c);
+    Menu(tgui::Gui& gui_, Game& game_, const RenderContext& ctx_) noexcept;
     virtual ~Menu() = default;
 
-    virtual void open() = 0;  // each menu builds its own widgets
-    virtual void close();
+    /// @brief Build and show the menu widgets.
+    virtual void open() = 0;
 
-    bool isOn() const { return on; }
+    /// @brief Close the menu and remove widgets.
+    virtual void close() noexcept;
+
+    [[nodiscard]] bool isOn() const noexcept { return on; }
 };
 
 #endif // MENU_HPP

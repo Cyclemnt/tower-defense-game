@@ -1,39 +1,44 @@
-#ifndef GUIMANAGER_HPP
-#define GUIMANAGER_HPP
+#ifndef GUI_MANAGER_HPP
+#define GUI_MANAGER_HPP
 
 #include <TGUI/TGUI.hpp>
-#include <TGUI/Backend/SFML-Graphics.hpp>
 #include <SFML/Graphics.hpp>
 #include "pauseMenu.hpp"
 #include "towerMenu.hpp"
-#include "../game.hpp"
-#include "../renderer/renderContext.hpp"
 #include "hud.hpp"
 #include "cameraController.hpp"
+#include "../game.hpp"
+#include "../renderer/renderContext.hpp"
 
-class Game;
-class Renderer;
-
-
-class GuiManager {
+/**
+ * @class GuiManager
+ * @brief Manages all GUI elements and interactions.
+ *
+ * Handles user input (clicks, zoom, drag), opens menus, and renders HUD.
+ * The GuiManager acts as a bridge between TGUI widgets and the in-game world.
+ */
+class GuiManager final {
 private:
-    tgui::Gui gui;
-    Game& game;
-    RenderContext& ctx;
-    HUD hud;
+    tgui::Gui gui;            ///< Root GUI container
+    Game& game;               ///< Reference to the main game instance
+    const RenderContext& ctx; ///< Read-only rendering context
+    HUD hud;                  ///< Heads-up display (resources, cores, FPS)
+    CameraController camera;  ///< Handles camera movement
+    PauseMenu pauseMenu;      ///< In-game pause menu
+    TowerMenu towerMenu;      ///< Tower building/selling menu
 
-    CameraController cam;
-
-    PauseMenu pauseMenu;
-    TowerMenu towerMenu;
-
-    bool handleLeftClick(sf::Vector2i mousePos);
+    /// @brief Handle left-click interactions on the map.
+    /// @return true if the click was consumed by a menu.
+    [[nodiscard]] bool handleLeftClick(const sf::Vector2i& mousePos);
 
 public:
-    GuiManager(sf::RenderWindow& window, Game& game, RenderContext& ctx);
+    GuiManager(sf::RenderWindow& window, Game& game_, RenderContext& ctx_);
 
+    /// @brief Processes SFML events (keyboard, mouse, etc.).
     void processEvent(const sf::Event& event);
+
+    /// @brief Draws the HUD and GUI overlays.
     void draw(float deltaTime);
 };
 
-#endif // GUIMANAGER_HPP
+#endif // GUI_MANAGER_HPP

@@ -5,28 +5,33 @@
 #include "../renderer/renderContext.hpp"
 
 /**
- * @brief Handles camera movement (panning and zooming) based on user input.
- * 
- * This class modifies the RenderContext offset and tile size to simulate
- * a movable and zoomable camera over the map.
+ * @class CameraController
+ * @brief Manages camera movement and zoom in the world view.
+ *
+ * This modifies the RenderContext offset and tile size to simulate
+ * a dynamic camera controlled by the user.
  */
-class CameraController {
+class CameraController final {
 private:
     RenderContext& ctx;
-    bool isDragging = false;
+    bool dragging = false;
     sf::Vector2i lastMousePos;
 
-    // Zoom parameters
     const float minTileSize = 24.0f;
     const float maxTileSize = 196.0f;
-    const float zoomSpeed = 0.1f; // Zoom factor per wheel step
+    const float zoomSpeed = 0.1f;
 
 public:
-    explicit CameraController(RenderContext& ctx);
+    explicit CameraController(RenderContext& ctx_);
 
+    /// @brief Handles mouse wheel zooming.
     void handleZoom(const sf::Event& event);
+
+    /// @brief Handles mouse dragging for camera panning.
     void handleDrag(const sf::Event& event);
-    void resetView(); // re-center and reset zoom
+
+    /// @brief Resets camera view to default scale and centering.
+    void resetView();
 };
 
 #endif // CAMERA_CONTROLLER_HPP

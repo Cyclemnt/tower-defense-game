@@ -39,7 +39,7 @@ public:
     /// @param mouseX X coordinate in pixels.
     /// @param mouseY Y coordinate in pixels.
     /// @return Tile coordinates as integer grid indices.
-    [[nodiscard]] sf::Vector2i screenToTile(sf::Vector2i& mousePos) const noexcept;
+    [[nodiscard]] sf::Vector2i screenToTile(const sf::Vector2i& mousePos) const noexcept;
 
     /// @brief Checks if a tile/world position is visible on screen.
     /// @param position Tile position in world coordinates.

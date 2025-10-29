@@ -4,13 +4,13 @@
 #include "../../include/towers/mortar.hpp"
 #include "../../include/tiles/openZone.hpp"
 
-TowerMenu::TowerMenu(tgui::Gui& gui, Game& gm, RenderContext& ctx)
-    : Menu(gui, gm, ctx) {}
+TowerMenu::TowerMenu(tgui::Gui& gui, Game& game, const RenderContext& ctx) noexcept
+    : Menu(gui, game, ctx) {}
 
-void TowerMenu::open(sf::Vector2i pos, bool occ) {
+void TowerMenu::open(const sf::Vector2i& tilePos_, bool occupied_) {
     if (on) return;
-    tilePos = pos;
-    occupied = occ;
+    tilePos = tilePos_;
+    occupied = occupied_;
 
     buildBasePanel();
     if (occupied) buildSellPanel();
@@ -22,10 +22,10 @@ void TowerMenu::open(sf::Vector2i pos, bool occ) {
 }
 
 void TowerMenu::buildBasePanel() {
-    float panelW = 220.f, panelH = 250.f;
-    auto [panelX, panelY] = centerPanel(panelW, panelH);
-    panel = tgui::Panel::create({panelW, panelH});
-    panel->setPosition({panelX, panelY});
+    sf::Vector2f panelSize = {220.0f, 250.0f};
+    sf::Vector2f panelPos = centerPanel(panelSize);
+    panel = tgui::Panel::create({panelSize});
+    panel->setPosition({panelPos});
     panel->getRenderer()->setBackgroundColor({40, 40, 40, 230});
 }
 
@@ -51,23 +51,18 @@ void TowerMenu::buildSellPanel() {
     auto sellBtn = tgui::Button::create("Sell for 50%");
     sellBtn->setSize({"200", "38"});
     sellBtn->setPosition({10, 58});
-    sellBtn->onPress([this]() {
-        game.sellTowerAt(tilePos);
-        close();
-    });
+    sellBtn->onPress([this]() { game.sellTowerAt(tilePos); close(); });
     panel->add(sellBtn);
 }
 
-void TowerMenu::addTowerButton(const std::string& name,
-                               std::function<std::unique_ptr<Tower>(sf::Vector2i)> factory,
-                               const std::string& cost,
-                               float y) {
-    auto btn = tgui::Button::create(name + "\n" + cost);
+void TowerMenu::addTowerButton(const std::string& name, std::function<std::unique_ptr<Tower>(sf::Vector2i)> factory,
+                               const std::string& cost, float y) {
+    tgui::Button::Ptr btn = tgui::Button::create(name + "\n" + cost);
     btn->setSize({"200", "38"});
     btn->setPosition({10, y});
     btn->onPress([this, factory]() {
-        auto tower = factory(tilePos);
-        auto result = game.placeTower(std::move(tower));
+        std::unique_ptr<Tower> tower = factory(tilePos);
+        PlaceTowerResult result = game.placeTower(std::move(tower));
         switch (result) {
             case PlaceTowerResult::NotBuildable: showError("Cannot build here."); break;
             case PlaceTowerResult::NotAffordable: showError("Not enough materials."); break;
@@ -75,7 +70,6 @@ void TowerMenu::addTowerButton(const std::string& name,
             case PlaceTowerResult::Success: break;
         }
         close();
-        game.setPaused(false);
     });
     panel->add(btn);
 }
@@ -84,7 +78,7 @@ void TowerMenu::addCancelButton() {
     auto cancel = tgui::Button::create("Cancel");
     cancel->setSize({"200", "34"});
     cancel->setPosition({10, 202});
-    cancel->onPress([this]() { close(); game.setPaused(false); });
+    cancel->onPress([this]() { close(); });
     panel->add(cancel);
 }
 
@@ -105,7 +99,5 @@ void TowerMenu::showError(const std::string& message) { // This shouldn't be her
 
 void TowerMenu::scheduleRemoveWidget(tgui::Widget::Ptr widget, unsigned int ms) {
     if (!widget) return;
-    auto timer = tgui::Timer::create([this, widget]() {
-        gui.remove(widget);
-    }, std::chrono::milliseconds(ms));
+    std::shared_ptr<tgui::Timer> timer = tgui::Timer::create([this, widget]() { gui.remove(widget); }, std::chrono::milliseconds(ms));
 }

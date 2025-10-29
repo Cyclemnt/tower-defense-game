@@ -1,52 +1,60 @@
+#include <iostream>
 #include "../../include/gui/guiManager.hpp"
 #include "../../include/tiles/openZone.hpp"
 #include "../../include/renderer/renderer.hpp"
 
-GuiManager::GuiManager(sf::RenderWindow& window, Game& gm, RenderContext& ctx)
-    : gui(window), game(gm), ctx(ctx), hud(ctx, gm), cam(ctx),
-      pauseMenu(gui, gm, ctx), towerMenu(gui, gm, ctx)
+GuiManager::GuiManager(sf::RenderWindow& window, Game& game_, RenderContext& ctx_)
+    : gui(window), game(game_), ctx(ctx_), hud(ctx_, game_), camera(ctx_),
+      pauseMenu(gui, game_, ctx_), towerMenu(gui, game_, ctx_)
 {
     try {
         gui.setFont("../assets/gui/arial.ttf");
-    } catch (...) {}
+    } catch (...) {
+        std::cerr << "[GuiManager] Warning: failed to load GUI font.\n";
+    }
 }
 
 void GuiManager::processEvent(const sf::Event& event) {
     gui.handleEvent(event);
 
-    if (auto key = event.getIf<sf::Event::KeyPressed>())
-        if (!towerMenu.isOn() && key->code == sf::Keyboard::Key::Escape)
+    // Toggle pause menu with ESC
+    if (const auto* key = event.getIf<sf::Event::KeyPressed>()) {
+        if (!towerMenu.isOn() && key->code == sf::Keyboard::Key::Escape) {
             if (game.isPaused()) { pauseMenu.close(); game.setPaused(false); }
             else                 { pauseMenu.open();  game.setPaused(true);  }
-        else towerMenu.close();
+        } else {
+            towerMenu.close();
+        }
+    }
 
     bool clickConsumed = false;
 
-    if (auto mouse = event.getIf<sf::Event::MouseButtonPressed>())
+    if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>()) {
         if (!game.isPaused() && mouse->button == sf::Mouse::Button::Left)
-            clickConsumed = handleLeftClick(mouse->position); // TODO: when click outside towerMenu, close it.
+            clickConsumed = handleLeftClick(mouse->position);
+    }
 
-    if (!game.isPaused())
-        cam.handleZoom(event);
+    if (!game.isPaused()) {
+        camera.handleZoom(event);
+        if (!clickConsumed)
+            camera.handleDrag(event);
+    }
 
-    // Only drag if click not used for tower/menu
-    if (!clickConsumed && !game.isPaused())
-        cam.handleDrag(event);
-
-    if (auto mouse = event.getIf<sf::Event::MouseButtonPressed>())
+    if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>()) {
         if (!game.isPaused() && mouse->button == sf::Mouse::Button::Middle)
-            cam.resetView();
+            camera.resetView();
+    }
 }
 
-bool GuiManager::handleLeftClick(sf::Vector2i mousePos) {
-    sf::Vector2i tilePos = ctx.screenToTile(mousePos);
+bool GuiManager::handleLeftClick(const sf::Vector2i& mousePos) {
+    const sf::Vector2i tilePos = ctx.screenToTile(mousePos);
     const Map& map = game.getMap();
-    Tile* clicked = map.getTile(tilePos);
 
-    if (OpenZone* zone = dynamic_cast<OpenZone*>(clicked)) {
+    if (OpenZone* zone = dynamic_cast<OpenZone*>(map.getTile(tilePos))) {
         towerMenu.open(tilePos, zone->isOccupied());
         return true;
-    } else return false;
+    }
+    return false;
 }
 
 void GuiManager::draw(float deltaTime) {
