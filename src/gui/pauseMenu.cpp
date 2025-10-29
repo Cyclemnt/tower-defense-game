@@ -1,7 +1,7 @@
 #include "../../include/gui/pauseMenu.hpp"
 
-PauseMenu::PauseMenu(tgui::Gui& gui, Game& gm, const RenderContext& ctx)
-    : Menu(gui, gm, ctx)
+PauseMenu::PauseMenu(tgui::Gui& gui_, Game& game_, const RenderContext& ctx_) noexcept
+    : Menu(gui_, game_, ctx_)
 {
     sf::Vector2f panelSize = {300.0f, 200.0f};
     sf::Vector2f panelPos = centerPanel(panelSize);

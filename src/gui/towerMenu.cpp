@@ -4,8 +4,8 @@
 #include "../../include/towers/mortar.hpp"
 #include "../../include/tiles/openZone.hpp"
 
-TowerMenu::TowerMenu(tgui::Gui& gui, Game& game, const RenderContext& ctx) noexcept
-    : Menu(gui, game, ctx) {}
+TowerMenu::TowerMenu(tgui::Gui& gui_, Game& game_, const RenderContext& ctx_) noexcept
+    : Menu(gui_, game_, ctx_) {}
 
 void TowerMenu::open(const sf::Vector2i& tilePos_, bool occupied_) {
     if (on) return;

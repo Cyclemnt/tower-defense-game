@@ -9,7 +9,7 @@
  */
 class PauseMenu final : public Menu {
 public:
-    PauseMenu(tgui::Gui& gui, Game& game, const RenderContext& ctx) noexcept;
+    PauseMenu(tgui::Gui& gui_, Game& game_, const RenderContext& ctx_) noexcept;
     void open() override;
 };
 

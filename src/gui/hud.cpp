@@ -116,16 +116,16 @@ void HUD::drawWaveInfo(sf::Vector2f position) const {
     int totalWaves = 10;
     float timeToNext = 50.0f;
 
-    // If Game exposes a WaveManager getter:
+    // TO IMPLEMENT:
     // const auto& wm = game_.getWaveManager();
     // currentWave = wm.getCurrentWave();
     // totalWaves  = wm.getTotalWaves();
     // timeToNext  = wm.getTimeUntilNextWave();
 
-    // Fallback via Game methods (expected):
-    // currentWave = game.getCurrentWave();             // <- add if missing
-    // totalWaves  = game.getTotalWaves();             // <- add if missing (or return -1 if infinite)
-    // timeToNext  = game.getTimeUntilNextWave();      // <- add if missing
+    // OR:
+    // currentWave = game.getCurrentWave();
+    // totalWaves  = game.getTotalWaves();
+    // timeToNext  = game.getTimeUntilNextWave();
 
     std::ostringstream ss;
     if (totalWaves > 0)

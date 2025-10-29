@@ -31,7 +31,7 @@ private:
     void scheduleRemoveWidget(tgui::Widget::Ptr widget, unsigned int ms);
 
 public:
-    TowerMenu(tgui::Gui& gui, Game& game, const RenderContext& ctx) noexcept;
+    TowerMenu(tgui::Gui& gui_, Game& game_, const RenderContext& ctx_) noexcept;
     void open(const sf::Vector2i& tilePos_, bool occupied_);
     void open() override {}
 };
