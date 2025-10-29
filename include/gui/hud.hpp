@@ -23,19 +23,16 @@ private:
     const Game& game;         ///< Read-only reference to the game state
 
     // --- Drawing helpers ---
-    void drawResources() const;
-    void drawCores(sf::Vector2f position, float width) const;
-    void drawWaveInfo(sf::Vector2f position) const;
-    void drawFPS(sf::Vector2f position) const;
+    void drawResourcesPanel() const;
+    void drawCores(sf::Vector2f position, float width, float scale) const;
+    void drawWavePanel(float scale) const;
+    void drawFPSPanel(float scale) const;
 
 public:
     /// @brief Construct the HUD.
     /// @param ctx_ RenderContext used for sizes and window reference.
     /// @param game_ Reference to the main Game.
     HUD(const RenderContext& ctx_, const Game& game_);
-
-    HUD(const HUD&) = delete;
-    HUD& operator=(const HUD&) = delete;
 
     /// @brief Draw HUD. Must be called every frame after renderer.
     /// @param deltaTime Elapsed time since last frame (seconds).
