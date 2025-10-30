@@ -40,10 +40,10 @@ void GuiManager::processEvent(const sf::Event& event) {
                 }
             }
             if (mouse->button == sf::Mouse::Button::Right)
-                game.setSpeed(8);
+                game.accelerate();
         } else if (const auto* mouse = event.getIf<sf::Event::MouseButtonReleased>()) {
             if (mouse->button == sf::Mouse::Button::Right)
-                game.setSpeed(1);
+                game.resetSpeed();
         }
     }
 

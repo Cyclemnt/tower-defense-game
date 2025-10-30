@@ -27,7 +27,7 @@ struct WaveData {
 class IWaveSource {
 protected:
     size_t waveIndex = 0;
-    size_t wavesQuantity = 10;
+    size_t wavesQuantity = 100000;
     
 public:
     virtual ~IWaveSource() = default;

@@ -97,7 +97,7 @@ void Renderer::highlightTile() {
     if (openZoneTile->isOccupied()) highlight.setFillColor(sf::Color(255, 50, 50, 80)); // Red
     else highlight.setFillColor(sf::Color(50, 200, 50, 80)); // Green
     sf::Color color;
-    switch (game.getPlayerState()) {
+    switch (game.playerState) {
         case Player::State::Building: color = sf::Color(50, 200, 50, 80); break;
         case Player::State::Selling: color = sf::Color(255, 50, 50, 80); break;
         case Player::State::None: [[fallthrough]];

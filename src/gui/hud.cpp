@@ -45,7 +45,7 @@ void HUD::drawResourcesPanel() const {
     ctx.window.draw(panel);
 
     // Draw resources
-    const Materials::Quantities mats = game.getPlayer().getBalance();
+    const Materials::Quantities mats = *game.getView()->playerBalance;
     const float iconSize = 20.0f * scale;
     const float spacing = 80.0f * scale;
     const float baseX = panelX + 12.0f * scale;
@@ -77,7 +77,7 @@ void HUD::drawResourcesPanel() const {
 }
 
 void HUD::drawCores(sf::Vector2f position, float width, float scale) const {
-    const Cores cores = game.getCores();
+    const Cores cores = *game.getView()->cores;
     const unsigned safe = cores.getSafe();
     const unsigned stolen = cores.getStolen();
     const unsigned lost = cores.getLost();
@@ -129,9 +129,10 @@ void HUD::drawWavePanel(float scale) const {
     ctx.window.draw(panel);
 
     // --- Text info ---
-    const int currentWave = game.getWaveManager().getWaveNumber();
-    const int totalWaves = game.getWaveManager().getWavesQuantity();
-    const int timeToNext = game.getWaveManager().getTimeBeforeNext();
+    const std::unique_ptr<const Game::View> view = game.getView();
+    const int currentWave = view->currentWave;
+    const int totalWaves = view->totalWaves;
+    const int timeToNext = view->timeBeforeNext;
 
     sf::Text waveTxt(font, "Wave " + std::to_string(currentWave) + " / " + std::to_string(totalWaves),
                      static_cast<unsigned int>(16 * scale));

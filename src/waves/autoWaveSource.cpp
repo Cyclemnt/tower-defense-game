@@ -9,7 +9,14 @@ WaveData AutoWaveSource::nextWave() {
 
     ++waveIndex;
     const int totalUnits = static_cast<int>(2 + std::pow(waveIndex, waveSizeCoef));
-
+    dist = {std::max(10.0f, 490.0f - waveIndex * 5.0f),
+            std::min(490.0f, 5.0f * waveIndex),
+            std::max(10.0f, 320.0f - waveIndex * 5.0f),
+            std::min(320.0f, 5.0f * waveIndex),
+            std::max(5.0f, 165.0f - waveIndex * 5.0f),
+            std::min(165.0f, 5.0f * waveIndex),
+            };
+    
     WaveData wave;
     wave.delay = waveDelay;
     wave.spawns.reserve(static_cast<std::size_t>(totalUnits));

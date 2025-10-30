@@ -31,7 +31,7 @@ sf::FloatRect TowerPanel::getPanelRect() const {
 }
 
 void TowerPanel::updateAffordability() {
-    const Materials::Quantities& bal = game.getPlayer().getBalance();
+    const Materials::Quantities& bal = *game.getView()->playerBalance;
     bool oneAffordable = false;
     for (TowerPanel::TowerEntry& e : entries) {
         e.affordable = (bal.au >= e.cost.au && bal.ag >= e.cost.ag && bal.cu >= e.cost.cu);
@@ -163,7 +163,7 @@ bool TowerPanel::handleClick(const sf::Vector2i& mousePos) {
     if (sellRect.contains({(float)mousePos.x, (float)mousePos.y})) {
         sellingMode = !sellingMode;
         selectedIndex = -1;
-        sellingMode ? game.setPlayerState(Player::State::Selling) : game.setPlayerState(Player::State::None);
+        sellingMode ? game.playerState = Player::State::Selling : game.playerState = Player::State::None;
         return true;
     }
 
@@ -174,7 +174,7 @@ bool TowerPanel::handleClick(const sf::Vector2i& mousePos) {
             if (!e.affordable) return true;
             sellingMode = false;
             selectedIndex = (selectedIndex == (int)i ? -1 : (int)i);
-            selectedIndex == -1 ? game.setPlayerState(Player::State::None) : game.setPlayerState(Player::State::Building);
+            selectedIndex == -1 ? game.playerState = Player::State::None : game.playerState = Player::State::Building;
             return true;
         }
     }
@@ -184,13 +184,13 @@ bool TowerPanel::handleClick(const sf::Vector2i& mousePos) {
 
 void TowerPanel::handleTileClick(const sf::Vector2i& tilePos) {
     if (sellingMode) {
-        game.sellTowerAt(tilePos);
+        game.trySellTower(tilePos);
         return;
     }
 
     if (selectedIndex >= 0 && selectedIndex < (int)entries.size()) {
         const TowerPanel::TowerEntry& e = entries[selectedIndex];
         std::unique_ptr<Tower> tower = e.factory(tilePos);
-        game.placeTower(std::move(tower));
+        game.tryPlaceTower(std::move(tower));
     }
 }

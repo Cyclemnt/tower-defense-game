@@ -17,7 +17,7 @@ private:
     std::mt19937 gen{ std::random_device{}() }; ///< Random number generator
     std::discrete_distribution<int> dist{490, 10, 320, 10, 165, 5}; ///< Weighted creature distribution
 
-    const float waveSizeCoef = 1.3f;
+    const float waveSizeCoef = 1.9f;
     const float spawnInterval = 1.0f;
     const float waveDelay = 10.0f;
 

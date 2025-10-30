@@ -16,86 +16,10 @@ Game::Game()
       pathfinder(map),
       player(),
       cores(),
-      waveManager(std::make_unique<JsonWaveSource>("../assets/waves/level1.json")) 
+      waveManager(std::make_unique<AutoWaveSource>()) 
 {
     // Optionally, load from JSON:
     // waveManager = std::make_unique<JsonWaveSource>("../assets/waves/level1.json");
-}
-
-void Game::spawnCreature(Creature::Type type) {
-    std::unique_ptr<Creature> creature;
-
-    switch (type) {
-        case Creature::Type::Minion:  creature = std::make_unique<Minion>(); break;
-        case Creature::Type::MinionB: creature = std::make_unique<Minion>(true); break;
-        case Creature::Type::Drone:   creature = std::make_unique<Drone>(); break;
-        case Creature::Type::DroneB:  creature = std::make_unique<Drone>(true); break;
-        case Creature::Type::Tank:    creature = std::make_unique<Tank>(); break;
-        case Creature::Type::TankB:   creature = std::make_unique<Tank>(true); break;
-    }
-
-    if (!creature) return;
-    if (map.getEntries().empty() || map.getCoreStorage() == nullptr)
-        throw std::runtime_error("[Game] Map missing entry or core storage.");
-
-    const Tile* start = map.getEntries().front();
-    const Tile* goal = map.getCoreStorage();
-
-    std::vector<const Tile*> path = pathfinder.findPath(start, goal);
-    if (path.empty())
-        path = pathfinder.findPath(start, goal, true);
-
-    creature->setPath(path);
-    creature->setPosition(start->getPosition());
-    creatures.push_back(std::move(creature));
-}
-
-void Game::placeTower(std::unique_ptr<Tower> tower) {
-    Tile* tile = map.getTile(tower->getPosition());
-    if (!tile || !tile->isBuildable()) return;
-
-    OpenZone* openZone = dynamic_cast<OpenZone*>(tile);
-    if (openZone->isOccupied()) return;
-    if (!player.canAfford(*tower)) return;
-
-    player.buy(*tower);
-    openZone->setOccupied(true);
-
-    // Insert tower sorted by Y for correct draw order
-    const float newY = static_cast<float>(tower->getPosition().y);
-    auto it = std::upper_bound(
-        towers.begin(), towers.end(), newY,
-        [](float y, const std::unique_ptr<Tower>& t) {
-            return y < static_cast<float>(t->getPosition().y);
-        });
-    towers.insert(it, std::move(tower));
-
-    updatePaths();
-    return;
-}
-
-void Game::sellTowerAt(sf::Vector2i position) {
-    for (auto it = towers.begin(); it != towers.end(); ++it) {
-        Tower* tower = it->get();
-        if (tower->getPosition() == position) {
-            player.addMaterials(tower->getCost() * 0.5f); // refund
-            if (OpenZone* zone = dynamic_cast<OpenZone*>(map.getTile(position)))
-                zone->setOccupied(false);
-            towers.erase(it);
-            updatePaths();
-            return;
-        }
-    }
-}
-
-void Game::updatePaths() {
-    for (std::unique_ptr<Creature>& c : creatures) {
-        const Tile* start = c->getCurrentTile();
-        const Tile* goal = c->getDestinationTile();
-        std::vector<const Tile*> newPath = pathfinder.findPath(start, goal);
-        if (newPath.empty()) newPath = pathfinder.findPath(start, goal, true);
-        c->setPath(newPath);
-    }
 }
 
 void Game::update(float deltaTime) {
@@ -107,7 +31,6 @@ void Game::update(float deltaTime) {
 
     // Update creatures
     for (std::unique_ptr<Creature>& c : creatures) {
-        if (!c->isAlive()) continue;
         c->update(deltaTime);
 
         const Tile* current = c->getCurrentTile();
@@ -161,6 +84,93 @@ void Game::update(float deltaTime) {
         visualEffects.end());
 }
 
+void Game::spawnCreature(Creature::Type type) {
+    std::unique_ptr<Creature> creature;
+
+    switch (type) {
+        case Creature::Type::Minion:  creature = std::make_unique<Minion>(); break;
+        case Creature::Type::MinionB: creature = std::make_unique<Minion>(true); break;
+        case Creature::Type::Drone:   creature = std::make_unique<Drone>(); break;
+        case Creature::Type::DroneB:  creature = std::make_unique<Drone>(true); break;
+        case Creature::Type::Tank:    creature = std::make_unique<Tank>(); break;
+        case Creature::Type::TankB:   creature = std::make_unique<Tank>(true); break;
+    }
+
+    if (!creature) return;
+    if (map.getEntries().empty() || map.getCoreStorage() == nullptr)
+        throw std::runtime_error("[Game] Map missing entry or core storage.");
+
+    const Tile* start = map.getEntries().front();
+    const Tile* goal = map.getCoreStorage();
+
+    std::vector<const Tile*> path = pathfinder.findPath(start, goal);
+    if (path.empty())
+        path = pathfinder.findPath(start, goal, true);
+
+    creature->setPath(path);
+    creature->setPosition(start->getPosition());
+    creatures.push_back(std::move(creature));
+}
+
+void Game::tryPlaceTower(std::unique_ptr<Tower> tower) {
+    Tile* tile = map.getTile(tower->getPosition());
+    if (!tile || !tile->isBuildable()) return;
+
+    OpenZone* openZone = dynamic_cast<OpenZone*>(tile);
+    if (openZone->isOccupied()) return;
+    if (!player.canAfford(*tower)) return;
+
+    player.buy(*tower);
+    openZone->setOccupied(true);
+
+    // Insert tower sorted by Y for correct draw order
+    const float newY = static_cast<float>(tower->getPosition().y);
+    auto it = std::upper_bound(
+        towers.begin(), towers.end(), newY,
+        [](float y, const std::unique_ptr<Tower>& t) {
+            return y < static_cast<float>(t->getPosition().y);
+        });
+    towers.insert(it, std::move(tower));
+
+    updatePaths();
+    return;
+}
+
+void Game::trySellTower(sf::Vector2i position) {
+    for (auto it = towers.begin(); it != towers.end(); ++it) {
+        Tower* tower = it->get();
+        if (tower->getPosition() == position) {
+            player.addMaterials(tower->getCost() * 0.5f); // refund
+            if (OpenZone* zone = dynamic_cast<OpenZone*>(map.getTile(position)))
+                zone->setOccupied(false);
+            towers.erase(it);
+            updatePaths();
+            return;
+        }
+    }
+}
+
+void Game::updatePaths() {
+    for (std::unique_ptr<Creature>& c : creatures) {
+        const Tile* start = c->getCurrentTile();
+        const Tile* goal = c->getDestinationTile();
+        std::vector<const Tile*> newPath = pathfinder.findPath(start, goal);
+        if (newPath.empty()) newPath = pathfinder.findPath(start, goal, true);
+        c->setPath(newPath);
+    }
+}
+
 bool Game::isGameOver() const noexcept {
     return cores.getSafe() == 0 && cores.getStolen() == 0;
+}
+
+std::unique_ptr<const Game::View> Game::getView() const {
+    std::unique_ptr<Game::View> view = std::make_unique<Game::View>();
+
+    view->playerBalance = &player.getBalance();
+    view->cores = &cores;
+    view->currentWave = waveManager.getWaveNumber();
+    view->totalWaves = waveManager.getWavesQuantity();
+    view->timeBeforeNext = waveManager.getTimeBeforeNext();
+    return view;
 }
