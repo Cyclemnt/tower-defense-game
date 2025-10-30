@@ -14,6 +14,14 @@ class Tower;
  * constraints are respected during gameplay.
  */
 class Player {
+public:
+    /// @brief All the possible states of the player
+    enum class State {
+        Building,
+        Selling,
+        None
+    };
+
 private:
     Materials balance; ///< Player’s available materials (Au, Ag, Cu).
 

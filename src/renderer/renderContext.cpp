@@ -1,8 +1,8 @@
 #include "../../include/renderer/renderContext.hpp"
 #include "../../include/renderer/renderer.hpp"
 
-RenderContext::RenderContext(sf::RenderWindow& w, Renderer& r, float ts, unsigned long t) noexcept
-    : window(w), renderer(r), tileSize(ts), tick(t), lastWinSize(window.getSize()) {}
+RenderContext::RenderContext(sf::RenderWindow& w, Renderer& r) noexcept
+    : window(w), renderer(r), lastWinSize(window.getSize()) {}
 
 sf::Vector2i RenderContext::screenToTile(const sf::Vector2i& mousePos) const noexcept {
     const sf::Vector2i tilePos = static_cast<sf::Vector2i>((static_cast<sf::Vector2f>(mousePos) - offset) / tileSize);

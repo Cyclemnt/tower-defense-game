@@ -33,7 +33,7 @@ public:
     /// @param r Reference to the renderer.
     /// @param ts Initial tile size (default: 64 pixels).
     /// @param t Initial tick count (default: 0).
-    RenderContext(sf::RenderWindow& w, Renderer& r, float ts = 64.0f, unsigned long t = 0) noexcept;
+    RenderContext(sf::RenderWindow& w, Renderer& r) noexcept;
 
     /// @brief Converts a pixel position (mouse or screen) to tile coordinates.
     /// @param mouseX X coordinate in pixels.

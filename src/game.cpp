@@ -50,13 +50,13 @@ void Game::spawnCreature(Creature::Type type) {
     creatures.push_back(std::move(creature));
 }
 
-PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
+void Game::placeTower(std::unique_ptr<Tower> tower) {
     Tile* tile = map.getTile(tower->getPosition());
-    if (!tile || !tile->isBuildable()) return PlaceTowerResult::NotBuildable;
+    if (!tile || !tile->isBuildable()) return;
 
     OpenZone* openZone = dynamic_cast<OpenZone*>(tile);
-    if (openZone->isOccupied()) return PlaceTowerResult::Occupied;
-    if (!player.canAfford(*tower)) return PlaceTowerResult::NotAffordable;
+    if (openZone->isOccupied()) return;
+    if (!player.canAfford(*tower)) return;
 
     player.buy(*tower);
     openZone->setOccupied(true);
@@ -71,7 +71,7 @@ PlaceTowerResult Game::placeTower(std::unique_ptr<Tower> tower) {
     towers.insert(it, std::move(tower));
 
     updatePaths();
-    return PlaceTowerResult::Success;
+    return;
 }
 
 void Game::sellTowerAt(sf::Vector2i position) {

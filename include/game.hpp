@@ -13,17 +13,6 @@
 #include "waves/waveManager.hpp"
 
 /**
- * @enum PlaceTowerResult
- * @brief Represents the result of attempting to place a tower on the map.
- */
-enum class PlaceTowerResult {
-    Success,       ///< The tower was placed successfully.
-    NotBuildable,  ///< The target tile cannot host a tower.
-    Occupied,      ///< The tile is already occupied.
-    NotAffordable  ///< The player cannot afford the tower cost.
-};
-
-/**
  * @class Game
  * @brief Central class managing all gameplay systems.
  *
@@ -44,6 +33,7 @@ private:
     // --- Player state ---
     Player player; ///< Player materials, actions, and upgrades.
     Cores cores;   ///< Player's cores: safe, stolen, and lost counts.
+    Player::State playerState = Player::State::None; ///< Player current possible action.
 
     // --- Entities ---
     std::vector<std::unique_ptr<Creature>> creatures; ///< Active enemy units.
@@ -72,6 +62,8 @@ public:
     void setSpeed(unsigned int value) noexcept { speed = value; }
     [[nodiscard]] const Player& getPlayer() const noexcept { return player; }
     [[nodiscard]] const Cores& getCores() const noexcept { return cores; }
+    void const setPlayerState(Player::State state) noexcept { playerState = state; }
+    [[nodiscard]] const Player::State getPlayerState() const noexcept { return playerState; }
     [[nodiscard]] const std::vector<std::unique_ptr<VisualEffect>>& getVisualEffects() const noexcept { return visualEffects; }
     [[nodiscard]] const WaveManager& getWaveManager() const noexcept { return waveManager; }
 
@@ -83,7 +75,7 @@ public:
     /// @brief Attempts to place a tower on the map.
     /// @param tower The tower instance to place.
     /// @return A result describing whether placement succeeded.
-    PlaceTowerResult placeTower(std::unique_ptr<Tower> tower);
+    void placeTower(std::unique_ptr<Tower> tower);
 
     /// @brief Sells and removes the tower at a given map position.
     /// @param position The tile coordinates where to sell the tower.

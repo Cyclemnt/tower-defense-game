@@ -4,7 +4,7 @@
 #include <TGUI/TGUI.hpp>
 #include <SFML/Graphics.hpp>
 #include "pauseMenu.hpp"
-#include "towerMenu.hpp"
+#include "towerPanel.hpp"
 #include "hud.hpp"
 #include "cameraController.hpp"
 #include "../game.hpp"
@@ -20,16 +20,12 @@
 class GuiManager final {
 private:
     tgui::Gui gui;            ///< Root GUI container
-    Game& game;               ///< Reference to the main game instance
     const RenderContext& ctx; ///< Read-only rendering context
+    Game& game;               ///< Reference to the main game instance
     HUD hud;                  ///< Heads-up display (resources, cores, FPS)
     CameraController camera;  ///< Handles camera movement
     PauseMenu pauseMenu;      ///< In-game pause menu
-    TowerMenu towerMenu;      ///< Tower building/selling menu
-
-    /// @brief Handle left-click interactions on the map.
-    /// @return true if the click was consumed by a menu.
-    [[nodiscard]] bool handleLeftClick(const sf::Vector2i& mousePos);
+    TowerPanel towerPanel;    ///< Tower building/selling panel
 
 public:
     GuiManager(sf::RenderWindow& window, Game& game_, RenderContext& ctx_);
