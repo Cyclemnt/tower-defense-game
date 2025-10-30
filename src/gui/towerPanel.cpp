@@ -32,12 +32,11 @@ sf::FloatRect TowerPanel::getPanelRect() const {
 
 void TowerPanel::updateAffordability() {
     const Materials::Quantities& bal = *game.getView()->playerBalance;
-    bool oneAffordable = false;
-    for (TowerPanel::TowerEntry& e : entries) {
+    for (size_t i = 0; i < entries.size(); i++) {
+        TowerPanel::TowerEntry& e = entries[i];
         e.affordable = (bal.au >= e.cost.au && bal.ag >= e.cost.ag && bal.cu >= e.cost.cu);
-        if (e.affordable) oneAffordable = true;
+        if (!e.affordable && selectedIndex == (int)i) selectedIndex = -1;
     }
-    if (!oneAffordable && !sellingMode) selectedIndex = -1;
 }
 
 void TowerPanel::drawPanel(sf::RenderWindow& win) const {

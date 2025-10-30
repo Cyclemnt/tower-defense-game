@@ -94,16 +94,22 @@ void Renderer::highlightTile() {
     OpenZone* openZoneTile = dynamic_cast<OpenZone*>(tile);
     sf::RectangleShape highlight({ctx.tileSize, ctx.tileSize});
     highlight.setPosition(static_cast<sf::Vector2f>(tilePos) * ctx.tileSize + ctx.offset);
-    if (openZoneTile->isOccupied()) highlight.setFillColor(sf::Color(255, 50, 50, 80)); // Red
-    else highlight.setFillColor(sf::Color(50, 200, 50, 80)); // Green
+
     sf::Color color;
+    bool isOccupied = openZoneTile->isOccupied();
     switch (game.playerState) {
-        case Player::State::Building: color = sf::Color(50, 200, 50, 80); break;
-        case Player::State::Selling: color = sf::Color(255, 50, 50, 80); break;
+        case Player::State::Building:
+            if (isOccupied) color = sf::Color(50, 50, 50, 80); // Gray
+            else color = sf::Color(50, 200, 50, 80); // Green
+            break;
+        case Player::State::Selling:
+            if (isOccupied) color = sf::Color(255, 50, 50, 80); // Red
+            else color = sf::Color(50, 50, 50, 80); // Gray
+            break;
         case Player::State::None: [[fallthrough]];
         default: color = sf::Color(50, 50, 50, 80); break;
     }
+    
     highlight.setFillColor(color);
-
     ctx.window.draw(highlight);
 }
