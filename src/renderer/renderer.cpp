@@ -83,6 +83,8 @@ void Renderer::render() {
 }
 
 void Renderer::highlightTile() {
+    if (game.isOver()) return;
+    
     const Map& map = game.getMap();
     sf::Vector2i mousePos = sf::Mouse::getPosition(ctx.window);
     sf::Vector2i tilePos = ctx.screenToTile(mousePos);

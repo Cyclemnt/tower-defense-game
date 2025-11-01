@@ -22,6 +22,9 @@ Game::Game()
     // waveManager = std::make_unique<JsonWaveSource>("../assets/waves/level1.json");
 }
 
+Game::Game(std::unique_ptr<IMapSource> mapSource_, std::unique_ptr<IWaveSource> waveSource_, unsigned int initialCores)
+    : cores(initialCores), map(std::move(mapSource_), &cores), pathfinder(map), player(), waveManager(std::move(waveSource_)) {}
+
 void Game::update(float deltaTime) {
     if (paused) return;
     deltaTime *= speed;
@@ -49,12 +52,15 @@ void Game::update(float deltaTime) {
 
     // Update towers & effects
     for (std::unique_ptr<Tower>& t : towers) {
-        t->update(deltaTime, creatures);
-        auto newEffects = t->getVisualEffects();
-        if (!newEffects.empty()) {
-            visualEffects.insert(visualEffects.end(),
-                std::make_move_iterator(newEffects.begin()),
-                std::make_move_iterator(newEffects.end()));
+        if (isOver()) t->clearTarget();
+        else {
+            t->update(deltaTime, creatures);
+            auto newEffects = t->getVisualEffects();
+            if (!newEffects.empty()) {
+                visualEffects.insert(visualEffects.end(),
+                    std::make_move_iterator(newEffects.begin()),
+                    std::make_move_iterator(newEffects.end()));
+            }
         }
     }
 
@@ -160,7 +166,7 @@ void Game::updatePaths() {
     }
 }
 
-bool Game::isGameOver() const noexcept {
+bool Game::isOver() const noexcept {
     return cores.getSafe() == 0 && cores.getStolen() == 0;
 }
 

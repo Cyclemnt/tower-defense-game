@@ -26,6 +26,7 @@ void HUD::draw(float deltaTime) {
     drawResourcesPanel();
     drawWavePanel(scale);
     drawFPSPanel(scale);
+    if (game.isOver()) drawGameOver();
 }
 
 void HUD::drawResourcesPanel() const {
@@ -171,4 +172,30 @@ void HUD::drawFPSPanel(float scale) const {
     txt.setFillColor(sf::Color::White);
     txt.setPosition({panelX + 10.0f * scale, panelY + 8.0f * scale});
     ctx.window.draw(txt);
+}
+
+void HUD::drawGameOver() const {
+    const sf::Vector2u winSize = ctx.window.getSize();
+    const float width = static_cast<float>(winSize.x);
+    const float height = static_cast<float>(winSize.y);
+
+    // Dim the screen slightly
+    sf::RectangleShape overlay({width, height});
+    overlay.setFillColor(sf::Color(0, 0, 0, 180)); // dark semi-transparent overlay
+    ctx.window.draw(overlay);
+
+    // GAME OVER text
+    const float scale = width / 1920.0f; // scale relative to base HD resolution
+    sf::Text text(font, "GAME OVER", static_cast<unsigned int>(128 * scale));
+    text.setFillColor(sf::Color(255, 60, 60));
+    text.setOutlineColor(sf::Color::Black);
+    text.setOutlineThickness(6.0f * scale);
+
+    // center text
+    const sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin({bounds.position.x + bounds.size.x * 0.5f,
+                    bounds.position.y + bounds.size.y * 0.5f});
+    text.setPosition({width * 0.5f, height * 0.5f});
+
+    ctx.window.draw(text);
 }

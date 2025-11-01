@@ -25,6 +25,8 @@ void GuiManager::processEvent(const sf::Event& event) {
         }
     }
 
+    if (game.isOver()) return;
+
     // Manage clics
     if (!game.isPaused()) {
         if (const auto* mouse = event.getIf<sf::Event::MouseButtonPressed>()) {
@@ -60,7 +62,7 @@ void GuiManager::processEvent(const sf::Event& event) {
 }
 
 void GuiManager::draw(float deltaTime) {
-    hud.draw(deltaTime);
     towerPanel.draw();
+    hud.draw(deltaTime);
     gui.draw();
 }

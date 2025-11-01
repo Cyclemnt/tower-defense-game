@@ -60,6 +60,12 @@ public:
     /// @brief Constructs a new Game instance and initializes all systems.
     Game();
 
+    /// @brief Constructs a new Game instance and initializes all systems.
+    /// @param mapSource_ Source used to build the map.
+    /// @param waveSource_ Source used to generate or load waves.
+    /// @param initialCores Number of cores available at game start.
+    Game(std::unique_ptr<IMapSource> mapSource_, std::unique_ptr<IWaveSource> waveManager, unsigned int initialCores);
+
     // --- Simulation control ---
 
     /// @brief Advances the simulation by one tick.
@@ -70,7 +76,7 @@ public:
     void setPaused(bool value) noexcept { paused = value; }
 
     /// @brief Checks whether the player has lost all cores.
-    [[nodiscard]] bool isGameOver() const noexcept;
+    [[nodiscard]] bool isOver() const noexcept;
     [[nodiscard]] unsigned long getTick() const noexcept { return tick; }
     void accelerate() noexcept { speed = 8; }
     void resetSpeed() noexcept { speed = 1; }

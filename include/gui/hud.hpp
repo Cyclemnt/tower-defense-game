@@ -29,6 +29,8 @@ private:
     void drawWavePanel(float scale) const;
     void drawFPSPanel(float scale) const;
 
+    void drawGameOver() const;
+
 public:
     /// @brief Construct the HUD.
     /// @param ctx_ RenderContext used for sizes and window reference.
@@ -37,7 +39,7 @@ public:
 
     /// @brief Draw HUD. Must be called every frame after renderer.
     /// @param deltaTime Elapsed time since last frame (seconds).
-    void draw(float deltaTime);
+    void draw(float deltaTime);    
 };
 
 #endif // HUD_HPP
