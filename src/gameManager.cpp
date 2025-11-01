@@ -29,7 +29,7 @@ void GameManager::run() {
 }
 
 void GameManager::mainMenu() {
-    // For now, start arcade
+    std::cout << "[GameManager] Currently in main menu, automatically starting story mode" << std::endl;
     startStory();
 }
 
@@ -90,13 +90,14 @@ void GameManager::returnToMainMenu() {
 }
 
 void GameManager::nextLevel() {
-    if (mode != Mode::Story) return;
+    if (mode != Mode::Story) returnToMainMenu();
 
     ++currentLevel;
     loadLevel();
 }
 
 void GameManager::gameLoop() {
+    float delayBetweenGames = 5.0f;
     while (window.isOpen() && state == State::InGame) {
         // --- Events ---
         while (auto event = window.pollEvent()) {
@@ -110,6 +111,8 @@ void GameManager::gameLoop() {
         // --- Update ---
         float dt = clock.restart().asSeconds();
         if (!game->isPaused()) game->update(dt);
+        if (game->victory()) delayBetweenGames -= dt;
+        if (delayBetweenGames <= 0.0f) { nextLevel(); delayBetweenGames = 5.0f; }
 
         // --- Render ---
         window.clear();

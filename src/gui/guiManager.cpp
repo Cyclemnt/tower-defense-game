@@ -25,7 +25,7 @@ void GuiManager::processEvent(const sf::Event& event) {
         }
     }
 
-    if (game.isOver()) return;
+    if (game.isOver() || game.victory()) return;
 
     // Manage clics
     if (!game.isPaused()) {

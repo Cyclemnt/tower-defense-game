@@ -16,21 +16,21 @@ Game::Game()
       pathfinder(map),
       player(),
       cores(),
-      waveManager(std::make_unique<AutoWaveSource>()) 
+      waveManager(std::make_unique<AutoWaveSource>(), *this) 
 {
     // Optionally, load from JSON:
     // waveManager = std::make_unique<JsonWaveSource>("../assets/waves/level1.json");
 }
 
 Game::Game(std::unique_ptr<IMapSource> mapSource_, std::unique_ptr<IWaveSource> waveSource_, unsigned int initialCores)
-    : cores(initialCores), map(std::move(mapSource_), &cores), pathfinder(map), player(), waveManager(std::move(waveSource_)) {}
+    : cores(initialCores), map(std::move(mapSource_), &cores), pathfinder(map), player(), waveManager(std::move(waveSource_), *this) {}
 
 void Game::update(float deltaTime) {
     if (paused) return;
     deltaTime *= speed;
     ++tick;
 
-    waveManager.update(deltaTime, *this);
+    waveManager.update(deltaTime);
 
     // Update creatures
     for (std::unique_ptr<Creature>& c : creatures) {
@@ -168,6 +168,10 @@ void Game::updatePaths() {
 
 bool Game::isOver() const noexcept {
     return cores.getSafe() == 0 && cores.getStolen() == 0;
+}
+
+bool Game::victory() const noexcept {
+    return waveManager.isEnded() && !isOver();
 }
 
 std::unique_ptr<const Game::View> Game::getView() const {

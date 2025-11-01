@@ -35,7 +35,7 @@ void TowerPanel::updateAffordability() {
     for (size_t i = 0; i < entries.size(); i++) {
         TowerPanel::TowerEntry& e = entries[i];
         e.affordable = (bal.au >= e.cost.au && bal.ag >= e.cost.ag && bal.cu >= e.cost.cu);
-        if (!e.affordable && selectedIndex == (int)i) selectedIndex = -1;
+        if (!e.affordable && selectedIndex == (int)i) { selectedIndex = -1; game.playerState = Player::State::None; }
     }
 }
 

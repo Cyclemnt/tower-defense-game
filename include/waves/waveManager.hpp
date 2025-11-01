@@ -15,6 +15,7 @@ class Game;
  */
 class WaveManager {
 private:
+    Game& game; ///< Reference to the current game
     std::unique_ptr<IWaveSource> source; ///< Source providing wave data
     WaveData activeWave;                 ///< Currently active wave
     size_t spawnIndex = 0;               ///< Current spawn index in the wave
@@ -22,10 +23,13 @@ private:
     bool inWave = false;                 ///< Flag indicating if currently in a wave
 
 public:
-    explicit WaveManager(std::unique_ptr<IWaveSource> src) noexcept;
+    explicit WaveManager(std::unique_ptr<IWaveSource> src, Game& game_) noexcept;
 
     /// @brief Updates wave progression and spawns creatures when needed.
-    void update(float dt, Game& game);
+    void update(float dt);
+
+    /// @brief Returns wether the wave is complete.
+    [[nodiscard]] bool isWaveComplete() const noexcept;
 
     /// @brief Returns the current wave number.
     [[nodiscard]] size_t getWaveNumber() const noexcept;
@@ -35,6 +39,9 @@ public:
 
     /// @brief Returns the time remaining before next wave.
     [[nodiscard]] float getTimeBeforeNext() const noexcept;
+    
+    /// @brief Returns wether the waves are over.
+    [[nodiscard]] bool isEnded() const noexcept;
 };
 
 #endif // WAVE_MANAGER_HPP

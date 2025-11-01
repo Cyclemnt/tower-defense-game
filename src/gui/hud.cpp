@@ -27,6 +27,7 @@ void HUD::draw(float deltaTime) {
     drawWavePanel(scale);
     drawFPSPanel(scale);
     if (game.isOver()) drawGameOver();
+    if (game.victory()) drawVictory();
 }
 
 void HUD::drawResourcesPanel() const {
@@ -198,4 +199,40 @@ void HUD::drawGameOver() const {
     text.setPosition({width * 0.5f, height * 0.5f});
 
     ctx.window.draw(text);
+}
+
+void HUD::drawVictory() const {
+    const sf::Vector2u winSize = ctx.window.getSize();
+    const float width = static_cast<float>(winSize.x);
+    const float height = static_cast<float>(winSize.y);
+
+    // Semi-transparent overlay
+    sf::RectangleShape overlay({width, height});
+    overlay.setFillColor(sf::Color(0, 0, 0, 180)); // dark background
+    ctx.window.draw(overlay);
+
+    // Text
+    const float scale = width / 1920.0f;
+    sf::Text text(font, "MISSION COMPLETE", static_cast<unsigned int>(96 * scale));
+    text.setFillColor(sf::Color(50, 255, 100)); // bright green
+    text.setOutlineColor(sf::Color::Black);
+    text.setOutlineThickness(6.0f * scale);
+
+    // Center text
+    const sf::FloatRect bounds = text.getLocalBounds();
+    text.setOrigin({bounds.position.x + bounds.size.x * 0.5f,
+                    bounds.position.y + bounds.size.y * 0.5f});
+    text.setPosition({width * 0.5f, height * 0.5f});
+
+    ctx.window.draw(text);
+
+    // Subtext
+    sf::Text subtext(font, "You defended all cores!", static_cast<unsigned int>(36 * scale));
+    subtext.setFillColor(sf::Color::White);
+    subtext.setOutlineColor(sf::Color::Black);
+    subtext.setOutlineThickness(3.0f * scale);
+    const sf::FloatRect subBounds = subtext.getLocalBounds();
+    subtext.setOrigin({subBounds.position.x + subBounds.size.x * 0.5f, subBounds.position.y});
+    subtext.setPosition({width * 0.5f, height * 0.5f + 90.0f * scale});
+    ctx.window.draw(subtext);
 }

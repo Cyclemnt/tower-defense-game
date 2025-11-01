@@ -77,6 +77,9 @@ public:
 
     /// @brief Checks whether the player has lost all cores.
     [[nodiscard]] bool isOver() const noexcept;
+    
+    /// @brief Checks wether the player won the current game.
+    [[nodiscard]] bool victory() const noexcept;
     [[nodiscard]] unsigned long getTick() const noexcept { return tick; }
     void accelerate() noexcept { speed = 8; }
     void resetSpeed() noexcept { speed = 1; }

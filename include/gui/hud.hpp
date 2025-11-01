@@ -30,6 +30,7 @@ private:
     void drawFPSPanel(float scale) const;
 
     void drawGameOver() const;
+    void drawVictory() const;
 
 public:
     /// @brief Construct the HUD.

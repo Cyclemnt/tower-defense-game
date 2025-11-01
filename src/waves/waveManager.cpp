@@ -1,10 +1,10 @@
 #include "../../include/waves/waveManager.hpp"
 #include "../../include/game.hpp"
 
-WaveManager::WaveManager(std::unique_ptr<IWaveSource> src) noexcept
-    : source(std::move(src)) {}
+WaveManager::WaveManager(std::unique_ptr<IWaveSource> src, Game& game_) noexcept
+    : source(std::move(src)), game(game_) {}
 
-void WaveManager::update(float dt, Game& game) {
+void WaveManager::update(float dt) {
     if (spawnIndex < activeWave.spawns.size())
         timer -= dt;
 
@@ -20,7 +20,7 @@ void WaveManager::update(float dt, Game& game) {
     }
 
     // When wave is complete and all creatures are gone
-    if (spawnIndex >= activeWave.spawns.size() && game.getCreatures().empty()) {
+    if (isWaveComplete()) {
         inWave = false;
         if (source->hasMoreWaves()) {
             activeWave = source->nextWave();
@@ -30,8 +30,12 @@ void WaveManager::update(float dt, Game& game) {
     }
 }
 
+bool WaveManager::isWaveComplete() const noexcept {
+    return spawnIndex >= activeWave.spawns.size() && game.getCreatures().empty();
+}
+
 size_t WaveManager::getWaveNumber() const noexcept {
-    return source->getWaveIndex() + inWave + !source->hasMoreWaves();
+    return source->getWaveIndex() + inWave + (!source->hasMoreWaves() && !inWave);
 }
 
 size_t WaveManager::getWavesQuantity() const noexcept {
@@ -40,4 +44,8 @@ size_t WaveManager::getWavesQuantity() const noexcept {
 
 float WaveManager::getTimeBeforeNext() const noexcept {
     return inWave ? 0.0f : timer < 0 ? 0.0f : timer;
+}
+
+bool WaveManager::isEnded() const noexcept {
+    return (getWaveNumber() == getWavesQuantity()) && isWaveComplete();
 }

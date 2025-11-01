@@ -38,6 +38,7 @@ private:
     State state = State::MainMenu;  ///< Current state of the app
     Mode mode = Mode::Story;        ///< Current mode (story or arcade)
     unsigned int currentLevel = 1;  ///< Current level number in story mode
+    unsigned int maxLevels = 1;     ///< Number of levels available in story mode
 
     // --- SFML core ---
     sf::RenderWindow window;
