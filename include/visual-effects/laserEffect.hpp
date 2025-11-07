@@ -20,6 +20,7 @@ private:
     sf::Color color = {255, 120, 30}; ///< Core laser color
     float lifetime = 0.02f; ///< Duration in seconds
     float age = 0.0f;       ///< Current lifetime progress
+    bool appeared = false;  ///< If the effect appeared once
 
 public:
     /// @brief Constructs a new LaserEffect.

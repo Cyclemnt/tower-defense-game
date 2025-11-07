@@ -18,6 +18,7 @@ private:
     sf::Color color;         ///< Tracer color
     float lifetime = 0.6f;   ///< Duration in seconds
     float age = 0.0f;        ///< Current lifetime progress
+    bool appeared = false;   ///< If the effect appeared once
     float jitterX = 0.0f, jitterY = 0.0f;
     TracerSplashEffect splash; ///< Secondary particle splash
 

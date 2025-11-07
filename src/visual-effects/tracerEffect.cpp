@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include "../../include/visual-effects/tracerEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
-
+#include <iostream>
 TracerEffect::TracerEffect(sf::Vector2f start_, sf::Vector2f end_)
     : start(start_), end(end_), color(generateRandomColor()), splash(end_, color)
 {
@@ -18,7 +18,7 @@ void TracerEffect::update(float dt) {
 
 void TracerEffect::render(const RenderContext& ctx) {
     splash.render(ctx);
-    if (age >= 0.05f) return;
+    if (age >= 0.05f && appeared) return;
 
     const sf::Vector2f startOffset{0.5f, 0.3f};
     const sf::Vector2f endOffset{0.5f, 0.5f};
@@ -35,6 +35,7 @@ void TracerEffect::render(const RenderContext& ctx) {
     beam.setFillColor(color);
 
     ctx.window.draw(beam);
+    appeared = true;
 }
 
 sf::Color TracerEffect::generateRandomColor() const {

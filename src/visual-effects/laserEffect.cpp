@@ -8,7 +8,7 @@ LaserEffect::LaserEffect(sf::Vector2f start_, sf::Vector2f end_)
 
 void LaserEffect::update(float dt) {
     age += dt;
-    if (age >= lifetime) die();
+    if (age >= lifetime && appeared) die();
 }
 
 void LaserEffect::render(const RenderContext& ctx) {
@@ -39,4 +39,5 @@ void LaserEffect::render(const RenderContext& ctx) {
 
     ctx.window.draw(glow);
     ctx.window.draw(beam);
+    appeared = true;
 }
