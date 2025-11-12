@@ -1,7 +1,7 @@
 #include <cmath>
 #include <SFML/System/Angle.hpp>
-#include "../../include/visual-effects/laserEffect.hpp"
-#include "../../include/renderer/renderContext.hpp"
+#include "../../../include/effects/visual-effects/laserEffect.hpp"
+#include "../../../include/renderer/renderContext.hpp"
 
 LaserEffect::LaserEffect(sf::Vector2f start_, sf::Vector2f end_)
     : start(start_), end(end_) {}

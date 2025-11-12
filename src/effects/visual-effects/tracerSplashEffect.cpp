@@ -1,6 +1,6 @@
 #include <cmath>
-#include "../../include/visual-effects/tracerSplashEffect.hpp"
-#include "../../include/renderer/renderContext.hpp"
+#include "../../../include/effects/visual-effects/tracerSplashEffect.hpp"
+#include "../../../include/renderer/renderContext.hpp"
 
 TracerSplashEffect::TracerSplashEffect(sf::Vector2f position_, sf::Color color_)
     : position(position_), color(color_)

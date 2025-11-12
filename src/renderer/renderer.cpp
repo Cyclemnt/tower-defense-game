@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../../include/renderer/renderer.hpp"
-#include "../../include/visual-effects/visualEffect.hpp"
+#include "../../include/effects/visual-effects/visualEffect.hpp"
 #include "../../include/game.hpp"
 #include "../../include/towers/tower.hpp"
 #include "../../include/tiles/openZone.hpp"

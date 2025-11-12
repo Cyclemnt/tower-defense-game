@@ -9,7 +9,7 @@
 #include "resources/cores.hpp"
 #include "creatures/creature.hpp"
 #include "towers/tower.hpp"
-#include "visual-effects/visualEffect.hpp"
+#include "effects/visual-effects/visualEffect.hpp"
 #include "waves/waveManager.hpp"
 
 /**

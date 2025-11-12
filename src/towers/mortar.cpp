@@ -1,9 +1,9 @@
 #include <cmath>
 #include "../../include/towers/mortar.hpp"
 #include "../../include/creatures/creature.hpp"
-#include "../../include/visual-effects/visualEffect.hpp"
-#include "../../include/visual-effects/explosionEffect.hpp"
-#include "../../include/visual-effects/shellEffect.hpp"
+#include "../../include/effects/visual-effects/visualEffect.hpp"
+#include "../../include/effects/visual-effects/explosionEffect.hpp"
+#include "../../include/effects/visual-effects/shellEffect.hpp"
 
 Mortar::Mortar(sf::Vector2i position_) noexcept
         : Tower(position_,

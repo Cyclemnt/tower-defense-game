@@ -1,7 +1,7 @@
 #include <cmath>
 #include "../../include/towers/laser.hpp"
 #include "../../include/creatures/creature.hpp"
-#include "../../include/visual-effects/laserEffect.hpp"
+#include "../../include/effects/visual-effects/laserEffect.hpp"
 
 Laser::Laser(sf::Vector2i position_) noexcept
     : Tower(position_,

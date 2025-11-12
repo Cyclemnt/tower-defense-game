@@ -1,6 +1,6 @@
 #include <cmath>
-#include "../../include/visual-effects/shellEffect.hpp"
-#include "../../include/renderer/renderContext.hpp"
+#include "../../../include/effects/visual-effects/shellEffect.hpp"
+#include "../../../include/renderer/renderContext.hpp"
 
 ShellEffect::ShellEffect(sf::Vector2f start_, sf::Vector2f end_, float speed_)
     : position(start_), target(end_), speed(speed_) {}

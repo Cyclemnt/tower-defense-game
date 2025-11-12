@@ -1,7 +1,7 @@
 #include <cmath>
 #include <cstdlib>
-#include "../../include/visual-effects/tracerEffect.hpp"
-#include "../../include/renderer/renderContext.hpp"
+#include "../../../include/effects/visual-effects/tracerEffect.hpp"
+#include "../../../include/renderer/renderContext.hpp"
 #include <iostream>
 TracerEffect::TracerEffect(sf::Vector2f start_, sf::Vector2f end_)
     : start(start_), end(end_), color(generateRandomColor()), splash(end_, color)

@@ -2,6 +2,7 @@
 #define RENDERER_HPP
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <unordered_map>
 #include <string>
 #include "renderContext.hpp"
@@ -42,6 +43,8 @@ public:
     /// @param smooth Whether to apply smoothing.
     /// @return A const reference to the loaded texture.
     [[nodiscard]] const sf::Texture& getTexture(const std::string& name, bool smooth = false);
+
+    [[nodiscard]] const sf::SoundBuffer& getSound(const std::string& filename);
 
     /// @brief Recomputes the tile scaling and centering based on window size.
     void computeScaling();

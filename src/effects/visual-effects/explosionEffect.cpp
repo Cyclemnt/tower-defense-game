@@ -1,6 +1,6 @@
 #include <cstdint>
-#include "../../include/visual-effects/explosionEffect.hpp"
-#include "../../include/renderer/renderContext.hpp"
+#include "../../../include/effects/visual-effects/explosionEffect.hpp"
+#include "../../../include/renderer/renderContext.hpp"
 
 ExplosionEffect::ExplosionEffect(sf::Vector2f position_, float maxRadius_)
     : position(position_), maxRadius(maxRadius_) {}

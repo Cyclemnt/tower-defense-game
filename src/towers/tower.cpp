@@ -3,7 +3,7 @@
 #include "../../include/creatures/creature.hpp"
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
-#include "../../include/visual-effects/tracerEffect.hpp"
+#include "../../include/effects/visual-effects/tracerEffect.hpp"
 
 Tower::Tower(sf::Vector2i position_, Materials::Quantities cost_, float damage_, float range_, float fireRate_) noexcept
     : position(position_), cost(cost_), damage(damage_), range(range_), fireRate(fireRate_) {}

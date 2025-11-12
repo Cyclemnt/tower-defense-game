@@ -1,7 +1,7 @@
 #include <cmath>
 #include "../../include/towers/gatling.hpp"
 #include "../../include/creatures/creature.hpp"
-#include "../../include/visual-effects/visualEffect.hpp"
+#include "../../include/effects/visual-effects/visualEffect.hpp"
 
 Gatling::Gatling(sf::Vector2i position_) noexcept
     : Tower(position_,
