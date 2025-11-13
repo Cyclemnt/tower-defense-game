@@ -15,7 +15,7 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 option(SFML_STATIC_LIBRARIES "Link SFML statically" OFF)
 
 # Find SFML
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
+find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System Audio)
 
 # Find TGUI
 find_package(TGUI REQUIRED)
@@ -24,4 +24,4 @@ find_package(TGUI REQUIRED)
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Link libraries
-target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System TGUI::TGUI)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System SFML::Audio TGUI::TGUI)
