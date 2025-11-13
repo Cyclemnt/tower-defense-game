@@ -2,17 +2,6 @@
 build/
 build-static/
 build-dynamic/
-cmake-build-debug/
-out/
-
-# Ignore bin and obj
-*.o
-*.out
-*.exe
-
-# Ignore temp files
-*.tmp
-*.log
 
 # Ignore shell scripts
 *.sh

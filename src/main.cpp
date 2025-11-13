@@ -1,7 +1,7 @@
-#include "../include/gameManager.hpp"
+#include <iostream>
 
 int main() {
-    GameManager manager;
-    manager.run();
+    std::cout << "hello world!" << std::endl;
+    
     return 0;
 }
