@@ -1,0 +1,6 @@
+#ifndef AUTO_WAVE_SOURCE_HPP
+#define AUTO_WAVE_SOURCE_HPP
+
+
+
+#endif // AUTO_WAVE_SOURCE_HPP

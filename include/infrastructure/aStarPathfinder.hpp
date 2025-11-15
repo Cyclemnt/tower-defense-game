@@ -1,0 +1,6 @@
+#ifndef A_STAR_PATHFINDER_HPP
+#define A_STAR_PATHFINDER_HPP
+
+
+
+#endif // A_STAR_PATHFINDER_HPP
