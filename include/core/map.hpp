@@ -14,6 +14,7 @@ namespace tdg::core {
         bool hasTower{false};
 
         Tile(const TileData& data) : x(data.x), y(data.y), type(data.type) {}
+        bool walkable() const { return (type == TileType::Path || type == TileType::Open && !hasTower); }
     };
 
     /// @brief Map stores tile layout and provides queries. Domain-only.
@@ -27,7 +28,7 @@ namespace tdg::core {
         const Tile* tileAt(int x, int y) const;
         Tile* tileAt(int x, int y);
 
-        std::vector<const Tile*> neighbors(int x, int y) const;
+        std::vector<const Tile*> neighbors(const Tile* tile) const;
 
         std::vector<Tile*> entryPoints() const { return m_entryPoints; }
         std::vector<Tile*> exitPoints() const { return m_exitPoints; }
