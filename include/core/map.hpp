@@ -12,6 +12,8 @@ namespace tdg::core {
         int x{0}, y{0};
         TileType type{TileType::Empty};
         bool hasTower{false};
+
+        Tile(const TileData& data) : x(data.x), y(data.y), type(data.type) {}
     };
 
     /// @brief Map stores tile layout and provides queries. Domain-only.
@@ -25,10 +27,11 @@ namespace tdg::core {
         const Tile* tileAt(int x, int y) const;
         Tile* tileAt(int x, int y);
 
-        std::vector<Tile*> neighbors(int x, int y) const;
+        std::vector<const Tile*> neighbors(int x, int y) const;
 
-        std::vector<std::pair<int,int>> entryPoints() const;
-        std::vector<std::pair<int,int>> corePoints() const;
+        std::vector<Tile*> entryPoints() const { return m_entryPoints; }
+        std::vector<Tile*> exitPoints() const { return m_exitPoints; }
+        Tile* corePoint() const { return m_corePoint; }
 
         bool placeTower(int x, int y);
         bool removeTower(int x, int y);
@@ -37,6 +40,10 @@ namespace tdg::core {
         int m_width{0};
         int m_height{0};
         std::vector<Tile> m_tiles; // row-major
+
+        std::vector<Tile*> m_entryPoints;
+        std::vector<Tile*> m_exitPoints;
+        Tile* m_corePoint = nullptr;
     };
 
 } // namespace tdg::core

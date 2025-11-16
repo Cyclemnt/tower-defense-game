@@ -10,7 +10,7 @@ namespace tdg::core {
     struct TileData {
         int x{};
         int y{};
-        char type{}; // 'P' Path, 'O' Open, 'E' Entry, 'X' Exit, 'C' Core, '.' Empty
+        TileType type{}; // 'P' Path, 'O' Open, 'E' Entry, 'X' Exit, 'C' Core, '.' Empty
     };
 
     struct MapData {
