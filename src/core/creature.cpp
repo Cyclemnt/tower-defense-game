@@ -68,7 +68,7 @@ namespace tdg::core {
         }
     }
 
-    void Creature::stealCores(unsigned int amount) {
+    void Creature::stealCores(unsigned int amount) noexcept {
         m_coresCarried = std::min(m_coresCarried + amount, m_stats.coresCapacity);
     }
 
@@ -78,7 +78,7 @@ namespace tdg::core {
         return dropped;
     }
 
-    void Creature::setPath(const std::vector<PathPoint>& p) {
+    void Creature::setPath(const std::vector<PathPoint>& p) noexcept {
         m_path = p;
         m_pathIndex = 0;
     }
