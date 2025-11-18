@@ -27,25 +27,19 @@ namespace tdg::core {
             cu -= other.cu;
             return *this;
         }
-
-        bool operator<(const Materials& other) const {
-            if (au != other.au) return au < other.au;
-            if (ag != other.ag) return ag < other.ag;
-            return cu < other.cu;
-        }
     };
 
     class Player {
     public:
-        explicit Player(const Materials& start);
+        explicit Player(const Materials& startBalance);
 
-        bool canAfford(const TowerStats& stats) const;
-        void buy(const TowerStats& stats);
+        bool canAfford(const Materials& cost) const;
+        void buy(const Materials& cost);
         void addMaterials(const Materials& m);
-        Materials materials() const noexcept { return m_current; }
+        Materials materials() const noexcept { return m_balance; }
 
     private:
-        Materials m_current;
+        Materials m_balance;
     };
 
 } // namespace tdg::core

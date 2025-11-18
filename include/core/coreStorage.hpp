@@ -7,7 +7,7 @@ namespace tdg::core {
 
     class CoreStorage {
     public:
-        explicit CoreStorage(unsigned int count);
+        explicit CoreStorage(unsigned int initialAmount);
 
         unsigned int total() const noexcept;
         unsigned int safeCount() const noexcept { return m_safe; }

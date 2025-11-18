@@ -3,8 +3,8 @@
 
 namespace tdg::core {
 
-    CoreStorage::CoreStorage(unsigned int count)
-        : m_safe(count) {}
+    CoreStorage::CoreStorage(unsigned int initialAmount)
+        : m_safe(initialAmount) {}
 
     unsigned int CoreStorage::total() const noexcept { return m_safe + m_stolen + m_lost; }
 
