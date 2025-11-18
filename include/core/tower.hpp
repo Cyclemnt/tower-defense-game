@@ -5,7 +5,9 @@
 #include <string>
 #include <memory>
 #include <array>
+#include <vector>
 #include "player.hpp"
+#include "creature.hpp"
 
 namespace tdg::core {
 
@@ -24,8 +26,9 @@ namespace tdg::core {
 
         virtual void update(std::chrono::milliseconds dt) = 0;
 
-        // Returns target creature id.
-        virtual int acquireTarget() = 0;
+        virtual Creature* acquireTarget(const std::vector<std::unique_ptr<Creature>>& creatures);
+        void clearTarget() noexcept { m_target = nullptr; }
+        virtual void attack() const;
 
         const TowerStats& stats() const noexcept { return m_stats; }
         int x() const noexcept { return m_x; }
@@ -36,6 +39,7 @@ namespace tdg::core {
     protected:
         TowerStats m_stats;
         int m_x{0}, m_y{0};
+        Creature* m_target{nullptr};
         std::chrono::milliseconds m_timeSinceLastShot{0};
     };
 
