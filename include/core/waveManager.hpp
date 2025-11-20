@@ -16,18 +16,21 @@ namespace tdg::core {
         explicit WaveManager(std::unique_ptr<IWaveSource> source);
 
         void update(std::chrono::milliseconds dt);
-        void setSpawnCallback(SpawnCallback cb);
 
-        int currentWaveIndex() const noexcept;
+        int currentWaveIndex() const noexcept { return m_waveIndex; }
         bool allWavesCleared() const noexcept;
+        bool WaveManager::isWaveComplete() const noexcept;
+        size_t WaveManager::getWaveNumber() const noexcept;
+        size_t WaveManager::getWavesQuantity() const noexcept;
+        float WaveManager::getTimeBeforeNext() const noexcept;
 
     private:
         std::unique_ptr<IWaveSource> m_source;
         std::vector<WaveData> m_waves;
-        std::chrono::milliseconds m_time{0};
+        std::chrono::milliseconds m_timer{0};
         size_t m_waveIndex{0};
-        size_t m_nextSpawnIndex{0};
-        SpawnCallback m_spawnCb;
+        size_t m_spawnIndex{0};
+        bool m_inWave{false};
     };
 
 } // namespace tdg::core
