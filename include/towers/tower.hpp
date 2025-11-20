@@ -30,7 +30,7 @@ protected:
     float damage;   ///< Damage per attack.
     float range;    ///< Attack range (in tiles).
     float fireRate; ///< Attacks per second.
-    unsigned int level = 1u; ///< Upgrade level (starts at 1).
+    unsigned int level = 3u; ///< Upgrade level (starts at 1).
 
     float cooldown = 0.0f; ///< Time remaining before next attack (seconds).
 

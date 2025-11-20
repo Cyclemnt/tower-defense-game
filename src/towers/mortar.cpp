@@ -70,11 +70,26 @@ void Mortar::update(float deltaTime, const std::vector<std::unique_ptr<Creature>
 }
 
 std::string Mortar::getTextureName(int) const {
-    if (!target) return "tower_mortar_n.png"; // default idle texture
+    float cooldownRatio = cooldown * fireRate;
+    if (level == 2){
+        if (cooldownRatio > 0.75f) return "tower_mortar2_3.png";
+        if (cooldownRatio > 0.5f)  return "tower_mortar2_0.png";
+        if (cooldownRatio > 0.25f)  return "tower_mortar2_1.png";
+        else return "tower_mortar2_2.png";
+    }
+    else if (level == 3){
+        if (cooldownRatio > 0.95f) return "tower_mortar3_2.png";
+        if (cooldownRatio > 0.6f)  return "tower_mortar3_3.png";
+        if (cooldownRatio > 0.25f)  return "tower_mortar3_0.png";
+        else return "tower_mortar3_1.png";
+    }
+    else{
+        if (!target) return "tower_mortar_n.png"; // default idle texture
 
-    const float dx = target->getPosition().x - static_cast<float>(position.x);
+        const float dx = target->getPosition().x - static_cast<float>(position.x);
 
-    if (dx < -0.1f) return "tower_mortar_nw.png";
-    else if (dx >  0.1f) return "tower_mortar_ne.png";
-    else return "tower_mortar_n.png";
+        if (dx < -0.1f) return "tower_mortar_nw.png";
+        else if (dx >  0.1f) return "tower_mortar_ne.png";
+        else return "tower_mortar_n.png";
+    }
 }

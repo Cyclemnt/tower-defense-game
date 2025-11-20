@@ -53,5 +53,13 @@ void Laser::update(float deltaTime, const std::vector<std::unique_ptr<Creature>>
 }
 
 std::string Laser::getTextureName(int frame) const {
-    return "tower_laser_" + std::to_string(frame) + ".png";
+    if (level == 2){
+        return "tower_laser2_" + std::to_string(frame) + ".png";
+    }
+    else if (level == 3){
+        return "tower_laser3_" + std::to_string(frame) + ".png";
+    }
+    else{
+        return "tower_laser_" + std::to_string(frame) + ".png";
+    }
 }
