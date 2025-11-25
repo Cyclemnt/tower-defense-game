@@ -15,7 +15,7 @@ namespace tdg::core {
         return dx + dy;
     }
 
-    std::vector<PathPoint> AStarPathfinder::findPath(const Tile* start, const Tile* goal, bool ignoreTowers) const {
+    std::vector<const Tile*> AStarPathfinder::findPath(const Tile* start, const Tile* goal, bool ignoreTowers) const {
         // Comparator for the priority queue, sorts nodes by their total cost (fCost = gCost + hCost).
         auto cmp = [](Node* a, Node* b) { return a->fCost() > b->fCost(); };
         std::priority_queue<Node*, std::vector<Node*>, decltype(cmp)> openSet(cmp); // Priority queue for nodes to explore.
@@ -27,7 +27,7 @@ namespace tdg::core {
         openSet.push(startNode); // Add the start node to the priority queue.
         allNodes[start] = startNode; // Record the start node in allNodes for fast access.
 
-        std::vector<PathPoint> path; // The final path to return.
+        std::vector<const Tile*> path; // The final path to return.
 
         while (!openSet.empty()) {
             Node* current = openSet.top(); // Get the node with the lowest total cost (fCost).
@@ -37,7 +37,7 @@ namespace tdg::core {
             if (current->tile == goal) {
                 Node* n = current;
                 while (n) { // Trace back through the parent nodes to reconstruct the path.
-                    path.push_back({n->tile->x, n->tile->y}); // Add the current tile to the path.
+                    path.push_back(n->tile); // Add the current tile to the path.
                     n = n->parent; // Move to the parent node.
                 }
                 std::reverse(path.begin(), path.end());  // Reverse the path to get it from start to goal.

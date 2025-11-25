@@ -38,6 +38,8 @@ namespace tdg::engine {
         bool isVictory() const;
 
     private:
+        bool m_paused{false};
+        unsigned long tick{0};
         Map m_map;
         WaveManager m_waveManager;
         Player m_player;

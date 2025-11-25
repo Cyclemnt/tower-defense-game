@@ -6,41 +6,28 @@ namespace tdg::core {
     Creature::Creature(const CreatureStats& stats, float px, float py)
         : m_stats(stats), m_health(stats.maxHealth), m_shield(stats.maxShield), m_px(px), m_py(py) {}
 
-    void Creature::update(std::chrono::milliseconds dt) {
+    void Creature::update(float dt) {
         if (!m_alive || m_path.empty() || m_pathIndex + 1 >= m_path.size()) return;
-        float seconds = std::chrono::duration<float>(dt).count();
 
-        float distanceToTravel = m_stats.speed * seconds;
+        float distanceToTravel = m_stats.speed * dt;
 
         while (distanceToTravel > 0.0f && m_pathIndex + 1 < m_path.size()) {
-            PathPoint current = m_path[m_pathIndex];
-            PathPoint next = m_path[m_pathIndex + 1];
+            const Tile* next = m_path[m_pathIndex + 1];
 
-            PathPoint target = next;
-
-            float dx = target.x - m_px;
-            float dy = target.y - m_py;
+            float dx = next->x - m_px;
+            float dy = next->y - m_py;
             
             float distanceToNextTile = std::sqrt(dx * dx + dy * dy);
 
             if (distanceToTravel >= distanceToNextTile) {
                 // Get to next Tile
-                m_px = target.x;
-                m_py = target.y;
+                m_px = next->x;
+                m_py = next->y;
                 m_pathIndex++;
                 distanceToTravel -= distanceToNextTile;
 
-                // Events depending on Tile
-                // if (const CoreStorage* c = dynamic_cast<const CoreStorage*>(next)) {
-                //     if (coresCarried < coresCapacity) {
-                //         if (coresCapacity - coresCarried < 0) throw std::runtime_error("Creature carries more cores than its capacity");
-                //         stealCores(c->takeCores(coresCapacity - coresCarried)); // Taking as many cores as possible
-                //         distanceToTravel = 0.0f; // Path will change
-                //     }
-                // }
-                // else if (const ExitZone* ex = dynamic_cast<const ExitZone*>(next)) {
-                //     // Nothing to do, Game will do its job
-                // }
+                // onTileReached(next); event interface base of game class ; creature event for this ; tower events for visual
+
             } else {
                 // Partially move thowards next Tile
                 m_px += (dx / distanceToNextTile) * distanceToTravel;
@@ -78,7 +65,7 @@ namespace tdg::core {
         return dropped;
     }
 
-    void Creature::setPath(const std::vector<PathPoint>& p) noexcept {
+    void Creature::setPath(const std::vector<const Tile*>& p) noexcept {
         m_path = p;
         m_pathIndex = 0;
     }

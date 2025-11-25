@@ -25,7 +25,7 @@ namespace tdg::core {
         Creature(const CreatureStats& stats, float px, float py);
         virtual ~Creature() = default;
 
-        virtual void update(std::chrono::milliseconds dt);
+        virtual void update(float dt);
 
         bool isAlive() const noexcept { return m_alive; }
         float health() const noexcept { return m_health; }
@@ -38,7 +38,9 @@ namespace tdg::core {
         void stealCores(unsigned int amount) noexcept;
         unsigned int dropCores() noexcept;
 
-        void setPath(const std::vector<PathPoint>& p) noexcept;
+        void setPath(const std::vector<const Tile*>& p) noexcept;
+
+        Materials getLoot() const noexcept { return m_stats.bounty; }
 
     protected:
         CreatureStats m_stats;
@@ -46,7 +48,7 @@ namespace tdg::core {
         float m_shield{0.0f};
         float m_px{0.0f}, m_py{0.0f};
         size_t m_pathIndex{0};
-        std::vector<PathPoint> m_path;
+        std::vector<const Tile*> m_path;
         unsigned int m_coresCarried{0};
         bool m_alive{true};
     };

@@ -13,7 +13,7 @@ namespace tdg::core {
 
         /// @brief Computes a path between two tiles using A*.
         /// @return A list of tiles forming the path from start to goal, or empty if none.
-        std::vector<PathPoint> findPath(const Tile* start, const Tile* goal, bool ignoreTowers = false) const override;
+        std::vector<const Tile*> findPath(const Tile* start, const Tile* goal, bool ignoreTowers = false) const override;
     
     private:
         const core::Map& m_map;

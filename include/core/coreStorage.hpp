@@ -14,9 +14,9 @@ namespace tdg::core {
         unsigned int stolenCount() const noexcept { return m_stolen; }
         unsigned int lostCount() const noexcept { return m_lost; }
 
-        unsigned int take(unsigned int n);
-        void give(unsigned int n);
-        void loose(unsigned int n);
+        unsigned int stealCores(unsigned int n);
+        void returnCores(unsigned int n);
+        void loseCores(unsigned int n);
 
         bool allLost() const noexcept;
 
