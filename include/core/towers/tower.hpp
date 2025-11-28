@@ -7,15 +7,14 @@
 #include <array>
 #include <vector>
 #include "player.hpp"
-#include "creature.hpp"
+#include "core/creatures/creature.hpp"
 
 namespace tdg::core {
 
     struct TowerStats {
-        std::string id;
-        float range{0};
         float damage{0.0f};
-        std::chrono::milliseconds fireRate{0};
+        float fireRate{0};
+        float range{0};
         Materials cost{0u,0u,0u};
     };
 
@@ -24,9 +23,9 @@ namespace tdg::core {
         Tower(const TowerStats& stats, int x, int y);
         virtual ~Tower() = default;
 
-        virtual void update(std::chrono::milliseconds dt) = 0;
+        virtual void update(float dt, const std::vector<CreaturePtr>& creatures) = 0;
 
-        virtual Creature* acquireTarget(const std::vector<std::unique_ptr<Creature>>& creatures);
+        virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
         void clearTarget() noexcept { m_target = nullptr; }
         virtual void attack() const;
 
@@ -40,7 +39,7 @@ namespace tdg::core {
         TowerStats m_stats;
         int m_x{0}, m_y{0};
         Creature* m_target{nullptr};
-        std::chrono::milliseconds m_timeSinceLastShot{0};
+        float m_cooldown{0};
     };
 
     using TowerPtr = std::unique_ptr<Tower>;

@@ -1,4 +1,4 @@
-#include "core/tower.hpp"
+#include "core/towers/tower.hpp"
 #include <cmath>
 
 namespace tdg::core {
@@ -6,7 +6,7 @@ namespace tdg::core {
     Tower::Tower(const TowerStats& stats, int x, int y)
         : m_stats(stats), m_x(x), m_y(y) {}
 
-    Creature* Tower::acquireTarget(const std::vector<std::unique_ptr<Creature>>& creatures) {
+    Creature* Tower::acquireTarget(const std::vector<CreaturePtr>& creatures) {
         Creature* best = nullptr;
         float closest = std::numeric_limits<float>::max();
 

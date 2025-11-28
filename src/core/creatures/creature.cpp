@@ -1,10 +1,10 @@
-#include "core/creature.hpp"
+#include "core/creatures/creature.hpp"
 #include <cmath>
 
 namespace tdg::core {
 
-    Creature::Creature(const CreatureStats& stats, float px, float py)
-        : m_stats(stats), m_health(stats.maxHealth), m_shield(stats.maxShield), m_px(px), m_py(py) {}
+    Creature::Creature(const CreatureStats& stats)
+        : m_stats(stats), m_health(stats.maxHealth), m_shield(stats.maxShield) {}
 
     void Creature::update(float dt) {
         if (!m_alive || m_path.empty() || m_pathIndex + 1 >= m_path.size()) return;
@@ -68,6 +68,11 @@ namespace tdg::core {
     void Creature::setPath(const std::vector<const Tile*>& p) noexcept {
         m_path = p;
         m_pathIndex = 0;
+    }
+
+    void Creature::setPosition(int x, int y) noexcept {
+        m_px = x;
+        m_py = y;
     }
 
 } // namespace tdg::core

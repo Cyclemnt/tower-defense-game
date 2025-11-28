@@ -1,6 +1,7 @@
 #ifndef I_MAP_SOURCE_HPP
 #define I_MAP_SOURCE_HPP
 
+#include "core/map.hpp"
 #include <string>
 #include <vector>
 

@@ -11,18 +11,20 @@
 
 namespace tdg::core {
 
+    enum class CreatureType {Minion, MinionB, Drone, DroneB, Tank, TankB};
+
     struct CreatureStats {
-        std::string id;
         float maxHealth{0.0f};
         float maxShield{0.0f};
         float speed{0.0f};
         unsigned int coresCapacity{0u};
         Materials bounty{0u,0u,0u};
+        bool boosted{false};
     };
 
     class Creature {
     public:
-        Creature(const CreatureStats& stats, float px, float py);
+        Creature(const CreatureStats& stats);
         virtual ~Creature() = default;
 
         virtual void update(float dt);
@@ -39,6 +41,7 @@ namespace tdg::core {
         unsigned int dropCores() noexcept;
 
         void setPath(const std::vector<const Tile*>& p) noexcept;
+        void setPosition(int x, int y) noexcept;
 
         Materials getLoot() const noexcept { return m_stats.bounty; }
 

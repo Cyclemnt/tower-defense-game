@@ -1,7 +1,7 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "tower.hpp"
+#include "core/towers/tower.hpp"
 
 namespace tdg::core {
 
