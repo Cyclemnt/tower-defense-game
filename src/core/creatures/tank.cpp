@@ -9,9 +9,9 @@ namespace tdg::core {
             /* speed */ 0.25f,
             /* coresCapacity */ 3u,
             /* loot */ {
-                1u,                    // Au
-                2u,                    // Ag
-                boosted ? 40u : 10u    // Cu
+                1u,                     // Au
+                2u,                     // Ag
+                boosted ? 40u : 10u     // Cu
             },
             boosted
         }) {}

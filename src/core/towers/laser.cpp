@@ -15,7 +15,7 @@ namespace tdg::core {
             }
         }, x, y) {}
 
-    void Laser::update(float dt, const std::vector<CreaturePtr>& creatures) {
+    void Laser::update(float dt, FrameEvents events, const std::vector<CreaturePtr>& creatures) {
         if (m_target || m_cooldown > 0.0f)
             m_cooldown -= dt;
 
@@ -49,7 +49,8 @@ namespace tdg::core {
         while (m_target && m_cooldown <= 0.0f) {
             attack();
             m_cooldown += 1.0f / m_stats.fireRate;
-            // visualEffects.push_back(std::make_unique<LaserEffect>(sf::Vector2f(position), m_target->getPosition()));
+            events.vfxs.push_back({VFXType::LaserBeam, m_x, m_y, m_target->px(), m_target->py()});
+            events.sfxs.push_back(SFXType::LaserShoot);
         }
     }
     

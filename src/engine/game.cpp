@@ -1,68 +1,56 @@
 #include "engine/game.hpp"
+#include "core/events.hpp"
 
 namespace tdg::engine {
 
-    Game::Game(Config cfg, std::shared_ptr<IPathfinder> pathfinder)
-        : m_map(cfg.mapData), m_waveManager(std::move(cfg.waveSource)), m_pathfinder(pathfinder), m_player({0u,0u,100u}), m_cores(24u) {}
+    Game::Game(Config cfg)
+        : m_map(cfg.mapData), m_waveManager(std::move(cfg.waveSource)), m_pathfinder(cfg.pathfinder), m_player(cfg.startMaterials), m_cores(cfg.startCores) {}
 
-    void Game::update(std::chrono::milliseconds dt) {
+    void Game::update(float dt) {
         if (m_paused) return;
-        dt *= speed;
+        // dt *= speed;
         ++tick;
 
         m_waveManager.update(dt);
 
         // Update creatures
-        for (std::unique_ptr<Creature>& c : m_creatures) {
+        for (CreaturePtr& c : m_creatures) {
             c->update(dt);
         }
 
         // Update towers & effects
-        for (std::unique_ptr<Tower>& t : m_towers) {
-            if (isOver()) t->clearTarget();
-            else {
-                t->update(dt, m_creatures);
-                auto newEffects = t->getVisualEffects();
-                if (!newEffects.empty()) {
-                    visualEffects.insert(visualEffects.end(),
-                        std::make_move_iterator(newEffects.begin()),
-                        std::make_move_iterator(newEffects.end()));
-                }
-            }
+        for (TowerPtr& t : m_towers) {
+            t->update(dt, m_events, m_creatures);
         }
 
-        // Update all visual effects
-        for (std::unique_ptr<VisualEffect>& e : visualEffects)
-            e->update(dt);
+        // Update events with a lifetime
+        m_events.update(dt);
 
         // Reward and cleanup dead creatures
-        for (std::unique_ptr<Creature>& c : m_creatures) {
+        for (auto it = m_creatures.begin(); it != m_creatures.end(); ) {
+            CreaturePtr& c = *it;
             if (!c->isAlive()) {
                 m_cores.returnCores(c->dropCores());
                 m_player.addMaterials(c->getLoot());
-                for (std::unique_ptr<Tower>& t : m_towers)
-                    if (t->getTarget() == c.get())
-                        t->clearTarget();
+                // Notify Tower in caase of target death
+                for (TowerPtr& t : m_towers) if (t->target() == c.get()) t->clearTarget();
+                it = m_creatures.erase(it);
+                m_events.sfxs.push_back(SFXType::CreatureDeath);
             }
+            else { ++it; }
         }
-
-        m_creatures.erase(
-            std::remove_if(m_creatures.begin(), m_creatures.end(),
-                [](const auto& c) { return !c->isAlive(); }),
-            m_creatures.end());
-
-        visualEffects.erase(
-            std::remove_if(visualEffects.begin(), visualEffects.end(),
-                [](const auto& e) { return !e->isAlive(); }),
-            visualEffects.end());
     }
 
-    void Game::render(tdg::infra::IRenderer& renderer);
+    void Game::render(tdg::infra::IRenderer& renderer) {}
 
-    bool Game::buildTower(const std::string& towerId, int x, int y);
-    bool Game::sellTower(int x, int y);
+    bool Game::buildTower(const std::string& towerId, int x, int y) {}
+    void Game::sellTower(int x, int y) {}
 
-    bool Game::isGameOver() const;
-    bool Game::isVictory() const;
+    void Game::spawnCreature() {
+        m_events.sfxs.push_back(SFXType::CreatureSpawn);
+    }
+
+    bool Game::isGameOver() const { return m_cores.allLost(); }
+    bool Game::isVictory() const {}
 
 } // tdg::engine

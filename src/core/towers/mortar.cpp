@@ -15,7 +15,7 @@ namespace tdg::core {
             }
         }, x, y) {}
 
-    void Mortar::update(float dt, const std::vector<CreaturePtr>& creatures) {
+    void Mortar::update(float dt, FrameEvents events, const std::vector<CreaturePtr>& creatures) {
         if (m_target || m_cooldown > 0.0f)
             m_cooldown -= dt;
 
@@ -49,7 +49,8 @@ namespace tdg::core {
                     if (impactDist < m_shellExplosionRadius)
                         c->takeDamage(m_stats.damage);
                 }
-                // visualEffects.push_back(std::make_unique<ExplosionEffect>(s.target));
+                events.vfxs.push_back({VFXType::Explosion, s.endX, s.endY});
+                events.sfxs.push_back(SFXType::MortarHit);
                 it = m_shells.erase(it); // Erease element and get new iterator
 
             } else {
@@ -65,9 +66,8 @@ namespace tdg::core {
             // Create new projectile
             Shell newShell{m_x, m_y, m_target->px(), m_target->py()};
             m_shells.push_back(newShell);
-            
             m_cooldown += 1.0f / m_stats.fireRate;
-            // visualEffects.push_back(std::make_unique<ShellEffect>(s.position, s.target, s.speed));
+            events.sfxs.push_back(SFXType::MortarShoot);
         }
     }
     

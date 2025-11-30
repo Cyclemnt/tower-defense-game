@@ -3,7 +3,6 @@
 
 #include "interfaces/iWaveSource.hpp"
 #include <vector>
-#include <chrono>
 #include <memory>
 #include <functional>
 
@@ -15,7 +14,7 @@ namespace tdg::core {
 
         explicit WaveManager(std::unique_ptr<IWaveSource> source);
 
-        void update(std::chrono::milliseconds dt);
+        void update(float dt);
 
         int currentWaveIndex() const noexcept { return m_waveIndex; }
         bool allWavesCleared() const noexcept;
@@ -27,7 +26,7 @@ namespace tdg::core {
     private:
         std::unique_ptr<IWaveSource> m_source;
         std::vector<WaveData> m_waves;
-        std::chrono::milliseconds m_timer{0};
+        float m_timer{0};
         size_t m_waveIndex{0};
         size_t m_spawnIndex{0};
         bool m_inWave{false};

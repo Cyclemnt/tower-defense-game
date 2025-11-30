@@ -8,6 +8,7 @@
 #include <vector>
 #include "player.hpp"
 #include "core/creatures/creature.hpp"
+#include "core/events.hpp"
 
 namespace tdg::core {
 
@@ -23,7 +24,7 @@ namespace tdg::core {
         Tower(const TowerStats& stats, int x, int y);
         virtual ~Tower() = default;
 
-        virtual void update(float dt, const std::vector<CreaturePtr>& creatures) = 0;
+        virtual void update(float dt, FrameEvents events, const std::vector<CreaturePtr>& creatures) = 0;
 
         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
         void clearTarget() noexcept { m_target = nullptr; }
@@ -32,6 +33,7 @@ namespace tdg::core {
         const TowerStats& stats() const noexcept { return m_stats; }
         int x() const noexcept { return m_x; }
         int y() const noexcept { return m_y; }
+        Creature* target() const noexcept { return m_target; }
 
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
 

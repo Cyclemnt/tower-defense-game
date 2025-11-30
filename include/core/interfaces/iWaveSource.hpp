@@ -3,17 +3,16 @@
 
 #include <vector>
 #include <string>
-#include <chrono>
 
 namespace tdg::core {
 
     struct SpawnEntry {
-        std::chrono::milliseconds delay{0};
+        float delay{0};
         std::string enemyType;
     };
 
     struct WaveData {
-        std::chrono::milliseconds startDelay{0};
+        float startDelay{0};
         std::vector<SpawnEntry> spawns;
     };
 

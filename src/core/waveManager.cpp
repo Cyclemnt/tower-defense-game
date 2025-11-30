@@ -5,12 +5,12 @@ namespace tdg::core {
     explicit WaveManager::WaveManager(std::unique_ptr<IWaveSource> source)
         : m_source(std::move(source)) {}
 
-    void WaveManager::update(std::chrono::milliseconds dt) {
+    void WaveManager::update(float dt) {
         if (m_spawnIndex < m_waves[m_waveIndex].spawns.size())
             m_timer -= dt;
         
         // Spawn creatures when timer reaches 0
-        if (m_spawnIndex < m_waves[m_waveIndex].spawns.size() && m_timer.count() <= 0.0f) {
+        if (m_spawnIndex < m_waves[m_waveIndex].spawns.size() && m_timer <= 0.0f) {
             m_inWave = true;
             // game.spawnCreature(m_waves[m_waveIndex].spawns[m_spawnIndex].enemyType);
             ++m_spawnIndex;
@@ -47,7 +47,7 @@ namespace tdg::core {
     }
 
     float WaveManager::getTimeBeforeNext() const noexcept {
-        return m_inWave ? 0.0f : m_timer.count() / 1000.0f < 0 ? 0.0f : m_timer.count() / 1000.0f;
+        return m_inWave ? 0.0f : m_timer < 0 ? 0.0f : m_timer;
     }
 
 } // namespace tdg::core
