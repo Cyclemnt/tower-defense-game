@@ -21,7 +21,7 @@ namespace tdg::core {
         explicit Mortar(int x, int y) noexcept;
         ~Mortar() override = default;
 
-        void update(float dt, FrameEvents events, const std::vector<CreaturePtr>& creatures) override;
+        void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) override;
     };
 
 } // namespace tdg::core

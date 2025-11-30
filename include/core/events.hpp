@@ -36,7 +36,7 @@ namespace tdg::core {
     };
 
     // Event collector
-    struct FXEvents {
+    struct Events {
         std::vector<SFXType> sfxs;
         std::vector<VFXEventData> vfxs;
 

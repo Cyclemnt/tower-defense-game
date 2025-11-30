@@ -15,7 +15,7 @@ namespace tdg::engine {
 
         // Update creatures
         for (CreaturePtr& c : m_creatures) {
-            c->update(dt);
+            c->update(dt, m_events);
         }
 
         // Update towers & effects
@@ -41,7 +41,7 @@ namespace tdg::engine {
         }
     }
 
-    void Game::render(tdg::infra::IRenderer& renderer) {}
+    // void Game::render(tdg::infra::IRenderer& renderer) {}
 
     bool Game::buildTower(const std::string& towerId, int x, int y) {}
     void Game::sellTower(int x, int y) {}

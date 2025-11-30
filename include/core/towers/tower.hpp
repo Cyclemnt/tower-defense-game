@@ -24,7 +24,7 @@ namespace tdg::core {
         Tower(const TowerStats& stats, int x, int y);
         virtual ~Tower() = default;
 
-        virtual void update(float dt, FrameEvents events, const std::vector<CreaturePtr>& creatures) = 0;
+        virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
 
         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
         void clearTarget() noexcept { m_target = nullptr; }

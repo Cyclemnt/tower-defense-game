@@ -15,7 +15,7 @@ namespace tdg::core {
             }
         }, x, y) {}
 
-    void Laser::update(float dt, FrameEvents events, const std::vector<CreaturePtr>& creatures) {
+    void Laser::update(float dt, Events events, const std::vector<CreaturePtr>& creatures) {
         if (m_target || m_cooldown > 0.0f)
             m_cooldown -= dt;
 

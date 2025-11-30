@@ -32,7 +32,7 @@ namespace tdg::engine {
         Game(Config cfg);
 
         void update(float dt);
-        void render(tdg::infra::IRenderer& renderer);
+        // void render(tdg::infra::IRenderer& renderer);
 
         bool buildTower(const std::string& towerId, int x, int y);
         void sellTower(int x, int y);
@@ -53,7 +53,7 @@ namespace tdg::engine {
 
         std::vector<TowerPtr> m_towers;
         std::vector<CreaturePtr> m_creatures;
-        FXEvents m_events;
+        Events m_events;
 
         std::shared_ptr<IPathfinder> m_pathfinder;
     };
