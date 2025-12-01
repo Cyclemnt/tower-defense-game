@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include "../../include/towers/gatling.hpp"
 #include "../../include/creatures/creature.hpp"
