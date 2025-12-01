@@ -1,7 +1,7 @@
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include "../../include/visual-effects/tracerSplashEffect.hpp"
 #include "../../include/renderer/renderContext.hpp"
+#define PIf 3.141592f 
 
 
 TracerSplashEffect::TracerSplashEffect(sf::Vector2f position_, sf::Color color_)
@@ -10,7 +10,7 @@ TracerSplashEffect::TracerSplashEffect(sf::Vector2f position_, sf::Color color_)
     constexpr int count = 6;
     particles.reserve(count);
     for (int i = 0; i < count; ++i) {
-        const float ang = (std::rand() % 360) * static_cast<float>(M_PI) / 180.0f;
+        const float ang = (std::rand() % 360) * static_cast<float>(PIf) / 180.0f;
         const float spd = 1.6f + (std::rand() % 100) * 0.002f;
         const float rad = 0.02f + (std::rand() % 30) * 0.001f;
         particles.push_back({{std::cos(ang), std::sin(ang)}, spd, rad, 0.0f, 0.12f + (std::rand() % 40) * 0.002f});
