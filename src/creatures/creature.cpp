@@ -1,4 +1,3 @@
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
 #include "../../include/tiles/tile.hpp"
@@ -7,6 +6,7 @@
 #include "../../include/tiles/exitZone.hpp"
 #include "../../include/renderer/renderer.hpp"
 #include "../../include/renderer/renderContext.hpp"
+#define PIf 3.141592f 
 
 Creature::Creature(float health_, float shield_, float speed_, unsigned int coresCapacity_, Materials::Quantities loot_, bool boosted_)
     : health(health_), baseHealth(health_), shield(shield_), baseShield(shield_), speed(speed_), coresCapacity(coresCapacity_), loot(loot_), boosted(boosted_) {}
@@ -176,7 +176,7 @@ void Creature::drawCarriedCores(const RenderContext& ctx) const {
     float baseY = position.y * ctx.tileSize + ctx.offset.y + ctx.tileSize * 0.5f;
 
     float orbitRadius = ctx.tileSize * 0.15f;
-    float angleStep = 2.0f * M_PIf / std::max(coresCarried, 1u);
+    float angleStep = 2.0f * PIf / std::max(coresCarried, 1u);
     float time = ctx.tick * 0.03f; // Rotation speed
     float offset = static_cast<float>(reinterpret_cast<uintptr_t>(this) % 2048); // Some randomness (we should find something else)
     float coreRadius = ctx.tileSize * 0.03f;
