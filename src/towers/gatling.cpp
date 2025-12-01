@@ -1,8 +1,8 @@
-#define _USE_MATH_DEFINES
 #include <cmath>
 #include "../../include/towers/gatling.hpp"
 #include "../../include/creatures/creature.hpp"
 #include "../../include/visual-effects/visualEffect.hpp"
+#define PIf 3.141592f 
 
 Gatling::Gatling(sf::Vector2i position_) noexcept
     : Tower(position_,
@@ -21,7 +21,7 @@ std::string Gatling::getTextureName(int) const {
         return "tower_gatling_s.png";
 
     const sf::Vector2f d = target->getPosition() - static_cast<sf::Vector2f>(position);
-    const float angle = std::fmod(std::atan2(d.y, d.x) + 2.0f * M_PIf, 2.0f * M_PIf);
+    const float angle = std::fmod(std::atan2(d.y, d.x) + 2.0f * PIf, 2.0f * PIf);
 
     if (angle < 0.3927f) return "tower_gatling_e.png";
     if (angle < 1.169f)  return "tower_gatling_se.png";
