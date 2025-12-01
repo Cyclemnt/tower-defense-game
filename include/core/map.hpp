@@ -15,6 +15,8 @@ namespace tdg::core {
 
         Tile(const TileData& data) : x(data.x), y(data.y), type(data.type) {}
         bool walkable() const { return (type == TileType::Path || type == TileType::Open && !hasTower); }
+        bool buildable() const { return (type == TileType::Open && !hasTower); }
+        bool sellable() const { return (type == TileType::Open && hasTower); }
     };
 
     /// @brief Map stores tile layout and provides queries. Domain-only.

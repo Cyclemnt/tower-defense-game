@@ -12,6 +12,8 @@
 #include "core/creatures/creature.hpp"
 #include "core/interfaces/iPathfinder.hpp"
 #include "core/events.hpp"
+#include "core/factories/towerFactory.hpp"
+#include "core/factories/creatureFactory.hpp"
 
 namespace tdg::infra { class IRenderer; } // forward decl of infra interface
 
@@ -32,12 +34,14 @@ namespace tdg::engine {
         Game(Config cfg);
 
         void update(float dt);
-        // void render(tdg::infra::IRenderer& renderer);
 
-        bool buildTower(const std::string& towerId, int x, int y);
+        void handlePathEvent(PathEvent& pe);
+        void handleDeadCreatures();
+
+        void buildTower(Tower::Type type, int x, int y);
         void sellTower(int x, int y);
 
-        void spawnCreature();
+        void spawnCreature(Creature::Type type);
 
         bool isGameOver() const;
         bool isVictory() const;
@@ -56,6 +60,9 @@ namespace tdg::engine {
         Events m_events;
 
         std::shared_ptr<IPathfinder> m_pathfinder;
+
+        TowerFactory m_towerFactory;
+        CreatureFactory m_creatureFactory;
     };
 
 } // namespace tdg::engine

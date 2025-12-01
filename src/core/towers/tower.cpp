@@ -3,7 +3,7 @@
 
 namespace tdg::core {
 
-    Tower::Tower(const TowerStats& stats, int x, int y)
+    Tower::Tower(const Tower::Stats& stats, int x, int y)
         : m_stats(stats), m_x(x), m_y(y) {}
 
     Creature* Tower::acquireTarget(const std::vector<CreaturePtr>& creatures) {

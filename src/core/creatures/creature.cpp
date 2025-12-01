@@ -3,7 +3,7 @@
 
 namespace tdg::core {
 
-    Creature::Creature(const CreatureStats& stats)
+    Creature::Creature(const Creature::Stats& stats)
         : m_stats(stats), m_health(stats.maxHealth), m_shield(stats.maxShield) {}
 
     void Creature::update(float dt, Events events) {
@@ -26,7 +26,14 @@ namespace tdg::core {
                 m_pathIndex++;
                 distanceToTravel -= distanceToNextTile;
 
-                // onTileReached(next); event interface base of game class ; creature event for this ; tower events for visual
+
+                if (next == *m_path.end()) {
+                    switch (next->type) {
+                    case TileType::CoreStorage: events.pathEvents.push_back({PathEvent::Type::ArrivedToCore, this});
+                    case TileType::Exit:        events.pathEvents.push_back({PathEvent::Type::ArrivedToExit, this});
+                    default: break;
+                    }
+                }
 
             } else {
                 // Partially move thowards next Tile

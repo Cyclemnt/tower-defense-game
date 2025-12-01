@@ -12,20 +12,20 @@
 
 namespace tdg::core {
 
-    enum class CreatureType {Minion, MinionB, Drone, DroneB, Tank, TankB};
-
-    struct CreatureStats {
-        float maxHealth{0.0f};
-        float maxShield{0.0f};
-        float speed{0.0f};
-        unsigned int coresCapacity{0u};
-        Materials bounty{0u,0u,0u};
-        bool boosted{false};
-    };
-
     class Creature {
     public:
-        Creature(const CreatureStats& stats);
+        enum class Type { Minion, MinionB, Drone, DroneB, Tank, TankB };
+
+        struct Stats {
+            float maxHealth{0.0f};
+            float maxShield{0.0f};
+            float speed{0.0f};
+            unsigned int coresCapacity{0u};
+            Materials bounty{0u,0u,0u};
+            bool boosted{false};
+        };
+
+        Creature(const Creature::Stats& stats);
         virtual ~Creature() = default;
 
         virtual void update(float dt, Events events);
@@ -47,7 +47,7 @@ namespace tdg::core {
         Materials getLoot() const noexcept { return m_stats.bounty; }
 
     protected:
-        CreatureStats m_stats;
+        Creature::Stats m_stats;
         float m_health{0.0f};
         float m_shield{0.0f};
         float m_px{0.0f}, m_py{0.0f};

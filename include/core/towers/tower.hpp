@@ -12,16 +12,18 @@
 
 namespace tdg::core {
 
-    struct TowerStats {
-        float damage{0.0f};
-        float fireRate{0};
-        float range{0};
-        Materials cost{0u,0u,0u};
-    };
-
     class Tower {
     public:
-        Tower(const TowerStats& stats, int x, int y);
+        enum class Type { Gatling, Mortar, Laser };
+
+        struct Stats {
+            float damage{0.0f};
+            float fireRate{0};
+            float range{0};
+            Materials cost{0u,0u,0u};
+        };
+
+        Tower(const Tower::Stats& stats, int x, int y);
         virtual ~Tower() = default;
 
         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
@@ -30,15 +32,16 @@ namespace tdg::core {
         void clearTarget() noexcept { m_target = nullptr; }
         virtual void attack() const;
 
-        const TowerStats& stats() const noexcept { return m_stats; }
+        const Tower::Stats& stats() const noexcept { return m_stats; }
         int x() const noexcept { return m_x; }
         int y() const noexcept { return m_y; }
         Creature* target() const noexcept { return m_target; }
 
+        virtual Materials cost() const noexcept { return m_stats.cost; }
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
 
     protected:
-        TowerStats m_stats;
+        Tower::Stats m_stats;
         int m_x{0}, m_y{0};
         Creature* m_target{nullptr};
         float m_cooldown{0};
