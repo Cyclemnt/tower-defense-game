@@ -31,12 +31,9 @@ namespace tdg::engine {
             unsigned int startCores;
         };
 
-        Game(Config cfg);
+        explicit Game(Config cfg);
 
         void update(float dt);
-
-        void handlePathEvent(PathEvent& pe);
-        void handleDeadCreatures();
 
         void buildTower(Tower::Type type, int x, int y);
         void sellTower(int x, int y);
@@ -47,6 +44,10 @@ namespace tdg::engine {
         bool isVictory() const;
 
     private:
+        void handlePathEvent(PathEvent& pe);
+        void handleDeadCreatures();
+        void updatePaths();
+        
         bool m_paused{false};
         unsigned long tick{0};
         

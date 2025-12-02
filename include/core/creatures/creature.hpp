@@ -44,7 +44,12 @@ namespace tdg::core {
         void setPath(const std::vector<const Tile*>& p) noexcept;
         void setPosition(int x, int y) noexcept;
 
-        Materials getLoot() const noexcept { return m_stats.bounty; }
+        const Tile* nextTile() noexcept { return *m_path.begin(); }
+        const Tile* destinationTile() noexcept { return *m_path.end(); }
+
+        void leave() noexcept;
+
+        Materials loot() const noexcept { return m_stats.bounty; }
 
     protected:
         Creature::Stats m_stats;

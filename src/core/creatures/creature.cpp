@@ -82,4 +82,9 @@ namespace tdg::core {
         m_py = y;
     }
 
+    void Creature::leave() noexcept {
+        m_stats.bounty = {0u,0u,0u};
+        m_alive = false;
+    }
+
 } // namespace tdg::core

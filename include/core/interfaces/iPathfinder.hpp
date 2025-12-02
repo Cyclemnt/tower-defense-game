@@ -11,9 +11,11 @@ namespace tdg::core {
     public:
         virtual ~IPathfinder() = default;
 
-        /// Compute path from (sx,sy) to (dx,dy). Returns optional vector of
-        /// PathPoint if path exists.
+        /// @brief Computes path from (sx,sy) to (dx,dy). Returns optional vector of
+        /// @return PathPoint if path exists.
         virtual std::vector<const Tile*> findPath(const Tile* start, const Tile* goal, bool ignoreTowers = false) const = 0;
+
+        std::vector<const Tile*> findPathToClosestGoal(const Tile* start, std::vector<Tile*> goals);
     };
 
 } // namespace tdg::core
