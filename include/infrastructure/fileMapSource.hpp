@@ -9,11 +9,11 @@ namespace tdg::infra {
 
     class FileMapSource : public core::IMapSource {
     public:
-        explicit FileMapSource(std::string path);
-        core::MapData loadMap(const std::string& mapId) const override;
+        explicit FileMapSource(std::string folderPath);
+        core::MapData loadMap(int level) const override;
 
     private:
-        std::string m_path;
+        std::string m_folderPath;
     };
 
 } // namespace tdg::infra

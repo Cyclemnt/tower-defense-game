@@ -130,12 +130,14 @@ namespace tdg::engine {
         // nothing sold
     }
 
-    void Game::spawnCreature(Creature::Type type) {
+    void Game::spawnCreature(Creature::Type type, int entry) {
         CreaturePtr newCreature = m_creatureFactory.create(type);
         if (!newCreature) return;
 
         const Tile* spawnTile = nullptr;
-        if (!m_map.entryPoints().empty())
+        if (entry >= 0 || entry < m_map.entryPoints().size())
+            spawnTile = m_map.entryPoints()[entry];
+        else
             spawnTile = m_map.entryPoints().front();
 
         // Set creature initial position
@@ -146,7 +148,7 @@ namespace tdg::engine {
         if (!initialPath.empty())
             newCreature->setPath(std::move(initialPath));
 
-        m_creatures.emplace_back(std::move(newCreature));
+        m_creatures.push_back(std::move(newCreature));
         m_events.sfxs.push_back(SFXType::CreatureSpawn);
     }
 

@@ -7,17 +7,10 @@
 
 namespace tdg::core {
 
-    /// @brief Tile type used in serialized map data.
-    struct TileData {
-        int x{};
-        int y{};
-        TileType type{}; // 'P' Path, 'O' Open, 'E' Entry, 'X' Exit, 'C' Core, '.' Empty
-    };
-
     struct MapData {
         int width{0};
         int height{0};
-        std::vector<TileData> tiles;
+        std::vector<Tile> tiles;
     };
     
     /// @brief Interface for map sources (files, editor, network).
@@ -27,7 +20,7 @@ namespace tdg::core {
         virtual ~IMapSource() = default;
 
         /// Load a map by id or path. Throw std::runtime_error on failure.
-        virtual MapData loadMap(const std::string& mapId) const = 0;
+        virtual MapData loadMap(int level) const = 0;
     };
 
 } // namespace tdg::core

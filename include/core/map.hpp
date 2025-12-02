@@ -13,7 +13,7 @@ namespace tdg::core {
         TileType type{TileType::Empty};
         bool hasTower{false};
 
-        Tile(const TileData& data) : x(data.x), y(data.y), type(data.type) {}
+        Tile(int px = 0, int py = 0, TileType t = TileType::Empty) : x(px), y(py), type(t) {}
         bool walkable() const { return (type == TileType::Path || type == TileType::Open && !hasTower); }
         bool buildable() const { return (type == TileType::Open && !hasTower); }
         bool sellable() const { return (type == TileType::Open && hasTower); }

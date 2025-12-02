@@ -22,6 +22,8 @@ namespace tdg::core {
         ~Mortar() override = default;
 
         void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) override;
+
+        std::vector<Shell> shells() const noexcept { return m_shells; }
     };
 
 } // namespace tdg::core

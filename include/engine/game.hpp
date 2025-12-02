@@ -38,7 +38,7 @@ namespace tdg::engine {
         void buildTower(Tower::Type type, int x, int y);
         void sellTower(int x, int y);
 
-        void spawnCreature(Creature::Type type);
+        void spawnCreature(Creature::Type type, int entry);
 
         bool isGameOver() const;
         bool isVictory() const;
