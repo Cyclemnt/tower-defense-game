@@ -50,7 +50,7 @@ namespace tdg::core {
                         c->takeDamage(m_stats.damage);
                 }
                 events.vfxs.push_back({VFXType::Explosion, s.endX, s.endY});
-                events.sfxs.push_back(SFXType::MortarHit);
+                events.sfxs.push(SFXType::MortarHit);
                 it = m_shells.erase(it); // Erease element and get new iterator
 
             } else {
@@ -67,7 +67,7 @@ namespace tdg::core {
             Shell newShell{m_x, m_y, m_target->px(), m_target->py()};
             m_shells.push_back(newShell);
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.sfxs.push_back(SFXType::MortarShoot);
+            events.sfxs.push(SFXType::MortarShoot);
         }
     }
     

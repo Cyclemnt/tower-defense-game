@@ -15,33 +15,39 @@ namespace tdg::engine {
         // dt *= speed;
         ++tick;
 
-        m_waveManager.update(dt);
+        m_waveManager.update(dt, m_events);
+
+        // Spawn new creatures
+        while (!m_events.spawn.empty()) {
+            SpawnInfo& se = m_events.spawn.front();
+            spawnCreature(se.type, se.entrance);
+            m_events.spawn.pop();
+        }
 
         // Update events with a lifetime
         m_events.update(dt);
 
         // Update creatures
-        for (CreaturePtr& c : m_creatures) {
-            c->update(dt, m_events);
-        }
+        for (CreaturePtr& c : m_creatures) c->update(dt, m_events);
 
         // Handle creature's path events
-        for (PathEvent& pe : m_events.pathEvents) {
-            handlePathEvent(pe);
-        }
+        while (!m_events.pathEvents.empty()) handlePathEvent();
 
         // Update towers
-        for (TowerPtr& t : m_towers) {
-            t->update(dt, m_events, m_creatures);
-        }
+        for (TowerPtr& t : m_towers) t->update(dt, m_events, m_creatures);
 
         // Reward and cleanup dead creatures
         handleDeadCreatures();
+
+        // If no creatures left, load next wave
+        if (isWaveOver()) {
+            m_waveManager.loadNext();
+        }
     }
 
-    void Game::handlePathEvent(PathEvent& pe) {
+    void Game::handlePathEvent() {
+        PathEvent& pe = m_events.pathEvents.front();
         switch (pe.type) {
-
         case PathEvent::Type::ArrivedToCore: {
             std::vector<const Tile*> bestPath = m_pathfinder->findPathToClosestGoal(m_map.corePoint(), m_map.exitPoints());
             pe.creature->setPath(std::move(bestPath));
@@ -55,6 +61,7 @@ namespace tdg::engine {
         default:
             break;
         }
+        m_events.pathEvents.pop();
     }
 
     void Game::handleDeadCreatures() {
@@ -62,7 +69,6 @@ namespace tdg::engine {
             CreaturePtr& c = *it;
 
             if (!c->isAlive()) {
-
                 m_cores.returnCores(c->dropCores());
                 m_player.addMaterials(c->loot());
 
@@ -73,7 +79,7 @@ namespace tdg::engine {
                 }
                 
                 it = m_creatures.erase(it);
-                m_events.sfxs.push_back(SFXType::CreatureDeath);
+                m_events.sfxs.push(SFXType::CreatureDeath);
             }
             else {
                 ++it;
@@ -91,8 +97,7 @@ namespace tdg::engine {
         if (!newTower) return;
 
         // Verify cost
-        if (!m_player.canAfford(newTower->cost()))
-            return;
+        if (!m_player.canAfford(newTower->cost())) return;
 
         // Pay
         m_player.buy(newTower->cost());
@@ -117,7 +122,6 @@ namespace tdg::engine {
             TowerPtr& t = *it;
 
             if (t->x() == x && t->y() == y) {
-
                 m_player.addMaterials(t->sellValue());
                 tile.hasTower = false;
 
@@ -130,12 +134,12 @@ namespace tdg::engine {
         // nothing sold
     }
 
-    void Game::spawnCreature(Creature::Type type, int entry) {
+    void Game::spawnCreature(Creature::Type type, unsigned int entry) {
         CreaturePtr newCreature = m_creatureFactory.create(type);
         if (!newCreature) return;
 
         const Tile* spawnTile = nullptr;
-        if (entry >= 0 || entry < m_map.entryPoints().size())
+        if (entry >= 0u || entry < m_map.entryPoints().size())
             spawnTile = m_map.entryPoints()[entry];
         else
             spawnTile = m_map.entryPoints().front();
@@ -149,7 +153,7 @@ namespace tdg::engine {
             newCreature->setPath(std::move(initialPath));
 
         m_creatures.push_back(std::move(newCreature));
-        m_events.sfxs.push_back(SFXType::CreatureSpawn);
+        m_events.sfxs.push(SFXType::CreatureSpawn);
     }
 
     void Game::updatePaths() {
@@ -162,7 +166,8 @@ namespace tdg::engine {
         }
     }
 
+    bool Game::isWaveOver() const { return m_creatures.empty(); }
     bool Game::isGameOver() const { return m_cores.allLost(); }
-    bool Game::isVictory() const { return m_waveManager.allWavesCleared() && !isGameOver(); }
+    bool Game::isVictory() const { return m_waveManager.allWavesSpawned() && isWaveOver() && !isGameOver(); }
 
 } // tdg::engine

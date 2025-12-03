@@ -3,12 +3,14 @@
 
 #include <vector>
 #include <string>
+#include "core/creatures/creature.hpp"
 
 namespace tdg::core {
 
     struct SpawnEntry {
         float delay{0};
-        std::string enemyType;
+        unsigned int spawnEntrance{0u};
+        Creature::Type enemyType;
     };
 
     struct WaveData {

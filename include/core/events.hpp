@@ -2,22 +2,30 @@
 #define EVENTS_HPP
 
 #include <vector>
+#include <queue>
 #include <optional>
 
 namespace tdg::core {
 
     // Event collector
-    struct Events {
-        std::vector<SFXType> sfxs;
-        std::vector<VFXEventData> vfxs;
-        std::vector<PathEvent> pathEvents;
+    class Events {
+        public:
+            std::queue<SFXType> sfxs;
+            std::vector<VFXEventData> vfxs;
+            std::queue<PathEvent> pathEvents;
+            std::queue<SpawnInfo> spawn;
 
-        void update(float dt) {
-            for (auto it = vfxs.begin(); it != vfxs.end(); ) {
-                if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
-                else ++it;
+            void update(float dt) {
+                for (auto it = vfxs.begin(); it != vfxs.end();) {
+                    if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+                    else ++it;
+                }
             }
-        }
+    };
+
+    struct SpawnInfo {
+        Creature::Type type;
+        unsigned int entrance{0u};
     };
 
     struct PathEvent {

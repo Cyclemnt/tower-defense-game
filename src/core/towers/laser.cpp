@@ -50,7 +50,7 @@ namespace tdg::core {
             attack();
             m_cooldown += 1.0f / m_stats.fireRate;
             events.vfxs.push_back({VFXType::LaserBeam, m_x, m_y, m_target->px(), m_target->py()});
-            events.sfxs.push_back(SFXType::LaserShoot);
+            events.sfxs.push(SFXType::LaserShoot);
         }
     }
     

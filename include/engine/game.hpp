@@ -38,13 +38,14 @@ namespace tdg::engine {
         void buildTower(Tower::Type type, int x, int y);
         void sellTower(int x, int y);
 
-        void spawnCreature(Creature::Type type, int entry);
+        void spawnCreature(Creature::Type type, unsigned int entry);
 
+        bool isWaveOver() const;
         bool isGameOver() const;
         bool isVictory() const;
 
     private:
-        void handlePathEvent(PathEvent& pe);
+        void handlePathEvent();
         void handleDeadCreatures();
         void updatePaths();
         

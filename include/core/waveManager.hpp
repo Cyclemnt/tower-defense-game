@@ -1,10 +1,11 @@
 #ifndef WAVE_MANAGER_HPP
 #define WAVE_MANAGER_HPP
 
-#include "interfaces/iWaveSource.hpp"
 #include <vector>
 #include <memory>
 #include <functional>
+#include "interfaces/iWaveSource.hpp"
+#include "core/events.hpp"
 
 namespace tdg::core {
 
@@ -14,14 +15,15 @@ namespace tdg::core {
 
         explicit WaveManager(std::unique_ptr<IWaveSource> source);
 
-        void update(float dt);
+        void update(float dt, Events events);
+
+        void loadNext();
 
         int currentWaveIndex() const noexcept { return m_waveIndex; }
-        bool allWavesCleared() const noexcept;
-        bool WaveManager::isWaveComplete() const noexcept;
-        size_t WaveManager::getWaveNumber() const noexcept;
-        size_t WaveManager::getWavesQuantity() const noexcept;
-        float WaveManager::getTimeBeforeNext() const noexcept;
+        bool allWavesSpawned() const noexcept;
+        size_t getWaveNumber() const noexcept;
+        size_t getWavesQuantity() const noexcept;
+        float getTimeBeforeNext() const noexcept;
 
     private:
         std::unique_ptr<IWaveSource> m_source;
