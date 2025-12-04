@@ -8,7 +8,7 @@
 #include "core/map.hpp"
 #include "core/player.hpp"
 #include "core/interfaces/iPathfinder.hpp"
-#include "core/events.hpp"
+namespace tdg::core { class Events; } // Forward declaration
 
 namespace tdg::core {
 
@@ -28,7 +28,7 @@ namespace tdg::core {
         Creature(const Creature::Stats& stats);
         virtual ~Creature() = default;
 
-        virtual void update(float dt, Events events);
+        virtual void update(float dt, Events& events);
 
         bool isAlive() const noexcept { return m_alive; }
         float health() const noexcept { return m_health; }

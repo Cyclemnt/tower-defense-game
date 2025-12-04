@@ -15,7 +15,7 @@ namespace tdg::core {
             }
         }, x, y) {}
 
-    void Mortar::update(float dt, Events events, const std::vector<CreaturePtr>& creatures) {
+    void Mortar::update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) {
         if (m_target || m_cooldown > 0.0f)
             m_cooldown -= dt;
 
@@ -64,7 +64,7 @@ namespace tdg::core {
         // Shoot shells while cooldown let it
         while (m_target && m_cooldown <= 0.0f) {
             // Create new projectile
-            Shell newShell{m_x, m_y, m_target->px(), m_target->py()};
+            Shell newShell{static_cast<float>(m_x), static_cast<float>(m_y), m_target->px(), m_target->py()};
             m_shells.push_back(newShell);
             m_cooldown += 1.0f / m_stats.fireRate;
             events.sfxs.push(SFXType::MortarShoot);

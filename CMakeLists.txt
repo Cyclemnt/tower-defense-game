@@ -1,27 +1,25 @@
 cmake_minimum_required(VERSION 3.16)
-project(tower_defense_cxx)
+project(tower_defense_cxx VERSION 0.1 LANGUAGES CXX)
 
-# C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Include directory
-include_directories(include)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/*.cpp ${CMAKE_SOURCE_DIR}/src/*.cc ${CMAKE_SOURCE_DIR}/src/*.cxx)
 
-# Collect all source files
-file(GLOB_RECURSE SOURCES src/*.cpp)
-
-# Options
-option(SFML_STATIC_LIBRARIES "Link SFML statically" OFF)
-
-# Find SFML
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
-
-# Find TGUI
-find_package(TGUI REQUIRED)
-
-# Create executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-# Link libraries
+# include top-level include so that #include "core/..." works
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+
+# Allow overriding SFML_DIR / CMAKE_PREFIX_PATH from environment or command line
+# (ex: cmake -DSFML_DIR=/chemin/vers/sfml/lib/cmake/SFML -B build)
+if(NOT DEFINED SFML_DIR)
+  set(SFML_DIR $ENV{SFML_DIR})
+endif()
+
+option(SFML_STATIC_LIBRARIES "Link SFML statically" OFF)
+find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
+find_package(TGUI REQUIRED)
+
 target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System TGUI::TGUI)

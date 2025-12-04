@@ -24,6 +24,6 @@ namespace tdg::infra {
         core::WaveData loadWave(unsigned int waveIndex) const override;
     };
 
-} // namespace tdg::core
+} // namespace tdg::infra
 
 #endif // AUTO_WAVE_SOURCE_HPP

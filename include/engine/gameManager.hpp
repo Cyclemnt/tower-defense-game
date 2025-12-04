@@ -2,7 +2,7 @@
 #define GAME_MANAGER_HPP
 
 #include <memory>
-#include "game.hpp"
+#include "engine/game.hpp"
 
 namespace tdg::infra { class IGui; class IRenderer; }
 

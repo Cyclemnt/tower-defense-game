@@ -1,7 +1,7 @@
 #ifndef MINION_HPP
 #define MINION_HPP
 
-#include "creature.hpp"
+#include "core/creatures/creature.hpp"
 
 namespace tdg::core {
     

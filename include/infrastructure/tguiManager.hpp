@@ -1,7 +1,7 @@
 #ifndef TGUI_MANAGER_HPP
 #define TGUI_MANAGER_HPP
 
-#include "interfaces/iGuiManager.hpp"
+#include "infrastructure/interfaces/iGuiManager.hpp"
 #include <TGUI/TGUI.hpp>
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <chrono>

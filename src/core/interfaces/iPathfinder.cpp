@@ -7,7 +7,7 @@ namespace tdg::core {
         int bestLen = std::numeric_limits<int>::max();
         std::vector<const Tile*> bestPath;
 
-        for (const auto& goal : goals) {
+        for (const Tile* goal : goals) {
             std::vector<const Tile*> path = findPath(start, goal);
 
             if (!path.empty() && path.size() < bestLen) {
@@ -15,6 +15,7 @@ namespace tdg::core {
                 bestPath = std::move(path);
             }
         }
+        return bestPath;
     }
 
 } // namespace tdg::core

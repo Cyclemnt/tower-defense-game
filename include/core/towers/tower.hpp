@@ -6,7 +6,7 @@
 #include <memory>
 #include <array>
 #include <vector>
-#include "player.hpp"
+#include "core/player.hpp"
 #include "core/creatures/creature.hpp"
 #include "core/events.hpp"
 
@@ -26,7 +26,7 @@ namespace tdg::core {
         Tower(const Tower::Stats& stats, int x, int y);
         virtual ~Tower() = default;
 
-        virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+        virtual void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) = 0;
 
         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
         void clearTarget() noexcept { m_target = nullptr; }

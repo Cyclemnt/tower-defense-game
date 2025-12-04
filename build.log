@@ -1,0 +1,1667 @@
+[  3%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/app/main.cpp.o
+[  7%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/creatures/creature.cpp.o
+[ 11%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/creatures/minion.cpp.o
+[ 14%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/creatures/tank.cpp.o
+[ 22%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/creatures/drone.cpp.o
+[ 22%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/factories/creatureFactory.cpp.o
+[ 29%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/factories/towerFactory.cpp.o
+[ 29%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/interfaces/iPathfinder.cpp.o
+[ 33%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/map.cpp.o
+[ 37%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/player.cpp.o
+[ 40%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/towers/laser.cpp.o
+[ 44%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/towers/gatling.cpp.o
+[ 48%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/towers/mortar.cpp.o
+[ 51%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/waveManager.cpp.o
+[ 55%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/core/towers/tower.cpp.o
+[ 59%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/engine/game.cpp.o
+[ 62%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/infrastructure/aStarPathfinder.cpp.o
+[ 66%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/infrastructure/autoWaveSource.cpp.o
+[ 70%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/infrastructure/jsonWaveSource.cpp.o
+[ 74%] Building CXX object CMakeFiles/tower_defense_cxx.dir/src/infrastructure/fileMapSource.cpp.o
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/map.cpp:2:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/src/core/map.cpp: In constructor ‘tdg::core::Map::Map(const tdg::core::MapData&)’:
+/home/cyclement/cpp/tower-defense-game/src/core/map.cpp:9:35: error: ‘begin’ was not declared in this scope; did you mean ‘std::begin’?
+    9 |         for (const auto& t : data.tiles) {
+      |                                   ^~~~~
+      |                                   std::begin
+In file included from /usr/include/c++/12/string:52,
+                 from /usr/include/c++/12/stdexcept:39,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/map.cpp:1:
+/usr/include/c++/12/bits/range_access.h:114:37: note: ‘std::begin’ declared here
+  114 |   template<typename _Tp> const _Tp* begin(const valarray<_Tp>&) noexcept;
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/map.cpp:9:35: error: ‘end’ was not declared in this scope; did you mean ‘std::end’?
+    9 |         for (const auto& t : data.tiles) {
+      |                                   ^~~~~
+      |                                   std::end
+/usr/include/c++/12/bits/range_access.h:116:37: note: ‘std::end’ declared here
+  116 |   template<typename _Tp> const _Tp* end(const valarray<_Tp>&) noexcept;
+      |                                     ^~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:10,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/player.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iPathfinder.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/interfaces/iPathfinder.cpp:2:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/factories/creatureFactory.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/factories/creatureFactory.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/src/core/interfaces/iPathfinder.cpp: In member function ‘std::vector<const tdg::core::Tile*> tdg::core::IPathfinder::findPathToClosestGoal(const tdg::core::Tile*, std::vector<tdg::core::Tile*>)’:
+/home/cyclement/cpp/tower-defense-game/src/core/interfaces/iPathfinder.cpp:18:5: warning: no return statement in function returning non-void [-Wreturn-type]
+   18 |     }
+      |     ^
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/tank.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/creatures/tank.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/minion.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/creatures/minion.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:205: CMakeFiles/tower_defense_cxx.dir/src/core/map.cpp.o] Error 1
+gmake[2]: *** Waiting for unfinished jobs....
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:11:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:10,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/towers/tower.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iPathfinder.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/infrastructure/aStarPathfinder.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/infrastructure/aStarPathfinder.cpp:4:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/engine/game.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:24:13: error: ‘Materials’ does not name a type
+   24 |             Materials bounty{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:52:9: error: ‘Materials’ does not name a type
+   52 |         Materials loot() const noexcept { return m_stats.bounty; }
+      |         ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:10,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/laser.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/towers/laser.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/drone.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/creatures/drone.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:10,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/mortar.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/towers/mortar.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:11:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:10,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/factories/towerFactory.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/factories/towerFactory.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:11:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:219: CMakeFiles/tower_defense_cxx.dir/src/core/player.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:191: CMakeFiles/tower_defense_cxx.dir/src/core/interfaces/iPathfinder.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:10,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/towers/gatling.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/towers/gatling.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:11:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:135: CMakeFiles/tower_defense_cxx.dir/src/core/creatures/minion.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/include/infrastructure/autoWaveSource.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/infrastructure/autoWaveSource.cpp:2:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/creatures/creature.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/engine/game.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/src/app/main.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:11:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:149: CMakeFiles/tower_defense_cxx.dir/src/core/creatures/tank.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/include/infrastructure/jsonWaveSource.hpp:5,
+                 from /home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:5:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/aStarPathfinder.cpp: In member function ‘virtual std::vector<const tdg::core::Tile*> tdg::infra::AStarPathfinder::findPath(const tdg::core::Tile*, const tdg::core::Tile*, bool) const’:
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/aStarPathfinder.cpp:72:5: warning: control reaches end of non-void function [-Wreturn-type]
+   72 |     }
+      |     ^
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/waveManager.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/include/engine/game.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:11:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:163: CMakeFiles/tower_defense_cxx.dir/src/core/factories/creatureFactory.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/src/core/towers/laser.cpp: In member function ‘virtual void tdg::core::Laser::update(float, tdg::core::Events, const std::vector<std::unique_ptr<tdg::core::Creature> >&)’:
+/home/cyclement/cpp/tower-defense-game/src/core/towers/laser.cpp:52:25: error: request for member ‘push_back’ in ‘events.tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   52 |             events.vfxs.push_back({VFXType::LaserBeam, m_x, m_y, m_target->px(), m_target->py()});
+      |                         ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/laser.cpp:53:25: error: request for member ‘push’ in ‘events.tdg::core::Events::sfxs’, which is of non-class type ‘int’
+   53 |             events.sfxs.push(SFXType::LaserShoot);
+      |                         ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:345: CMakeFiles/tower_defense_cxx.dir/src/infrastructure/aStarPathfinder.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/mortar.cpp: In member function ‘virtual void tdg::core::Mortar::update(float, tdg::core::Events, const std::vector<std::unique_ptr<tdg::core::Creature> >&)’:
+/home/cyclement/cpp/tower-defense-game/src/core/towers/mortar.cpp:52:29: error: request for member ‘push_back’ in ‘events.tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   52 |                 events.vfxs.push_back({VFXType::Explosion, s.endX, s.endY});
+      |                             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/mortar.cpp:53:29: error: request for member ‘push’ in ‘events.tdg::core::Events::sfxs’, which is of non-class type ‘int’
+   53 |                 events.sfxs.push(SFXType::MortarHit);
+      |                             ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/mortar.cpp:67:28: warning: narrowing conversion of ‘((tdg::core::Mortar*)this)->tdg::core::Mortar::<anonymous>.tdg::core::Tower::m_x’ from ‘int’ to ‘float’ [-Wnarrowing]
+   67 |             Shell newShell{m_x, m_y, m_target->px(), m_target->py()};
+      |                            ^~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/mortar.cpp:67:33: warning: narrowing conversion of ‘((tdg::core::Mortar*)this)->tdg::core::Mortar::<anonymous>.tdg::core::Tower::m_y’ from ‘int’ to ‘float’ [-Wnarrowing]
+   67 |             Shell newShell{m_x, m_y, m_target->px(), m_target->py()};
+      |                                 ^~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/mortar.cpp:70:25: error: request for member ‘push’ in ‘events.tdg::core::Events::sfxs’, which is of non-class type ‘int’
+   70 |             events.sfxs.push(SFXType::MortarShoot);
+      |                         ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/map.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:8,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/waveManager.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/src/core/waveManager.cpp:1:
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:21: error: ‘Tile’ was not declared in this scope
+   13 |         std::vector<Tile> tiles;
+      |                     ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 1 is invalid
+   13 |         std::vector<Tile> tiles;
+      |                         ^
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:13:25: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:121: CMakeFiles/tower_defense_cxx.dir/src/core/creatures/drone.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iMapSource.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/infrastructure/fileMapSource.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/src/infrastructure/fileMapSource.cpp:4:
+/home/cyclement/cpp/tower-defense-game/include/core/map.hpp:25:28: error: ‘MapData’ does not name a type
+   25 |         explicit Map(const MapData& data);
+      |                            ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp: In member function ‘void tdg::engine::Game::update(float)’:
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:21:32: error: request for member ‘empty’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::spawn’, which is of non-class type ‘int’
+   21 |         while (!m_events.spawn.empty()) {
+      |                                ^~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:22:44: error: request for member ‘front’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::spawn’, which is of non-class type ‘int’
+   22 |             SpawnInfo& se = m_events.spawn.front();
+      |                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:23:30: error: ‘struct tdg::core::SpawnInfo’ has no member named ‘type’
+   23 |             spawnCreature(se.type, se.entrance);
+      |                              ^~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:24:28: error: request for member ‘pop’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::spawn’, which is of non-class type ‘int’
+   24 |             m_events.spawn.pop();
+      |                            ^~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp: In constructor ‘tdg::infra::JsonWaveSource::JsonWaveSource(std::string)’:
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:23:9: error: ‘trim’ was not declared in this scope; did you mean ‘tm’?
+   23 |         trim(json);
+      |         ^~~~
+      |         tm
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:28:32: error: ‘extractArraySection’ was not declared in this scope
+   28 |         std::string timeline = extractArraySection(json, "timeline");
+      |                                ^~~~~~~~~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:34:37: error: request for member ‘empty’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::pathEvents’, which is of non-class type ‘int’
+   34 |         while (!m_events.pathEvents.empty()) handlePathEvent();
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:29:28: error: ‘splitObjects’ was not declared in this scope
+   29 |         auto waveObjects = splitObjects(timeline);
+      |                            ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp: In member function ‘virtual tdg::core::WaveData tdg::infra::JsonWaveSource::loadWave(unsigned int) const’:
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:38:13: error: return-statement with no value, in function returning ‘tdg::core::WaveData’ [-fpermissive]
+   38 |             return;
+      |             ^~~~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:44:9: error: ‘trim’ was not declared in this scope; did you mean ‘tm’?
+   44 |         trim(json);
+      |         ^~~~
+      |         tm
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:37:62: error: cannot convert ‘std::vector<std::unique_ptr<tdg::core::Creature> >’ to ‘const int&’
+   37 |         for (TowerPtr& t : m_towers) t->update(dt, m_events, m_creatures);
+      |                                                              ^~~~~~~~~~~
+      |                                                              |
+      |                                                              std::vector<std::unique_ptr<tdg::core::Creature> >
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:86: note:   initializing argument 3 of ‘virtual void tdg::core::Tower::update(float, tdg::core::Events, const int&)’
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:48:32: error: ‘extractArraySection’ was not declared in this scope
+   48 |         std::string timeline = extractArraySection(json, "timeline");
+      |                                ^~~~~~~~~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp: In member function ‘void tdg::engine::Game::handlePathEvent()’:
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:49:45: error: request for member ‘front’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::pathEvents’, which is of non-class type ‘int’
+   49 |         PathEvent& pe = m_events.pathEvents.front();
+      |                                             ^~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:53:16: error: ‘struct tdg::core::PathEvent’ has no member named ‘creature’
+   53 |             pe.creature->setPath(std::move(bestPath));
+      |                ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:57:34: error: ‘struct tdg::core::PathEvent’ has no member named ‘creature’
+   57 |             m_cores.loseCores(pe.creature->dropCores());
+      |                                  ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:58:16: error: ‘struct tdg::core::PathEvent’ has no member named ‘creature’
+   58 |             pe.creature->leave();
+      |                ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:64:29: error: request for member ‘pop’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::pathEvents’, which is of non-class type ‘int’
+   64 |         m_events.pathEvents.pop();
+      |                             ^~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp: In member function ‘void tdg::engine::Game::handleDeadCreatures()’:
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:77:28: error: ‘class tdg::core::Tower’ has no member named ‘target’
+   77 |                     if (t->target() == c.get())
+      |                            ^~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/gatling.cpp: In member function ‘virtual void tdg::core::Gatling::update(float, tdg::core::Events, const std::vector<std::unique_ptr<tdg::core::Creature> >&)’:
+/home/cyclement/cpp/tower-defense-game/src/core/towers/gatling.cpp:39:25: error: request for member ‘emplace_back’ in ‘events.tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   39 |             events.vfxs.emplace_back(VFXType::GatlingTracer, m_x, m_y, m_target->px(), m_target->py());
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/gatling.cpp:40:25: error: request for member ‘emplace_back’ in ‘events.tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   40 |             events.vfxs.emplace_back(VFXType::HitSpark, m_target->px(), m_target->py());
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/towers/gatling.cpp:41:25: error: request for member ‘push’ in ‘events.tdg::core::Events::sfxs’, which is of non-class type ‘int’
+   41 |             events.sfxs.push(SFXType::GatlingShoot);
+      |                         ^~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:82:31: error: request for member ‘push’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::sfxs’, which is of non-class type ‘int’
+   82 |                 m_events.sfxs.push(SFXType::CreatureDeath);
+      |                               ^~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:49:28: error: ‘splitObjects’ was not declared in this scope
+   49 |         auto waveObjects = splitObjects(timeline);
+      |                            ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp: In member function ‘void tdg::engine::Game::buildTower(tdg::core::Tower::Type, int, int)’:
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:100:43: error: ‘class tdg::core::Tower’ has no member named ‘cost’
+  100 |         if (!m_player.canAfford(newTower->cost())) return;
+      |                                           ^~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:103:32: error: ‘class tdg::core::Tower’ has no member named ‘cost’
+  103 |         m_player.buy(newTower->cost());
+      |                                ^~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp: In member function ‘void tdg::engine::Game::sellTower(int, int)’:
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:125:42: error: ‘class tdg::core::Tower’ has no member named ‘sellValue’
+  125 |                 m_player.addMaterials(t->sellValue());
+      |                                          ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:54:17: error: ‘extractIntValue’ was not declared in this scope
+   54 |             if (extractIntValue(text, "wave") == waveIndex) {
+      |                 ^~~~~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp: In member function ‘void tdg::engine::Game::spawnCreature(tdg::core::Creature::Type, std::optional<unsigned int>)’:
+/home/cyclement/cpp/tower-defense-game/src/engine/game.cpp:156:23: error: request for member ‘push’ in ‘((tdg::engine::Game*)this)->tdg::engine::Game::m_events.tdg::core::Events::sfxs’, which is of non-class type ‘int’
+  156 |         m_events.sfxs.push(SFXType::CreatureSpawn);
+      |                       ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:62:56: error: ‘extractStringValue’ was not declared in this scope
+   62 |                     core::Creature::Type t = parseType(extractStringValue(g, "enemy"));
+      |                                                        ^~~~~~~~~~~~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:275: CMakeFiles/tower_defense_cxx.dir/src/core/towers/tower.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/core/creatures/creature.cpp: In member function ‘virtual void tdg::core::Creature::update(float, tdg::core::Events)’:
+/home/cyclement/cpp/tower-defense-game/src/core/creatures/creature.cpp:32:67: error: request for member ‘push’ in ‘events.tdg::core::Events::pathEvents’, which is of non-class type ‘int’
+   32 |                     case TileType::CoreStorage: events.pathEvents.push({PathEvent::Type::ArrivedToCore, this});
+      |                                                                   ^~~~
+/home/cyclement/cpp/tower-defense-game/src/core/creatures/creature.cpp:33:67: error: request for member ‘push’ in ‘events.tdg::core::Events::pathEvents’, which is of non-class type ‘int’
+   33 |                     case TileType::Exit:        events.pathEvents.push({PathEvent::Type::ArrivedToExit, this});
+      |                                                                   ^~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:247: CMakeFiles/tower_defense_cxx.dir/src/core/towers/laser.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/src/core/waveManager.cpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/src/core/waveManager.cpp:5:5: error: ‘explicit’ outside class declaration
+    5 |     explicit WaveManager::WaveManager(std::unique_ptr<IWaveSource> source)
+      |     ^~~~~~~~
+In file included from /home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:11,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/player.hpp:4,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/creatures/creature.hpp:9,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/waveManager.hpp:7,
+                 from /home/cyclement/cpp/tower-defense-game/include/engine/game.hpp:9:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:24: error: ‘SFXType’ was not declared in this scope
+   13 |             std::queue<SFXType> sfxs;
+      |                        ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 1 is invalid
+   13 |             std::queue<SFXType> sfxs;
+      |                               ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:13:31: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/src/core/waveManager.cpp: In member function ‘void tdg::core::WaveManager::update(float, tdg::core::Events)’:
+/home/cyclement/cpp/tower-defense-game/src/core/waveManager.cpp:17:26: error: request for member ‘emplace’ in ‘events.tdg::core::Events::spawn’, which is of non-class type ‘int’
+   17 |             events.spawn.emplace(currentSpawn.enemyType, currentSpawn.spawnEntrance);
+      |                          ^~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:25: error: ‘VFXEventData’ was not declared in this scope
+   14 |             std::vector<VFXEventData> vfxs;
+      |                         ^~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 1 is invalid
+   14 |             std::vector<VFXEventData> vfxs;
+      |                                     ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:14:37: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:24: error: ‘PathEvent’ was not declared in this scope
+   15 |             std::queue<PathEvent> pathEvents;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 1 is invalid
+   15 |             std::queue<PathEvent> pathEvents;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:15:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:24: error: ‘SpawnInfo’ was not declared in this scope
+   16 |             std::queue<SpawnInfo> spawn;
+      |                        ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 1 is invalid
+   16 |             std::queue<SpawnInfo> spawn;
+      |                                 ^
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:16:33: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In member function ‘void tdg::core::Events::update(float)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:37: error: request for member ‘begin’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                     ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:19:57: error: request for member ‘end’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   19 |                 for (auto it = vfxs.begin(); it != vfxs.end();) {
+      |                                                         ^~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:20:60: error: request for member ‘erase’ in ‘((tdg::core::Events*)this)->tdg::core::Events::vfxs’, which is of non-class type ‘int’
+   20 |                     if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+      |                                                            ^~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:27:9: error: ‘Creature’ does not name a type
+   27 |         Creature::Type type;
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* creature;   // Référence à la créature concernée
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:40:38: error: ‘Creature’ has not been declared
+   40 |         PathEvent(PathEvent::Type t, Creature* c)
+      |                                      ^~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:177: CMakeFiles/tower_defense_cxx.dir/src/core/factories/towerFactory.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp: In constructor ‘tdg::core::PathEvent::PathEvent(Type, int*)’:
+/home/cyclement/cpp/tower-defense-game/include/core/events.hpp:41:24: error: class ‘tdg::core::PathEvent’ does not have any field named ‘creature’
+   41 |             : type(t), creature(c) {}
+      |                        ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: At global scope:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:23:13: error: ‘Materials’ does not name a type
+   23 |             Materials cost{0u,0u,0u};
+      |             ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/fileMapSource.cpp: In member function ‘virtual tdg::core::MapData tdg::infra::FileMapSource::loadMap(unsigned int) const’:
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/fileMapSource.cpp:68:5: warning: control reaches end of non-void function [-Wreturn-type]
+   68 |     }
+      |     ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:72: error: ‘CreaturePtr’ was not declared in this scope
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                        ^~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 1 is invalid
+   29 |         virtual void update(float dt, Events events, const std::vector<CreaturePtr>& creatures) = 0;
+      |                                                                                   ^
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:29:83: error: template argument 2 is invalid
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:31:17: error: ‘Creature’ does not name a type
+   31 |         virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures);
+      |                 ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:38:9: error: ‘Creature’ does not name a type
+   38 |         Creature* target() const noexcept { return m_target; }
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:40:17: error: ‘Materials’ does not name a type
+   40 |         virtual Materials cost() const noexcept { return m_stats.cost; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:41:17: error: ‘Materials’ does not name a type
+   41 |         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+      |                 ^~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:46:9: error: ‘Creature’ does not name a type
+   46 |         Creature* m_target{nullptr};
+      |         ^~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp: In member function ‘void tdg::core::Tower::clearTarget()’:
+/home/cyclement/cpp/tower-defense-game/include/core/towers/tower.hpp:32:39: error: ‘m_target’ was not declared in this scope
+   32 |         void clearTarget() noexcept { m_target = nullptr; }
+      |                                       ^~~~~~~~
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:373: CMakeFiles/tower_defense_cxx.dir/src/infrastructure/fileMapSource.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:261: CMakeFiles/tower_defense_cxx.dir/src/core/towers/mortar.cpp.o] Error 1
+In file included from /usr/include/x86_64-linux-gnu/c++/12/bits/c++allocator.h:33,
+                 from /usr/include/c++/12/bits/allocator.h:46,
+                 from /usr/include/c++/12/string:41,
+                 from /usr/include/c++/12/bits/locale_classes.h:40,
+                 from /usr/include/c++/12/bits/ios_base.h:41,
+                 from /usr/include/c++/12/ios:42,
+                 from /usr/include/c++/12/istream:38,
+                 from /usr/include/c++/12/fstream:38,
+                 from /home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:1:
+/usr/include/c++/12/bits/new_allocator.h: In instantiation of ‘void std::__new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = tdg::core::SpawnEntry; _Args = {float&, int&, tdg::core::Creature::Type&}; _Tp = tdg::core::SpawnEntry]’:
+/usr/include/c++/12/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_CharT> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = tdg::core::SpawnEntry; _Args = {float&, int&, tdg::core::Creature::Type&}; _Tp = tdg::core::SpawnEntry; allocator_type = std::allocator<tdg::core::SpawnEntry>]’
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘std::vector<_Tp, _Alloc>::reference std::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {float&, int&, tdg::core::Creature::Type&}; _Tp = tdg::core::SpawnEntry; _Alloc = std::allocator<tdg::core::SpawnEntry>; reference = tdg::core::SpawnEntry&]’
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:68:46:   required from here
+/usr/include/c++/12/bits/new_allocator.h:175:11: error: no matching function for call to ‘tdg::core::SpawnEntry::SpawnEntry(float&, int&, tdg::core::Creature::Type&)’
+  175 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note: candidate: ‘tdg::core::SpawnEntry::SpawnEntry()’
+   11 |     struct SpawnEntry {
+      |            ^~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note:   candidate expects 0 arguments, 3 provided
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note: candidate: ‘constexpr tdg::core::SpawnEntry::SpawnEntry(const tdg::core::SpawnEntry&)’
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note:   candidate expects 1 argument, 3 provided
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note: candidate: ‘constexpr tdg::core::SpawnEntry::SpawnEntry(tdg::core::SpawnEntry&&)’
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note:   candidate expects 1 argument, 3 provided
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:233: CMakeFiles/tower_defense_cxx.dir/src/core/towers/gatling.cpp.o] Error 1
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/jsonWaveSource.cpp:75:5: warning: control reaches end of non-void function [-Wreturn-type]
+   75 |     }
+      |     ^
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:387: CMakeFiles/tower_defense_cxx.dir/src/infrastructure/jsonWaveSource.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:289: CMakeFiles/tower_defense_cxx.dir/src/core/waveManager.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:303: CMakeFiles/tower_defense_cxx.dir/src/engine/game.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:107: CMakeFiles/tower_defense_cxx.dir/src/core/creatures/creature.cpp.o] Error 1
+In file included from /usr/include/x86_64-linux-gnu/c++/12/bits/c++allocator.h:33,
+                 from /usr/include/c++/12/bits/allocator.h:46,
+                 from /usr/include/c++/12/vector:61,
+                 from /home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:4:
+/usr/include/c++/12/bits/new_allocator.h: In instantiation of ‘void std::__new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = tdg::core::SpawnEntry; _Args = {const float&, const std::nullopt_t&, tdg::core::Creature::Type&}; _Tp = tdg::core::SpawnEntry]’:
+/usr/include/c++/12/bits/alloc_traits.h:516:17:   required from ‘static void std::allocator_traits<std::allocator<_Tp1> >::construct(allocator_type&, _Up*, _Args&& ...) [with _Up = tdg::core::SpawnEntry; _Args = {const float&, const std::nullopt_t&, tdg::core::Creature::Type&}; _Tp = tdg::core::SpawnEntry; allocator_type = std::allocator<tdg::core::SpawnEntry>]’
+/usr/include/c++/12/bits/vector.tcc:117:30:   required from ‘std::vector<_Tp, _Alloc>::reference std::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {const float&, const std::nullopt_t&, tdg::core::Creature::Type&}; _Tp = tdg::core::SpawnEntry; _Alloc = std::allocator<tdg::core::SpawnEntry>; reference = tdg::core::SpawnEntry&]’
+/home/cyclement/cpp/tower-defense-game/src/infrastructure/autoWaveSource.cpp:39:37:   required from here
+/usr/include/c++/12/bits/new_allocator.h:175:11: error: no matching function for call to ‘tdg::core::SpawnEntry::SpawnEntry(const float&, const std::nullopt_t&, tdg::core::Creature::Type&)’
+  175 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note: candidate: ‘tdg::core::SpawnEntry::SpawnEntry()’
+   11 |     struct SpawnEntry {
+      |            ^~~~~~~~~~
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note:   candidate expects 0 arguments, 3 provided
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note: candidate: ‘constexpr tdg::core::SpawnEntry::SpawnEntry(const tdg::core::SpawnEntry&)’
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note:   candidate expects 1 argument, 3 provided
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note: candidate: ‘constexpr tdg::core::SpawnEntry::SpawnEntry(tdg::core::SpawnEntry&&)’
+/home/cyclement/cpp/tower-defense-game/include/core/interfaces/iWaveSource.hpp:11:12: note:   candidate expects 1 argument, 3 provided
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:359: CMakeFiles/tower_defense_cxx.dir/src/infrastructure/autoWaveSource.cpp.o] Error 1
+gmake[2]: *** [CMakeFiles/tower_defense_cxx.dir/build.make:79: CMakeFiles/tower_defense_cxx.dir/src/app/main.cpp.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:87: CMakeFiles/tower_defense_cxx.dir/all] Error 2
+gmake: *** [Makefile:91: all] Error 2

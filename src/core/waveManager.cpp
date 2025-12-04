@@ -2,19 +2,19 @@
 
 namespace tdg::core {
 
-    explicit WaveManager::WaveManager(std::unique_ptr<IWaveSource> source)
+    WaveManager::WaveManager(std::unique_ptr<IWaveSource> source)
         : m_source(std::move(source)) {}
 
-    void WaveManager::update(float dt, Events events) {
+    void WaveManager::update(float dt, Events& events) {
         if (m_spawnIndex < m_wave.size())
             m_timer = std::max(m_timer - dt, 0.0f);
-            m_timer -= dt;
+            // m_timer -= dt;
         
         // Spawn creatures while timer <= 0
         while (m_spawnIndex < m_wave.size() && m_timer <= 0.0f) {
             SpawnEntry& currentSpawn = m_wave[m_spawnIndex];
             m_inWave = true;
-            events.spawn.emplace(currentSpawn.enemyType, currentSpawn.spawnEntrance);
+            events.spawn.push({currentSpawn.enemyType, currentSpawn.spawnEntrance});
             ++m_spawnIndex;
 
             // Schedule next spawn if it exists

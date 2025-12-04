@@ -25,7 +25,7 @@ namespace tdg::engine {
     class Game {
     public:
         struct Config {
-            MapData mapData;
+            Map map;
             std::unique_ptr<IWaveSource> waveSource;
             std::shared_ptr<IPathfinder> pathfinder;
             Materials startMaterials;

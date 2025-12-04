@@ -1,24 +1,23 @@
 #include <stdexcept>
-#include "include/core/map.hpp"
+#include "core/map.hpp"
+#include "core/interfaces/iMapSource.hpp"
 
 namespace tdg::core {
 
     Map::Map(const MapData& data)
-        : m_width(data.width), m_height(data.height)
+        : m_width(data.width), m_height(data.height), m_tiles(data.tiles)
     {
-        for (const auto& t : data.tiles) {
-            m_tiles.push_back(t);
-
+        for (Tile& t : m_tiles) {
             if (t.type == TileType::Entry) {
-                m_entryPoints.push_back(&m_tiles.back());
+                m_entryPoints.push_back(&t);
             }
             else if (t.type == TileType::Exit) {
-                m_exitPoints.push_back(&m_tiles.back());
+                m_exitPoints.push_back(&t);
             }
             else if (t.type == TileType::CoreStorage) {
-                m_corePoint = &m_tiles.back();
+                m_corePoint = &t;
             }
-        }
+        }        
 
         if (m_exitPoints.empty()) m_exitPoints = m_entryPoints; // If no explicit exits, fallback to entries.
 
@@ -41,7 +40,7 @@ namespace tdg::core {
 
         for (int dy = -1; dy <= 1; ++dy) {
             for (int dx = -1; dx <= 1; ++dx) {
-                if (dx == dy) { continue; } // Do not include diagonals
+                if (dx == dy || dx == -dy) { continue; } // Do not include diagonals
                 int nx = tile->x + dx;
                 int ny = tile->y + dy;
 

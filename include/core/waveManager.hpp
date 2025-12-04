@@ -15,7 +15,7 @@ namespace tdg::core {
 
         explicit WaveManager(std::unique_ptr<IWaveSource> source);
 
-        void update(float dt, Events events);
+        void update(float dt, Events& events);
 
         void loadNext();
 

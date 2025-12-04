@@ -10,7 +10,7 @@ namespace tdg::infra {
         : m_folderPath(folderPath) {}
 
     core::MapData FileMapSource::loadMap(unsigned int level) const {
-        std::string filename = m_folderPath + std::to_string(level) + ".txt";
+        std::string filename = m_folderPath + "map" + std::to_string(level) + ".txt";
         std::ifstream file(filename);
         if (!file.is_open())
             throw std::runtime_error("[FileMapSource] Cannot open map file: " + filename);
@@ -65,6 +65,7 @@ namespace tdg::infra {
                 mapData.tiles.push_back(tile);
             }
         }
+        return mapData;
     }
 
 } // namespace tdg::infra

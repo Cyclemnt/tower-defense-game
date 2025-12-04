@@ -1,8 +1,8 @@
 #ifndef I_PATHFINDER_HPP
 #define I_PATHFINDER_HPP
 
-#include "core/map.hpp"
 #include <vector>
+#include "core/map.hpp"
 
 namespace tdg::core {
 

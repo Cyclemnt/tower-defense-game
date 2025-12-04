@@ -1,7 +1,7 @@
 #ifndef DRONE_HPP
 #define DRONE_HPP
 
-#include "creature.hpp"
+#include "core/creatures/creature.hpp"
 
 namespace tdg::core {
     

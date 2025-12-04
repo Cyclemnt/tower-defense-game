@@ -28,15 +28,17 @@ namespace tdg::infra {
         };
 
         core::WaveData wave;
-        wave.startDelay = waveIndex * m_waveInterval;  // Fixed interval between waves
+        wave.startDelay = m_waveInterval;  // Fixed interval between waves
 
         // Calculate the number of creatures in the wave, based on the difficulty coefficient
         unsigned int numCreaturesInWave = static_cast<unsigned int>(
             std::pow(m_difficultyCoefficient, waveIndex) * 5); // Base 5 creatures
 
         // Create the spawn entries for this wave
-        for (unsigned int i = 0; i < numCreaturesInWave; ++i)
-            wave.spawns.emplace_back(m_spawnInterval, std::nullopt, creatureTypes[rng() % creatureTypes.size()]);
+        for (unsigned int i = 0; i < numCreaturesInWave; ++i) {
+            core::SpawnEntry se = {m_spawnInterval, std::nullopt, creatureTypes[rng() % creatureTypes.size()]};
+            wave.spawns.push_back(se);
+        }
 
         return wave;
     }

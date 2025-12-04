@@ -1,8 +1,8 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include "interfaces/iMapSource.hpp"
 #include <vector>
+#include "interfaces/iMapSource.hpp"
 
 namespace tdg::core {
 

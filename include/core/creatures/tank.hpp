@@ -1,7 +1,7 @@
 #ifndef TANK_HPP
 #define TANK_HPP
 
-#include "creature.hpp"
+#include "core/creatures/creature.hpp"
 
 namespace tdg::core {
     

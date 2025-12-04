@@ -1,8 +1,6 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
-#include "core/towers/tower.hpp"
-
 namespace tdg::core {
 
     struct Materials {

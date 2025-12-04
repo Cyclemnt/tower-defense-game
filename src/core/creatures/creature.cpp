@@ -1,12 +1,13 @@
-#include "core/creatures/creature.hpp"
 #include <cmath>
+#include "core/creatures/creature.hpp"
+#include "core/events.hpp"
 
 namespace tdg::core {
 
     Creature::Creature(const Creature::Stats& stats)
         : m_stats(stats), m_health(stats.maxHealth), m_shield(stats.maxShield) {}
 
-    void Creature::update(float dt, Events events) {
+    void Creature::update(float dt, Events& events) {
         if (!m_alive || m_path.empty() || m_pathIndex + 1 >= m_path.size()) return;
 
         float distanceToTravel = m_stats.speed * dt;

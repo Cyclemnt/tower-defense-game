@@ -4,23 +4,23 @@
 #include "core/interfaces/iPathfinder.hpp"
 #include "core/map.hpp"
 
-namespace tdg::core {
+namespace tdg::infra {
 
-    class AStarPathfinder : public IPathfinder {
+    class AStarPathfinder : public core::IPathfinder {
     public:
         /// @brief Constructs a Pathfinder operating on the given map.
         explicit AStarPathfinder(const core::Map& map) noexcept;
 
         /// @brief Computes a path between two tiles using A*.
         /// @return A list of tiles forming the path from start to goal, or empty if none.
-        std::vector<const Tile*> findPath(const Tile* start, const Tile* goal, bool ignoreTowers = false) const override;
+        std::vector<const core::Tile*> findPath(const core::Tile* start, const core::Tile* goal, bool ignoreTowers = false) const override;
     
     private:
         const core::Map& m_map;
 
         /// @brief Represents a node in the A* search process.
         struct Node {
-            const Tile* tile;  ///< Tile corresponding to this node.
+            const core::Tile* tile;  ///< Tile corresponding to this node.
             int gCost;         ///< Cost from start to this node.
             int hCost;         ///< Heuristic cost to goal.
             Node* parent;      ///< Parent node for path reconstruction.
@@ -31,6 +31,6 @@ namespace tdg::core {
         int heuristic(const core::Tile* a, const core::Tile* b) const noexcept;
     };
 
-} // namespace tdg::core
+} // namespace tdg::infra
 
 #endif // A_STAR_PATHFINDER_HPP

@@ -4,38 +4,23 @@
 #include <vector>
 #include <queue>
 #include <optional>
+#include "core/creatures/creature.hpp"
 
 namespace tdg::core {
 
-    // Event collector
-    class Events {
-        public:
-            std::queue<SFXType> sfxs;
-            std::vector<VFXEventData> vfxs;
-            std::queue<PathEvent> pathEvents;
-            std::queue<SpawnInfo> spawn;
-
-            void update(float dt) {
-                for (auto it = vfxs.begin(); it != vfxs.end();) {
-                    if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
-                    else ++it;
-                }
-            }
-    };
-
     struct SpawnInfo {
         Creature::Type type;
-        unsigned int entrance{0u};
+        std::optional<unsigned int> entrance;
     };
 
     struct PathEvent {
         enum class Type {
-            ArrivedToCore,   // Quand la créature atteint CoreStorage
-            ArrivedToExit,   // Quand la créature atteint Exit
+            ArrivedToCore,   // When creature reaches core storage
+            ArrivedToExit,   // When creature reaches exit
         };
 
-        PathEvent::Type type; // Type d'événement (changement de chemin, etc.)
-        Creature* creature;   // Référence à la créature concernée
+        PathEvent::Type type; // Event type
+        Creature* creature;   // Ref to the creature
 
         PathEvent(PathEvent::Type t, Creature* c)
             : type(t), creature(c) {}
@@ -68,6 +53,22 @@ namespace tdg::core {
 
         VFXEventData(VFXType t, float x1, float y1, float x2, float y2, float lt = 0.0f) 
             : type(t), xStart(x1), yStart(y1), xEnd(x2), yEnd(y2), lifeTime(lt) {}
+    };
+
+    // Event collector
+    class Events {
+        public:
+            std::queue<SFXType> sfxs;
+            std::vector<VFXEventData> vfxs;
+            std::queue<PathEvent> pathEvents;
+            std::queue<SpawnInfo> spawn;
+
+            void update(float dt) {
+                for (auto it = vfxs.begin(); it != vfxs.end();) {
+                    if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
+                    else ++it;
+                }
+            }
     };
 
 } // namespace tdg::core

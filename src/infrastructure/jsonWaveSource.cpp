@@ -4,6 +4,15 @@
 #include <algorithm>
 #include "infrastructure/jsonWaveSource.hpp"
 
+// Forward declaration, see later in this file
+namespace {
+    inline void trim(std::string& s);
+    inline std::string extractStringValue(const std::string& src, const std::string& key);
+    inline int extractIntValue(const std::string& src, const std::string& key);
+    inline std::string extractArraySection(const std::string& src, const std::string& key);
+    inline std::vector<std::string> splitObjects(const std::string& arrContent);
+}
+
 namespace tdg::infra {
     
     JsonWaveSource::JsonWaveSource(std::string filePath)
@@ -35,7 +44,7 @@ namespace tdg::infra {
         std::ifstream file(m_filePath);
         if (!file.is_open()) {
             std::cerr << "[JsonWaveSource] Failed to open file: " << m_filePath << std::endl;
-            return;
+            return {0.0f, {}};
         }
 
         std::ostringstream buffer;
@@ -59,19 +68,21 @@ namespace tdg::infra {
                 std::vector<std::string> groupObjects = splitObjects(groups);
 
                 for (const std::string& g : groupObjects) {
-                    core::Creature::Type t = parseType(extractStringValue(g, "enemy"));
+                    core::Creature::Type type = parseType(extractStringValue(g, "enemy"));
                     int count = extractIntValue(g, "count");
                     int entrance = extractIntValue(g, "entrance");
                     float interval = extractIntValue(g, "interval_ms") * 0.001f;
 
                     for (int i = 0; i < count; ++i) {
-                        w.spawns.emplace_back(interval, entrance, t);
+                        core::SpawnEntry se = {interval, entrance, type};
+                        w.spawns.push_back(se);
                     }
                 }
 
                 return w;
             }
         }
+        return {0.0f, {}};
     }
 
     core::Creature::Type JsonWaveSource::parseType(const std::string& n) const noexcept {
