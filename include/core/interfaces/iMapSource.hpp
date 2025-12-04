@@ -20,7 +20,7 @@ namespace tdg::core {
         virtual ~IMapSource() = default;
 
         /// Load a map by id or path. Throw std::runtime_error on failure.
-        virtual MapData loadMap(int level) const = 0;
+        virtual MapData loadMap(unsigned int level) const = 0;
     };
 
 } // namespace tdg::core

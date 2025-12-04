@@ -21,13 +21,13 @@ namespace tdg::core {
 
         int currentWaveIndex() const noexcept { return m_waveIndex; }
         bool allWavesSpawned() const noexcept;
-        size_t getWaveNumber() const noexcept;
-        size_t getWavesQuantity() const noexcept;
+        unsigned int getWaveNumber() const noexcept;
+        unsigned int waveCount() const noexcept;
         float getTimeBeforeNext() const noexcept;
 
     private:
         std::unique_ptr<IWaveSource> m_source;
-        std::vector<WaveData> m_waves;
+        std::vector<SpawnEntry> m_wave;
         float m_timer{0};
         size_t m_waveIndex{0};
         size_t m_spawnIndex{0};

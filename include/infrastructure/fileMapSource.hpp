@@ -10,7 +10,7 @@ namespace tdg::infra {
     class FileMapSource : public core::IMapSource {
     public:
         explicit FileMapSource(std::string folderPath);
-        core::MapData loadMap(int level) const override;
+        core::MapData loadMap(unsigned int level) const override;
 
     private:
         std::string m_folderPath;

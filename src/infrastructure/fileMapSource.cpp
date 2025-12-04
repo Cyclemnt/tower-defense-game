@@ -9,7 +9,7 @@ namespace tdg::infra {
     FileMapSource::FileMapSource(std::string folderPath)
         : m_folderPath(folderPath) {}
 
-    core::MapData FileMapSource::loadMap(int level) const {
+    core::MapData FileMapSource::loadMap(unsigned int level) const {
         std::string filename = m_folderPath + std::to_string(level) + ".txt";
         std::ifstream file(filename);
         if (!file.is_open())

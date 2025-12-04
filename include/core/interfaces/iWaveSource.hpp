@@ -3,13 +3,14 @@
 
 #include <vector>
 #include <string>
+#include <optional>
 #include "core/creatures/creature.hpp"
 
 namespace tdg::core {
 
     struct SpawnEntry {
         float delay{0};
-        unsigned int spawnEntrance{0u};
+        std::optional<unsigned int> spawnEntrance;
         Creature::Type enemyType;
     };
 
@@ -22,7 +23,8 @@ namespace tdg::core {
     class IWaveSource {
     public:
         virtual ~IWaveSource() = default;
-        virtual std::vector<WaveData> getWaves() const = 0;
+        virtual unsigned int waveCount() const = 0;
+        virtual WaveData loadWave(unsigned int waveIndex) const = 0;
     };
 
 } // namespace tdg::core

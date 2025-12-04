@@ -6,44 +6,44 @@ namespace tdg::core {
         : m_source(std::move(source)) {}
 
     void WaveManager::update(float dt, Events events) {
-        std::vector<SpawnEntry>& spawns = m_waves[m_waveIndex].spawns;
-
-        if (m_spawnIndex < spawns.size())
+        if (m_spawnIndex < m_wave.size())
             m_timer = std::max(m_timer - dt, 0.0f);
             m_timer -= dt;
         
         // Spawn creatures while timer <= 0
-        while (m_spawnIndex < spawns.size() && m_timer <= 0.0f) {
-            SpawnEntry& currentSpawn = spawns[m_spawnIndex];
+        while (m_spawnIndex < m_wave.size() && m_timer <= 0.0f) {
+            SpawnEntry& currentSpawn = m_wave[m_spawnIndex];
             m_inWave = true;
             events.spawn.emplace(currentSpawn.enemyType, currentSpawn.spawnEntrance);
             ++m_spawnIndex;
 
             // Schedule next spawn if it exists
-            if (m_spawnIndex < spawns.size())
+            if (m_spawnIndex < m_wave.size())
                 m_timer += currentSpawn.delay;
         }
     }
 
     void WaveManager::loadNext() {
         m_inWave = false;
-        if (m_waveIndex < m_waves.size()) {
+        if (m_waveIndex < waveCount()) {
             m_spawnIndex = 0;
             ++m_waveIndex;
-            m_timer = m_waves[m_waveIndex].startDelay + m_waves[m_waveIndex].spawns[0].delay;
+            WaveData data = m_source->loadWave(m_waveIndex);
+            m_wave = data.spawns;
+            m_timer = data.startDelay + m_wave[0].delay;
         }
     }
 
     bool WaveManager::allWavesSpawned() const noexcept {
-        return m_waveIndex >= m_waves.size() && m_spawnIndex >= m_waves.back().spawns.size();
+        return m_waveIndex >= waveCount() && m_spawnIndex >= m_wave.size();
     }
 
-    size_t WaveManager::getWaveNumber() const noexcept {
-        return m_waveIndex + m_inWave + (m_waveIndex >= m_waves.size() && !m_inWave);
+    unsigned int WaveManager::getWaveNumber() const noexcept {
+        return m_waveIndex + m_inWave + (m_waveIndex >= waveCount() && !m_inWave);
     }
 
-    size_t WaveManager::getWavesQuantity() const noexcept {
-        return m_waves.size();
+    unsigned int WaveManager::waveCount() const noexcept {
+        return m_source->waveCount();
     }
 
     float WaveManager::getTimeBeforeNext() const noexcept {

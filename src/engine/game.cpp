@@ -134,15 +134,15 @@ namespace tdg::engine {
         // nothing sold
     }
 
-    void Game::spawnCreature(Creature::Type type, unsigned int entry) {
+    void Game::spawnCreature(Creature::Type type, std::optional<unsigned int> entry) {
         CreaturePtr newCreature = m_creatureFactory.create(type);
         if (!newCreature) return;
 
         const Tile* spawnTile = nullptr;
-        if (entry >= 0u || entry < m_map.entryPoints().size())
-            spawnTile = m_map.entryPoints()[entry];
+        if (entry.has_value() && entry.value() >= 0u && entry.value() < m_map.entryPoints().size())
+            spawnTile = m_map.entryPoints()[entry.value()];
         else
-            spawnTile = m_map.entryPoints().front();
+            spawnTile = m_map.entryPoints()[rand() % m_map.entryPoints().size()];
 
         // Set creature initial position
         newCreature->setPosition(spawnTile->x, spawnTile->y);

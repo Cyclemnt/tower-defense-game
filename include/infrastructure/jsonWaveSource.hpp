@@ -1,18 +1,26 @@
 #ifndef JSON_WAVE_SOURCE_HPP
 #define JSON_WAVE_SOURCE_HPP
 
-#include "core/interfaces/iWaveSource.hpp"
 #include <string>
+#include "core/interfaces/iWaveSource.hpp"
+#include "core/creatures/creature.hpp"
 
 namespace tdg::infra {
 
     class JsonWaveSource : public core::IWaveSource {
     public:
-        explicit JsonWaveSource(std::string path);
-        std::vector<tdg::core::WaveData> getWaves() const override;
+        explicit JsonWaveSource(std::string filePath);
+
+        unsigned int waveCount() const override { return m_waveCount; }
+        core::WaveData loadWave(unsigned int waveIndex) const override;
 
     private:
-        std::string m_path;
+        std::string m_filePath;
+        unsigned int m_waveCount{0};
+
+        std::vector<core::WaveData> waves;
+
+        core::Creature::Type parseType(const std::string& n) const noexcept;
     };
 
 } // namespace tdg::infra

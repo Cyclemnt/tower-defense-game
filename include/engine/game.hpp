@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <chrono>
+#include <optional>
 #include "core/map.hpp"
 #include "core/waveManager.hpp"
 #include "core/player.hpp"
@@ -38,7 +39,7 @@ namespace tdg::engine {
         void buildTower(Tower::Type type, int x, int y);
         void sellTower(int x, int y);
 
-        void spawnCreature(Creature::Type type, unsigned int entry);
+        void spawnCreature(Creature::Type type, std::optional<unsigned int> entry);
 
         bool isWaveOver() const;
         bool isGameOver() const;
