@@ -23,6 +23,8 @@ namespace tdg::core {
 
         void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override;
 
+        void upgrade() override;
+
         std::vector<Shell> shells() const noexcept { return m_shells; }
     };
 

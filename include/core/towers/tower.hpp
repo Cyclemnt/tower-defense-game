@@ -33,7 +33,7 @@ namespace tdg::core {
         void clearTarget() noexcept { m_target = nullptr; }
         virtual void attack() const;
 
-        virtual Materials upgrade();
+        virtual void upgrade() = 0;
 
         const Tower::Stats& stats() const noexcept { return m_stats; }
         int x() const noexcept { return m_x; }

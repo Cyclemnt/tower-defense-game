@@ -71,5 +71,9 @@ namespace tdg::core {
             events.sfxs.push(SFXType::MortarShoot);
         }
     }
+
+    void Mortar::upgrade() {
+
+    }
     
 } // namespace tdg::core

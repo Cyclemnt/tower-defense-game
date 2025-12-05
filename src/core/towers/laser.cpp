@@ -54,5 +54,9 @@ namespace tdg::core {
             events.sfxs.push(SFXType::LaserShoot);
         }
     }
+
+    void Laser::upgrade() {
+
+    }
     
 } // namespace tdg::core

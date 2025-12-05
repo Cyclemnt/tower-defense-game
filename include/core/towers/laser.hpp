@@ -16,6 +16,8 @@ namespace tdg::core {
         ~Laser() override = default;
 
         void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override;
+
+        void upgrade() override;
     };
     
 } // namespace tdg::core

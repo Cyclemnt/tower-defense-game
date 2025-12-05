@@ -42,5 +42,9 @@ namespace tdg::core {
             events.sfxs.push(SFXType::GatlingShoot);
         }
     }
+
+    void Gatling::upgrade() {
+
+    }
     
 } // namespace tdg::core
