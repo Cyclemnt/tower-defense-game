@@ -1,21 +1,28 @@
 #include "engine/game.hpp"
 #include "core/events.hpp"
-#include <iostream>
+#include "infrastructure/fileMapSource.hpp"
+#include "infrastructure/aStarPathfinder.hpp"
+#include "infrastructure/autoWaveSource.hpp"
+#include "infrastructure/jsonWaveSource.hpp"
+
 namespace tdg::engine {
 
-    Game::Game(Config cfg)
-        : m_map(std::move(cfg.map))
-        , m_waveManager(std::move(cfg.waveSource))
-        , m_pathfinder(std::move(cfg.pathfinder))
-        , m_player(std::move(cfg.startMaterials))
-        , m_cores(cfg.startCores) {}
+    Game::Game(unsigned int level, unsigned int startCores, Materials startMaterials)
+        : m_player(startMaterials), m_cores(startCores)
+    {
+        infra::FileMapSource mapSource("../assets/maps/");
+        m_map = std::make_unique<tdg::core::Map>(mapSource.loadMap(level));
+        m_pathfinder = std::make_unique<tdg::infra::AStarPathfinder>(m_map.get());
+        std::unique_ptr<IWaveSource> waveSource = std::make_unique<infra::AutoWaveSource>(3u);
+        m_waveManager = std::make_unique<tdg::core::WaveManager>(std::move(waveSource));
+    }
 
     void Game::update(float dt) {
         if (m_paused) return;
         // dt *= speed;
         ++tick;
 
-        m_waveManager.update(dt, m_events);
+        m_waveManager->update(dt, m_events);
 
         // Spawn new creatures
         while (!m_events.spawn.empty()) {
@@ -32,7 +39,7 @@ namespace tdg::engine {
 
         // Handle creature's path events
         while (!m_events.pathEvents.empty()) handlePathEvent();
-
+        
         // Update towers
         for (TowerPtr& t : m_towers) t->update(dt, m_events, m_creatures);
 
@@ -40,8 +47,8 @@ namespace tdg::engine {
         handleDeadCreatures();
 
         // If no creatures left, load next wave
-        if (isWaveOver() && m_waveManager.getTimeBeforeNext() <= 0.0f) {
-            m_waveManager.loadNext();
+        if (isWaveOver() && m_waveManager->getTimeBeforeNext() <= 0.0f) {
+            m_waveManager->loadNext();
         }
     }
 
@@ -49,7 +56,7 @@ namespace tdg::engine {
         PathEvent& pe = m_events.pathEvents.front();
         switch (pe.type) {
         case PathEvent::Type::ArrivedToCore: {
-            std::vector<const Tile*> bestPath = m_pathfinder->findPathToClosestGoal(m_map.corePoint(), m_map.exitPoints());
+            std::vector<const Tile*> bestPath = m_pathfinder->findPathToClosestGoal(m_map->corePoint(), m_map->exitPoints());
             pe.creature->setPath(std::move(bestPath));
             break;
         }
@@ -88,7 +95,7 @@ namespace tdg::engine {
     }
 
     void Game::buildTower(Tower::Type type, int x, int y) {
-        Tile& tile = *m_map.tileAt(x, y);
+        Tile& tile = *m_map->tileAt(x, y);
 
         if (!tile.buildable()) return;
 
@@ -113,8 +120,12 @@ namespace tdg::engine {
         updatePaths();
     }
 
+    void Game::upgradeTower(int x, int y) {
+        // TODO
+    }
+
     void Game::sellTower(int x, int y) {
-        Tile& tile = *m_map.tileAt(x, y);
+        Tile& tile = *m_map->tileAt(x, y);
 
         if (!tile.sellable()) return;
 
@@ -137,23 +148,23 @@ namespace tdg::engine {
     void Game::spawnCreature(Creature::Type type, std::optional<unsigned int> entry) {
         CreaturePtr newCreature = m_creatureFactory.create(type);
         if (!newCreature) return;
-std::cout << "spawn\n";
+
         const Tile* spawnTile = nullptr;
-        if (entry.has_value() && entry.value() >= 0u && entry.value() < m_map.entryPoints().size()) {
-            spawnTile = m_map.entryPoints()[entry.value()];
+        if (entry.has_value() && entry.value() >= 0u && entry.value() < m_map->entryPoints().size()) {
+            spawnTile = m_map->entryPoints()[entry.value()];
         }
         else {
-            int random = rand() % m_map.entryPoints().size();
-            spawnTile = m_map.entryPoints()[random];
+            int random = rand() % m_map->entryPoints().size();
+            spawnTile = m_map->entryPoints()[random];
         }
         // Set creature initial position
         newCreature->setPosition(spawnTile->x, spawnTile->y);
-std::cout << spawnTile->x << " " << spawnTile->y << " " << m_map.corePoint()->x << " " << m_map.corePoint()->y << "\n";
+
         // Compute initial path
-        auto initialPath = m_pathfinder->findPath(spawnTile, m_map.corePoint());
+        auto initialPath = m_pathfinder->findPath(spawnTile, m_map->corePoint());
         if (!initialPath.empty())
             newCreature->setPath(std::move(initialPath));
-std::cout << "bbb\n";
+
         m_creatures.push_back(std::move(newCreature));
         m_events.sfxs.push(SFXType::CreatureSpawn);
     }
@@ -170,6 +181,6 @@ std::cout << "bbb\n";
 
     bool Game::isWaveOver() const { return m_creatures.empty(); }
     bool Game::isGameOver() const { return m_cores.allLost(); }
-    bool Game::isVictory() const { return m_waveManager.allWavesSpawned() && isWaveOver() && !isGameOver(); }
+    bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }
 
 } // tdg::engine

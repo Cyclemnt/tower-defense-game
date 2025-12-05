@@ -2,10 +2,10 @@
 #include <algorithm> // std::reverse
 #include <unordered_map>
 #include "infrastructure/aStarPathfinder.hpp"
-#include <iostream>
+
 namespace tdg::infra {
 
-    AStarPathfinder::AStarPathfinder(const core::Map& map) noexcept
+    AStarPathfinder::AStarPathfinder(core::Map* map) noexcept
         : m_map(map) {}
 
     int AStarPathfinder::heuristic(const core::Tile* a, const core::Tile* b) const noexcept {
@@ -37,6 +37,7 @@ namespace tdg::infra {
 
             // If we reach the goal, reconstruct the path.
             if (current->tile == goal) {
+
                 Node* n = current;
                 while (n) { // Trace back through the parent nodes to reconstruct the path.
                     path.push_back(n->tile); // Add the current tile to the path.
@@ -47,16 +48,17 @@ namespace tdg::infra {
             }
 
             // Explore the neighbors of the current node.
-            for (const core::Tile* neighbor : m_map.neighbors(current->tile)) {
+            for (const core::Tile* neighbor : m_map->neighbors(current->tile)) {
                 // If the neighbor is not walkable, skip it.
                 // Or, if ignoreTowers == true, accept OpenZones regardless of occupation.
-                if (!(neighbor->walkable() || (ignoreTowers && neighbor->type == core::TileType::Open))) continue;
+                if (!neighbor->walkable(ignoreTowers)) continue;
 
                 // Calculate the new gCost for this neighbor (gCost of the parent + 1 for the move).
                 const int newG = current->gCost + 1;
 
                 // If this neighbor hasn't been explored or if we found a shorter path:
                 if (allNodes.find(neighbor) == allNodes.end() || newG < allNodes[neighbor]->gCost) {
+
                     // Create a new node for the neighbor with updated gCost and the current node as the parent.
                     Node* neighborNode = new Node{neighbor, newG, heuristic(neighbor, goal), current};
                     allNodes[neighbor] = neighborNode; // Add the neighbor to the allNodes map.
@@ -67,7 +69,7 @@ namespace tdg::infra {
 
         // Clean up the dynamically allocated nodes.
         for (auto& [_, node] : allNodes) delete node;
-if (path.empty()) std::cout << "no path\n";
+
         // Return the found path (or recompute ignoring towers).
         if (!path.empty()) return path;
         else return findPath(start, goal, true);

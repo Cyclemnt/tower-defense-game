@@ -48,7 +48,7 @@ namespace tdg::core {
     };
 
     using TowerPtr = std::unique_ptr<Tower>;
-
+    
 } // namespace tdg::core
 
 #endif // TOWER_HPP

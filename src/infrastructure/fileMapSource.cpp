@@ -1,6 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <stdexcept>
 #include "infrastructure/fileMapSource.hpp"
 #include "core/map.hpp"
 
@@ -53,13 +54,13 @@ namespace tdg::infra {
                 core::Tile tile;
 
                 switch (c) {
-                    case '#': tile = {x, y, core::TileType::Path}; break;
-                    case 'O': tile = {x, y, core::TileType::Open}; break;
-                    case 'E': tile = {x, y, core::TileType::Entry}; break;
-                    case 'X': tile = {x, y, core::TileType::Exit}; break;
-                    case 'C': tile = {x, y, core::TileType::CoreStorage}; break;
+                    case '#': tile = {x, y, core::Tile::Type::Path}; break;
+                    case 'O': tile = {x, y, core::Tile::Type::Open}; break;
+                    case 'E': tile = {x, y, core::Tile::Type::Entry}; break;
+                    case 'X': tile = {x, y, core::Tile::Type::Exit}; break;
+                    case 'C': tile = {x, y, core::Tile::Type::CoreStorage}; break;
                     case '.': [[fallthrough]];
-                    default: tile = {x, y, core::TileType::Empty}; break;
+                    default: tile = {x, y, core::Tile::Type::Empty}; break;
                 }
 
                 mapData.tiles.push_back(tile);

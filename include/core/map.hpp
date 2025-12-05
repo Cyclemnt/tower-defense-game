@@ -6,17 +6,17 @@
 
 namespace tdg::core {
 
-    enum class TileType { Path, Open, Entry, Exit, CoreStorage, Empty };
-
     struct Tile {
+        enum class Type { Path, Open, Entry, Exit, CoreStorage, Empty };
+
         int x{0}, y{0};
-        TileType type{TileType::Empty};
+        Type type{Type::Empty};
         bool hasTower{false};
 
-        Tile(int px = 0, int py = 0, TileType t = TileType::Empty) : x(px), y(py), type(t) {}
-        bool walkable() const { return (type == TileType::Path || type == TileType::Open && !hasTower); }
-        bool buildable() const { return (type == TileType::Open && !hasTower); }
-        bool sellable() const { return (type == TileType::Open && hasTower); }
+        Tile(int px = 0, int py = 0, Type t = Type::Empty) : x(px), y(py), type(t) {}
+        bool walkable(bool ignoreTower) const { return (type != Type::Empty && (ignoreTower || !hasTower)); }
+        bool buildable() const { return (type == Type::Open && !hasTower); }
+        bool sellable() const { return (type == Type::Open && hasTower); }
     };
 
     /// @brief Map stores tile layout and provides queries. Domain-only.
@@ -39,6 +39,8 @@ namespace tdg::core {
         bool placeTower(int x, int y);
         bool removeTower(int x, int y);
 
+        void printMap() const;
+    
     private:
         int m_width{0};
         int m_height{0};

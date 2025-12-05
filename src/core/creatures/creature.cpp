@@ -27,11 +27,11 @@ namespace tdg::core {
                 m_pathIndex++;
                 distanceToTravel -= distanceToNextTile;
 
-
-                if (next == *m_path.end()) {
+                if (next == m_path.back()) {
                     switch (next->type) {
-                    case TileType::CoreStorage: events.pathEvents.push({PathEvent::Type::ArrivedToCore, this});
-                    case TileType::Exit:        events.pathEvents.push({PathEvent::Type::ArrivedToExit, this});
+                    case Tile::Type::CoreStorage: events.pathEvents.push({PathEvent::Type::ArrivedToCore, this}); break;
+                    case Tile::Type::Exit:        events.pathEvents.push({PathEvent::Type::ArrivedToExit, this}); break;
+                    case Tile::Type::Entry:       events.pathEvents.push({PathEvent::Type::ArrivedToExit, this}); break;
                     default: break;
                     }
                 }

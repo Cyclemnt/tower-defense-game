@@ -9,14 +9,14 @@ namespace tdg::infra {
     class AStarPathfinder : public core::IPathfinder {
     public:
         /// @brief Constructs a Pathfinder operating on the given map.
-        explicit AStarPathfinder(const core::Map& map) noexcept;
+        explicit AStarPathfinder(core::Map* map) noexcept;
 
         /// @brief Computes a path between two tiles using A*.
         /// @return A list of tiles forming the path from start to goal, or empty if none.
         std::vector<const core::Tile*> findPath(const core::Tile* start, const core::Tile* goal, bool ignoreTowers = false) const override;
     
     private:
-        const core::Map& m_map;
+        core::Map* m_map;
 
         /// @brief Represents a node in the A* search process.
         struct Node {
