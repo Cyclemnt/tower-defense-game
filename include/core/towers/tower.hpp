@@ -21,6 +21,7 @@ namespace tdg::core {
             float fireRate{0};
             float range{0};
             Materials cost{0u,0u,0u};
+            unsigned int upgradeCost{0u};
         };
 
         Tower(const Tower::Stats& stats, int x, int y);
@@ -32,16 +33,20 @@ namespace tdg::core {
         void clearTarget() noexcept { m_target = nullptr; }
         virtual void attack() const;
 
+        virtual Materials upgrade();
+
         const Tower::Stats& stats() const noexcept { return m_stats; }
         int x() const noexcept { return m_x; }
         int y() const noexcept { return m_y; }
         Creature* target() const noexcept { return m_target; }
 
         virtual Materials cost() const noexcept { return m_stats.cost; }
+        virtual Materials upgradeCost() const noexcept { return {m_stats.upgradeCost, 0u, 0u}; }
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
 
     protected:
         Tower::Stats m_stats;
+        unsigned int level{1u};
         int m_x{0}, m_y{0};
         Creature* m_target{nullptr};
         float m_cooldown{0};

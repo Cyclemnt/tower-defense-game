@@ -12,7 +12,8 @@ namespace tdg::core {
                 0u,     // Au
                 0u,     // Ag
                 75u     // Cu
-            }
+            },
+            /* upgrade cost */ 10u // Au
         }, x, y) {}
 
     void Mortar::update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) {

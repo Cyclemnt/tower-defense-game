@@ -12,7 +12,8 @@ namespace tdg::core {
                 0u,     // Au
                 10u,    // Ag
                 100u    // Cu
-            }
+            },
+            /* upgrade cost */ 10u // Au
         }, x, y) {}
 
     void Laser::update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) {

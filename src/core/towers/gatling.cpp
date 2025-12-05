@@ -12,7 +12,8 @@ namespace tdg::core {
                 0u,     // Au
                 0u,     // Ag
                 50u     // Cu
-            }
+            },
+            /* upgrade cost */ 10u // Au
         }, x, y) {}
 
     void Gatling::update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) {
