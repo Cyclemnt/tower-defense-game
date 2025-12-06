@@ -2,8 +2,8 @@
 
 namespace tdg::core {
 
-    WaveManager::WaveManager(std::unique_ptr<IWaveSource> source)
-        : m_source(std::move(source)) {}
+    WaveManager::WaveManager(std::shared_ptr<IWaveSource> source)
+        : m_source(source) {}
 
     void WaveManager::update(float dt, Events& events) {
         if (m_spawnIndex < m_wave.size())

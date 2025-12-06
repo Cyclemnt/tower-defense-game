@@ -8,13 +8,19 @@
 namespace tdg::infra {
     
     FileMapSource::FileMapSource(std::string folderPath)
-        : m_folderPath(folderPath) {}
+        : m_folderPath(folderPath)
+    {
+        setLevel(1u);
+    }
 
-    core::MapData FileMapSource::loadMap(unsigned int level) const {
-        std::string filename = m_folderPath + "map" + std::to_string(level) + ".txt";
-        std::ifstream file(filename);
+    void FileMapSource::setLevel(unsigned int level) {
+        m_filePath = m_folderPath + "map" + std::to_string(level) + ".txt";
+    }
+
+    core::MapData FileMapSource::loadMap() const {
+        std::ifstream file(m_filePath);
         if (!file.is_open())
-            throw std::runtime_error("[FileMapSource] Cannot open map file: " + filename);
+            throw std::runtime_error("[FileMapSource] Cannot open map file: " + m_filePath);
 
         std::vector<std::string> lines;
         std::string line;
@@ -33,7 +39,7 @@ namespace tdg::infra {
         file.close();
 
         if (lines.empty())
-            throw std::runtime_error("[FileMapSource] Map file is empty: " + filename);
+            throw std::runtime_error("[FileMapSource] Map file is empty: " + m_filePath);
 
         // Determine width and height
         int height = static_cast<int>(lines.size());
@@ -41,7 +47,7 @@ namespace tdg::infra {
 
         for (const auto& l : lines)
             if (static_cast<int>(l.size()) != width)
-                throw std::runtime_error("[FileMapSource] Inconsistent line width in map file: " + filename);
+                throw std::runtime_error("[FileMapSource] Inconsistent line width in map file: " + m_filePath);
 
         core::MapData mapData;
         mapData.height = height;

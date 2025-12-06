@@ -5,9 +5,12 @@
 
 namespace tdg::core {
 
-    Map::Map(const MapData& data)
-        : m_width(data.width), m_height(data.height), m_tiles(data.tiles)
-    {
+    Map::Map(std::shared_ptr<IMapSource> source) {
+        MapData data = source->loadMap();
+        m_width = data.width;
+        m_height = data.height;
+        m_tiles = data.tiles;
+
         for (Tile& t : m_tiles) {
             if (t.type == Tile::Type::Entry) {
                 m_entryPoints.push_back(&t);

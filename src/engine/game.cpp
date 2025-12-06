@@ -1,20 +1,16 @@
 #include "engine/game.hpp"
 #include "core/events.hpp"
-#include "infrastructure/fileMapSource.hpp"
 #include "infrastructure/aStarPathfinder.hpp"
-#include "infrastructure/autoWaveSource.hpp"
-#include "infrastructure/jsonWaveSource.hpp"
-
+#include <iostream>
 namespace tdg::engine {
 
-    Game::Game(unsigned int level, unsigned int startCores, Materials startMaterials)
+    Game::Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc,
+        unsigned int startCores, Materials startMaterials)
         : m_player(startMaterials), m_cores(startCores)
     {
-        infra::FileMapSource mapSource("../assets/maps/");
-        m_map = std::make_unique<tdg::core::Map>(mapSource.loadMap(level));
+        m_map = std::make_unique<tdg::core::Map>(mapSrc);
         m_pathfinder = std::make_unique<tdg::infra::AStarPathfinder>(m_map.get());
-        std::unique_ptr<IWaveSource> waveSource = std::make_unique<infra::AutoWaveSource>(3u);
-        m_waveManager = std::make_unique<tdg::core::WaveManager>(std::move(waveSource));
+        m_waveManager = std::make_unique<tdg::core::WaveManager>(waveSrc);
     }
 
     void Game::update(float dt) {
@@ -95,9 +91,9 @@ namespace tdg::engine {
     }
 
     void Game::buildTower(Tower::Type type, int x, int y) {
-        Tile& tile = *m_map->tileAt(x, y);
-
-        if (!tile.buildable()) return;
+        Tile* tile = m_map->tileAt(x, y);
+        if (!tile) return;
+        if (!tile->buildable()) return;
 
         // Build the tower
         TowerPtr newTower = m_towerFactory.build(type, x, y);
@@ -110,7 +106,7 @@ namespace tdg::engine {
         m_player.buy(newTower->cost());
 
         // Mark the tile
-        tile.hasTower = true;
+        tile->hasTower = true;
 
         // Sorted Insertion
         auto it = std::upper_bound(m_towers.begin(), m_towers.end(), newTower,
@@ -125,16 +121,16 @@ namespace tdg::engine {
     }
 
     void Game::sellTower(int x, int y) {
-        Tile& tile = *m_map->tileAt(x, y);
-
-        if (!tile.sellable()) return;
+        Tile* tile = m_map->tileAt(x, y);
+        if (!tile) return;
+        if (!tile->sellable()) return;
 
         for (auto it = m_towers.begin(); it != m_towers.end(); ++it) {
             TowerPtr& t = *it;
 
             if (t->x() == x && t->y() == y) {
                 m_player.addMaterials(t->sellValue());
-                tile.hasTower = false;
+                tile->hasTower = false;
 
                 m_towers.erase(it);
                 updatePaths();
@@ -150,7 +146,7 @@ namespace tdg::engine {
         if (!newCreature) return;
 
         const Tile* spawnTile = nullptr;
-        if (entry.has_value() && entry.value() >= 0u && entry.value() < m_map->entryPoints().size()) {
+        if (entry.has_value() && entry.value() < m_map->entryPoints().size()) {
             spawnTile = m_map->entryPoints()[entry.value()];
         }
         else {

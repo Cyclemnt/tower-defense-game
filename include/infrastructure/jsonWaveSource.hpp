@@ -9,12 +9,14 @@ namespace tdg::infra {
 
     class JsonWaveSource : public core::IWaveSource {
     public:
-        explicit JsonWaveSource(std::string filePath);
+        explicit JsonWaveSource(std::string folderPath);
 
         unsigned int waveCount() const override { return m_waveCount; }
+        void setLevel(unsigned int level) override;
         core::WaveData loadWave(unsigned int waveIndex) const override;
 
     private:
+        std::string m_folderPath;
         std::string m_filePath;
         unsigned int m_waveCount{0};
 

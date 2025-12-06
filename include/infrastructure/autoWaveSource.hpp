@@ -18,9 +18,10 @@ namespace tdg::infra {
         const float m_waveInterval{10.0f};
 
     public:
-        AutoWaveSource(unsigned int waveCount);
+        AutoWaveSource();
 
         unsigned int waveCount() const override;
+        void setLevel(unsigned int level) override;
         core::WaveData loadWave(unsigned int waveIndex) const override;
     };
 

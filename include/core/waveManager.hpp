@@ -13,7 +13,7 @@ namespace tdg::core {
     public:
         using SpawnCallback = std::function<void(const SpawnEntry&)>;
 
-        explicit WaveManager(std::unique_ptr<IWaveSource> source);
+        explicit WaveManager(std::shared_ptr<IWaveSource> source);
 
         void update(float dt, Events& events);
 
@@ -26,7 +26,7 @@ namespace tdg::core {
         float getTimeBeforeNext() const noexcept;
 
     private:
-        std::unique_ptr<IWaveSource> m_source;
+        std::shared_ptr<IWaveSource> m_source;
         std::vector<SpawnEntry> m_wave;
         float m_timer{0};
         size_t m_waveIndex{0};

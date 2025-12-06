@@ -4,12 +4,18 @@
 
 namespace tdg::infra {
     
-    AutoWaveSource::AutoWaveSource(unsigned int waveCount)
-        : m_waveCount(waveCount) {}
+    AutoWaveSource::AutoWaveSource() {
+        setLevel(1u);
+    }
 
     unsigned int AutoWaveSource::waveCount() const {
         if (m_waveCount.has_value()) return m_waveCount.value();
         else return std::numeric_limits<unsigned int>::max();
+    }
+
+    void AutoWaveSource::setLevel(unsigned int level) {
+        m_waveCount = level * 2 + 4;
+        m_difficultyCoefficient = 1.0f + level / 10.0f;
     }
 
     core::WaveData AutoWaveSource::loadWave(unsigned int waveIndex) const {

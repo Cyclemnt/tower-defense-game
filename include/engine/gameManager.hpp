@@ -3,36 +3,37 @@
 
 #include <memory>
 #include "engine/game.hpp"
+#include "core/interfaces/iMapSource.hpp"
+#include "core/interfaces/iWaveSource.hpp"
 
-namespace tdg::infra { class IGui; class IRenderer; }
+// namespace tdg::infra { class IGui; class IRenderer; }
 
 namespace tdg::engine {
 
     class GameManager {
     public:
-        enum class State { MainMenu, Loading, Playing, Paused, Victory, GameOver };
+        enum class State { MainMenu, Loading, Story, Arcade, Pause, Resume, Victory, GameOver };
 
-        GameManager(std::unique_ptr<tdg::infra::IRenderer> renderer,
-        std::unique_ptr<tdg::infra::IGui> gui,
-        std::shared_ptr<tdg::core::IPathfinder> pathfinder);
+        GameManager();
 
+        void setState(State state);
         void run();
 
-        void startStoryMode(const std::string& mapFile, const std::string& waveFile);
-        void startArcadeMode(const std::string& mapFile);
-
-        void setGame(std::unique_ptr<Game> game);
-
     private:
-        void loadLevel(std::unique_ptr<core::IMapSource> mapSrc,
-                       std::unique_ptr<core::IWaveSource> waveSrc);
+        void startStoryMode();
+        void startArcadeMode();
+        void loadLevel(unsigned int maplvl, unsigned int wavlvl);
 
         State m_state { State::MainMenu };
-        std::unique_ptr<tdg::infra::IRenderer> m_renderer;
-        std::unique_ptr<tdg::infra::IGui> m_gui;
-        std::shared_ptr<tdg::core::IPathfinder> m_pathfinder;
+        // std::unique_ptr<infra::IRenderer> m_renderer;
+        // std::unique_ptr<infra::IGui> m_gui;
         std::unique_ptr<Game> m_game;
 
+        std::shared_ptr<core::IMapSource> m_mapSource;
+        std::shared_ptr<core::IWaveSource> m_waveSource;
+
+        unsigned int m_level{1u};
+        const unsigned int m_arcadeMapLevel{3u};
         bool m_running{false};
     };
 

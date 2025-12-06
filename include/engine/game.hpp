@@ -23,7 +23,8 @@ namespace tdg::engine {
 
     class Game {
     public:
-        explicit Game(unsigned int level = 1u, unsigned int startCores = 24u, Materials startMaterials = {100u,100u,100u});
+        explicit Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc,
+            unsigned int startCores = 24u, Materials startMaterials = {100u,100u,100u});
 
         void update(float dt);
 

@@ -2,6 +2,7 @@
 #define MAP_HPP
 
 #include <vector>
+#include <memory>
 #include "interfaces/iMapSource.hpp"
 
 namespace tdg::core {
@@ -22,7 +23,7 @@ namespace tdg::core {
     /// @brief Map stores tile layout and provides queries. Domain-only.
     class Map {
     public:
-        explicit Map(const MapData& data);
+        explicit Map(std::shared_ptr<IMapSource> source);
 
         int width() const noexcept { return m_width; }
         int height() const noexcept { return m_height; }

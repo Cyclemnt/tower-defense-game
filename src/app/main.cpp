@@ -1,11 +1,7 @@
-#include "engine/game.hpp"
+#include "engine/gameManager.hpp"
 
 int main() {
-    tdg::engine::Game game(1u);
-
-    for (int i = 0; i < 2000; i++) {
-        game.update(0.4);
-    }
+    tdg::engine::GameManager gameManager;
     
     return 0;
 }

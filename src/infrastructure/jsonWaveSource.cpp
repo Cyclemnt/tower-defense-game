@@ -15,9 +15,14 @@ namespace {
 
 namespace tdg::infra {
     
-    JsonWaveSource::JsonWaveSource(std::string filePath)
-        : m_filePath(filePath)
+    JsonWaveSource::JsonWaveSource(std::string folderPath)
+        : m_folderPath(folderPath)
     {
+        setLevel(1u);
+    }
+
+    void JsonWaveSource::setLevel(unsigned int level) {
+        m_filePath = m_folderPath + "level" + std::to_string(level) + ".json";
 
         // Open JSON file to count waves
         std::ifstream file(m_filePath);
