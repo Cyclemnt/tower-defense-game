@@ -1,7 +1,8 @@
 #include <queue>
-#include <algorithm> // std::reverse
+#include <algorithm>
 #include <unordered_map>
 #include "infrastructure/aStarPathfinder.hpp"
+#include "core/map.hpp"
 
 namespace tdg::infra {
 

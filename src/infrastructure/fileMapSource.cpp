@@ -1,6 +1,5 @@
 #include <fstream>
 #include <sstream>
-#include <memory>
 #include <stdexcept>
 #include "infrastructure/fileMapSource.hpp"
 #include "core/map.hpp"

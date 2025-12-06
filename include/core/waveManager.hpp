@@ -3,16 +3,14 @@
 
 #include <vector>
 #include <memory>
-#include <functional>
 #include "interfaces/iWaveSource.hpp"
-#include "core/events.hpp"
+
+namespace tdg::core { class Events; }
 
 namespace tdg::core {
 
     class WaveManager {
     public:
-        using SpawnCallback = std::function<void(const SpawnEntry&)>;
-
         explicit WaveManager(std::shared_ptr<IWaveSource> source);
 
         void update(float dt, Events& events);

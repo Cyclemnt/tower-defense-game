@@ -2,7 +2,6 @@
 #define I_WAVE_SOURCE_HPP
 
 #include <vector>
-#include <string>
 #include <optional>
 #include "core/creatures/creature.hpp"
 

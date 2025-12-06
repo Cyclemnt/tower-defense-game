@@ -1,8 +1,6 @@
 #ifndef CORE_STORAGE_HPP
 #define CORE_STORAGE_HPP
 
-#include <vector>
-
 namespace tdg::core {
 
     class CoreStorage {

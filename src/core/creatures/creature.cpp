@@ -1,6 +1,7 @@
 #include <cmath>
 #include "core/creatures/creature.hpp"
 #include "core/events.hpp"
+#include "core/map.hpp"
 
 namespace tdg::core {
 

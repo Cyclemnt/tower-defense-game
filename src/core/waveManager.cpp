@@ -1,4 +1,5 @@
 #include "core/waveManager.hpp"
+#include "core/events.hpp"
 
 namespace tdg::core {
 

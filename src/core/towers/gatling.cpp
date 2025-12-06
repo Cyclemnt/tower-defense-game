@@ -1,5 +1,6 @@
 #include <cmath>
 #include "core/towers/gatling.hpp"
+#include "core/events.hpp"
 
 namespace tdg::core {
 

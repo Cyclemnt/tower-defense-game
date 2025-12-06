@@ -3,7 +3,8 @@
 
 #include <vector>
 #include <memory>
-#include "interfaces/iMapSource.hpp"
+
+namespace tdg::core { class IMapSource; }
 
 namespace tdg::core {
 

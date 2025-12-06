@@ -1,14 +1,11 @@
 #ifndef TOWER_HPP
 #define TOWER_HPP
 
-#include <chrono>
-#include <string>
 #include <memory>
-#include <array>
 #include <vector>
-#include "core/player.hpp"
 #include "core/creatures/creature.hpp"
-#include "core/events.hpp"
+
+namespace tdg::core { class Events; }
 
 namespace tdg::core {
 

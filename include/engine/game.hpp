@@ -3,19 +3,24 @@
 
 #include <memory>
 #include <vector>
+#include <optional>
+
+#include "core/map.hpp"
+#include "core/interfaces/iPathfinder.hpp"
 #include "core/waveManager.hpp"
+
 #include "core/player.hpp"
 #include "core/coreStorage.hpp"
+
 #include "core/towers/tower.hpp"
 #include "core/creatures/creature.hpp"
 #include "core/events.hpp"
+
 #include "core/factories/towerFactory.hpp"
 #include "core/factories/creatureFactory.hpp"
 
-// forward declarations
-namespace tdg::core { class Map; }
-namespace tdg::core { class IPathfinder; }
-// namespace tdg::core { class WaveManager; }
+namespace tdg::core { class IWaveSource; }
+namespace tdg::core { class IMapSource; }
 
 namespace tdg::engine {
 

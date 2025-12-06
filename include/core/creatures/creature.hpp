@@ -1,14 +1,12 @@
 #ifndef CREATURE_HPP
 #define CREATURE_HPP
 
-#include <string>
-#include <chrono>
 #include <memory>
 #include <vector>
-#include "core/map.hpp"
 #include "core/player.hpp"
-#include "core/interfaces/iPathfinder.hpp"
-namespace tdg::core { class Events; } // Forward declaration
+
+namespace tdg::core { class Events; }
+namespace tdg::core { struct Tile; }
 
 namespace tdg::core {
 

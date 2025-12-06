@@ -1,5 +1,5 @@
+#include <algorithm>
 #include "engine/game.hpp"
-#include "core/events.hpp"
 #include "infrastructure/aStarPathfinder.hpp"
 
 namespace tdg::engine {

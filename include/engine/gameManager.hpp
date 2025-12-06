@@ -6,8 +6,6 @@
 #include "core/interfaces/iMapSource.hpp"
 #include "core/interfaces/iWaveSource.hpp"
 
-// namespace tdg::infra { class IGui; class IRenderer; }
-
 namespace tdg::engine {
 
     class GameManager {

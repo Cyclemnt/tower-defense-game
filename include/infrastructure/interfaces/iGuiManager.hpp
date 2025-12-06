@@ -1,7 +1,6 @@
 #ifndef I_GUI_HPP
 #define I_GUI_HPP
 
-#include <string>
 #include <chrono>
 
 namespace tdg::infra {

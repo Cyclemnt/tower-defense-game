@@ -1,9 +1,9 @@
 #ifndef I_MAP_SOURCE_HPP
 #define I_MAP_SOURCE_HPP
 
-#include <string>
 #include <vector>
-namespace tdg::core { struct Tile; } // Forward declaration
+
+namespace tdg::core { struct Tile; }
 
 namespace tdg::core {
 

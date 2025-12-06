@@ -2,7 +2,8 @@
 #define I_PATHFINDER_HPP
 
 #include <vector>
-#include "core/map.hpp"
+
+namespace tdg::core { struct Tile; }
 
 namespace tdg::core {
 

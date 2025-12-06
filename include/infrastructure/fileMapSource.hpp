@@ -3,7 +3,6 @@
 
 #include <string>
 #include "core/interfaces/iMapSource.hpp"
-#include "core/map.hpp"
 
 namespace tdg::infra {
 

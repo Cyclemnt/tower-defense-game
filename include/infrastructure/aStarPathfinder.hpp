@@ -2,7 +2,8 @@
 #define A_STAR_PATHFINDER_HPP
 
 #include "core/interfaces/iPathfinder.hpp"
-#include "core/map.hpp"
+
+namespace tdg::core { class Map; struct Tile; }
 
 namespace tdg::infra {
 

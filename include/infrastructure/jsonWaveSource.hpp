@@ -3,7 +3,6 @@
 
 #include <string>
 #include "core/interfaces/iWaveSource.hpp"
-#include "core/creatures/creature.hpp"
 
 namespace tdg::infra {
 

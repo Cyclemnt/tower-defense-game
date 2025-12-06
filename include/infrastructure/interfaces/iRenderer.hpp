@@ -2,9 +2,8 @@
 #define I_RENDERER_HPP
 
 #include <vector>
-#include "core/map.hpp"
 
-namespace tdg::core { class Creature; class Tower; }
+namespace tdg::core { class Creature; class Tower; class Map; }
 
     namespace tdg::infra {
 
