@@ -1,8 +1,8 @@
 #ifndef SFML_RENDERER_HPP
 #define SFML_RENDERER_HPP
 
-#include "infrastructure/interfaces/iRenderer.hpp"
 #include <SFML/Graphics.hpp>
+#include "infrastructure/interfaces/iRenderer.hpp"
 
 namespace tdg::infra {
 

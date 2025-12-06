@@ -1,8 +1,8 @@
 #ifndef AUTO_WAVE_SOURCE_HPP
 #define AUTO_WAVE_SOURCE_HPP
 
-#include "core/interfaces/iWaveSource.hpp"
 #include <random>
+#include "core/interfaces/iWaveSource.hpp"
 
 namespace tdg::infra {
     

@@ -1,8 +1,8 @@
 #ifndef I_RENDERER_HPP
 #define I_RENDERER_HPP
 
-#include "core/map.hpp"
 #include <vector>
+#include "core/map.hpp"
 
 namespace tdg::core { class Creature; class Tower; }
 

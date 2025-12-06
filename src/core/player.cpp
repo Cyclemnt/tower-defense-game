@@ -1,5 +1,5 @@
-#include "core/player.hpp"
 #include <stdexcept>
+#include "core/player.hpp"
 
 namespace tdg::core {
 

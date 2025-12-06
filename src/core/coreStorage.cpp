@@ -1,5 +1,5 @@
-#include "core/coreStorage.hpp"
 #include <cmath>
+#include "core/coreStorage.hpp"
 
 namespace tdg::core {
 

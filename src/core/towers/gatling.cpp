@@ -1,5 +1,5 @@
-#include "core/towers/gatling.hpp"
 #include <cmath>
+#include "core/towers/gatling.hpp"
 
 namespace tdg::core {
 

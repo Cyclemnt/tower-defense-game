@@ -1,5 +1,5 @@
-#include "core/towers/tower.hpp"
 #include <cmath>
+#include "core/towers/tower.hpp"
 
 namespace tdg::core {
 

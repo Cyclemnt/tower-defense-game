@@ -1,5 +1,5 @@
-#include "core/towers/laser.hpp"
 #include <cmath>
+#include "core/towers/laser.hpp"
 
 namespace tdg::core {
 

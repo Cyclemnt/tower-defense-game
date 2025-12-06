@@ -1,5 +1,5 @@
-#include "core/towers/mortar.hpp"
 #include <cmath>
+#include "core/towers/mortar.hpp"
 
 namespace tdg::core {
 

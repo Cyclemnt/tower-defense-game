@@ -1,10 +1,10 @@
 #ifndef TGUI_MANAGER_HPP
 #define TGUI_MANAGER_HPP
 
-#include "infrastructure/interfaces/iGuiManager.hpp"
 #include <TGUI/TGUI.hpp>
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <chrono>
+#include "infrastructure/interfaces/iGuiManager.hpp"
 
 namespace tdg::infra {
 

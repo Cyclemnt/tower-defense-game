@@ -1,7 +1,7 @@
 #include "engine/game.hpp"
 #include "core/events.hpp"
 #include "infrastructure/aStarPathfinder.hpp"
-#include <iostream>
+
 namespace tdg::engine {
 
     Game::Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc,

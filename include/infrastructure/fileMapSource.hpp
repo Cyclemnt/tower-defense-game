@@ -1,9 +1,9 @@
 #ifndef FILE_MAP_SOURCE_HPP
 #define FILE_MAP_SOURCE_HPP
 
+#include <string>
 #include "core/interfaces/iMapSource.hpp"
 #include "core/map.hpp"
-#include <string>
 
 namespace tdg::infra {
 
