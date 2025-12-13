@@ -3,11 +3,18 @@
 #include "infrastructure/autoWaveSource.hpp"
 #include "infrastructure/jsonWaveSource.hpp"
 
+#include "infrastructure/sfmlResourceManager.hpp"
+#include "infrastructure/sfmlRenderer.hpp"
+
 namespace tdg::engine {
     
     GameManager::GameManager() {
         m_mapSource = std::make_shared<infra::FileMapSource>("../assets/maps/");
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
+
+        auto ressources = std::make_shared<infra::SFMLResourceManager>();
+        // m_renderer = std::make_shared<infra::SFMLRenderer>(window, ressources);
+        // m_gui = std::make_shared<infra::TGUIManager>(window, ressources);
     }
 
     void GameManager::setState(State state) {

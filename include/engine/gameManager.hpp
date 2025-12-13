@@ -6,6 +6,9 @@
 #include "core/interfaces/iMapSource.hpp"
 #include "core/interfaces/iWaveSource.hpp"
 
+#include "infrastructure/interfaces/iRenderer.hpp"
+#include "infrastructure/interfaces/iGuiManager.hpp"
+
 namespace tdg::engine {
 
     class GameManager {
@@ -22,9 +25,12 @@ namespace tdg::engine {
         void startArcadeMode();
         void loadLevel(unsigned int maplvl, unsigned int wavlvl);
 
+        // sf::RenderWindow m_window;
+        // sf::Clock m_clock;
+
         State m_state { State::MainMenu };
-        // std::unique_ptr<infra::IRenderer> m_renderer;
-        // std::unique_ptr<infra::IGui> m_gui;
+        std::unique_ptr<infra::IRenderer> m_renderer;
+        std::unique_ptr<infra::IGUIManager> m_gui;
         std::unique_ptr<Game> m_game;
 
         std::shared_ptr<core::IMapSource> m_mapSource;
@@ -33,6 +39,7 @@ namespace tdg::engine {
         unsigned int m_level{1u};
         const unsigned int m_arcadeMapLevel{3u};
         bool m_running{false};
+        float m_acceleration{1.0f};
     };
 
 } // namespace tdg::engine

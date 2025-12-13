@@ -14,10 +14,12 @@
 
 #include "core/towers/tower.hpp"
 #include "core/creatures/creature.hpp"
+#include "core/vfxs/vfx.hpp"
 #include "core/events.hpp"
 
 #include "core/factories/towerFactory.hpp"
 #include "core/factories/creatureFactory.hpp"
+#include "core/factories/vfxFactory.hpp"
 
 namespace tdg::core { class IWaveSource; }
 namespace tdg::core { class IMapSource; }
@@ -48,7 +50,6 @@ namespace tdg::engine {
         void handleDeadCreatures();
         void updatePaths();
         
-        bool m_paused{false};
         unsigned long tick{0};
         
         std::unique_ptr<Map> m_map;
@@ -60,10 +61,12 @@ namespace tdg::engine {
 
         std::vector<TowerPtr> m_towers;
         std::vector<CreaturePtr> m_creatures;
+        std::vector<VFXPtr> m_vfxs;
         Events m_events;
 
         TowerFactory m_towerFactory;
         CreatureFactory m_creatureFactory;
+        VFXFactory m_vfxFactory;
     };
 
 } // namespace tdg::engine

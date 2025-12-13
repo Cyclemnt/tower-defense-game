@@ -18,7 +18,7 @@ namespace tdg::infra {
         void showGameOver() override;
         void showVictory() override;
 
-        void update(std::chrono::milliseconds dt) override;
+        void update(float dt) override;
         void render() override;
 
     private:

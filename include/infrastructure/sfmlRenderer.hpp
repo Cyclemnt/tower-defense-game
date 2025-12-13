@@ -3,21 +3,25 @@
 
 #include <SFML/Graphics.hpp>
 #include "infrastructure/interfaces/iRenderer.hpp"
+#include "infrastructure/sfmlResourceManager.hpp"
 
 namespace tdg::infra {
 
     class SFMLRenderer : public IRenderer {
     public:
-        explicit SFMLRenderer(sf::RenderWindow& window);
+        explicit SFMLRenderer(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SFMLResourceManager> ressources);
 
-        void beginFrame() override;
-        void drawMap(const core::Map&) override;
-        void drawCreatures(const std::vector<core::Creature*>&) override;
-        void drawTowers(const std::vector<core::Tower*>&) override;
-        void endFrame() override;
+        void drawSprite(const std::string& spriteId, float x, float y) override;
+        void drawRectangle(float x, float y, float width, float height, int red, int green, int blue, int alpha) override;
+        void drawRectangle(float x1, float y1, float x2, float y2, float width, int red, int green, int blue, int alpha) override;
+        void drawCircle(float x, float y, float radius, int red, int green, int blue, int alpha) override;
+
+        bool isInView(float x, float y) const;
 
     private:
-        sf::RenderWindow& m_window;
+        std::shared_ptr<sf::RenderWindow> m_window;
+        std::shared_ptr<SFMLResourceManager> m_ressources;
+        std::shared_ptr<float> m_tileSize;
     };
 
 } // namespace tdg::infra

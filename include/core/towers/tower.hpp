@@ -41,6 +41,8 @@ namespace tdg::core {
         virtual Materials upgradeCost() const noexcept { return {m_stats.upgradeCost, 0u, 0u}; }
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
 
+        virtual unsigned int frameId() const noexcept = 0;
+
     protected:
         Tower::Stats m_stats;
         unsigned int level{1u};

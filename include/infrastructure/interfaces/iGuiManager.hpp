@@ -15,7 +15,7 @@ namespace tdg::infra {
         virtual void showGameOver() = 0;
         virtual void showVictory() = 0;
 
-        virtual void update(std::chrono::milliseconds dt) = 0;
+        virtual void update(float dt) = 0;
         virtual void render() = 0;
     };
 

@@ -14,8 +14,6 @@ namespace tdg::engine {
     }
 
     void Game::update(float dt) {
-        if (m_paused) return;
-        // dt *= speed;
         ++tick;
 
         m_waveManager->update(dt, m_events);
@@ -27,8 +25,15 @@ namespace tdg::engine {
             m_events.spawn.pop();
         }
 
-        // Update events with a lifetime
-        m_events.update(dt);
+        // Create new VFXs
+        while (!m_events.vfxs.empty()) {
+            VFXEventData& ve = m_events.vfxs.front();
+            m_vfxs.push_back(std::move(m_vfxFactory.create(ve)));
+            m_events.vfxs.pop();
+        }
+
+        // Update visual effects
+        for (VFXPtr& v : m_vfxs) v->update(dt);
 
         // Update creatures
         for (CreaturePtr& c : m_creatures) c->update(dt, m_events);

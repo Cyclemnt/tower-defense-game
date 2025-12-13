@@ -44,6 +44,7 @@ namespace tdg::core {
 
     struct VFXEventData {
         VFXType type;
+        unsigned int level;
         float lifeTime;
         float xStart, yStart;
         std::optional<float> xEnd, yEnd;
@@ -57,18 +58,11 @@ namespace tdg::core {
 
     // Event collector
     class Events {
-        public:
-            std::queue<SFXType> sfxs;
-            std::vector<VFXEventData> vfxs;
-            std::queue<PathEvent> pathEvents;
-            std::queue<SpawnInfo> spawn;
-
-            void update(float dt) {
-                for (auto it = vfxs.begin(); it != vfxs.end();) {
-                    if (it->lifeTime -= dt <= 0) it = vfxs.erase(it);
-                    else ++it;
-                }
-            }
+    public:
+        std::queue<SFXType> sfxs;
+        std::queue<VFXEventData> vfxs;
+        std::queue<PathEvent> pathEvents;
+        std::queue<SpawnInfo> spawn;
     };
 
 } // namespace tdg::core

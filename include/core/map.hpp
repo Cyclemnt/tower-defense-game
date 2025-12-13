@@ -34,14 +34,15 @@ namespace tdg::core {
 
         std::vector<const Tile*> neighbors(const Tile* tile) const;
 
-        std::vector<Tile*> entryPoints() const { return m_entryPoints; }
-        std::vector<Tile*> exitPoints() const { return m_exitPoints; }
-        Tile* corePoint() const { return m_corePoint; }
+        std::vector<Tile*> entryPoints() const noexcept { return m_entryPoints; }
+        std::vector<Tile*> exitPoints() const noexcept { return m_exitPoints; }
+        Tile* corePoint() const noexcept { return m_corePoint; }
 
         bool placeTower(int x, int y);
         bool removeTower(int x, int y);
 
         void printMap() const;
+        const std::vector<Tile>* tiles() const noexcept { return &m_tiles; }
     
     private:
         int m_width{0};
