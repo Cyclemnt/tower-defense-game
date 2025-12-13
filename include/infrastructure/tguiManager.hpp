@@ -4,13 +4,14 @@
 #include <TGUI/TGUI.hpp>
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <chrono>
+#include <memory>
 #include "infrastructure/interfaces/iGuiManager.hpp"
 
 namespace tdg::infra {
 
-    class TGUIGUIManager : public IGUIManager {
+    class TGUIManager : public IGUIManager {
     public:
-        explicit TGUIGUIManager(tgui::Gui& gui);
+        explicit TGUIManager(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize);
 
         void showMainMenu() override;
         void showHUD() override;
@@ -22,7 +23,8 @@ namespace tdg::infra {
         void render() override;
 
     private:
-        tgui::Gui& m_gui;
+        std::unique_ptr<tgui::Gui> m_gui;
+        std::shared_ptr<float> m_tileSize;
     };
 
 } // namespace tdg::infra

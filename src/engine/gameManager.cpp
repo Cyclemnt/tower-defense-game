@@ -4,7 +4,9 @@
 #include "infrastructure/jsonWaveSource.hpp"
 
 #include "infrastructure/sfmlResourceManager.hpp"
-#include "infrastructure/sfmlRenderer.hpp"
+#include "infrastructure/sfmlVideoRenderer.hpp"
+#include "infrastructure/sfmlAudioRenderer.hpp"
+#include "infrastructure/tguiManager.hpp"
 
 namespace tdg::engine {
     
@@ -12,9 +14,16 @@ namespace tdg::engine {
         m_mapSource = std::make_shared<infra::FileMapSource>("../assets/maps/");
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
 
+        auto window = std::make_shared<sf::RenderWindow>();
+        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+        window->create(desktop, "Tower Defense Game", sf::State::Fullscreen);
+        window->setFramerateLimit(60);
         auto ressources = std::make_shared<infra::SFMLResourceManager>();
-        // m_renderer = std::make_shared<infra::SFMLRenderer>(window, ressources);
-        // m_gui = std::make_shared<infra::TGUIManager>(window, ressources);
+        auto tileSize = std::make_shared<float>(64.0f);
+
+        m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(window, ressources, tileSize);
+        m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(window, ressources, tileSize);
+        m_gui = std::make_unique<infra::TGUIManager>(window, tileSize);
     }
 
     void GameManager::setState(State state) {

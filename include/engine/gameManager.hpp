@@ -6,7 +6,8 @@
 #include "core/interfaces/iMapSource.hpp"
 #include "core/interfaces/iWaveSource.hpp"
 
-#include "infrastructure/interfaces/iRenderer.hpp"
+#include "infrastructure/interfaces/iVideoRenderer.hpp"
+#include "infrastructure/interfaces/iAudioRenderer.hpp"
 #include "infrastructure/interfaces/iGuiManager.hpp"
 
 namespace tdg::engine {
@@ -29,7 +30,8 @@ namespace tdg::engine {
         // sf::Clock m_clock;
 
         State m_state { State::MainMenu };
-        std::unique_ptr<infra::IRenderer> m_renderer;
+        std::unique_ptr<infra::IVideoRenderer> m_videoRenderer;
+        std::unique_ptr<infra::IAudioRenderer> m_audioRenderer;
         std::unique_ptr<infra::IGUIManager> m_gui;
         std::unique_ptr<Game> m_game;
 
