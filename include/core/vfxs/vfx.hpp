@@ -13,7 +13,9 @@ namespace tdg::core {
         unsigned int m_level{1u};
         float m_x1{0.0f}, m_y1{0.0f};
         std::optional<float> m_x2, m_y2;
-        int m_red{255}, m_green{255}, m_blue{255}, m_alpha{255};
+        unsigned int m_red{255u}, m_green{255u}, m_blue{255u}, m_alpha{255u};
+
+        void setColor(unsigned int red, unsigned int green, unsigned int blue, unsigned int alpha = 255u);
 
     public:
         VFX(unsigned int level, float x1, float y1, std::optional<float> x2 = std::nullopt, std::optional<float> y2 = std::nullopt);

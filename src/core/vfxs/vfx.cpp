@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "core/vfxs/vfx.hpp"
 
 namespace tdg::core {
@@ -8,6 +9,13 @@ namespace tdg::core {
     void VFX::update(float dt) {
         if (m_timetolive > 0.0f) m_timetolive -= dt;
         else m_alive = false;
+    }
+
+    void VFX::setColor(unsigned int red, unsigned int green, unsigned int blue, unsigned int alpha) {
+        m_red = std::clamp(red, 0u, 255u);
+        m_green = std::clamp(green, 0u, 255u);
+        m_blue = std::clamp(blue, 0u, 255u);
+        m_alpha = std::clamp(alpha, 0u, 255u);
     }
 
 } // namespace tdg::core

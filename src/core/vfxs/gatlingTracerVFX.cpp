@@ -11,9 +11,15 @@ namespace tdg::core {
     }
 
     void GatlingTracerVFX::randomizeColor() {
-        m_red   = 200 + std::rand() % 56;
-        m_green = 200 + std::rand() % 56;
-        m_blue  = 50  + std::rand() % 50;
+        unsigned int r = std::rand() % 41; 
+        unsigned int g = std::rand() % 41;
+        unsigned int b = std::rand() % 41;
+
+        switch (m_level) {
+            case 1u: setColor(235u + r, 214u + g, 35u + b, 0u); break;
+            case 2u: setColor(235u + r, 157u + g, 12u + b, 0u); break;
+            case 3u: setColor(235u + r, 44u + g, 0u + b, 0u); break;
+        }
     }
 
     void GatlingTracerVFX::randomizeJitter() {

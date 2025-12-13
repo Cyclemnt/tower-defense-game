@@ -18,7 +18,6 @@ namespace tdg::core {
         std::vector<Particle> particles;
 
         void randomizeColor();
-        void randomizeJitter();
 
     public:
         HitSparkVFX(unsigned int level, float x1, float y1);
