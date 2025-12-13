@@ -18,6 +18,7 @@ namespace tdg::core {
         }, x, y) {}
 
     void Laser::update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) {
+        ++m_tick;
         if (m_target || m_cooldown > 0.0f)
             m_cooldown -= dt;
 
@@ -51,13 +52,18 @@ namespace tdg::core {
         while (m_target && m_cooldown <= 0.0f) {
             attack();
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.vfxs.emplace_back(VFXType::LaserBeam, m_x, m_y, m_target->px(), m_target->py());
+            events.vfxs.emplace(VFXType::LaserBeam, m_x, m_y, m_target->px(), m_target->py());
             events.sfxs.push(SFXType::LaserShoot);
         }
     }
 
     void Laser::upgrade() {
 
+    }
+
+    std::string Laser::spriteId() const noexcept {
+        unsigned int frame = m_tick / 8 % 4;
+        return "tower_laser_" + std::to_string(frame);
     }
     
 } // namespace tdg::core

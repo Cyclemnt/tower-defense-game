@@ -9,6 +9,8 @@ namespace tdg::core {
     public:
         explicit Minion(bool boosted = false) noexcept;
         ~Minion() override = default;
+
+        std::string spriteId() const noexcept override;
     };
 
 } // namespace tdg::core

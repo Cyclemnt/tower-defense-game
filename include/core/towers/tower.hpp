@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 #include "core/creatures/creature.hpp"
 
 namespace tdg::core { class Events; }
@@ -18,7 +19,7 @@ namespace tdg::core {
             float fireRate{0};
             float range{0};
             Materials cost{0u,0u,0u};
-            unsigned int upgradeCost{0u};
+            Materials upgradeCost{0u,0u,0u};
         };
 
         Tower(const Tower::Stats& stats, int x, int y);
@@ -38,10 +39,10 @@ namespace tdg::core {
         Creature* target() const noexcept { return m_target; }
 
         virtual Materials cost() const noexcept { return m_stats.cost; }
-        virtual Materials upgradeCost() const noexcept { return {m_stats.upgradeCost, 0u, 0u}; }
+        virtual Materials upgradeCost() const noexcept { return m_stats.upgradeCost; }
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
 
-        virtual unsigned int frameId() const noexcept = 0;
+        virtual std::string spriteId() const noexcept = 0;
 
     protected:
         Tower::Stats m_stats;

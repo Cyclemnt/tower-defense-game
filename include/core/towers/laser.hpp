@@ -11,6 +11,8 @@ namespace tdg::core {
         float m_damageScale = 1.0f; ///< Scales up over lock duration.
         float m_lockTime = 0.0f;    ///< Time spent locked on target.
 
+        unsigned long m_tick{0u};   ///< Number of updates the object lived (for tick driven animation)
+
     public:
         explicit Laser(int x, int y) noexcept;
         ~Laser() override = default;
@@ -18,6 +20,7 @@ namespace tdg::core {
         void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override;
 
         void upgrade() override;
+        std::string spriteId() const noexcept override;
     };
     
 } // namespace tdg::core

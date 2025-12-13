@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 #include "core/player.hpp"
 
 namespace tdg::core { class Events; }
@@ -35,6 +36,7 @@ namespace tdg::core {
 
         float px() const noexcept { return m_px; }
         float py() const noexcept { return m_py; }
+        virtual std::string spriteId() const noexcept = 0;
 
         void stealCores(unsigned int amount) noexcept;
         unsigned int dropCores() noexcept;
@@ -58,6 +60,7 @@ namespace tdg::core {
         std::vector<const Tile*> m_path;
         unsigned int m_coresCarried{0};
         bool m_alive{true};
+        unsigned long m_tick{0u};  ///< Number of updates the object lived (for tick driven animation)
     };
 
     using CreaturePtr = std::unique_ptr<Creature>;

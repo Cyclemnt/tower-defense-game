@@ -51,7 +51,7 @@ namespace tdg::core {
                     if (impactDist < m_shellExplosionRadius)
                         c->takeDamage(m_stats.damage);
                 }
-                events.vfxs.push_back({VFXType::Explosion, s.endX, s.endY});
+                events.vfxs.emplace(VFXType::Explosion, s.endX, s.endY);
                 events.sfxs.push(SFXType::MortarHit);
                 it = m_shells.erase(it); // Erease element and get new iterator
 
@@ -75,6 +75,16 @@ namespace tdg::core {
 
     void Mortar::upgrade() {
 
+    }
+
+    std::string Mortar::spriteId() const noexcept {
+        if (!m_target) return "tower_mortar_n"; // default idle texture
+
+        const float dx = m_target->px() - static_cast<float>(m_x);
+
+        if (dx < -0.1f) return "tower_mortar_nw";
+        else if (dx >  0.1f) return "tower_mortar_ne";
+        else return "tower_mortar_n";
     }
     
 } // namespace tdg::core

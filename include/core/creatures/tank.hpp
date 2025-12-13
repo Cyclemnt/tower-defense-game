@@ -9,6 +9,8 @@ namespace tdg::core {
     public:
         explicit Tank(bool boosted = false) noexcept;
         ~Tank() override = default;
+
+        std::string spriteId() const noexcept override;
     };
 
 } // namespace tdg::core

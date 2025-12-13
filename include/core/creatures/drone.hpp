@@ -9,6 +9,8 @@ namespace tdg::core {
     public:
         explicit Drone(bool boosted = false) noexcept;
         ~Drone() override = default;
+
+        std::string spriteId() const noexcept override;
     };
     
 } // namespace tdg::core
