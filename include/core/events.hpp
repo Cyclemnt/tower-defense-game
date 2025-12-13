@@ -49,11 +49,11 @@ namespace tdg::core {
         float xStart, yStart;
         std::optional<float> xEnd, yEnd;
 
-        VFXEventData(VFXType t, float x, float y, float lt = 0.0f) 
-            : type(t), xStart(x), yStart(y), xEnd(std::nullopt), yEnd(std::nullopt), lifeTime(lt) {}
+        VFXEventData(VFXType t, unsigned int lvl, float x, float y, float lt = 0.0f) 
+            : type(t), level(lvl), xStart(x), yStart(y), xEnd(std::nullopt), yEnd(std::nullopt), lifeTime(lt) {}
 
-        VFXEventData(VFXType t, float x1, float y1, float x2, float y2, float lt = 0.0f) 
-            : type(t), xStart(x1), yStart(y1), xEnd(x2), yEnd(y2), lifeTime(lt) {}
+        VFXEventData(VFXType t, unsigned int lvl, float x1, float y1, float x2, float y2, float lt = 0.0f) 
+            : type(t), level(lvl), xStart(x1), yStart(y1), xEnd(x2), yEnd(y2), lifeTime(lt) {}
     };
 
     // Event collector

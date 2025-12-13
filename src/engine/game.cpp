@@ -46,6 +46,9 @@ namespace tdg::engine {
 
         // Reward and cleanup dead creatures
         handleDeadCreatures();
+        
+        // Cleanup dead vfxs
+        handleDeadVFX();
 
         // If no creatures left, load next wave
         if (isWaveOver() && m_waveManager->getTimeBeforeNext() <= 0.0f) {
@@ -92,6 +95,14 @@ namespace tdg::engine {
             else {
                 ++it;
             }
+        }
+    }
+
+    void Game::handleDeadVFX() {
+        for (auto it = m_vfxs.begin(); it != m_vfxs.end();) {
+            VFXPtr& v = *it;
+            if (!v->isAlive()) it = m_vfxs.erase(it);
+            else ++it;
         }
     }
 

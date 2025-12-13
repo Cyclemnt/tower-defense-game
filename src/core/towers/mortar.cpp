@@ -51,7 +51,7 @@ namespace tdg::core {
                     if (impactDist < m_shellExplosionRadius)
                         c->takeDamage(m_stats.damage);
                 }
-                events.vfxs.emplace(VFXType::Explosion, s.endX, s.endY);
+                events.vfxs.emplace(VFXType::Explosion, m_level, s.endX, s.endY);
                 events.sfxs.push(SFXType::MortarHit);
                 it = m_shells.erase(it); // Erease element and get new iterator
 

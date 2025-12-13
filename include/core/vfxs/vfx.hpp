@@ -22,6 +22,7 @@ namespace tdg::core {
         virtual ~VFX() = default;
 
         virtual void update(float dt);
+        bool isAlive() { return m_alive; }
     };
 
     using VFXPtr = std::unique_ptr<VFX>;

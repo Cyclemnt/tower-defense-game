@@ -40,8 +40,8 @@ namespace tdg::core {
         while (m_target && m_cooldown <= 0.0f) {
             attack();
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.vfxs.emplace(VFXType::GatlingTracer, m_x, m_y, m_target->px(), m_target->py());
-            events.vfxs.emplace(VFXType::HitSpark, m_target->px(), m_target->py());
+            events.vfxs.emplace(VFXType::GatlingTracer, m_level, m_x, m_y, m_target->px(), m_target->py());
+            events.vfxs.emplace(VFXType::HitSpark, m_level, m_target->px(), m_target->py());
             events.sfxs.push(SFXType::GatlingShoot);
         }
     }
