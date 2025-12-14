@@ -54,10 +54,10 @@ namespace tdg::core {
                 switch (type) {
                     case SFX::Type::CreatureSpawn: return "sounds/spawn";
                     case SFX::Type::CreatureDeath: return "sounds/death";
-                    case SFX::Type::GatlingShoot:  return "sounds/gatling";
-                    case SFX::Type::LaserShoot:    return "sounds/laser";
-                    case SFX::Type::MortarShoot:   return "sounds/mortar";
-                    case SFX::Type::MortarHit:     return "sounds/explosion";
+                    case SFX::Type::GatlingShoot:  return "sounds/gatling_shoot";
+                    case SFX::Type::LaserShoot:    return "sounds/laser_shoot";
+                    case SFX::Type::MortarShoot:   return "sounds/mortar_shoot";
+                    case SFX::Type::MortarHit:     return "sounds/mortar_hit";
                 }
                 return "";
             }
