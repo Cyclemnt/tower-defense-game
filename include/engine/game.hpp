@@ -55,7 +55,7 @@ namespace tdg::engine {
         void handleDeadVFX();
         void updatePaths();
         
-        unsigned long tick{0u};
+        unsigned long m_tick{0u};
         
         std::unique_ptr<Map> m_map;
         std::unique_ptr<IPathfinder> m_pathfinder;

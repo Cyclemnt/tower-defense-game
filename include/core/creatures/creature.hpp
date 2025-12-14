@@ -43,8 +43,8 @@ namespace tdg::core {
         void setPath(const std::vector<const Tile*>& p) noexcept;
         void setPosition(int x, int y) noexcept;
 
-        const Tile* nextTile() noexcept { return *m_path.begin(); }
-        const Tile* destinationTile() noexcept { return *m_path.end(); }
+        const Tile* nextTile() noexcept { return m_path.at(m_pathIndex); }
+        const Tile* destinationTile() noexcept { return m_path.back(); }
 
         void leave() noexcept;
 

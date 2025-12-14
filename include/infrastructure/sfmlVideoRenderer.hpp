@@ -12,9 +12,9 @@ namespace tdg::infra {
         explicit SFMLVideoRenderer(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SFMLResourceManager> ressources, std::shared_ptr<float> tileSize);
 
         void drawSprite(const std::string& spriteId, float x, float y) override;
-        void drawRectangle(float x, float y, float width, float height, int red, int green, int blue, int alpha) override;
-        void drawRectangle(float x1, float y1, float x2, float y2, float width, int red, int green, int blue, int alpha) override;
-        void drawCircle(float x, float y, float radius, int red, int green, int blue, int alpha) override;
+        void drawRectangle(float x, float y, float width, float height, int red, int green, int blue, int alpha = 255u) override;
+        void drawRectangle(float x1, float y1, float x2, float y2, float width, int red, int green, int blue, int alpha = 255u) override;
+        void drawCircle(float x, float y, float radius, int red, int green, int blue, int alpha = 255u) override;
 
         bool isInView(float x, float y) const;
 

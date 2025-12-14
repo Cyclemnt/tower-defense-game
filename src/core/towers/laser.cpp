@@ -23,15 +23,17 @@ namespace tdg::core {
             m_cooldown -= dt;
 
         // Validate target
-        float dx = m_target->px() - m_x;
-        float dy = m_target->py() - m_y;
-        float creatureDistance = std::sqrt(dx * dx + dy * dy);
-        if (m_target && (!m_target->isAlive() || creatureDistance > m_stats.range)) {
-            clearTarget();
-            // Reset damage scale over time
-            m_lockTime = 0.0f; // Reset lock timer
-            m_damageScale = 1.0f; // Reset damage coefficient
-            m_stats.damage = m_baseDamage; // Reset damage
+        if (m_target) {
+            float dx = m_target->px() - m_x;
+            float dy = m_target->py() - m_y;
+            float creatureDistance = std::sqrt(dx * dx + dy * dy);
+            if (!m_target->isAlive() || creatureDistance > m_stats.range) {
+                clearTarget();
+                // Reset damage scale over time
+                m_lockTime = 0.0f; // Reset lock timer
+                m_damageScale = 1.0f; // Reset damage coefficient
+                m_stats.damage = m_baseDamage; // Reset damage
+            }
         }
 
         // Update damage scale over time

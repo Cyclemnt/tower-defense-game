@@ -1,6 +1,7 @@
 #include <cmath>
 #include "core/towers/mortar.hpp"
 #include "core/events.hpp"
+#include "core/interfaces/iVideoRenderer.hpp"
 
 namespace tdg::core {
 
@@ -22,11 +23,13 @@ namespace tdg::core {
             m_cooldown -= dt;
 
         // Validate target
-        float dx = m_target->px() - m_x;
-        float dy = m_target->py() - m_y;
-        float creatureDistance = std::sqrt(dx * dx + dy * dy);
-        if (m_target && (!m_target->isAlive() || creatureDistance > m_stats.range))
-            clearTarget();
+        if (m_target) {
+            float dx = m_target->px() - m_x;
+            float dy = m_target->py() - m_y;
+            float creatureDistance = std::sqrt(dx * dx + dy * dy);
+            if (!m_target->isAlive() || creatureDistance > m_stats.range)
+                clearTarget();
+        }
 
         // Acquire new target if needed
         if (!m_target) {
@@ -66,7 +69,7 @@ namespace tdg::core {
         // Shoot shells while cooldown let it
         while (m_target && m_cooldown <= 0.0f) {
             // Create new projectile
-            Shell newShell{static_cast<float>(m_x), static_cast<float>(m_y), m_target->px(), m_target->py()};
+            Shell newShell{static_cast<float>(m_x), static_cast<float>(m_y) - 0.3f, m_target->px(), m_target->py()};
             m_shells.push_back(newShell);
             m_cooldown += 1.0f / m_stats.fireRate;
             events.sfxs.push(SFXType::MortarShoot);
@@ -85,6 +88,14 @@ namespace tdg::core {
         if (dx < -0.1f) return "towers/mortar_nw";
         else if (dx >  0.1f) return "towers/mortar_ne";
         else return "towers/mortar_n";
+    }
+
+    void Mortar::draw(IVideoRenderer& vidRenderer) const {
+        for (auto& s : m_shells) {
+            vidRenderer.drawCircle(s.curX + 0.5f, s.curY + 0.5f, 0.1f, 180u, 180u, 180u);
+        }
+
+        vidRenderer.drawSprite(spriteId(), m_x, m_y - 0.7f);
     }
     
 } // namespace tdg::core

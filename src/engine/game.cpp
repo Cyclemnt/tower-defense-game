@@ -14,8 +14,8 @@ namespace tdg::engine {
     }
 
     void Game::update(float dt) {
-        ++tick;
-
+        ++m_tick;
+        
         m_waveManager->update(dt, m_events);
 
         // Spawn new creatures
@@ -62,8 +62,8 @@ namespace tdg::engine {
     void Game::render(IVideoRenderer& vidRenderer) const {
         m_map->draw(vidRenderer);
         for (const CreaturePtr& c : m_creatures) c->draw(vidRenderer);
-        for (const TowerPtr& t : m_towers) t->draw(vidRenderer);
         for (const VFXPtr& v : m_vfxs) v->draw(vidRenderer);
+        for (const TowerPtr& t : m_towers) t->draw(vidRenderer);
     }
 
     void Game::handlePathEvent() {
@@ -195,7 +195,9 @@ namespace tdg::engine {
         for (CreaturePtr& creature : m_creatures) {
             const Tile* nextTile = creature->nextTile();
             const Tile* destinationTile = creature->destinationTile();
-            if (!nextTile) continue;
+
+            if (!nextTile || !destinationTile) continue;
+
             auto path = m_pathfinder->findPath(nextTile, destinationTile);
             creature->setPath(std::move(path));
         }

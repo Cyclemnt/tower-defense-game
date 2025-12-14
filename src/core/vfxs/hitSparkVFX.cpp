@@ -2,7 +2,7 @@
 #include <cmath>
 #include "core/vfxs/hitSparkVFX.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"
-
+#include <iostream>
 #define PIf 3.141592f
 
 namespace tdg::core {
@@ -10,6 +10,8 @@ namespace tdg::core {
     HitSparkVFX::HitSparkVFX(unsigned int level, float x1, float y1)
         : VFX(level, x1, y1)
     {
+        m_timetolive = m_lifetime = 0.25f;
+
         int count = 5 + std::rand() % 5;
         particles.reserve(count);
         for (int i = 0; i < count; ++i) {
@@ -24,16 +26,16 @@ namespace tdg::core {
 
     void HitSparkVFX::update(float dt) {
         if (m_timetolive > 0.0f) {
-            m_timetolive -= dt;
+            m_timetolive -= std::min(m_timetolive, dt);
             for (auto& p : particles) {
-                p.timetolive -= dt;
-                float t = (p.timetolive - m_lifetime) / m_lifetime; // Progress ratio [0..1]
+                p.timetolive -= std::min(p.timetolive, dt);
+                float t = (p.lifetime - p.timetolive) / p.lifetime; // Progress ratio [0..1]
                 p.radius = p.maxRadius * (1.0f - t);
             }
 
-            float t = (m_timetolive - m_lifetime) / m_lifetime; // Progress ratio [0..1]
-            // m_color.a = static_cast<unsigned int>(220.0f * (1.0f - t)); trying sinusoid:
-            m_color.a = static_cast<unsigned int>(220.0f * (1.0f - t) + 35.0f * std::cos(25.0f * PIf * t));
+            float t = (m_lifetime - m_timetolive) / m_lifetime; // Progress ratio [0..1]
+            m_color.a = static_cast<unsigned int>(220.0f * (1.0f - t));
+            // m_color.a = static_cast<unsigned int>(220.0f * (1.0f - t) + 35.0f * std::cos(25.0f * PIf * t));
         }
         else m_alive = false;
     }
@@ -46,7 +48,7 @@ namespace tdg::core {
             float px = m_x1 + p.dirX * dist;
             float py = m_y1 + p.dirY * dist;
 
-            vidRenderer.drawCircle(px, py, p.radius, m_color.r, m_color.g, m_color.b, m_color.a);
+            vidRenderer.drawCircle(px + 0.5f, py + 0.5f, p.radius, m_color.r, m_color.g, m_color.b, m_color.a);
         }
     }
 
@@ -56,9 +58,9 @@ namespace tdg::core {
         unsigned int b = std::rand() % 41;
 
         switch (m_level) {
-            case 1u: m_color.setColor(235u + r, 214u + g, 35u + b, 0u); break;
-            case 2u: m_color.setColor(235u + r, 157u + g, 12u + b, 0u); break;
-            case 3u: m_color.setColor(235u + r, 44u + g, 0u + b, 0u);   break;
+            case 1u: m_color.setColor(235u + r, 214u + g, 35u + b); break;
+            case 2u: m_color.setColor(235u + r, 157u + g, 12u + b); break;
+            case 3u: m_color.setColor(235u + r, 44u + g, 0u + b);   break;
         }
     }
 

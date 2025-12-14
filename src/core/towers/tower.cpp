@@ -31,7 +31,7 @@ namespace tdg::core {
     }
 
     void Tower::draw(IVideoRenderer& vidRenderer) const {
-        vidRenderer.drawSprite(spriteId(), m_x, m_y);
+        vidRenderer.drawSprite(spriteId(), m_x, m_y - 0.7f);
     }
 
 } // namespace tdg::core

@@ -19,7 +19,7 @@ namespace tdg::engine {
         m_window->create(desktop, "Tower Defense Game", sf::State::Fullscreen);
         m_window->setFramerateLimit(60);
         auto ressources = std::make_shared<infra::SFMLResourceManager>();
-        auto tileSize = std::make_shared<float>(64.0f);
+        auto tileSize = std::make_shared<float>(100.0f);
 
         m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(m_window, ressources, tileSize);
         m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(ressources);

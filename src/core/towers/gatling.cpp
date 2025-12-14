@@ -1,7 +1,7 @@
 #include <cmath>
 #include "core/towers/gatling.hpp"
 #include "core/events.hpp"
-
+#include <iostream>
 #define PIf 3.141592f
 
 namespace tdg::core {
@@ -24,11 +24,13 @@ namespace tdg::core {
             m_cooldown -= dt;
 
         // Validate target
-        float dx = m_target->px() - m_x;
-        float dy = m_target->py() - m_y;
-        float creatureDistance = std::sqrt(dx * dx + dy * dy);
-        if (m_target && (!m_target->isAlive() || creatureDistance > m_stats.range))
-            clearTarget();
+        if (m_target) {
+            float dx = m_target->px() - m_x;
+            float dy = m_target->py() - m_y;
+            float creatureDistance = std::sqrt(dx * dx + dy * dy);
+            if (!m_target->isAlive() || creatureDistance > m_stats.range)
+                clearTarget();
+        }
 
         // Acquire new target if needed
         if (!m_target) {

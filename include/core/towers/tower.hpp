@@ -44,7 +44,7 @@ namespace tdg::core {
         virtual Materials upgradeCost() const noexcept { return m_stats.upgradeCost; }
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
 
-        void draw(IVideoRenderer& vidRenderer) const;
+        virtual void draw(IVideoRenderer& vidRenderer) const;
 
     protected:
         Tower::Stats m_stats;

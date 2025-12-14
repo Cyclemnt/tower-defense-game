@@ -12,10 +12,14 @@ namespace tdg::infra {
         const sf::Texture& texture = m_ressources->getTexture(spriteId);
         sf::Sprite sprite(texture);
         sprite.setPosition(sf::Vector2f(x, y));
+        sf::Vector2u size = texture.getSize();
+        sprite.setScale(sf::Vector2f(*m_tileSize / size.x, *m_tileSize / size.x));
         m_window->draw(sprite);
     }
 
     void SFMLVideoRenderer::drawRectangle(float x, float y, float width, float height, int red, int green, int blue, int alpha) {
+        x *= *m_tileSize; y *= *m_tileSize;
+        width *= *m_tileSize; height *= *m_tileSize;
         if (!isInView(x, y)) return; // Considering the rectangle smaller than a tile
         sf::RectangleShape rectangle(sf::Vector2f(width, height));
         rectangle.setPosition(sf::Vector2f(x, y));
@@ -24,22 +28,27 @@ namespace tdg::infra {
     }
 
     void SFMLVideoRenderer::drawRectangle(float x1, float y1, float x2, float y2, float width, int red, int green, int blue, int alpha) {
+        x1 *= *m_tileSize; y1 *= *m_tileSize;
+        x2 *= *m_tileSize; y2 *= *m_tileSize;
+        width *= *m_tileSize;
         if (!isInView(x1, y1) && !isInView(x2, y2)) return;
         const sf::Vector2f startPoint = sf::Vector2f(x1, y1);
         const sf::Vector2f endPoint   = sf::Vector2f(x2, y2);
         const sf::Vector2f diff = endPoint - startPoint;
         const float length = diff.length();
-        const sf::Angle angleDeg = diff.angle();
+        const sf::Angle angle = diff.angle();
 
         sf::RectangleShape rectangle(sf::Vector2f(length, width));
         rectangle.setOrigin(sf::Vector2f(0.0f, width * 0.5f));
         rectangle.setPosition(startPoint);
-        rectangle.setRotation(angleDeg);
+        rectangle.setRotation(angle);
         rectangle.setFillColor(sf::Color(red, green, blue, alpha));
         m_window->draw(rectangle);
     }
 
     void SFMLVideoRenderer::drawCircle(float x, float y, float radius, int red, int green, int blue, int alpha) {
+        x *= *m_tileSize; y *= *m_tileSize;
+        radius *= *m_tileSize;
         if (!isInView(x, y)) return; // Considering the circle smaller than a tile
         sf::CircleShape circle(radius);
         circle.setPosition(sf::Vector2f(x - radius, y - radius));
