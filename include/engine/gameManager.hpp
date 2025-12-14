@@ -9,7 +9,7 @@
 
 #include "core/interfaces/iVideoRenderer.hpp"
 #include "core/interfaces/iAudioRenderer.hpp"
-#include "infrastructure/interfaces/iGuiManager.hpp"
+#include "core/interfaces/iGuiManager.hpp"
 
 namespace tdg::engine {
 
@@ -33,7 +33,7 @@ namespace tdg::engine {
         State m_state { State::MainMenu };
         std::unique_ptr<core::IVideoRenderer> m_videoRenderer;
         std::unique_ptr<core::IAudioRenderer> m_audioRenderer;
-        std::unique_ptr<infra::IGUIManager> m_gui;
+        std::unique_ptr<core::IGUIManager> m_guiManager;
         std::unique_ptr<Game> m_game;
 
         std::shared_ptr<core::IMapSource> m_mapSource;

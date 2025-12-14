@@ -4,7 +4,7 @@
 namespace tdg::infra {
     
     TGUIManager::TGUIManager(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize)
-        : m_tileSize(tileSize)
+        : m_window(window), m_tileSize(tileSize)
     {
         m_gui = std::make_unique<tgui::Gui>(*window);
         
@@ -13,15 +13,15 @@ namespace tdg::infra {
     }
 
     void infra::TGUIManager::showMainMenu() {
-    
+        
     }
     
     void infra::TGUIManager::showHUD() {
-    
+        
     }
     
     void infra::TGUIManager::showPauseMenu() {
-    
+        
     }
 
     void infra::TGUIManager::showGameOver() {

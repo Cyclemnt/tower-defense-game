@@ -1,9 +1,7 @@
 #ifndef I_GUI_HPP
 #define I_GUI_HPP
 
-#include <chrono>
-
-namespace tdg::infra {
+namespace tdg::core {
 
     class IGUIManager {
     public:
@@ -19,6 +17,6 @@ namespace tdg::infra {
         virtual void render() = 0;
     };
 
-} // namespace tdg::infra
+} // namespace tdg::core
 
 #endif // I_GUI_HPP

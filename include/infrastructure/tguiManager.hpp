@@ -5,11 +5,11 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <chrono>
 #include <memory>
-#include "infrastructure/interfaces/iGuiManager.hpp"
+#include "core/interfaces/iGuiManager.hpp"
 
 namespace tdg::infra {
 
-    class TGUIManager : public IGUIManager {
+    class TGUIManager : public core::IGUIManager {
     public:
         explicit TGUIManager(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize);
 
@@ -24,6 +24,7 @@ namespace tdg::infra {
 
     private:
         std::unique_ptr<tgui::Gui> m_gui;
+        std::shared_ptr<sf::RenderWindow> m_window;
         std::shared_ptr<float> m_tileSize;
     };
 

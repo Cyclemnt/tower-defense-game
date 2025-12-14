@@ -11,9 +11,11 @@
 namespace tdg::engine {
     
     GameManager::GameManager() {
+        // Game data sources
         m_mapSource = std::make_shared<infra::FileMapSource>("../assets/maps/");
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
 
+        // Data for Renderers and GUI
         m_window = std::make_shared<sf::RenderWindow>();
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
         m_window->create(desktop, "Tower Defense Game", sf::State::Fullscreen);
@@ -21,9 +23,10 @@ namespace tdg::engine {
         auto ressources = std::make_shared<infra::SFMLResourceManager>();
         auto tileSize = std::make_shared<float>(64.0f);
 
+        // Renderers and GUI
         m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(m_window, ressources, tileSize);
         m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(ressources);
-        m_gui = std::make_unique<infra::TGUIManager>(m_window, tileSize);
+        m_guiManager = std::make_unique<infra::TGUIManager>(m_window, tileSize);
     }
 
     void GameManager::setState(State state) {

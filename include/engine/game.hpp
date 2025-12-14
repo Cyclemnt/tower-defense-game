@@ -24,8 +24,7 @@
 #include "core/interfaces/iVideoRenderer.hpp"
 #include "core/interfaces/iAudioRenderer.hpp"
 
-namespace tdg::core { class IWaveSource; }
-namespace tdg::core { class IMapSource; }
+namespace tdg::core { class IWaveSource; class IMapSource; }
 
 namespace tdg::engine {
 
