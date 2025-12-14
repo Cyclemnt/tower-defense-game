@@ -19,7 +19,7 @@ namespace tdg::engine {
         m_window->create(desktop, "Tower Defense Game", sf::State::Fullscreen);
         m_window->setFramerateLimit(60);
         auto ressources = std::make_shared<infra::SFMLResourceManager>();
-        auto tileSize = std::make_shared<float>(100.0f);
+        auto tileSize = std::make_shared<float>(64.0f);
 
         m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(m_window, ressources, tileSize);
         m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(ressources);
@@ -72,9 +72,9 @@ namespace tdg::engine {
 
     void GameManager::run() {
         m_running = true;
-        
+
         while (m_window->isOpen() && m_running) {
-            // --- Events ---
+            // Events
             while (auto event = m_window->pollEvent()) {
                 if (event->is<sf::Event::Closed>()) {
                     m_window->close();
@@ -83,11 +83,11 @@ namespace tdg::engine {
                 // guiManager->processEvent(*event);
             }
 
-            // --- Update ---
+            // Update
             float dt = m_clock.restart().asSeconds();
             m_game->update(dt);
 
-            // --- Render ---
+            // Render
             m_window->clear();
             m_game->render(*m_videoRenderer);
             m_window->display();

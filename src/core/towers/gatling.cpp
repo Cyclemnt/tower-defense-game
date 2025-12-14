@@ -49,26 +49,26 @@ namespace tdg::core {
     }
 
     void Gatling::upgrade() {
-
+        m_stats.damage *= 1.20f;
     }
 
     std::string Gatling::spriteId() const noexcept {
         if (!m_target)
-            return "towers/gatling_s";
+            return "towers/gatling_" + std::to_string(m_level) + "_s";
 
         const float dx = m_target->px() - static_cast<float>(m_x);
         const float dy = m_target->py() - static_cast<float>(m_y);
         const float angle = std::fmod(std::atan2(dy, dx) + 2.0f * PIf, 2.0f * PIf);
 
-        if (angle < 0.393f) return "towers/gatling_e";
-        else if (angle < 1.169f) return "towers/gatling_se";
-        else if (angle < 1.955f) return "towers/gatling_s";
-        else if (angle < 2.740f) return "towers/gatling_sw";
-        else if (angle < 3.526f) return "towers/gatling_w";
-        else if (angle < 4.311f) return "towers/gatling_nw";
-        else if (angle < 5.097f) return "towers/gatling_n";
-        else if (angle < 5.882f) return "towers/gatling_ne";
-        else return "towers/gatling_e";
+        if (angle < 0.393f) return "towers/gatling_" + std::to_string(m_level) + "_e";
+        else if (angle < 1.169f) return "towers/gatling_" + std::to_string(m_level) + "_se";
+        else if (angle < 1.955f) return "towers/gatling_" + std::to_string(m_level) + "_s";
+        else if (angle < 2.740f) return "towers/gatling_" + std::to_string(m_level) + "_sw";
+        else if (angle < 3.526f) return "towers/gatling_" + std::to_string(m_level) + "_w";
+        else if (angle < 4.311f) return "towers/gatling_" + std::to_string(m_level) + "_nw";
+        else if (angle < 5.097f) return "towers/gatling_" + std::to_string(m_level) + "_n";
+        else if (angle < 5.882f) return "towers/gatling_" + std::to_string(m_level) + "_ne";
+        else return "towers/gatling_" + std::to_string(m_level) + "_e";
     }
     
 } // namespace tdg::core

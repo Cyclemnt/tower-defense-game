@@ -5,7 +5,7 @@
 namespace tdg::core {
 
     Tower::Tower(const Tower::Stats& stats, int x, int y)
-        : m_stats(stats), m_x(x), m_y(y) {}
+        : m_stats(stats), m_x(x), m_y(y) { m_cooldown = 1.0f / m_stats.fireRate; }
 
     Creature* Tower::acquireTarget(const std::vector<CreaturePtr>& creatures) {
         Creature* best = nullptr;

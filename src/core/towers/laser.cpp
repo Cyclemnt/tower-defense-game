@@ -60,12 +60,12 @@ namespace tdg::core {
     }
 
     void Laser::upgrade() {
-
+        m_stats.fireRate *= 1.20;
     }
 
     std::string Laser::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
-        return "towers/laser_" + std::to_string(frame);
+        return "towers/laser_" + std::to_string(m_level) + "_" + std::to_string(frame);
     }
     
 } // namespace tdg::core

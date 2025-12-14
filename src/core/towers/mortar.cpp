@@ -77,17 +77,18 @@ namespace tdg::core {
     }
 
     void Mortar::upgrade() {
-
+        m_stats.fireRate /= 1.20;
+        m_stats.damage *= 1.40;
     }
 
     std::string Mortar::spriteId() const noexcept {
-        if (!m_target) return "towers/mortar_n"; // default idle texture
+        if (!m_target) return "towers/mortar_" + std::to_string(m_level) + "_n"; // default idle texture
 
         const float dx = m_target->px() - static_cast<float>(m_x);
 
-        if (dx < -0.1f) return "towers/mortar_nw";
-        else if (dx >  0.1f) return "towers/mortar_ne";
-        else return "towers/mortar_n";
+        if (dx < -0.1f) return "towers/mortar_" + std::to_string(m_level) + "_nw";
+        else if (dx >  0.1f) return "towers/mortar_" + std::to_string(m_level) + "_ne";
+        else return "towers/mortar_" + std::to_string(m_level) + "_n";
     }
 
     void Mortar::draw(IVideoRenderer& vidRenderer) const {

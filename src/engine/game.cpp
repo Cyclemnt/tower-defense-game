@@ -143,7 +143,24 @@ namespace tdg::engine {
     }
 
     void Game::upgradeTower(int x, int y) {
-        // TODO
+        Tile* tile = m_map->tileAt(x, y);
+        if (!tile) return;
+        if (!tile->sellable()) return;
+
+        for (auto it = m_towers.begin(); it != m_towers.end(); ++it) {
+            TowerPtr& t = *it;
+
+            if (t->x() == x && t->y() == y) {
+                if (!m_player.canAfford(t->upgradeCost())) return;
+
+                m_player.buy(t->upgradeCost());
+                t->upgrade();
+
+                return;
+            }
+        }
+
+        // nothing upgraded
     }
 
     void Game::sellTower(int x, int y) {

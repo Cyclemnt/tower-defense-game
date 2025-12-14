@@ -15,8 +15,6 @@ namespace tdg::core {
         void upgrade() override;
         std::string spriteId() const noexcept override;
 
-        // std::vector<Shell> shells() const noexcept { return m_shells; }
-
         void draw(IVideoRenderer& vidRenderer) const override;
         
     private:
