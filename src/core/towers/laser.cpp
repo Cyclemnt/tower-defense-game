@@ -54,13 +54,16 @@ namespace tdg::core {
         while (m_target && m_cooldown <= 0.0f) {
             attack();
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.vfxs.emplace(VFXType::LaserBeam, m_level, m_x, m_y, m_target->px(), m_target->py());
-            events.sfxs.push(SFXType::LaserShoot);
+            events.vfxs.emplace(Events::VFX::Type::LaserBeam, m_level, m_x, m_y, m_target->px(), m_target->py());
+            events.sfxs.emplace(Events::SFX::Type::LaserShoot);
         }
     }
 
-    void Laser::upgrade() {
+    bool Laser::upgrade() {
+        if (m_level == 3u) return false;
+        m_level += 1;
         m_stats.fireRate *= 1.20;
+        return true;
     }
 
     std::string Laser::spriteId() const noexcept {

@@ -32,9 +32,9 @@ namespace tdg::core {
 
                 if (next == m_path.back()) {
                     switch (next->type) {
-                    case Tile::Type::CoreStorage: events.pathEvents.push({PathEvent::Type::ArrivedToCore, this}); break;
-                    case Tile::Type::Exit:        events.pathEvents.push({PathEvent::Type::ArrivedToExit, this}); break;
-                    case Tile::Type::Entry:       events.pathEvents.push({PathEvent::Type::ArrivedToExit, this}); break;
+                    case Tile::Type::CoreStorage: events.path.emplace(Events::Path::Type::ArrivedToCore, this); break;
+                    case Tile::Type::Exit:        events.path.emplace(Events::Path::Type::ArrivedToExit, this); break;
+                    case Tile::Type::Entry:       events.path.emplace(Events::Path::Type::ArrivedToExit, this); break;
                     default: break;
                     }
                 }

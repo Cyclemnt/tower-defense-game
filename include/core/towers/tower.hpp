@@ -32,7 +32,7 @@ namespace tdg::core {
         void clearTarget() noexcept { m_target = nullptr; }
         virtual void attack() const;
 
-        virtual void upgrade() = 0;
+        virtual bool upgrade() = 0;
         unsigned int level() const noexcept { return m_level; }
 
         int x() const noexcept { return m_x; }

@@ -19,7 +19,7 @@ namespace tdg::core {
 
         void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override;
 
-        void upgrade() override;
+        bool upgrade() override;
         std::string spriteId() const noexcept override;
     };
     

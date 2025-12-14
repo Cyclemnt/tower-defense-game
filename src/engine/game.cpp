@@ -15,19 +15,19 @@ namespace tdg::engine {
 
     void Game::update(float dt) {
         ++m_tick;
-        
+
         m_waveManager->update(dt, m_events);
 
         // Spawn new creatures
         while (!m_events.spawn.empty()) {
-            SpawnInfo& se = m_events.spawn.front();
+            Events::Spawn& se = m_events.spawn.front();
             spawnCreature(se.type, se.entrance);
             m_events.spawn.pop();
         }
 
         // Create new VFXs
         while (!m_events.vfxs.empty()) {
-            VFXEventData& ve = m_events.vfxs.front();
+            Events::VFX& ve = m_events.vfxs.front();
             m_vfxs.push_back(std::move(m_vfxFactory.create(ve)));
             m_events.vfxs.pop();
         }
@@ -39,7 +39,7 @@ namespace tdg::engine {
         for (CreaturePtr& c : m_creatures) c->update(dt, m_events);
 
         // Handle creature's path events
-        while (!m_events.pathEvents.empty()) handlePathEvent();
+        while (!m_events.path.empty()) handlePathEvent();
         
         // Update towers
         for (TowerPtr& t : m_towers) t->update(dt, m_events, m_creatures);
@@ -59,22 +59,29 @@ namespace tdg::engine {
         m_map->setCoreStorageFillRatio(m_cores.ratio());
     }
 
-    void Game::render(IVideoRenderer& vidRenderer) const {
+    void Game::renderVideo(IVideoRenderer& vidRenderer) const {
         m_map->draw(vidRenderer);
         for (const CreaturePtr& c : m_creatures) c->draw(vidRenderer);
         for (const VFXPtr& v : m_vfxs) v->draw(vidRenderer);
         for (const TowerPtr& t : m_towers) t->draw(vidRenderer);
     }
 
+    void Game::renderAudio(IAudioRenderer& audRenderer) {
+        while (!m_events.sfxs.empty()) {
+            audRenderer.playSound(m_events.sfxs.front().toString());
+            m_events.sfxs.pop();
+        }
+    }
+
     void Game::handlePathEvent() {
-        PathEvent& pe = m_events.pathEvents.front();
+        Events::Path& pe = m_events.path.front();
         switch (pe.type) {
-        case PathEvent::Type::ArrivedToCore: {
+        case Events::Path::Type::ArrivedToCore: {
             std::vector<const Tile*> bestPath = m_pathfinder->findPathToClosestGoal(m_map->corePoint(), m_map->exitPoints());
             pe.creature->setPath(std::move(bestPath));
             break;
         }
-        case PathEvent::Type::ArrivedToExit: {
+        case Events::Path::Type::ArrivedToExit: {
             m_cores.loseCores(pe.creature->dropCores());
             pe.creature->leave();
             break;
@@ -82,7 +89,7 @@ namespace tdg::engine {
         default:
             break;
         }
-        m_events.pathEvents.pop();
+        m_events.path.pop();
     }
 
     void Game::handleDeadCreatures() {
@@ -100,7 +107,7 @@ namespace tdg::engine {
                 }
                 
                 it = m_creatures.erase(it);
-                m_events.sfxs.push(SFXType::CreatureDeath);
+                m_events.sfxs.emplace(Events::SFX::Type::CreatureDeath);
             }
             else {
                 ++it;
@@ -205,7 +212,7 @@ namespace tdg::engine {
             newCreature->setPath(std::move(initialPath));
 
         m_creatures.push_back(std::move(newCreature));
-        m_events.sfxs.push(SFXType::CreatureSpawn);
+        m_events.sfxs.emplace(Events::SFX::Type::CreatureSpawn);
     }
 
     void Game::updatePaths() {

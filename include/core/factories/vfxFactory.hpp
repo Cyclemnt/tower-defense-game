@@ -8,7 +8,7 @@ namespace tdg::core {
     
     class VFXFactory {
     public:
-        VFXPtr create(VFXEventData& data);
+        VFXPtr create(Events::VFX& data);
     };
 
 } // namespace tdg::core

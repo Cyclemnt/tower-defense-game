@@ -25,7 +25,7 @@ namespace tdg::infra {
             
             // Attempt to insert and load the sound buffer
             sf::SoundBuffer& newBuffer = m_soundBuffers[name];
-            std::string path = "../assets/sounds/" + name;
+            std::string path = "../assets/sounds/" + name + ".wav";
 
             if (!newBuffer.loadFromFile(path)) {
                 // Loading failed

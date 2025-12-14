@@ -42,14 +42,17 @@ namespace tdg::core {
         while (m_target && m_cooldown <= 0.0f) {
             attack();
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.vfxs.emplace(VFXType::GatlingTracer, m_level, m_x, m_y, m_target->px(), m_target->py());
-            events.vfxs.emplace(VFXType::HitSpark, m_level, m_target->px(), m_target->py());
-            events.sfxs.push(SFXType::GatlingShoot);
+            events.vfxs.emplace(Events::VFX::Type::GatlingTracer, m_level, m_x, m_y, m_target->px(), m_target->py());
+            events.vfxs.emplace(Events::VFX::Type::HitSpark, m_level, m_target->px(), m_target->py());
+            events.sfxs.emplace(Events::SFX::Type::GatlingShoot);
         }
     }
 
-    void Gatling::upgrade() {
+    bool Gatling::upgrade() {
+        if (m_level == 3u) return false;
+        m_level += 1;
         m_stats.damage *= 1.20f;
+        return true;
     }
 
     std::string Gatling::spriteId() const noexcept {

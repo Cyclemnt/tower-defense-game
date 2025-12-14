@@ -89,7 +89,8 @@ namespace tdg::engine {
 
             // Render
             m_window->clear();
-            m_game->render(*m_videoRenderer);
+            m_game->renderVideo(*m_videoRenderer);
+            m_game->renderAudio(*m_audioRenderer);
             m_window->display();
         }
     }

@@ -54,8 +54,8 @@ namespace tdg::core {
                     if (impactDist < m_shellExplosionRadius)
                         c->takeDamage(m_stats.damage);
                 }
-                events.vfxs.emplace(VFXType::Explosion, m_level, s.endX, s.endY);
-                events.sfxs.push(SFXType::MortarHit);
+                events.vfxs.emplace(Events::VFX::Type::Explosion, m_level, s.endX, s.endY);
+                events.sfxs.emplace(Events::SFX::Type::MortarHit);
                 it = m_shells.erase(it); // Erease element and get new iterator
 
             } else {
@@ -72,13 +72,16 @@ namespace tdg::core {
             Shell newShell{static_cast<float>(m_x), static_cast<float>(m_y) - 0.3f, m_target->px(), m_target->py()};
             m_shells.push_back(newShell);
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.sfxs.push(SFXType::MortarShoot);
+            events.sfxs.emplace(Events::SFX::Type::MortarShoot);
         }
     }
 
-    void Mortar::upgrade() {
+    bool Mortar::upgrade() {
+        if (m_level == 3u) return false;
+        m_level += 1;
         m_stats.fireRate /= 1.20;
         m_stats.damage *= 1.40;
+        return true;
     }
 
     std::string Mortar::spriteId() const noexcept {

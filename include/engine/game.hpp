@@ -37,7 +37,8 @@ namespace tdg::engine {
             unsigned int startCores = 24u, Materials startMaterials = {100u,100u,100u});
 
         void update(float dt);
-        void render(IVideoRenderer& renderer) const;
+        void renderVideo(IVideoRenderer& renderer) const;
+        void renderAudio(IAudioRenderer& audRenderer);
 
         void buildTower(Tower::Type type, int x, int y);
         void upgradeTower(int x, int y);
