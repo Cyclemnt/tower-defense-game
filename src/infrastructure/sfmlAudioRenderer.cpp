@@ -1,5 +1,5 @@
+#include <SFML/Audio.hpp>
 #include "infrastructure/sfmlAudioRenderer.hpp"
-#include <SFML/Graphics.hpp>
 
 namespace tdg::infra {
 

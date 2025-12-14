@@ -1,7 +1,9 @@
 #ifndef I_VIDEO_RENDERER_HPP
 #define I_VIDEO_RENDERER_HPP
 
-namespace tdg::infra {
+#include <string>
+
+namespace tdg::core {
 
     class IVideoRenderer {
     public:
@@ -13,6 +15,6 @@ namespace tdg::infra {
         virtual void drawCircle(float x, float y, float radius, int red, int green, int blue, int alpha) = 0;
     };
 
-} // namespace tdg::infra
+} // namespace tdg::core
 
 #endif // I_VIDEO_RENDERER_HPP

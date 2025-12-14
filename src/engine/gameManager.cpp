@@ -14,19 +14,21 @@ namespace tdg::engine {
         m_mapSource = std::make_shared<infra::FileMapSource>("../assets/maps/");
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
 
-        auto window = std::make_shared<sf::RenderWindow>();
+        m_window = std::make_shared<sf::RenderWindow>();
         sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-        window->create(desktop, "Tower Defense Game", sf::State::Fullscreen);
-        window->setFramerateLimit(60);
+        m_window->create(desktop, "Tower Defense Game", sf::State::Fullscreen);
+        m_window->setFramerateLimit(60);
         auto ressources = std::make_shared<infra::SFMLResourceManager>();
         auto tileSize = std::make_shared<float>(64.0f);
 
-        m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(window, ressources, tileSize);
-        m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(window, ressources, tileSize);
-        m_gui = std::make_unique<infra::TGUIManager>(window, tileSize);
+        m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(m_window, ressources, tileSize);
+        m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(ressources);
+        m_gui = std::make_unique<infra::TGUIManager>(m_window, tileSize);
     }
 
     void GameManager::setState(State state) {
+        m_running = false;
+
         switch (state) {
         case State::MainMenu:
             /* code */
@@ -47,7 +49,6 @@ namespace tdg::engine {
             break;
             
         case State::Pause:
-            m_running = false;
             m_state = State::Pause;
             break;
         
@@ -71,6 +72,26 @@ namespace tdg::engine {
 
     void GameManager::run() {
         m_running = true;
+        
+        while (m_window->isOpen() && m_running) {
+            // --- Events ---
+            while (auto event = m_window->pollEvent()) {
+                if (event->is<sf::Event::Closed>()) {
+                    m_window->close();
+                    return;
+                }
+                // guiManager->processEvent(*event);
+            }
+
+            // --- Update ---
+            float dt = m_clock.restart().asSeconds();
+            m_game->update(dt);
+
+            // --- Render ---
+            m_window->clear();
+            m_game->render(*m_videoRenderer);
+            m_window->display();
+        }
     }
 
     void GameManager::startStoryMode() {

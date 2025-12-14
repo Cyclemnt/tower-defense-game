@@ -1,13 +1,12 @@
 #ifndef SFML_AUDIO_RENDERER_HPP
 #define SFML_AUDIO_RENDERER_HPP
 
-#include <SFML/Graphics.hpp>
-#include "infrastructure/interfaces/iAudioRenderer.hpp"
+#include "core/interfaces/iAudioRenderer.hpp"
 #include "infrastructure/sfmlResourceManager.hpp"
 
 namespace tdg::infra {
 
-    class SFMLAudioRenderer : public IAudioRenderer {
+    class SFMLAudioRenderer : public core::IAudioRenderer {
     public:
         explicit SFMLAudioRenderer(std::shared_ptr<SFMLResourceManager> ressources);
 

@@ -2,12 +2,12 @@
 #define SFML_VIDEO_RENDERER_HPP
 
 #include <SFML/Graphics.hpp>
-#include "infrastructure/interfaces/iVideoRenderer.hpp"
+#include "core/interfaces/iVideoRenderer.hpp"
 #include "infrastructure/sfmlResourceManager.hpp"
 
 namespace tdg::infra {
 
-    class SFMLVideoRenderer : public IVideoRenderer {
+    class SFMLVideoRenderer : public core::IVideoRenderer {
     public:
         explicit SFMLVideoRenderer(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SFMLResourceManager> ressources, std::shared_ptr<float> tileSize);
 

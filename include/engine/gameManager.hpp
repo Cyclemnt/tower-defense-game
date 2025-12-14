@@ -2,12 +2,13 @@
 #define GAME_MANAGER_HPP
 
 #include <memory>
+#include <SFML/Graphics.hpp>
 #include "engine/game.hpp"
 #include "core/interfaces/iMapSource.hpp"
 #include "core/interfaces/iWaveSource.hpp"
 
-#include "infrastructure/interfaces/iVideoRenderer.hpp"
-#include "infrastructure/interfaces/iAudioRenderer.hpp"
+#include "core/interfaces/iVideoRenderer.hpp"
+#include "core/interfaces/iAudioRenderer.hpp"
 #include "infrastructure/interfaces/iGuiManager.hpp"
 
 namespace tdg::engine {
@@ -26,12 +27,12 @@ namespace tdg::engine {
         void startArcadeMode();
         void loadLevel(unsigned int maplvl, unsigned int wavlvl);
 
-        // sf::RenderWindow m_window;
-        // sf::Clock m_clock;
+        std::shared_ptr<sf::RenderWindow> m_window;
+        sf::Clock m_clock;
 
         State m_state { State::MainMenu };
-        std::unique_ptr<infra::IVideoRenderer> m_videoRenderer;
-        std::unique_ptr<infra::IAudioRenderer> m_audioRenderer;
+        std::unique_ptr<core::IVideoRenderer> m_videoRenderer;
+        std::unique_ptr<core::IAudioRenderer> m_audioRenderer;
         std::unique_ptr<infra::IGUIManager> m_gui;
         std::unique_ptr<Game> m_game;
 

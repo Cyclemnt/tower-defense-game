@@ -7,22 +7,29 @@
 namespace tdg::core {
 
     class HitSparkVFX final : public VFX {
-    private:
-        struct Particle {
-            float vx{0.0f}, vy{0.0f};
-            float speed{0.0f};
-            float radius{0.0f};
-            float timetolive{0.0f};
-        };
-        
-        std::vector<Particle> particles;
-
-        void randomizeColor();
-
     public:
         HitSparkVFX(unsigned int level, float x1, float y1);
 
         void update(float dt) override;
+
+        void draw(IVideoRenderer& vidRenderer) const override;
+        
+    private:
+        struct Particle {
+            float dirX{0.0f}, dirY{0.0f};
+            float speed{0.0f};
+            float radius{0.0f};
+            float maxRadius{0.0f};
+            float timetolive{0.0f};
+            float lifetime{0.0f};
+
+            Particle(float dx, float dy, float v, float r, float ttl) : dirX(dx), dirY(dy), speed(v), radius(r), maxRadius(r), timetolive(ttl), lifetime(ttl) {}
+        };
+        
+        std::vector<Particle> particles;
+        float m_lifetime{0.0f};
+
+        void randomizeColor();
     };
 
 } // namespace tdg::core

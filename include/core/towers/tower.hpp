@@ -6,7 +6,7 @@
 #include <string>
 #include "core/creatures/creature.hpp"
 
-namespace tdg::core { class Events; }
+namespace tdg::core { class Events; class IVideoRenderer; }
 
 namespace tdg::core {
 
@@ -43,6 +43,8 @@ namespace tdg::core {
         virtual Materials cost() const noexcept { return m_stats.cost; }
         virtual Materials upgradeCost() const noexcept { return m_stats.upgradeCost; }
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
+
+        void draw(IVideoRenderer& vidRenderer) const;
 
     protected:
         Tower::Stats m_stats;

@@ -19,8 +19,8 @@ namespace tdg::core {
     std::string Minion::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
         return m_stats.boosted
-            ? "creature_minion_b_" + std::to_string(frame)
-            : "creature_minion_" + std::to_string(frame);
+            ? "creatures/minion_b_" + std::to_string(frame)
+            : "creatures/minion_" + std::to_string(frame);
     }
     
 } // namespace tdg::core

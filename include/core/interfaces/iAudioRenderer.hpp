@@ -1,7 +1,9 @@
 #ifndef I_AUDIO_RENDERER_HPP
 #define I_AUDIO_RENDERER_HPP
 
-namespace tdg::infra {
+#include <string>
+
+namespace tdg::core {
 
     class IAudioRenderer {
     public:
@@ -10,6 +12,6 @@ namespace tdg::infra {
         virtual void playSound(const std::string& soundId) = 0;
     };
 
-} // namespace tdg::infra
+} // namespace tdg::core
 
 #endif // I_AUDIO_RENDERER_HPP

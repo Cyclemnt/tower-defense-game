@@ -6,8 +6,7 @@
 #include <string>
 #include "core/player.hpp"
 
-namespace tdg::core { class Events; }
-namespace tdg::core { struct Tile; }
+namespace tdg::core { class Events; struct Tile; class IVideoRenderer; }
 
 namespace tdg::core {
 
@@ -50,6 +49,8 @@ namespace tdg::core {
         void leave() noexcept;
 
         Materials loot() const noexcept { return m_stats.bounty; }
+
+        void draw(IVideoRenderer& vidRenderer) const;
 
     protected:
         Creature::Stats m_stats;

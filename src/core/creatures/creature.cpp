@@ -2,6 +2,7 @@
 #include "core/creatures/creature.hpp"
 #include "core/events.hpp"
 #include "core/map.hpp"
+#include "core/interfaces/iVideoRenderer.hpp"
 
 namespace tdg::core {
 
@@ -9,6 +10,7 @@ namespace tdg::core {
         : m_stats(stats), m_health(stats.maxHealth), m_shield(stats.maxShield) {}
 
     void Creature::update(float dt, Events& events) {
+        ++m_tick;
         if (!m_alive || m_path.empty() || m_pathIndex + 1 >= m_path.size()) return;
 
         float distanceToTravel = m_stats.speed * dt;
@@ -87,6 +89,11 @@ namespace tdg::core {
     void Creature::leave() noexcept {
         m_stats.bounty = {0u,0u,0u};
         m_alive = false;
+    }
+
+    void Creature::draw(IVideoRenderer& vidRenderer) const {
+        vidRenderer.drawSprite(spriteId(), m_px, m_py);
+        // TODO: carried cores + shield/health bars
     }
 
 } // namespace tdg::core

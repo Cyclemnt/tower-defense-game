@@ -8,6 +8,10 @@ namespace tdg::core {
 
     unsigned int CoreStorage::total() const noexcept { return m_safe + m_stolen + m_lost; }
 
+    float CoreStorage::ratio() const noexcept {
+        return static_cast<float>(m_safe) / static_cast<float>(total());
+    }
+
     unsigned int CoreStorage::stealCores(unsigned int n) {
         const unsigned int taken = std::min(n, m_safe);
         m_safe   -= taken;

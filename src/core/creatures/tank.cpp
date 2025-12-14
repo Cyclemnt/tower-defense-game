@@ -19,8 +19,8 @@ namespace tdg::core {
     std::string Tank::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
         return m_stats.boosted
-            ? "creature_tank_b_" + std::to_string(frame)
-            : "creature_tank_" + std::to_string(frame);
+            ? "creatures/tank_b_" + std::to_string(frame)
+            : "creatures/tank_" + std::to_string(frame);
     }
     
 } // namespace tdg::core

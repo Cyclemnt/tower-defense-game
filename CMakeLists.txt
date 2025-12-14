@@ -19,7 +19,7 @@ if(NOT DEFINED SFML_DIR)
 endif()
 
 option(SFML_STATIC_LIBRARIES "Link SFML statically" OFF)
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
+find_package(SFML 3 REQUIRED COMPONENTS Graphics Audio Window System)
 find_package(TGUI REQUIRED)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Window SFML::System TGUI::TGUI)
+target_link_libraries(${PROJECT_NAME} PRIVATE SFML::Graphics SFML::Audio SFML::Window SFML::System TGUI::TGUI)

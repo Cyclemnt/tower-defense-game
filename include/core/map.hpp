@@ -3,8 +3,9 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
-namespace tdg::core { class IMapSource; }
+namespace tdg::core { class IMapSource; class IVideoRenderer; }
 
 namespace tdg::core {
 
@@ -41,17 +42,26 @@ namespace tdg::core {
         bool placeTower(int x, int y);
         bool removeTower(int x, int y);
 
-        void printMap() const;
-        const std::vector<Tile>* tiles() const noexcept { return &m_tiles; }
+        void setCoreStorageFillRatio(float ratio);
+
+        void draw(IVideoRenderer& vidRenderer) const;
     
     private:
+        std::string tileToSpriteId(Tile t) const;
+        std::string randomTextureId(int x, int y) const noexcept;
+        std::string coreStorageTextureId() const noexcept;
+
         int m_width{0};
         int m_height{0};
         std::vector<Tile> m_tiles; // row-major
 
         std::vector<Tile*> m_entryPoints;
         std::vector<Tile*> m_exitPoints;
-        Tile* m_corePoint = nullptr;
+        Tile* m_corePoint{nullptr};
+
+        float coreStorageFillRatio{1.0f};
+
+        const uint32_t kSeed{0x4470f446u}; ///< Randomization seed for texture variation
     };
 
 } // namespace tdg::core

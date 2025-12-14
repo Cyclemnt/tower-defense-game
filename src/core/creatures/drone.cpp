@@ -19,8 +19,8 @@ namespace tdg::core {
     std::string Drone::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
         return m_stats.boosted
-            ? "creature_drone_b_" + std::to_string(frame)
-            : "creature_drone_" + std::to_string(frame);
+            ? "creatures/drone_b_" + std::to_string(frame)
+            : "creatures/drone_" + std::to_string(frame);
     }
 
 } // namespace tdg::core

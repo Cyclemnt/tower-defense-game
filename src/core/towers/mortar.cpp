@@ -78,13 +78,13 @@ namespace tdg::core {
     }
 
     std::string Mortar::spriteId() const noexcept {
-        if (!m_target) return "tower_mortar_n"; // default idle texture
+        if (!m_target) return "towers/mortar_n"; // default idle texture
 
         const float dx = m_target->px() - static_cast<float>(m_x);
 
-        if (dx < -0.1f) return "tower_mortar_nw";
-        else if (dx >  0.1f) return "tower_mortar_ne";
-        else return "tower_mortar_n";
+        if (dx < -0.1f) return "towers/mortar_nw";
+        else if (dx >  0.1f) return "towers/mortar_ne";
+        else return "towers/mortar_n";
     }
     
 } // namespace tdg::core

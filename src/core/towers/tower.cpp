@@ -1,5 +1,6 @@
 #include <cmath>
 #include "core/towers/tower.hpp"
+#include "core/interfaces/iVideoRenderer.hpp"
 
 namespace tdg::core {
 
@@ -27,6 +28,10 @@ namespace tdg::core {
     void Tower::attack() const {
         if (!m_target) return;
         m_target->takeDamage(m_stats.damage);
+    }
+
+    void Tower::draw(IVideoRenderer& vidRenderer) const {
+        vidRenderer.drawSprite(spriteId(), m_x, m_y);
     }
 
 } // namespace tdg::core

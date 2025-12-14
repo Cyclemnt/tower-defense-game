@@ -54,6 +54,16 @@ namespace tdg::engine {
         if (isWaveOver() && m_waveManager->getTimeBeforeNext() <= 0.0f) {
             m_waveManager->loadNext();
         }
+
+        // Update core storage fill ratio
+        m_map->setCoreStorageFillRatio(m_cores.ratio());
+    }
+
+    void Game::render(IVideoRenderer& vidRenderer) const {
+        m_map->draw(vidRenderer);
+        for (const CreaturePtr& c : m_creatures) c->draw(vidRenderer);
+        for (const TowerPtr& t : m_towers) t->draw(vidRenderer);
+        for (const VFXPtr& v : m_vfxs) v->draw(vidRenderer);
     }
 
     void Game::handlePathEvent() {

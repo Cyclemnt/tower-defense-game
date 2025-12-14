@@ -21,6 +21,9 @@
 #include "core/factories/creatureFactory.hpp"
 #include "core/factories/vfxFactory.hpp"
 
+#include "core/interfaces/iVideoRenderer.hpp"
+#include "core/interfaces/iAudioRenderer.hpp"
+
 namespace tdg::core { class IWaveSource; }
 namespace tdg::core { class IMapSource; }
 
@@ -34,7 +37,7 @@ namespace tdg::engine {
             unsigned int startCores = 24u, Materials startMaterials = {100u,100u,100u});
 
         void update(float dt);
-        // void render(infra::IVideoRenderer& renderer) const;
+        void render(IVideoRenderer& renderer) const;
 
         void buildTower(Tower::Type type, int x, int y);
         void upgradeTower(int x, int y);

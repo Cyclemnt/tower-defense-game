@@ -63,7 +63,7 @@ namespace tdg::core {
 
     std::string Laser::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
-        return "tower_laser_" + std::to_string(frame);
+        return "towers/laser_" + std::to_string(frame);
     }
     
 } // namespace tdg::core
