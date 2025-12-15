@@ -7,7 +7,8 @@
 #include "infrastructure/sfmlVideoRenderer.hpp"
 #include "infrastructure/sfmlAudioRenderer.hpp"
 #include "infrastructure/tguiManager.hpp"
-
+// #include "infrastructure/sfmlInputController.hpp"
+#include <iostream>
 namespace tdg::engine {
     
     GameManager::GameManager() {
@@ -27,6 +28,19 @@ namespace tdg::engine {
         m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(m_window, ressources, tileSize);
         m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(ressources);
         m_guiManager = std::make_unique<infra::TGUIManager>(m_window, tileSize);
+
+        // GUI Callbacks
+        m_guiManager->m_onPause = [this](){ m_pause = true; };
+        m_guiManager->m_onResume = [this](){ m_pause = false; };
+        m_guiManager->m_onRestartLevel = [this]() { loadLevel(); };
+        m_guiManager->m_onQuit = [this](){ m_window->close(); };
+        m_guiManager->m_onMainMenu = [this](){ setState(State::MainMenu); };
+        m_guiManager->m_onStartStory = [this]() { setState(State::Story); };
+        m_guiManager->m_onStartArcade = [this]() { setState(State::Arcade); };
+        m_guiManager->m_onNextLevel = [this]() { nextLevel(); };
+
+        // Launching
+        setState(State::MainMenu);
     }
 
     void GameManager::setState(State state) {
@@ -34,7 +48,9 @@ namespace tdg::engine {
 
         switch (state) {
         case State::MainMenu:
-            /* code */
+            m_guiManager->showMainMenu();
+            m_state = State::WaitingForUserInput;
+            run();
             break;
         
         case State::Story:
@@ -50,22 +66,15 @@ namespace tdg::engine {
             m_state = State::Arcade;
             run();
             break;
-            
-        case State::Pause:
-            m_state = State::Pause;
-            break;
-        
-        case State::Resume:
-            m_running = true;
-            m_state = State::Pause;
-            break;
 
         case State::Victory:
-            /* code */
+            m_guiManager->showVictory();
+            m_state = State::WaitingForUserInput;
             break;
 
         case State::GameOver:
-            /* code */
+            m_guiManager->showGameOver();
+            m_state = State::WaitingForUserInput;
             break;
 
         default:
@@ -83,36 +92,46 @@ namespace tdg::engine {
                     m_window->close();
                     return;
                 }
-                // guiManager->processEvent(*event);
+                m_guiManager->processEvent(*event);
             }
 
             // Update
             float dt = m_clock.restart().asSeconds();
-            m_game->update(dt);
+            if (m_state != State::WaitingForUserInput) if (!m_pause) m_game->update(dt);
+            m_guiManager->update(dt);
 
             // Render
             m_window->clear();
-            m_game->renderVideo(*m_videoRenderer);
-            m_game->renderAudio(*m_audioRenderer);
+            if (m_state != State::WaitingForUserInput) m_game->renderVideo(*m_videoRenderer);
+            if (m_state != State::WaitingForUserInput) m_game->renderAudio(*m_audioRenderer);
+            m_guiManager->render();
             m_window->display();
+
+            if (m_state != State::WaitingForUserInput) if (m_game->isGameOver()) setState(State::GameOver);
+            if (m_state != State::WaitingForUserInput) if (m_game->isVictory()) setState(State::Victory);
         }
+    }
+
+    void GameManager::nextLevel() {
+        m_waveLevel++;
+        if (m_state == State::Story) m_mapLevel++;
     }
 
     void GameManager::startStoryMode() {
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
-        m_level = 1u;
-        loadLevel(m_level, m_level);
+        m_waveLevel = m_mapLevel = 1u;
+        loadLevel();
     }
 
     void GameManager::startArcadeMode() {
         m_waveSource = std::make_shared<infra::AutoWaveSource>();
-        m_level = 1u;
-        loadLevel(m_arcadeMapLevel, m_level);
+        m_waveLevel = 1u; m_mapLevel = 3u;
+        loadLevel();
     }
 
-    void GameManager::loadLevel(unsigned int maplvl, unsigned int wavlvl) {
-        m_mapSource->setLevel(maplvl);
-        m_waveSource->setLevel(wavlvl);
+    void GameManager::loadLevel() {
+        m_mapSource->setLevel(m_mapLevel);
+        m_waveSource->setLevel(m_waveLevel);
         m_game = std::make_unique<Game>(m_mapSource, m_waveSource);
     }
 

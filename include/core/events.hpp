@@ -47,17 +47,18 @@ namespace tdg::core {
             };
             
             SFX::Type type;
+            unsigned int level;
 
-            SFX(SFX::Type t) : type(t) {}
+            SFX(SFX::Type t, unsigned int lvl = 0u) : type(t), level(lvl) {}
 
             std::string toString() const {
                 switch (type) {
-                    case SFX::Type::CreatureSpawn: return "sounds/spawn";
-                    case SFX::Type::CreatureDeath: return "sounds/death";
-                    case SFX::Type::GatlingShoot:  return "sounds/gatling_shoot";
-                    case SFX::Type::LaserShoot:    return "sounds/laser_shoot";
-                    case SFX::Type::MortarShoot:   return "sounds/mortar_shoot";
-                    case SFX::Type::MortarHit:     return "sounds/mortar_hit";
+                    case SFX::Type::CreatureSpawn: return "spawn";
+                    case SFX::Type::CreatureDeath: return "death";
+                    case SFX::Type::GatlingShoot:  return "gatling_shoot_" + std::to_string(level);
+                    case SFX::Type::LaserShoot:    return "laser_shoot_" + std::to_string(level);
+                    case SFX::Type::MortarShoot:   return "mortar_shoot_" + std::to_string(level);
+                    case SFX::Type::MortarHit:     return "mortar_hit_" + std::to_string(level);
                 }
                 return "";
             }

@@ -39,9 +39,9 @@ namespace tdg::engine {
         void renderVideo(IVideoRenderer& renderer) const;
         void renderAudio(IAudioRenderer& audRenderer);
 
-        void buildTower(Tower::Type type, int x, int y);
-        void upgradeTower(int x, int y);
-        void sellTower(int x, int y);
+        bool buildTower(Tower::Type type, int x, int y);
+        bool upgradeTower(int x, int y);
+        bool sellTower(int x, int y);
 
         void spawnCreature(Creature::Type type, std::optional<unsigned int> entry);
 

@@ -123,17 +123,17 @@ namespace tdg::engine {
         }
     }
 
-    void Game::buildTower(Tower::Type type, int x, int y) {
+    bool Game::buildTower(Tower::Type type, int x, int y) {
         Tile* tile = m_map->tileAt(x, y);
-        if (!tile) return;
-        if (!tile->buildable()) return;
+        if (!tile) return false;
+        if (!tile->buildable()) return false;
 
         // Build the tower
         TowerPtr newTower = m_towerFactory.build(type, x, y);
-        if (!newTower) return;
+        if (!newTower) return false;
 
         // Verify cost
-        if (!m_player.canAfford(newTower->cost())) return;
+        if (!m_player.canAfford(newTower->cost())) return false;
 
         // Pay
         m_player.buy(newTower->cost());
@@ -147,33 +147,33 @@ namespace tdg::engine {
         m_towers.insert(it, std::move(newTower));
 
         updatePaths();
+        return true;
     }
 
-    void Game::upgradeTower(int x, int y) {
+    bool Game::upgradeTower(int x, int y) {
         Tile* tile = m_map->tileAt(x, y);
-        if (!tile) return;
-        if (!tile->sellable()) return;
+        if (!tile) return false;
+        if (!tile->sellable()) return false;
 
         for (auto it = m_towers.begin(); it != m_towers.end(); ++it) {
             TowerPtr& t = *it;
 
             if (t->x() == x && t->y() == y) {
-                if (!m_player.canAfford(t->upgradeCost())) return;
+                if (!m_player.canAfford(t->upgradeCost())) return false;
 
                 m_player.buy(t->upgradeCost());
                 t->upgrade();
 
-                return;
+                return true;
             }
         }
-
-        // nothing upgraded
+        return false;
     }
 
-    void Game::sellTower(int x, int y) {
+    bool Game::sellTower(int x, int y) {
         Tile* tile = m_map->tileAt(x, y);
-        if (!tile) return;
-        if (!tile->sellable()) return;
+        if (!tile) return false;
+        if (!tile->sellable()) return false;
 
         for (auto it = m_towers.begin(); it != m_towers.end(); ++it) {
             TowerPtr& t = *it;
@@ -184,11 +184,10 @@ namespace tdg::engine {
 
                 m_towers.erase(it);
                 updatePaths();
-                return;
+                return true;
             }
         }
-
-        // nothing sold
+        return false;
     }
 
     void Game::spawnCreature(Creature::Type type, std::optional<unsigned int> entry) {

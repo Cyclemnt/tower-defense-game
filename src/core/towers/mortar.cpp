@@ -55,7 +55,7 @@ namespace tdg::core {
                         c->takeDamage(m_stats.damage);
                 }
                 events.vfxs.emplace(Events::VFX::Type::Explosion, m_level, s.endX, s.endY);
-                events.sfxs.emplace(Events::SFX::Type::MortarHit);
+                events.sfxs.emplace(Events::SFX::Type::MortarHit, m_level);
                 it = m_shells.erase(it); // Erease element and get new iterator
 
             } else {
@@ -72,7 +72,7 @@ namespace tdg::core {
             Shell newShell{static_cast<float>(m_x), static_cast<float>(m_y) - 0.3f, m_target->px(), m_target->py()};
             m_shells.push_back(newShell);
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.sfxs.emplace(Events::SFX::Type::MortarShoot);
+            events.sfxs.emplace(Events::SFX::Type::MortarShoot, m_level);
         }
     }
 
@@ -85,13 +85,29 @@ namespace tdg::core {
     }
 
     std::string Mortar::spriteId() const noexcept {
-        if (!m_target) return "towers/mortar_" + std::to_string(m_level) + "_n"; // default idle texture
+        float dx = m_target ? m_target->px() - static_cast<float>(m_x) : 0.0f;
+        float cooldownRatio = m_cooldown * m_stats.fireRate;
 
-        const float dx = m_target->px() - static_cast<float>(m_x);
+        switch (m_level) {
+            case 1u:
+                if (dx < -0.1f) return "towers/mortar_1_nw";
+                if (dx > 0.1f) return "towers/mortar_1_ne";
+                else return "towers/mortar_1_n";
 
-        if (dx < -0.1f) return "towers/mortar_" + std::to_string(m_level) + "_nw";
-        else if (dx >  0.1f) return "towers/mortar_" + std::to_string(m_level) + "_ne";
-        else return "towers/mortar_" + std::to_string(m_level) + "_n";
+            case 2u:
+                if (cooldownRatio > 0.75f) return "towers/mortar_2_3";
+                if (cooldownRatio > 0.50f) return "towers/mortar_2_0";
+                if (cooldownRatio > 0.25f) return "towers/mortar_2_1";
+                else return "towers/mortar_2_2";
+
+            case 3u:
+                if (cooldownRatio > 0.95f) return "towers/mortar_3_2";
+                if (cooldownRatio > 0.60f) return "towers/mortar_3_3";
+                if (cooldownRatio > 0.25f) return "towers/mortar_3_0";
+                else return "towers/mortar_3_2";
+
+            default: return " ";
+        }
     }
 
     void Mortar::draw(IVideoRenderer& vidRenderer) const {

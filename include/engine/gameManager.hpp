@@ -15,7 +15,7 @@ namespace tdg::engine {
 
     class GameManager {
     public:
-        enum class State { MainMenu, Loading, Story, Arcade, Pause, Resume, Victory, GameOver };
+        enum class State { MainMenu, Loading, Story, Arcade, Victory, GameOver, WaitingForUserInput };
 
         GameManager();
 
@@ -23,9 +23,10 @@ namespace tdg::engine {
         void run();
 
     private:
+        void nextLevel();
         void startStoryMode();
         void startArcadeMode();
-        void loadLevel(unsigned int maplvl, unsigned int wavlvl);
+        void loadLevel();
 
         std::shared_ptr<sf::RenderWindow> m_window;
         sf::Clock m_clock;
@@ -39,9 +40,11 @@ namespace tdg::engine {
         std::shared_ptr<core::IMapSource> m_mapSource;
         std::shared_ptr<core::IWaveSource> m_waveSource;
 
-        unsigned int m_level{1u};
+        unsigned int m_waveLevel{1u};
+        unsigned int m_mapLevel{1u};
         const unsigned int m_arcadeMapLevel{3u};
         bool m_running{false};
+        bool m_pause{false};
         float m_acceleration{1.0f};
     };
 

@@ -7,11 +7,18 @@
 #include <memory>
 #include "core/interfaces/iGuiManager.hpp"
 
+#include "infrastructure/menus/mainMenu.hpp"
+#include "infrastructure/menus/pauseMenu.hpp"
+#include "infrastructure/menus/victoryMenu.hpp"
+#include "infrastructure/menus/gameOverMenu.hpp"
+
 namespace tdg::infra {
 
     class TGUIManager : public core::IGUIManager {
     public:
         explicit TGUIManager(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize);
+
+        void processEvent(const sf::Event& event);
 
         void showMainMenu() override;
         void showHUD() override;
@@ -23,9 +30,13 @@ namespace tdg::infra {
         void render() override;
 
     private:
-        std::unique_ptr<tgui::Gui> m_gui;
-        std::shared_ptr<sf::RenderWindow> m_window;
-        std::shared_ptr<float> m_tileSize;
+        std::shared_ptr<tgui::Gui> m_gui{nullptr};
+        std::shared_ptr<float> m_tileSize{nullptr};
+
+        std::unique_ptr<MainMenu> m_mainMenu{nullptr};
+        std::unique_ptr<PauseMenu> m_pauseMenu{nullptr};
+        std::unique_ptr<VictoryMenu> m_victoryMenu{nullptr};
+        std::unique_ptr<GameOverMenu> m_gameOverMenu{nullptr};
     };
 
 } // namespace tdg::infra

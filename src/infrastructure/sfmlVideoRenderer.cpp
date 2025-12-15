@@ -7,14 +7,17 @@ namespace tdg::infra {
         : m_window(window), m_ressources(ressources), m_tileSize(tileSize) {}
 
     void SFMLVideoRenderer::drawSprite(const std::string& spriteId, float x, float y) {
-        x *= *m_tileSize; y *= *m_tileSize;
-        if (!isInView(x, y)) return;
-        const sf::Texture& texture = m_ressources->getTexture(spriteId);
-        sf::Sprite sprite(texture);
-        sprite.setPosition(sf::Vector2f(x, y));
-        sf::Vector2u size = texture.getSize();
-        sprite.setScale(sf::Vector2f(*m_tileSize / size.x, *m_tileSize / size.x));
-        m_window->draw(sprite);
+        try {
+            x *= *m_tileSize; y *= *m_tileSize;
+            if (!isInView(x, y)) return;
+            const sf::Texture& texture = m_ressources->getTexture(spriteId);
+            sf::Sprite sprite(texture);
+            sprite.setPosition(sf::Vector2f(x, y));
+            sf::Vector2u size = texture.getSize();
+            sprite.setScale(sf::Vector2f(*m_tileSize / size.x, *m_tileSize / size.x));
+            m_window->draw(sprite);
+        }
+        catch (...) {}
     }
 
     void SFMLVideoRenderer::drawRectangle(float x, float y, float width, float height, int red, int green, int blue, int alpha) {

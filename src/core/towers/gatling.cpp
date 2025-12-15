@@ -44,7 +44,7 @@ namespace tdg::core {
             m_cooldown += 1.0f / m_stats.fireRate;
             events.vfxs.emplace(Events::VFX::Type::GatlingTracer, m_level, m_x, m_y, m_target->px(), m_target->py());
             events.vfxs.emplace(Events::VFX::Type::HitSpark, m_level, m_target->px(), m_target->py());
-            events.sfxs.emplace(Events::SFX::Type::GatlingShoot);
+            events.sfxs.emplace(Events::SFX::Type::GatlingShoot, m_level);
         }
     }
 
