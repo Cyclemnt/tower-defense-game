@@ -1,8 +1,10 @@
-#ifndef I_GUI_HPP
-#define I_GUI_HPP
+#ifndef I_GUI_MANAGER_HPP
+#define I_GUI_MANAGER_HPP
 
 #include <functional>
-#include "core/hudProvider.hpp"
+
+#include "core/gameViewProvider.hpp"
+
 namespace sf { class Event; };
 namespace tdg::core { class IVideoRenderer; }
 
@@ -23,7 +25,7 @@ namespace tdg::core {
         virtual void update(float dt) = 0;
         virtual void render(core::IVideoRenderer& vidRenderer) = 0;
 
-        virtual void setHUDProvider(core::HUDProvider provider) = 0;
+        virtual void setGameViewProvider(core::GameViewProvider provider) = 0;
 
         // Callbacks
         std::function<void()> m_onPause;
@@ -34,8 +36,13 @@ namespace tdg::core {
         std::function<void()> m_onStartStory;
         std::function<void()> m_onStartArcade;
         std::function<void()> m_onNextLevel;
+        
+        std::function<void(int tx,int ty,const std::string& towerType)> onBuildRequest;
+        std::function<void(int tx,int ty)> onSellRequest;
+        std::function<void(int tx,int ty)> onUpgradeRequest;
+        std::function<void()> onCancelMode;
     };
 
 } // namespace tdg::core
 
-#endif // I_GUI_HPP
+#endif // I_GUI_MANAGER_HPP

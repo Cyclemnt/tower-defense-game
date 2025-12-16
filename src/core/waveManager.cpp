@@ -40,7 +40,7 @@ namespace tdg::core {
     }
 
     unsigned int WaveManager::getWaveNumber() const noexcept {
-        return m_waveIndex + m_inWave + (m_waveIndex >= waveCount() && !m_inWave);
+        return m_waveIndex;
     }
 
     unsigned int WaveManager::waveCount() const noexcept {

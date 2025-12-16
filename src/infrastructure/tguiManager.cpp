@@ -13,6 +13,7 @@ namespace tdg::infra {
 
         // Initialize panels
         m_hud = std::make_unique<HUD>();
+        m_towerPanel = std::make_unique<TowerPanel>();
         m_mainMenu = std::make_unique<MainMenu>(m_gui, m_onStartStory, m_onStartArcade, m_onQuit);
         m_pauseMenu = std::make_unique<PauseMenu>(m_gui, m_onResume, m_onRestartLevel, m_onMainMenu, m_onQuit);
         m_victoryMenu = std::make_unique<VictoryMenu>(m_gui, m_onNextLevel, m_onRestartLevel, m_onMainMenu, m_onQuit);
@@ -50,11 +51,13 @@ namespace tdg::infra {
 
     void TGUIManager::render(core::IVideoRenderer& vidRenderer) {
         m_hud->draw(vidRenderer);
+        m_towerPanel->draw(vidRenderer);
         m_gui->draw();
     }
 
-    void TGUIManager::setHUDProvider(core::HUDProvider provider) {
+    void TGUIManager::setGameViewProvider(core::GameViewProvider provider) {
         m_hud->setProvider(std::move(provider));
+        m_towerPanel->setProvider(std::move(provider));
     }
 
 } // namespace tdg::infra

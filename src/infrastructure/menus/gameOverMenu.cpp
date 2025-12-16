@@ -30,13 +30,13 @@ namespace tdg::infra {
 
         auto mainMenuBtn = tgui::Button::create("Main Menu");
         mainMenuBtn->setSize({"280", "40"});
-        mainMenuBtn->setPosition({"10", "150"});
+        mainMenuBtn->setPosition({"10", "200"});
         mainMenuBtn->onPress([this]() { close(); m_onMainMenu(); });
         m_panel->add(mainMenuBtn);
 
         auto quitBtn = tgui::Button::create("Quit");
         quitBtn->setSize({"280", "40"});
-        quitBtn->setPosition({"10", "200"});
+        quitBtn->setPosition({"10", "250"});
         quitBtn->onPress([this]() { close(); m_onQuit(); });
         m_panel->add(quitBtn);
 

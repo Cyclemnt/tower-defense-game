@@ -1,9 +1,9 @@
 #ifndef HUD_HPP
 #define HUD_HPP
 
-#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include "core/interfaces/iVideoRenderer.hpp"
-#include "core/hudProvider.hpp"
+#include "core/gameViewProvider.hpp"
 
 namespace tdg::infra {
     
@@ -14,7 +14,7 @@ namespace tdg::infra {
         void update(float dt);
         void draw(core::IVideoRenderer& vidRenderer);
 
-        void setProvider(core::HUDProvider provider);
+        void setProvider(core::GameViewProvider provider);
 
     private:
         void drawResourcesPanel(core::IVideoRenderer& vidRenderer) const;
@@ -28,7 +28,7 @@ namespace tdg::infra {
         unsigned int m_winX{0u};
         unsigned int m_winY{0u};
 
-        core::HUDProvider m_provider;
+        core::GameViewProvider m_provider;
     };
 
 } // namespace tdg::infra

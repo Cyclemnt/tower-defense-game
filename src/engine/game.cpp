@@ -227,7 +227,7 @@ namespace tdg::engine {
         }
     }
 
-    HUDState Game::getView() const {
+    GameView Game::getView() const {
         return {
             m_player.materials(),
             m_cores.safeCount(), m_cores.stolenCount(), m_cores.lostCount(),

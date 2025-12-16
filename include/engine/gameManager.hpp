@@ -23,6 +23,7 @@ namespace tdg::engine {
         void run();
 
     private:
+        void restartLevel();
         void nextLevel();
         void startStoryMode();
         void startArcadeMode();
@@ -32,6 +33,7 @@ namespace tdg::engine {
         sf::Clock m_clock;
 
         State m_state { State::MainMenu };
+        State m_previousState { State::MainMenu };
         std::unique_ptr<core::IVideoRenderer> m_videoRenderer;
         std::unique_ptr<core::IAudioRenderer> m_audioRenderer;
         std::unique_ptr<core::IGUIManager> m_guiManager;

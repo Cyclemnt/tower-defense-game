@@ -16,7 +16,7 @@ namespace tdg::infra {
         m_panel->setPosition({panelPos});
         m_panel->getRenderer()->setBackgroundColor({0, 0, 0, 180});
 
-        auto label = tgui::Label::create("Game Over");
+        auto label = tgui::Label::create("Victory");
         label->setTextSize(18);
         label->getRenderer()->setTextColor(tgui::Color::White);
         label->setPosition({10, 10});
@@ -30,19 +30,19 @@ namespace tdg::infra {
 
         auto restartLevelBtn = tgui::Button::create("Restart Level");
         restartLevelBtn->setSize({"280", "40"});
-        restartLevelBtn->setPosition({"10", "150"});
+        restartLevelBtn->setPosition({"10", "200"});
         restartLevelBtn->onPress([this]() { close(); m_onRestartLevel(); });
         m_panel->add(restartLevelBtn);
 
         auto mainMenuBtn = tgui::Button::create("Main Menu");
         mainMenuBtn->setSize({"280", "40"});
-        mainMenuBtn->setPosition({"10", "150"});
+        mainMenuBtn->setPosition({"10", "250"});
         mainMenuBtn->onPress([this]() { close(); m_onMainMenu(); });
         m_panel->add(mainMenuBtn);
 
         auto quitBtn = tgui::Button::create("Quit");
         quitBtn->setSize({"280", "40"});
-        quitBtn->setPosition({"10", "200"});
+        quitBtn->setPosition({"10", "300"});
         quitBtn->onPress([this]() { close(); m_onQuit(); });
         m_panel->add(quitBtn);
 

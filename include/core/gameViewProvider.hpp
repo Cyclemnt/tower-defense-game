@@ -7,7 +7,7 @@
 
 namespace tdg::core {
 
-    struct HUDState {
+    struct GameView {
         Materials materials{};
         unsigned int coresSafe{};
         unsigned int coresStolen{};
@@ -18,7 +18,7 @@ namespace tdg::core {
         float timeToNextWave{};
     };
 
-    using HUDProvider = std::function<std::optional<HUDState>()>;
+    using GameViewProvider = std::function<std::optional<GameView>()>;
 
 }
 

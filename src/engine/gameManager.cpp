@@ -32,14 +32,14 @@ namespace tdg::engine {
         // Set GUI Callbacks
         m_guiManager->m_onPause = [this](){ m_pause = true; };
         m_guiManager->m_onResume = [this](){ m_pause = false; };
-        m_guiManager->m_onRestartLevel = [this]() { loadLevel(); };
+        m_guiManager->m_onRestartLevel = [this]() { restartLevel(); };
         m_guiManager->m_onQuit = [this](){ m_window->close(); };
         m_guiManager->m_onMainMenu = [this](){ setState(State::MainMenu); };
         m_guiManager->m_onStartStory = [this]() { setState(State::Story); };
         m_guiManager->m_onStartArcade = [this]() { setState(State::Arcade); };
         m_guiManager->m_onNextLevel = [this]() { nextLevel(); };
 
-        m_guiManager->setHUDProvider([this]() -> std::optional<core::HUDState> {
+        m_guiManager->setGameViewProvider([this]() -> std::optional<core::GameView> {
             if (!m_game) return std::nullopt;
             return m_game->getView();
         });
@@ -49,6 +49,7 @@ namespace tdg::engine {
     }
 
     void GameManager::setState(State state) {
+        m_previousState = m_state;
         m_running = false;
 
         switch (state) {
@@ -75,11 +76,13 @@ namespace tdg::engine {
         case State::Victory:
             m_guiManager->showVictory();
             m_state = State::WaitingForUserInput;
+            run();
             break;
 
         case State::GameOver:
             m_guiManager->showGameOver();
             m_state = State::WaitingForUserInput;
+            run();
             break;
 
         default:
@@ -102,7 +105,7 @@ namespace tdg::engine {
 
             // Update
             float dt = m_clock.restart().asSeconds();
-            if (m_state != State::WaitingForUserInput) if (!m_pause) m_game->update(dt);
+            if (m_state != State::WaitingForUserInput) if (!m_pause) m_game->update(dt * m_acceleration);
             m_guiManager->update(dt);
 
             // Render
@@ -117,9 +120,18 @@ namespace tdg::engine {
         }
     }
 
+    void GameManager::restartLevel() {
+        loadLevel();
+        m_state = m_previousState;
+        run();
+    }
+
     void GameManager::nextLevel() {
         m_waveLevel++;
-        if (m_state == State::Story) m_mapLevel++;
+        if (m_previousState == State::Story) m_mapLevel++;
+        loadLevel();
+        m_state = m_previousState;
+        run();
     }
 
     void GameManager::startStoryMode() {

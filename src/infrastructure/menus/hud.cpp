@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "infrastructure/menus/hud.hpp"
 
 namespace tdg::infra {
@@ -159,7 +160,7 @@ namespace tdg::infra {
         vidRenderer.drawText(fps, fpsSize, fpsX, fpsY, fpsColor, false);
     }
 
-    void HUD::setProvider(core::HUDProvider provider) {
+    void HUD::setProvider(core::GameViewProvider provider) {
         m_provider = std::move(provider);
     }
 

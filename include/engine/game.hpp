@@ -12,7 +12,7 @@
 #include "core/player.hpp"
 #include "core/coreStorage.hpp"
 
-#include "core/hudProvider.hpp"
+#include "core/gameViewProvider.hpp"
 
 #include "core/towers/tower.hpp"
 #include "core/creatures/creature.hpp"
@@ -47,7 +47,7 @@ namespace tdg::engine {
 
         void spawnCreature(Creature::Type type, std::optional<unsigned int> entry);
 
-        HUDState getView() const;
+        GameView getView() const;
 
         bool isWaveOver() const;
         bool isGameOver() const;
