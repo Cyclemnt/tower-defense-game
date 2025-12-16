@@ -17,7 +17,7 @@ namespace tdg::core {
         float m_lifetime{0.3f};
         const float m_maxRadius{0.4f};
         float m_radius{0.0f};
-        Color m_glow;
+        utils::Color m_glow;
     };
 
 } // namespace tdg::core

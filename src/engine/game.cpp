@@ -226,6 +226,14 @@ namespace tdg::engine {
         }
     }
 
+    HUDState Game::getView() const {
+        return {
+            m_player.materials(),
+            m_cores.safeCount(), m_cores.stolenCount(), m_cores.stolenCount(),
+            m_waveManager->getWaveNumber(), m_waveManager->waveCount(), m_waveManager->getTimeBeforeNext()
+        };
+    }
+
     bool Game::isWaveOver() const { return m_creatures.empty(); }
     bool Game::isGameOver() const { return m_cores.allLost(); }
     bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }

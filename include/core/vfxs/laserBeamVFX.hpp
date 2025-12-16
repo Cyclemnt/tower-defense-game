@@ -14,7 +14,7 @@ namespace tdg::core {
         void draw(IVideoRenderer& vidRenderer) const override;
     
     private:
-        Color m_glow;
+        utils::Color m_glow;
         float m_x2{0.0f}, m_y2{0.0f};
         float m_lifetime{0.0f};
     };

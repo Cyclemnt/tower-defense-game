@@ -12,6 +12,8 @@
 #include "core/player.hpp"
 #include "core/coreStorage.hpp"
 
+#include "core/hudProvider.hpp"
+
 #include "core/towers/tower.hpp"
 #include "core/creatures/creature.hpp"
 #include "core/vfxs/vfx.hpp"
@@ -44,6 +46,8 @@ namespace tdg::engine {
         bool sellTower(int x, int y);
 
         void spawnCreature(Creature::Type type, std::optional<unsigned int> entry);
+
+        HUDState getView() const;
 
         bool isWaveOver() const;
         bool isGameOver() const;

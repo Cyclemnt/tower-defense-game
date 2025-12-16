@@ -11,17 +11,22 @@ namespace tdg::infra {
     public:
         explicit SFMLVideoRenderer(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<SFMLResourceManager> ressources, std::shared_ptr<float> tileSize);
 
-        void drawSprite(const std::string& spriteId, float x, float y) override;
-        void drawRectangle(float x, float y, float width, float height, int red, int green, int blue, int alpha = 255u) override;
-        void drawRectangle(float x1, float y1, float x2, float y2, float width, int red, int green, int blue, int alpha = 255u) override;
-        void drawCircle(float x, float y, float radius, int red, int green, int blue, int alpha = 255u) override;
+        void drawSprite(const std::string& spriteId, float x, float y, float size = 1.0f, bool worldCoordinates = true) override;
+        void drawRectangle(float x, float y, float width, float height, utils::Color fill, float thickness = 0.0f, utils::Color outline = {0u,0u,0u,0u}, bool worldCoordinates = true) override;
+        void drawLine(float x1, float y1, float x2, float y2, float width, utils::Color fill, float thickness = 0.0f, utils::Color outline = {0u,0u,0u,0u}, bool worldCoordinates = true) override;
+        void drawCircle(float x, float y, float radius, utils::Color fill, float thickness = 0.0f, utils::Color outline = {0u,0u,0u,0u}, bool worldCoordinates = true) override;
+        void drawText(const std::string& text, float size, float x, float y, utils::Color color, bool worldCoordinates = true) override;
 
         bool isInView(float x, float y) const;
+
+        unsigned int getWindowWidth() const override { return m_window->getSize().x; }
+        unsigned int getWindowHeight() const override { return m_window->getSize().y; }
 
     private:
         std::shared_ptr<sf::RenderWindow> m_window;
         std::shared_ptr<SFMLResourceManager> m_ressources;
         std::shared_ptr<float> m_tileSize;
+        sf::Font m_font;
     };
 
 } // namespace tdg::infra

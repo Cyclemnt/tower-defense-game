@@ -11,11 +11,4 @@ namespace tdg::core {
         else m_alive = false;
     }
 
-    void VFX::Color::setColor(unsigned int red, unsigned int green, unsigned int blue, unsigned int alpha) {
-        r = std::clamp(red, 0u, 255u);
-        g = std::clamp(green, 0u, 255u);
-        b = std::clamp(blue, 0u, 255u);
-        a = std::clamp(alpha, 0u, 255u);
-    }
-
 } // namespace tdg::core

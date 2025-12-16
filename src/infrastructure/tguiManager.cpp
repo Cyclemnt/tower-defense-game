@@ -12,6 +12,7 @@ namespace tdg::infra {
         catch (...) { std::cerr << "Failed to load GUI font.\n"; }
 
         // Initialize panels
+        m_hud = std::make_unique<HUD>();
         m_mainMenu = std::make_unique<MainMenu>(m_gui, m_onStartStory, m_onStartArcade, m_onQuit);
         m_pauseMenu = std::make_unique<PauseMenu>(m_gui, m_onResume, m_onRestartLevel, m_onMainMenu, m_onQuit);
         m_victoryMenu = std::make_unique<VictoryMenu>(m_gui, m_onNextLevel, m_onRestartLevel, m_onMainMenu, m_onQuit);
@@ -23,31 +24,37 @@ namespace tdg::infra {
         m_gui->handleEvent(event);
     }
 
-    void infra::TGUIManager::showMainMenu() {
+    void TGUIManager::showMainMenu() {
         m_mainMenu->show();
     }
     
-    void infra::TGUIManager::showHUD() {
+    void TGUIManager::showHUD() {
         
     }
     
-    void infra::TGUIManager::showPauseMenu() {
+    void TGUIManager::showPauseMenu() {
         m_pauseMenu->show();
     }
 
-    void infra::TGUIManager::showGameOver() {
+    void TGUIManager::showGameOver() {
         m_gameOverMenu->show();
     }
 
-    void infra::TGUIManager::showVictory() {
+    void TGUIManager::showVictory() {
         m_victoryMenu->show();
     }
 
-    void infra::TGUIManager::update(float dt) {
+    void TGUIManager::update(float dt) {
+        m_hud->update(dt);
     }
 
-    void infra::TGUIManager::render() {
+    void TGUIManager::render(core::IVideoRenderer& vidRenderer) {
+        m_hud->draw(vidRenderer);
         m_gui->draw();
+    }
+
+    void TGUIManager::setHUDProvider(core::HUDProvider provider) {
+        m_hud->setProvider(std::move(provider));
     }
 
 } // namespace tdg::infra

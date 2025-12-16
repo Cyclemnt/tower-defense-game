@@ -2,6 +2,7 @@
 #define VFX_HPP
 
 #include <memory>
+#include "utils/color.hpp"
 
 namespace tdg::core { class IVideoRenderer; }
 
@@ -9,16 +10,11 @@ namespace tdg::core {
     
     class VFX {       
     protected:
-        struct Color {
-            unsigned int r{255u}, g{255u}, b{255u}, a{255u};
-            void setColor(unsigned int red, unsigned int green, unsigned int blue, unsigned int alpha = 255u);
-        };
-
         bool m_alive{true};
         float m_timetolive{1.0f};
         unsigned int m_level{1u};
         float m_x1{0.0f}, m_y1{0.0f};
-        Color m_color;
+        utils::Color m_color;
 
     public:
         VFX(unsigned int level, float x1, float y1);

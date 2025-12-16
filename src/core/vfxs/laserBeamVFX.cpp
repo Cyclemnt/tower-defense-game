@@ -29,9 +29,9 @@ namespace tdg::core {
 
     void LaserBeamVFX::draw(IVideoRenderer& vidRenderer) const {
         // Outer glow
-        vidRenderer.drawRectangle(m_x1 + 0.5f, m_y1 - 0.3f, m_x2 + 0.5f, m_y2 + 0.5f, 0.12f, m_glow.r, m_glow.g, m_glow.b, m_glow.a);
+        vidRenderer.drawLine(m_x1 + 0.5f, m_y1 - 0.3f, m_x2 + 0.5f, m_y2 + 0.5f, 0.12f, m_glow);
         // Inner beam
-        vidRenderer.drawRectangle(m_x1 + 0.5f, m_y1 - 0.3f, m_x2 + 0.5f, m_y2 + 0.5f, 0.06f, m_color.r, m_color.g, m_color.b, m_color.a);
+        vidRenderer.drawLine(m_x1 + 0.5f, m_y1 - 0.3f, m_x2 + 0.5f, m_y2 + 0.5f, 0.06f, m_color);
     }
 
 } // namespace tdg::core

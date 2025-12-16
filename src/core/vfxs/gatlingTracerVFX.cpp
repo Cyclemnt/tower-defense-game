@@ -13,7 +13,7 @@ namespace tdg::core {
     }
 
     void GatlingTracerVFX::draw(IVideoRenderer& vidRenderer) const {
-        vidRenderer.drawRectangle(m_x1 + 0.5f, m_y1 + 0.3f, m_x2 + m_jitterX + 0.5f, m_y2 + m_jitterY + 0.5f, 0.03125f, m_color.r, m_color.g, m_color.b, m_color.a);
+        vidRenderer.drawLine(m_x1 + 0.5f, m_y1 + 0.3f, m_x2 + m_jitterX + 0.5f, m_y2 + m_jitterY + 0.5f, 0.03125f, m_color);
     }
 
     void GatlingTracerVFX::randomizeColor() {

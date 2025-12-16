@@ -48,7 +48,7 @@ namespace tdg::core {
             float px = m_x1 + p.dirX * dist;
             float py = m_y1 + p.dirY * dist;
 
-            vidRenderer.drawCircle(px + 0.5f, py + 0.5f, p.radius, m_color.r, m_color.g, m_color.b, m_color.a);
+            vidRenderer.drawCircle(px + 0.5f, py + 0.5f, p.radius, m_color);
         }
     }
 

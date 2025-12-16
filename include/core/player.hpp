@@ -34,7 +34,7 @@ namespace tdg::core {
         bool canAfford(const Materials& cost) const;
         void buy(const Materials& cost);
         void addMaterials(const Materials& m);
-        Materials materials() const noexcept { return m_balance; }
+        const Materials& materials() const noexcept { return m_balance; }
 
     private:
         Materials m_balance;

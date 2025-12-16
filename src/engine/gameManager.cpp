@@ -29,7 +29,7 @@ namespace tdg::engine {
         m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(ressources);
         m_guiManager = std::make_unique<infra::TGUIManager>(m_window, tileSize);
 
-        // GUI Callbacks
+        // Set GUI Callbacks
         m_guiManager->m_onPause = [this](){ m_pause = true; };
         m_guiManager->m_onResume = [this](){ m_pause = false; };
         m_guiManager->m_onRestartLevel = [this]() { loadLevel(); };
@@ -38,6 +38,11 @@ namespace tdg::engine {
         m_guiManager->m_onStartStory = [this]() { setState(State::Story); };
         m_guiManager->m_onStartArcade = [this]() { setState(State::Arcade); };
         m_guiManager->m_onNextLevel = [this]() { nextLevel(); };
+
+        m_guiManager->setHUDProvider([this]() -> std::optional<core::HUDState> {
+            if (!m_game) return std::nullopt;
+            return m_game->getView();
+        });
 
         // Launching
         setState(State::MainMenu);
@@ -104,7 +109,7 @@ namespace tdg::engine {
             m_window->clear();
             if (m_state != State::WaitingForUserInput) m_game->renderVideo(*m_videoRenderer);
             if (m_state != State::WaitingForUserInput) m_game->renderAudio(*m_audioRenderer);
-            m_guiManager->render();
+            m_guiManager->render(*m_videoRenderer);
             m_window->display();
 
             if (m_state != State::WaitingForUserInput) if (m_game->isGameOver()) setState(State::GameOver);

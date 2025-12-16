@@ -6,7 +6,9 @@
 #include <chrono>
 #include <memory>
 #include "core/interfaces/iGuiManager.hpp"
+#include "core/interfaces/iVideoRenderer.hpp"
 
+#include "infrastructure/menus/hud.hpp"
 #include "infrastructure/menus/mainMenu.hpp"
 #include "infrastructure/menus/pauseMenu.hpp"
 #include "infrastructure/menus/victoryMenu.hpp"
@@ -27,11 +29,15 @@ namespace tdg::infra {
         void showVictory() override;
 
         void update(float dt) override;
-        void render() override;
+        void render(core::IVideoRenderer& vidRenderer) override;
+
+        void setHUDProvider(core::HUDProvider provider) override;
 
     private:
         std::shared_ptr<tgui::Gui> m_gui{nullptr};
         std::shared_ptr<float> m_tileSize{nullptr};
+
+        std::unique_ptr<HUD> m_hud{nullptr};
 
         std::unique_ptr<MainMenu> m_mainMenu{nullptr};
         std::unique_ptr<PauseMenu> m_pauseMenu{nullptr};

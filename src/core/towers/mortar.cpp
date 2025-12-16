@@ -112,7 +112,8 @@ namespace tdg::core {
 
     void Mortar::draw(IVideoRenderer& vidRenderer) const {
         for (auto& s : m_shells) {
-            vidRenderer.drawCircle(s.curX + 0.5f, s.curY + 0.5f, 0.1f, 180u, 180u, 180u);
+            utils::Color color = {180u,180u,180u};
+            vidRenderer.drawCircle(s.curX + 0.5f, s.curY + 0.5f, 0.1f, color);
         }
 
         vidRenderer.drawSprite(spriteId(), m_x, m_y - 0.7f);

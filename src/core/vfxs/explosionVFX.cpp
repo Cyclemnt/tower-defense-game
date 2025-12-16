@@ -30,9 +30,9 @@ namespace tdg::core {
 
     void ExplosionVFX::draw(IVideoRenderer& vidRenderer) const {
         // Outer glow
-        vidRenderer.drawCircle(m_x1 + 0.5f, m_y1 + 0.5f, m_radius * 1.6f, m_glow.r, m_glow.g, m_glow.b, m_glow.a);
+        vidRenderer.drawCircle(m_x1 + 0.5f, m_y1 + 0.5f, m_radius * 1.6f, m_glow);
         // Inner core
-        vidRenderer.drawCircle(m_x1 + 0.5f, m_y1 + 0.5f, m_radius * 0.8f, m_color.r, m_color.g, m_color.b, m_color.a);
+        vidRenderer.drawCircle(m_x1 + 0.5f, m_y1 + 0.5f, m_radius * 0.8f, m_color);
     }
 
 } // namespace tdg::core
