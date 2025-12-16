@@ -78,6 +78,7 @@ namespace tdg::engine {
         switch (pe.type) {
         case Events::Path::Type::ArrivedToCore: {
             std::vector<const Tile*> bestPath = m_pathfinder->findPathToClosestGoal(m_map->corePoint(), m_map->exitPoints());
+            pe.creature->stealCores(m_cores.stealCores(pe.creature->remainingCapacity()));
             pe.creature->setPath(std::move(bestPath));
             break;
         }

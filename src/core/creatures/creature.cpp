@@ -4,6 +4,8 @@
 #include "core/map.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"
 
+#define PIf 3.141592f
+
 namespace tdg::core {
 
     Creature::Creature(const Creature::Stats& stats)
@@ -66,6 +68,10 @@ namespace tdg::core {
         }
     }
 
+    unsigned int Creature::remainingCapacity() const noexcept {
+        return m_stats.coresCapacity - m_coresCarried;
+    }
+
     void Creature::stealCores(unsigned int amount) noexcept {
         m_coresCarried = std::min(m_coresCarried + amount, m_stats.coresCapacity);
     }
@@ -93,7 +99,40 @@ namespace tdg::core {
 
     void Creature::draw(IVideoRenderer& vidRenderer) const {
         vidRenderer.drawSprite(spriteId(), m_px, m_py);
-        // TODO: carried cores + shield/health bars
+
+        // Cores carried
+        float orbitRadius = 0.15f;
+        float angleStep = 2.0f * PIf / std::max(m_coresCarried, 1u);
+        float time = m_tick * 0.03f; // Rotation speed
+        float coreRadius = 0.03f;
+        for (int i = 0; i < m_coresCarried; ++i) {
+            float angle = time + i * angleStep;
+            float x = m_px + std::cos(angle) * orbitRadius + 0.5f;
+            float y = m_py + std::sin(angle) * orbitRadius + 0.5f;
+            vidRenderer.drawCircle(x, y, coreRadius, {100u,200u,255u,220u}, 0.01f, {150u,220u,255u,100u});
+        }
+
+        // Health/Shield bars
+        float hpRatio = m_health / m_stats.maxHealth;
+        float shieldRatio = m_stats.maxShield > 0.0f ? m_shield / m_stats.maxShield : 0.0f;
+        const float barWidth = 0.5f;
+        const float barHeight = 0.05f;
+        const float x = m_px + (1.0f - barWidth) * 0.5f;
+        const float baseY = m_py - barHeight - 0.0625f;
+        // Shield bar
+        if (m_stats.maxShield > 0.0f) {
+            float y = baseY - (barHeight + 0.03125f);
+            vidRenderer.drawRectangle(x, y, barWidth, barHeight, {40u,40u,40u});
+            vidRenderer.drawRectangle(x, y, barWidth * shieldRatio, barHeight, {100u,150u,255u,200u});
+        }
+        // Health bar
+        {
+            float y = baseY;
+            vidRenderer.drawRectangle(x, y, barWidth, barHeight, {40u,40u,40u});
+            unsigned int r = static_cast<unsigned int>(255u*(1-hpRatio));
+            unsigned int g = static_cast<unsigned int>(255u*hpRatio);
+            vidRenderer.drawRectangle(x, y, barWidth * hpRatio, barHeight, {r,g,0u});
+        }
     }
 
 } // namespace tdg::core

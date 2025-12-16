@@ -37,6 +37,7 @@ namespace tdg::core {
         float py() const noexcept { return m_py; }
         virtual std::string spriteId() const noexcept = 0;
 
+        unsigned int remainingCapacity() const noexcept;
         void stealCores(unsigned int amount) noexcept;
         unsigned int dropCores() noexcept;
 

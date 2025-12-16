@@ -31,7 +31,7 @@ namespace tdg::infra {
     }
 
     void SFMLVideoRenderer::drawRectangle(float x, float y, float width, float height, utils::Color fill, float thickness, utils::Color outline, bool worldCoordinates) {
-        if (worldCoordinates) { x *= *m_tileSize; y *= *m_tileSize; width *= *m_tileSize; height *= *m_tileSize; }
+        if (worldCoordinates) { x *= *m_tileSize; y *= *m_tileSize; width *= *m_tileSize; height *= *m_tileSize; thickness *= *m_tileSize; }
         if (!isInView(x, y)) return; // Considering the rectangle smaller than a tile
         sf::RectangleShape rectangle(sf::Vector2f(width, height));
         rectangle.setPosition(sf::Vector2f(x, y));
@@ -42,7 +42,7 @@ namespace tdg::infra {
     }
 
     void SFMLVideoRenderer::drawLine(float x1, float y1, float x2, float y2, float width, utils::Color fill, float thickness, utils::Color outline, bool worldCoordinates) {
-        if (worldCoordinates) { x1 *= *m_tileSize; y1 *= *m_tileSize; x2 *= *m_tileSize; y2 *= *m_tileSize; width *= *m_tileSize; }
+        if (worldCoordinates) { x1 *= *m_tileSize; y1 *= *m_tileSize; x2 *= *m_tileSize; y2 *= *m_tileSize; width *= *m_tileSize; thickness *= *m_tileSize; }
         if (!isInView(x1, y1) && !isInView(x2, y2)) return;
         const sf::Vector2f startPoint = sf::Vector2f(x1, y1);
         const sf::Vector2f endPoint   = sf::Vector2f(x2, y2);
@@ -61,7 +61,7 @@ namespace tdg::infra {
     }
 
     void SFMLVideoRenderer::drawCircle(float x, float y, float radius, utils::Color fill, float thickness, utils::Color outline, bool worldCoordinates) {
-        if (worldCoordinates) { x *= *m_tileSize; y *= *m_tileSize; radius *= *m_tileSize; }
+        if (worldCoordinates) { x *= *m_tileSize; y *= *m_tileSize; radius *= *m_tileSize; thickness *= *m_tileSize; }
         if (!isInView(x, y)) return; // Considering the circle smaller than a tile
         sf::CircleShape circle(radius);
         circle.setPosition(sf::Vector2f(x - radius, y - radius));
