@@ -6,7 +6,7 @@
 
 namespace tdg::core {
     
-    VFXPtr VFXFactory::create(Events::VFX& data) {
+    VFXPtr VFXFactory::create(Events::VFX& data) const {
         switch (data.type) {
             case Events::VFX::Type::GatlingTracer: return std::make_unique<GatlingTracerVFX>(data.level, data.xStart, data.yStart, data.xEnd.value(), data.yEnd.value());
             case Events::VFX::Type::LaserBeam:     return std::make_unique<LaserBeamVFX>(data.level, data.xStart, data.yStart, data.xEnd.value(), data.yEnd.value());

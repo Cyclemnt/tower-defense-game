@@ -9,7 +9,7 @@
 
 #include "core/interfaces/iVideoRenderer.hpp"
 #include "core/interfaces/iAudioRenderer.hpp"
-#include "core/interfaces/iGuiManager.hpp"
+#include "infrastructure/tguiManager.hpp"
 
 namespace tdg::engine {
 
@@ -29,6 +29,14 @@ namespace tdg::engine {
         void startArcadeMode();
         void loadLevel();
 
+        void accelerate() { m_acceleration = 10; }
+        void normalSpeed() { m_acceleration = 1; }
+
+        void resetGameView();
+
+        sf::View m_gameView;
+        sf::View m_guiView;
+
         std::shared_ptr<sf::RenderWindow> m_window;
         sf::Clock m_clock;
 
@@ -36,11 +44,13 @@ namespace tdg::engine {
         State m_previousState { State::MainMenu };
         std::unique_ptr<core::IVideoRenderer> m_videoRenderer;
         std::unique_ptr<core::IAudioRenderer> m_audioRenderer;
-        std::unique_ptr<core::IGUIManager> m_guiManager;
+        std::unique_ptr<infra::TGUIManager> m_guiManager; // Should have been an interface
         std::unique_ptr<Game> m_game;
 
         std::shared_ptr<core::IMapSource> m_mapSource;
         std::shared_ptr<core::IWaveSource> m_waveSource;
+
+        std::shared_ptr<float> m_tileSize;
 
         unsigned int m_waveLevel{1u};
         unsigned int m_mapLevel{1u};

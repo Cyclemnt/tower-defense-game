@@ -1,3 +1,9 @@
+/*
+
+Should have been used but not enough time to think and refine
+
+*/
+
 #ifndef I_GUI_MANAGER_HPP
 #define I_GUI_MANAGER_HPP
 
@@ -40,7 +46,7 @@ namespace tdg::core {
         std::function<void(int tx,int ty,const std::string& towerType)> onBuildRequest;
         std::function<void(int tx,int ty)> onSellRequest;
         std::function<void(int tx,int ty)> onUpgradeRequest;
-        std::function<void()> onCancelMode;
+        std::function<void()> onCanAfford;
     };
 
 } // namespace tdg::core

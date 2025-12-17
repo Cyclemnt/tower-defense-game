@@ -6,7 +6,7 @@ namespace tdg::core {
     LaserBeamVFX::LaserBeamVFX(unsigned int level, float x1, float y1, float x2, float y2)
         : VFX(level, x1, y1), m_x2(x2), m_y2(y2)
     {
-        m_timetolive = m_lifetime = 0.14f;
+        m_timetolive = m_lifetime = 0.17f;
         switch (m_level) {
             case 1u: m_color.setColor(255u,234u,55u,230u); m_glow.setColor(255u,255u,130u,80u); break;
             case 2u: m_color.setColor(255u,177u,32u,230u); m_glow.setColor(255u,150u,80u,80u);  break;

@@ -12,7 +12,7 @@ namespace tdg::infra {
         }
     }
 
-    void SFMLVideoRenderer::drawSprite(const std::string& spriteId, float x, float y, float size, bool worldCoordinates) {
+    void SFMLVideoRenderer::drawSprite(const std::string& spriteId, float x, float y, float size, utils::Color color, bool worldCoordinates) {
         try {
             if (worldCoordinates) { x *= *m_tileSize; y *= *m_tileSize; size *= *m_tileSize; }
             if (!isInView(x, y)) return;
@@ -22,7 +22,7 @@ namespace tdg::infra {
             sf::Vector2u texSize = texture.getSize();
 
             float scale = size / static_cast<float>(texSize.x);
-            // if (worldCoordinates) { scale *= *m_tileSize; }
+            if (color.a != 0u) { sprite.setColor(sf::Color(color.r, color.g, color.b, color.a)); }
 
             sprite.setScale(sf::Vector2f(scale, scale));
             m_window->draw(sprite);

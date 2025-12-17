@@ -27,7 +27,7 @@ namespace tdg::infra {
         // Open JSON file to count waves
         std::ifstream file(m_filePath);
         if (!file.is_open()) {
-            std::cerr << "[JsonWaveSource] Failed to open file: " << m_filePath << std::endl;
+            throw std::runtime_error("Failed to open file: " + m_filePath);
             return;
         }
 

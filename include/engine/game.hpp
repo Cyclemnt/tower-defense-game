@@ -53,6 +53,19 @@ namespace tdg::engine {
         bool isGameOver() const;
         bool isVictory() const;
 
+        /* Lack of time (bad time management) made me do that */
+        void buildTower(std::string towerType, int x, int y);
+        bool canAfford(std::string towerType) const;
+        bool canAfford(Tower::Type type) const;
+        std::optional<float> towerRangeAt(int x, int y) const;
+        bool tileOpenAt(int x, int y) const;
+        bool towerAt(int x, int y) const;
+        std::optional<Materials> towerCost(std::string towerType) const;
+        std::optional<Materials> towerCost(Tower::Type type) const;
+        int mapWidth() const { return m_map->width(); }
+        int mapHeight() const { return m_map->height(); }
+        /* ================================================== */
+
     private:
         void handlePathEvent();
         void handleDeadCreatures();

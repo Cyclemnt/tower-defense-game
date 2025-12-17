@@ -5,7 +5,7 @@
 
 namespace tdg::core {
 
-    CreaturePtr CreatureFactory::create(Creature::Type type) {
+    CreaturePtr CreatureFactory::create(Creature::Type type) const {
         switch (type) {
             case Creature::Type::Drone: return std::make_unique<Drone>();
             case Creature::Type::Minion: return std::make_unique<Minion>();

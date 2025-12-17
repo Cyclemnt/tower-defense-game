@@ -9,7 +9,7 @@ namespace tdg::infra {
     }
 
     void PauseMenu::create() {
-        sf::Vector2f panelSize = {300.0f, 350.0f};
+        sf::Vector2f panelSize = {300.0f, 300.0f};
         sf::Vector2f panelPos = centerPanel(panelSize);
 
         m_panel = tgui::Panel::create({panelSize});

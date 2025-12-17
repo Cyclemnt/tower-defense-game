@@ -83,13 +83,38 @@ namespace tdg::core {
         coreStorageFillRatio = ratio;
     }
 
-    void Map::draw(IVideoRenderer& vidRenderer) const {
-        for (size_t i = 0; i < m_tiles.size(); i++) {
-            int x = i % m_width;
-            int y = i / m_width;
-            vidRenderer.drawSprite(tileToSpriteId(m_tiles[i]), x, y);
+void Map::draw(IVideoRenderer& vidRenderer) const {
+    // Dessiner les tuiles de la carte
+    for (size_t i = 0; i < m_tiles.size(); i++) {
+        int x = i % m_width;
+        int y = i / m_width;
+        vidRenderer.drawSprite(tileToSpriteId(m_tiles[i]), x, y);
+    }
+
+    // Dessiner la marge autour de la carte
+    // Haut et bas
+    for (int i = -5; i < m_width + 5; i++) {
+        for (int j = -5; j < 0; j++) {
+            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Haut
+        }
+        for (int j = m_height; j < m_height + 2; j++) {
+            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Bas
         }
     }
+
+    // Côté gauche et droit
+    for (int i = -5; i < 0; i++) {
+        for (int j = -5; j < m_height + 5; j++) {
+            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Gauche
+        }
+    }
+    for (int i = m_width; i < m_width + 5; i++) {
+        for (int j = -5; j < m_height + 5; j++) {
+            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Droit
+        }
+    }
+}
+
 
     std::string Map::tileToSpriteId(Tile t) const {
         switch (t.type) {
@@ -126,3 +151,4 @@ namespace tdg::core {
     }
 
 } // namespace tdg::core
+

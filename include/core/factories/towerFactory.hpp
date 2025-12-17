@@ -7,7 +7,7 @@ namespace tdg::core {
     
     class TowerFactory {
     public:
-        TowerPtr build(Tower::Type type, int x, int y);
+        TowerPtr build(Tower::Type type, int x, int y) const;
     };
 
 } // namespace tdg::core

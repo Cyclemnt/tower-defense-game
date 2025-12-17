@@ -38,7 +38,8 @@ namespace tdg::infra {
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thikness, outline, false);
 
         // Resources
-        const core::Materials mats; // idk how to proprely get player balance
+        if (!m_provider().has_value()) return;
+        const core::Materials mats = m_provider().value().materials; // idk how to proprely get player balance
         const float iconSize = 20.0f * m_scale;
         const float spacing = 80.0f * m_scale;
         const float baseX = panelX + 12.0f * m_scale;
@@ -52,7 +53,7 @@ namespace tdg::infra {
         };
 
         for (int i = 0; i < 3; ++i) {
-            vidRenderer.drawSprite(resources[i].file, baseX + i * spacing, baseY, iconSize, false);
+            vidRenderer.drawSprite(resources[i].file, baseX + i * spacing, baseY, iconSize, {0u,0u,0u,0u}, false);
 
             float txtSize = 16.0f * m_scale;
             float txtX = baseX + i * spacing + 26.0f * m_scale;

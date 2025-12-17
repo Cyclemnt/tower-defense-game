@@ -226,7 +226,13 @@ namespace tdg::engine {
             creature->setPath(std::move(path));
         }
     }
+    
+    bool Game::isWaveOver() const { return m_creatures.empty(); }
+    bool Game::isGameOver() const { return m_cores.allLost(); }
+    bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }
 
+    /* Everything after this is an answer to bad time management, this is very ugly */
+    
     GameView Game::getView() const {
         return {
             m_player.materials(),
@@ -235,8 +241,58 @@ namespace tdg::engine {
         };
     }
 
-    bool Game::isWaveOver() const { return m_creatures.empty(); }
-    bool Game::isGameOver() const { return m_cores.allLost(); }
-    bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }
+    void Game::buildTower(std::string towerType, int x, int y) {
+        if (towerType == "Gatling") buildTower(Tower::Type::Gatling, x, y);
+        if (towerType == "Mortar") buildTower(Tower::Type::Mortar, x, y);
+        if (towerType == "Laser") buildTower(Tower::Type::Laser, x, y);
+    }
+
+    bool Game::canAfford(std::string towerType) const {
+        if (towerType == "Gatling") return canAfford(Tower::Type::Gatling);
+        if (towerType == "Mortar") return canAfford(Tower::Type::Mortar);
+        if (towerType == "Laser") return canAfford(Tower::Type::Laser);
+        return false;
+    }
+    
+    bool Game::canAfford(Tower::Type type) const {
+        TowerPtr temp = m_towerFactory.build(type, -1, -1);
+        return m_player.canAfford(temp->cost());
+    }
+
+    std::optional<float> Game::towerRangeAt(int x, int y) const {
+        for (auto it = m_towers.begin(); it != m_towers.end(); ++it) {
+            const TowerPtr& t = *it;
+            if (t->x() == x && t->y() == y) {
+                return t->stats().range;
+            }
+        }
+        return std::nullopt;
+    }
+
+    bool Game::tileOpenAt(int x, int y) const {
+        Tile* tile = m_map->tileAt(x, y);
+        if (!tile) return false;
+        if (tile->type == Tile::Type::Open) return true;
+        else return false;
+    }
+
+    bool Game::towerAt(int x, int y) const {
+        Tile* tile = m_map->tileAt(x, y);
+        if (!tile) return false;
+        if (tile->hasTower) return true;
+        else return false;
+    }
+
+    std::optional<Materials> Game::towerCost(std::string towerType) const {
+        if (towerType == "Gatling") return towerCost(Tower::Type::Gatling);
+        if (towerType == "Mortar") return towerCost(Tower::Type::Mortar);
+        if (towerType == "Laser") return towerCost(Tower::Type::Laser);
+        return std::nullopt;
+    }
+    
+    std::optional<Materials> Game::towerCost(Tower::Type type) const {
+        TowerPtr temp = m_towerFactory.build(type, -1, -1);
+        return temp->cost();
+    }
 
 } // tdg::engine

@@ -24,6 +24,7 @@ namespace tdg::core {
         virtual ~IWaveSource() = default;
         virtual unsigned int waveCount() const = 0;
         virtual WaveData loadWave(unsigned int waveIndex) const = 0;
+        // virtual void reset() const = 0;
         virtual void setLevel(unsigned int level) = 0;
     };
 
