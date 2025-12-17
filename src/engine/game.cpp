@@ -9,6 +9,7 @@ namespace tdg::engine {
         : m_player(startMaterials), m_cores(startCores)
     {
         m_map = std::make_unique<tdg::core::Map>(mapSrc);
+        m_map->setCoreStorageFillRatioRequest([this](){ return m_cores.ratio(); });
         m_pathfinder = std::make_unique<tdg::infra::AStarPathfinder>(m_map.get());
         m_waveManager = std::make_unique<tdg::core::WaveManager>(waveSrc);
     }
@@ -54,9 +55,6 @@ namespace tdg::engine {
         if (isWaveOver() && m_waveManager->getTimeBeforeNext() <= 0.0f) {
             m_waveManager->loadNext();
         }
-
-        // Update core storage fill ratio
-        m_map->setCoreStorageFillRatio(m_cores.ratio());
     }
 
     void Game::renderVideo(IVideoRenderer& vidRenderer) const {
@@ -125,9 +123,7 @@ namespace tdg::engine {
     }
 
     bool Game::buildTower(Tower::Type type, int x, int y) {
-        Tile* tile = m_map->tileAt(x, y);
-        if (!tile) return false;
-        if (!tile->buildable()) return false;
+        if (!m_map->canRecieveTowerAt(x, y)) return false;
 
         // Build the tower
         TowerPtr newTower = m_towerFactory.build(type, x, y);
@@ -140,7 +136,7 @@ namespace tdg::engine {
         m_player.buy(newTower->cost());
 
         // Mark the tile
-        tile->hasTower = true;
+        m_map->markTowerAt(x, y);
 
         // Sorted Insertion
         auto it = std::upper_bound(m_towers.begin(), m_towers.end(), newTower,
@@ -152,9 +148,7 @@ namespace tdg::engine {
     }
 
     bool Game::upgradeTower(int x, int y) {
-        Tile* tile = m_map->tileAt(x, y);
-        if (!tile) return false;
-        if (!tile->sellable()) return false;
+        if (!m_map->hasTowerAt(x, y)) return false;
 
         for (auto it = m_towers.begin(); it != m_towers.end(); ++it) {
             TowerPtr& t = *it;
@@ -172,16 +166,14 @@ namespace tdg::engine {
     }
 
     bool Game::sellTower(int x, int y) {
-        Tile* tile = m_map->tileAt(x, y);
-        if (!tile) return false;
-        if (!tile->sellable()) return false;
+        if (!m_map->hasTowerAt(x, y)) return false;
 
         for (auto it = m_towers.begin(); it != m_towers.end(); ++it) {
             TowerPtr& t = *it;
 
             if (t->x() == x && t->y() == y) {
                 m_player.addMaterials(t->sellValue());
-                tile->hasTower = false;
+                m_map->removeTowerAt(x, y);
 
                 m_towers.erase(it);
                 updatePaths();

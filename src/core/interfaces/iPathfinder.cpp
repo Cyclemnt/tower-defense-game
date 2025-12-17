@@ -1,4 +1,4 @@
-#include <cmath>
+#include <limits>
 #include "core/interfaces/iPathfinder.hpp"
 
 namespace tdg::core {

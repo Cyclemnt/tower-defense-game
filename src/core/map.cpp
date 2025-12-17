@@ -7,35 +7,33 @@
 namespace tdg::core {
 
     Map::Map(std::shared_ptr<IMapSource> source) {
+        // Load Map
         MapData data = source->loadMap();
         m_width = data.width;
         m_height = data.height;
         m_tiles = data.tiles;
 
-        for (Tile& t : m_tiles) {
-            if (t.type == Tile::Type::Entry) {
-                m_entryPoints.push_back(&t);
-            }
-            else if (t.type == Tile::Type::Exit) {
-                m_exitPoints.push_back(&t);
-            }
-            else if (t.type == Tile::Type::CoreStorage) {
-                m_corePoint = &t;
+        // Save interest points for fast access
+        for (Tile& tile : m_tiles) {
+            switch (tile.type) {
+                case Tile::Type::Entry: m_entryPoints.push_back(&tile); break;
+                case Tile::Type::Exit:  m_exitPoints.push_back(&tile);  break;
+                case Tile::Type::CoreStorage: m_corePoint = &tile; break;
+                default: break;
             }
         }        
 
         if (m_exitPoints.empty()) m_exitPoints = m_entryPoints; // If no explicit exits, fallback to entries.
-
         if (m_entryPoints.empty()) throw std::runtime_error("Wrong initialization of the map: no entry point");
         else if (!m_corePoint) throw std::runtime_error("Wrong initialization of the map: no core storage");
     }
 
-    const Tile* Map::tileAt(int x, int y) const {
+    const Tile* Map::tileAt(int x, int y) const noexcept {
         if (x < 0 || y < 0 || x >= m_width || y >= m_height) return nullptr;
         return &m_tiles[y * m_width + x];
     }
 
-    Tile* Map::tileAt(int x, int y) {
+    Tile* Map::tileAt(int x, int y) noexcept {
         if (x < 0 || y < 0 || x >= m_width || y >= m_height) return nullptr;
         return &m_tiles[y * m_width + x];
     }
@@ -49,81 +47,94 @@ namespace tdg::core {
                 int nx = tile->x + dx;
                 int ny = tile->y + dy;
 
-                if (const Tile* t = tileAt(nx, ny))
-                    result.push_back(t);
+                if (const Tile* t = tileAt(nx, ny)) result.push_back(t);
             }
         }
 
         return result;
     }
 
-    bool Map::placeTower(int x, int y) {
-        Tile* t = tileAt(x, y);
-        if (!t) return false;
+    bool Map::canRecieveTowerAt(int x, int y) const noexcept {
+        const Tile* tile = tileAt(x, y);
+        if (!tile) return false;
+        bool tileIsOpen = tile->type == Tile::Type::Open;
+        bool hasTower = tile->hasTower;
+        return tileIsOpen && !hasTower;
+    }
 
-        if (t->type == Tile::Type::Open && !t->hasTower) {
-            tileAt(x, y)->hasTower = true;
+    bool Map::hasTowerAt(int x, int y) const noexcept {
+        const Tile* tile = tileAt(x, y);
+        if (!tile) return false;
+        return tile->hasTower;
+    }
+
+    bool Map::markTowerAt(int x, int y) noexcept {
+        Tile* tile = tileAt(x, y);
+        if (!tile) return false;
+
+        if (tile->type == Tile::Type::Open && !tile->hasTower) {
+            tile->hasTower = true;
             return true;
         }
         return false;
     }
 
-    bool Map::removeTower(int x, int y) {
-        Tile* t = tileAt(x, y);
-        if (!t) return false;
+    bool Map::removeTowerAt(int x, int y) noexcept {
+        Tile* tile = tileAt(x, y);
+        if (!tile) return false;
 
-        if (t->type == Tile::Type::Open && t->hasTower) {
-            tileAt(x, y)->hasTower = false;
+        if (tile->hasTower) {
+            tile->hasTower = false;
             return true;
         }
         return false;
     }
 
-    void Map::setCoreStorageFillRatio(float ratio) {
-        coreStorageFillRatio = ratio;
+    void Map::setCoreStorageFillRatioRequest(std::function<float()> callback) noexcept {
+        onCoreStorageFillRatioRequest = callback;
     }
 
-void Map::draw(IVideoRenderer& vidRenderer) const {
-    // Dessiner les tuiles de la carte
-    for (size_t i = 0; i < m_tiles.size(); i++) {
-        int x = i % m_width;
-        int y = i / m_width;
-        vidRenderer.drawSprite(tileToSpriteId(m_tiles[i]), x, y);
-    }
-
-    // Dessiner la marge autour de la carte
-    // Haut et bas
-    for (int i = -5; i < m_width + 5; i++) {
-        for (int j = -5; j < 0; j++) {
-            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Haut
+    void Map::draw(IVideoRenderer& vidRenderer) const {
+        // Draw map tiles
+        for (size_t i = 0; i < m_tiles.size(); i++) {
+            int x = i % m_width;
+            int y = i / m_width;
+            vidRenderer.drawSprite(tileToSpriteId(m_tiles[i]), x, y);
         }
-        for (int j = m_height; j < m_height + 2; j++) {
-            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Bas
+
+        // Draw margins
+        const int margin = 5;
+        // Top and bottom
+        for (int i = -margin; i < m_width + margin; i++) {
+            for (int j = -margin; j < 0; ++j) {
+                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Top
+            }
+            for (int j = m_height; j < m_height + 2; j++) {
+                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Bottom
+            }
+        }
+
+        // Left and right
+        for (int i = -margin; i < 0; i++) {
+            for (int j = -margin; j < m_height + margin; j++) {
+                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Left
+            }
+        }
+        for (int i = m_width; i < m_width + margin; i++) {
+            for (int j = -margin; j < m_height + margin; j++) {
+                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Right
+            }
         }
     }
 
-    // Côté gauche et droit
-    for (int i = -5; i < 0; i++) {
-        for (int j = -5; j < m_height + 5; j++) {
-            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Gauche
-        }
-    }
-    for (int i = m_width; i < m_width + 5; i++) {
-        for (int j = -5; j < m_height + 5; j++) {
-            vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Droit
-        }
-    }
-}
-
-
-    std::string Map::tileToSpriteId(Tile t) const {
-        switch (t.type) {
+    std::string Map::tileToSpriteId(Tile tile) const noexcept {
+        switch (tile.type) {
             case Tile::Type::Path: return "tiles/path";
             case Tile::Type::Open: return "tiles/open";
             case Tile::Type::Entry: return "tiles/entry";
             case Tile::Type::Exit: return "tiles/exit";
             case Tile::Type::CoreStorage: return "tiles/core_" + coreStorageTextureId();
-            case Tile::Type::Empty: return "tiles/empty_" + randomTextureId(t.x, t.y);
+            case Tile::Type::Empty: return "tiles/empty_" + randomTextureId(tile.x, tile.y);
             default: return "missing_texture";
         }
     }
@@ -144,9 +155,11 @@ void Map::draw(IVideoRenderer& vidRenderer) const {
     }
 
     std::string Map::coreStorageTextureId() const noexcept {
-        if (coreStorageFillRatio == 1.0f) return "0";
-        else if (coreStorageFillRatio > 0.5f) return "1";
-        else if (coreStorageFillRatio > 0.0f) return "2";
+        if (!onCoreStorageFillRatioRequest) return "0";
+        float filled = onCoreStorageFillRatioRequest();
+        if (filled == 1.0f) return "0";
+        else if (filled > 0.5f) return "1";
+        else if (filled > 0.0f) return "2";
         else return "3";
     }
 

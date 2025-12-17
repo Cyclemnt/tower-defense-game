@@ -2,7 +2,7 @@
 #define I_VIDEO_RENDERER_HPP
 
 #include <string>
-#include "utils/color.hpp"
+#include "utility/color.hpp"
 
 namespace tdg::core {
 

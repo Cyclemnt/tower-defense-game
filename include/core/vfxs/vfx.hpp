@@ -2,7 +2,7 @@
 #define VFX_HPP
 
 #include <memory>
-#include "utils/color.hpp"
+#include "utility/color.hpp"
 
 namespace tdg::core { class IVideoRenderer; }
 

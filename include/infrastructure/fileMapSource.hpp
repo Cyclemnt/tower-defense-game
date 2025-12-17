@@ -6,7 +6,7 @@
 
 namespace tdg::infra {
 
-    class FileMapSource : public core::IMapSource {
+    class FileMapSource final : public core::IMapSource {
     public:
         explicit FileMapSource(std::string folderPath);
         void setLevel(unsigned int level) override;
