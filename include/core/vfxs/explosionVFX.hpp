@@ -9,9 +9,9 @@ namespace tdg::core {
     public:
         ExplosionVFX(unsigned int level, float x1, float y1);
 
-        void update(float dt) override;
+        void update(float dt) override; // Updates the time to live, radius and opacity ot the effect
 
-        void draw(IVideoRenderer& vidRenderer) const override;
+        void draw(IVideoRenderer& vidRenderer) const override; // Draws the effet
 
     private:
         float m_lifetime{0.3f};

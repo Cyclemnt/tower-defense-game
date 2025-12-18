@@ -4,9 +4,9 @@
 
 namespace tdg::engine {
 
-    Game::Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc,
-        unsigned int startCores, Materials startMaterials)
-        : m_player(startMaterials), m_cores(startCores)
+    Game::Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc, unsigned int startCores, Materials startMaterials)
+        : m_player(startMaterials), m_cores(startCores),
+        m_vfxManager(m_events.vfxs), m_sfxManager(m_events.sfxs)
     {
         m_map = std::make_unique<tdg::core::Map>(mapSrc);
         m_map->setCoreStorageFillRatioRequest([this](){ return m_cores.ratio(); });
@@ -26,15 +26,8 @@ namespace tdg::engine {
             m_events.spawn.pop();
         }
 
-        // Create new VFXs
-        while (!m_events.vfxs.empty()) {
-            Events::VFX& ve = m_events.vfxs.front();
-            m_vfxs.push_back(std::move(m_vfxFactory.create(ve)));
-            m_events.vfxs.pop();
-        }
-
-        // Update visual effects
-        for (VFXPtr& v : m_vfxs) v->update(dt);
+        // Create and update VFXs
+        m_vfxManager.update(dt);
 
         // Update creatures
         for (CreaturePtr& c : m_creatures) c->update(dt, m_events);
@@ -47,36 +40,33 @@ namespace tdg::engine {
 
         // Reward and cleanup dead creatures
         handleDeadCreatures();
-        
-        // Cleanup dead vfxs
-        handleDeadVFX();
 
         // If no creatures left, load next wave
         if (isWaveOver() && m_waveManager->timeBeforeNext() <= 0.0f) {
             m_waveManager->loadNext();
+            m_events.sfxs.emplace(Events::SFX::Type::NextWave);
         }
     }
 
     void Game::renderVideo(IVideoRenderer& vidRenderer) const {
         m_map->draw(vidRenderer);
         for (const CreaturePtr& c : m_creatures) c->draw(vidRenderer);
-        for (const VFXPtr& v : m_vfxs) v->draw(vidRenderer);
+        m_vfxManager.renderVideo(vidRenderer);
         for (const TowerPtr& t : m_towers) t->draw(vidRenderer);
     }
 
     void Game::renderAudio(IAudioRenderer& audRenderer) {
-        while (!m_events.sfxs.empty()) {
-            audRenderer.playSound(m_events.sfxs.front().toString());
-            m_events.sfxs.pop();
-        }
+        m_sfxManager.renderAudio(audRenderer);
     }
 
     void Game::handlePathEvent() {
         Events::Path& pe = m_events.path.front();
         switch (pe.type) {
         case Events::Path::Type::ArrivedToCore: {
+            unsigned int stolenCores = m_cores.stealCores(pe.creature->remainingCapacity());
+            pe.creature->stealCores(stolenCores);
+            if (stolenCores > 0u) m_events.sfxs.emplace(Events::SFX::Type::CoreSteal);
             std::vector<const Tile*> bestPath = m_pathfinder->findPathToClosestGoal(m_map->corePoint(), m_map->exitPoints());
-            pe.creature->stealCores(m_cores.stealCores(pe.creature->remainingCapacity()));
             pe.creature->setPath(std::move(bestPath));
             break;
         }
@@ -111,14 +101,6 @@ namespace tdg::engine {
             else {
                 ++it;
             }
-        }
-    }
-
-    void Game::handleDeadVFX() {
-        for (auto it = m_vfxs.begin(); it != m_vfxs.end();) {
-            VFXPtr& v = *it;
-            if (!v->isAlive()) it = m_vfxs.erase(it);
-            else ++it;
         }
     }
 

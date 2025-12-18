@@ -9,9 +9,9 @@ namespace tdg::core {
     public:
         LaserBeamVFX(unsigned int level, float x1, float y1, float x2, float y2);
 
-        void update(float dt) override;
+        void update(float dt) override; // Updates the time to live and the opacity of the effect
 
-        void draw(IVideoRenderer& vidRenderer) const override;
+        void draw(IVideoRenderer& vidRenderer) const override; // Draws the effect
     
     private:
         utils::Color m_glow;

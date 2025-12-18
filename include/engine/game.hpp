@@ -21,10 +21,12 @@
 
 #include "core/factories/towerFactory.hpp"
 #include "core/factories/creatureFactory.hpp"
-#include "core/factories/vfxFactory.hpp"
+#include "core/factories/vfxManager.hpp"
+#include "core/factories/sfxManager.hpp"
 
 #include "core/interfaces/iVideoRenderer.hpp"
 #include "core/interfaces/iAudioRenderer.hpp"
+
 
 namespace tdg::core { class IWaveSource; class IMapSource; }
 
@@ -69,7 +71,6 @@ namespace tdg::engine {
     private:
         void handlePathEvent();
         void handleDeadCreatures();
-        void handleDeadVFX();
         void updatePaths();
         
         unsigned long m_tick{0u};
@@ -83,12 +84,12 @@ namespace tdg::engine {
 
         std::vector<TowerPtr> m_towers;
         std::vector<CreaturePtr> m_creatures;
-        std::vector<VFXPtr> m_vfxs;
         Events m_events;
 
         TowerFactory m_towerFactory;
         CreatureFactory m_creatureFactory;
-        VFXFactory m_vfxFactory;
+        VFXManager m_vfxManager;
+        SFXManager m_sfxManager;
     };
 
 } // namespace tdg::engine
