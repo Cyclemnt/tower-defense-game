@@ -7,7 +7,7 @@ namespace tdg::core {
     
     class CreatureFactory {
     public:
-        CreaturePtr create(Creature::Type type) const;
+        CreaturePtr create(Creature::Type type, unsigned int level) const;
     };
 
 } // namespace tdg::core

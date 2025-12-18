@@ -17,6 +17,7 @@ namespace tdg::core {
         class Spawn {
         public:
             Creature::Type type;
+            unsigned int level;
             std::optional<unsigned int> entrance;
         };
 

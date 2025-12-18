@@ -7,7 +7,7 @@ namespace tdg::core {
     
     class Drone final : public Creature {
     public:
-        explicit Drone(bool boosted = false) noexcept;
+        explicit Drone(unsigned int level = 1u) noexcept;
         ~Drone() override = default;
 
         std::string spriteId() const noexcept override;

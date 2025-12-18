@@ -2,25 +2,23 @@
 
 namespace tdg::core {
 
-    Drone::Drone(bool boosted) noexcept
+    Drone::Drone(unsigned int level) noexcept
         : Creature({
-            /* health */ boosted ? 125.0f : 75.0f,
-            /* shield */ boosted ? 100.0f : 25.0f,
-            /* speed */ boosted ? 0.7f : 0.4f,
+            /* health */ level == 2u ? 125.0f : 75.0f,
+            /* shield */ level == 2u ? 100.0f : 25.0f,
+            /* speed */ level == 2u ? 0.7f : 0.4f,
             /* coresCapacity */ 2u,
             /* loot */ {
                 0u,                     // Au
-                boosted ? 5u : 0u,      // Ag
-                boosted ? 40u : 10u     // Cu
+                level == 2u ? 5u : 0u,  // Ag
+                level == 2u ? 40u : 10u // Cu
             },
-            boosted
+            level
         }) {}
 
     std::string Drone::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
-        return m_stats.boosted
-            ? "creatures/drone_b_" + std::to_string(frame)
-            : "creatures/drone_" + std::to_string(frame);
+        return "creatures/drone_" + std::to_string(m_stats.level) + "_" + std::to_string(frame);
     }
 
 } // namespace tdg::core

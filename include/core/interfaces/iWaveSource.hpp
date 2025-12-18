@@ -7,12 +7,15 @@
 
 namespace tdg::core {
 
+    // Structure to describe a spawn entry
     struct SpawnEntry {
         float delay{0};
-        std::optional<unsigned int> spawnEntrance;
         Creature::Type enemyType;
+        unsigned int level;
+        std::optional<unsigned int> spawnEntrance;
     };
 
+    // Structure to describe a wave
     struct WaveData {
         float startDelay{0};
         std::vector<SpawnEntry> spawns;
@@ -22,10 +25,9 @@ namespace tdg::core {
     class IWaveSource {
     public:
         virtual ~IWaveSource() = default;
-        virtual unsigned int waveCount() const = 0;
-        virtual WaveData loadWave(unsigned int waveIndex) const = 0;
-        // virtual void reset() const = 0;
-        virtual void setLevel(unsigned int level) = 0;
+        virtual unsigned int waveCount() const = 0; // To get the number of waves
+        virtual void setLevel(unsigned int level) = 0; // To set the level of the waves
+        virtual WaveData loadWave(unsigned int waveIndex) const = 0; // To generate the description of a wave
     };
 
 } // namespace tdg::core

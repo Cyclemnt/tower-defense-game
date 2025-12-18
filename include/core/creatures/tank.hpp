@@ -7,7 +7,7 @@ namespace tdg::core {
     
     class Tank final : public Creature {
     public:
-        explicit Tank(bool boosted = false) noexcept;
+        explicit Tank(unsigned int level = 1u) noexcept;
         ~Tank() override = default;
 
         std::string spriteId() const noexcept override;

@@ -13,22 +13,23 @@ namespace tdg::core {
     public:
         explicit WaveManager(std::shared_ptr<IWaveSource> source);
 
-        void update(float dt, Events& events);
+        void update(float dt, Events& events); // Main function to read m_wave and create spawn events
 
-        void loadNext();
+        void loadNext(); // Asks m_source for the next wave
 
-        int currentWaveIndex() const noexcept { return m_waveIndex; }
-        bool allWavesSpawned() const noexcept;
-        unsigned int getWaveNumber() const noexcept;
-        unsigned int waveCount() const noexcept;
-        float getTimeBeforeNext() const noexcept;
+        unsigned int waveIndex() const noexcept { return m_waveIndex; }
+        unsigned int waveCount() const noexcept { return m_source->waveCount(); }
+        bool allWavesSpawned() const noexcept; // Returns true if every wave has been spawned
+        float timeBeforeNext() const noexcept; // Returns the timer if currently in a wave
 
     private:
-        std::shared_ptr<IWaveSource> m_source;
-        std::vector<SpawnEntry> m_wave;
-        float m_timer{0};
+        std::shared_ptr<IWaveSource> m_source; // Source of the waves data
+        std::vector<SpawnEntry> m_wave; // Actual wave
+
         size_t m_waveIndex{0};
         size_t m_spawnIndex{0};
+        
+        float m_timer{0};
         bool m_inWave{false};
     };
 

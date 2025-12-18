@@ -1,7 +1,7 @@
 #include <cmath>
 #include "core/creatures/creature.hpp"
 #include "core/events.hpp"
-#include "core/map.hpp"
+#include "core/tile.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"
 
 #define PIf 3.141592f

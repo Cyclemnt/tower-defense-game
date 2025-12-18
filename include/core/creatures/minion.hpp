@@ -7,7 +7,7 @@ namespace tdg::core {
     
     class Minion final : public Creature {
     public:
-        explicit Minion(bool boosted = false) noexcept;
+        explicit Minion(unsigned int level = 1u) noexcept;
         ~Minion() override = default;
 
         std::string spriteId() const noexcept override;

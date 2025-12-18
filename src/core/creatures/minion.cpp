@@ -2,25 +2,23 @@
 
 namespace tdg::core {
 
-    Minion::Minion(bool boosted) noexcept
+    Minion::Minion(unsigned int level) noexcept
         : Creature({
-            /* health */ boosted ? 125.0f : 25.0f,
+            /* health */ level == 2u ? 125.0f : 25.0f,
             /* shield */ 0.0f,
             /* speed */ 1.0f,
             /* coresCapacity */ 1u,
             /* loot */ {
                 0u,                     // Au
-                boosted ? 5u : 1u,      // Ag
-                boosted ? 10u : 5u      // Cu
+                level == 2u ? 5u : 1u,  // Ag
+                level == 2u ? 10u : 5u  // Cu
             },
-            boosted
+            level
         }) {}
 
     std::string Minion::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
-        return m_stats.boosted
-            ? "creatures/minion_b_" + std::to_string(frame)
-            : "creatures/minion_" + std::to_string(frame);
+        return "creatures/minion_" + std::to_string(m_stats.level) + "_" + std::to_string(frame);
     }
     
 } // namespace tdg::core

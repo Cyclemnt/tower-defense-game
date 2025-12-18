@@ -4,7 +4,8 @@
 
 namespace tdg::infra {
     
-    AutoWaveSource::AutoWaveSource() {
+    AutoWaveSource::AutoWaveSource()
+    {
         setLevel(1u);
     }
 
@@ -14,34 +15,29 @@ namespace tdg::infra {
     }
 
     void AutoWaveSource::setLevel(unsigned int level) {
-        m_waveCount = level * 2 + 4;
+        m_waveCount = std::nullopt;
         m_difficultyCoefficient = 1.0f + level / 10.0f;
     }
 
     core::WaveData AutoWaveSource::loadWave(unsigned int waveIndex) const {
-        // Create a random engine for creature selection
-        std::random_device rd;
-        std::mt19937 rng(rd());
-
         // Define the list of possible creature types
         std::vector<core::Creature::Type> creatureTypes = {
             core::Creature::Type::Minion,
-            core::Creature::Type::MinionB,
             core::Creature::Type::Drone,
-            core::Creature::Type::DroneB,
             core::Creature::Type::Tank,
-            core::Creature::Type::TankB
         };
 
         core::WaveData wave;
-        wave.startDelay = m_waveInterval;  // Fixed interval between waves
+        wave.startDelay = m_waveInterval; // Fixed interval between waves
 
         // Calculate the number of creatures in the wave, based on the difficulty coefficient
-        unsigned int numCreaturesInWave = static_cast<unsigned int>(std::pow(m_difficultyCoefficient, waveIndex) * 5); // Base 5 creatures
+        unsigned int numCreaturesInWave = static_cast<unsigned int>(std::pow(waveIndex, m_difficultyCoefficient) * 5); // Base 5 creatures
 
         // Create the spawn entries for this wave
         for (unsigned int i = 0; i < numCreaturesInWave; ++i) {
-            core::SpawnEntry se = {m_spawnInterval, std::nullopt, creatureTypes[rng() % creatureTypes.size()]};
+            core::Creature::Type creatureType = creatureTypes[creatureTypeDist(gen)];
+            unsigned int creatureLevel = creatureLevelDist(gen) + 1u;
+            core::SpawnEntry se = {m_spawnInterval, creatureType, creatureLevel, std::nullopt};
             wave.spawns.push_back(se);
         }
 

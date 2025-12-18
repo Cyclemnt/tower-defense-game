@@ -2,25 +2,23 @@
 
 namespace tdg::core {
 
-    Tank::Tank(bool boosted) noexcept
+    Tank::Tank(unsigned int level) noexcept
         : Creature({
-            /* health */ boosted ? 150.0f : 125.0f,
-            /* shield */ boosted ? 300.0f : 75.0f,
+            /* health */ level == 2u ? 150.0f : 125.0f,
+            /* shield */ level == 2u ? 300.0f : 75.0f,
             /* speed */ 0.25f,
             /* coresCapacity */ 3u,
             /* loot */ {
                 1u,                     // Au
                 2u,                     // Ag
-                boosted ? 40u : 10u     // Cu
+                level == 2u ? 40u : 10u // Cu
             },
-            boosted
+            level
         }) {}
 
     std::string Tank::spriteId() const noexcept {
         unsigned int frame = m_tick / 8 % 4;
-        return m_stats.boosted
-            ? "creatures/tank_b_" + std::to_string(frame)
-            : "creatures/tank_" + std::to_string(frame);
+        return "creatures/tank_" + std::to_string(m_stats.level) + "_" + std::to_string(frame);
     }
     
 } // namespace tdg::core

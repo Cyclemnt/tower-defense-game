@@ -17,7 +17,7 @@ namespace tdg::infra {
         std::vector<const core::Tile*> findPath(const core::Tile* start, const core::Tile* goal, bool ignoreTowers = false) const override;
     
     private:
-        core::Map* m_map;
+        core::Map* m_map{nullptr};
 
         /// @brief Represents a node in the A* search process.
         struct Node {

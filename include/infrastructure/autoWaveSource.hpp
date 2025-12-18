@@ -6,23 +6,24 @@
 
 namespace tdg::infra {
     
-    class AutoWaveSource : public core::IWaveSource {
-    private:
-        std::mt19937 gen{ std::random_device{}() }; ///< Random number generator
-        mutable std::discrete_distribution<int> dist{490, 10, 320, 10, 165, 5}; ///< Weighted creature distribution
+    class AutoWaveSource final : public core::IWaveSource {
+    public:
+        AutoWaveSource();
 
-        float m_difficultyCoefficient{1.2};
+        unsigned int waveCount() const override; // To get the number of waves
+        void setLevel(unsigned int level) override; // To set the level of the waves
+        core::WaveData loadWave(unsigned int waveIndex) const override; // To generate the description of a wave
+        
+    private:
+        mutable std::mt19937 gen{ std::random_device{}() }; ///< Random number generator
+        mutable std::discrete_distribution<int> creatureTypeDist{200, 200, 100}; ///< Weighted creature type distribution
+        mutable std::discrete_distribution<int> creatureLevelDist{300, 200}; ///< Weighted creature level distribution
+
+        float m_difficultyCoefficient{1.3};
         std::optional<unsigned int> m_waveCount;
 
         const float m_spawnInterval{1.0f};
         const float m_waveInterval{10.0f};
-
-    public:
-        AutoWaveSource();
-
-        unsigned int waveCount() const override;
-        void setLevel(unsigned int level) override;
-        core::WaveData loadWave(unsigned int waveIndex) const override;
     };
 
 } // namespace tdg::infra

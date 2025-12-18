@@ -7,9 +7,12 @@ namespace tdg::core {
             enum class Type { Path, Open, Entry, Exit, CoreStorage, Empty };
 
             Tile() = default;
-            Tile(int px, int py, Type t = Type::Empty);
+            Tile(int px, int py, Type t = Type::Empty) : x(px), y(py), type(t) {}
 
-            bool walkable(bool ignoreTower) const noexcept;
+            bool walkable(bool ignoreTower) const noexcept {
+                // Every tile except Tile::Empty are walkable
+                return (type != Type::Empty && (ignoreTower || !hasTower));
+            }
 
             int x{0};
             int y{0};

@@ -17,7 +17,7 @@ namespace tdg::infra {
     }
 
     std::vector<const core::Tile*> AStarPathfinder::findPath(const core::Tile* start, const core::Tile* goal, bool ignoreTowers) const {
-        if (!start || !goal) return {}; // Return an empty path if start or goal are invalid.
+        if (!start || !goal || !m_map) return {}; // Return an empty path if start or goal are invalid.
 
         // Comparator for the priority queue, sorts nodes by their total cost (fCost = gCost + hCost).
         auto cmp = [](Node* a, Node* b) { return a->fCost() > b->fCost(); };

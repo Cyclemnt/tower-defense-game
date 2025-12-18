@@ -4,7 +4,7 @@
 #include <algorithm>
 #include "infrastructure/jsonWaveSource.hpp"
 
-// Forward declaration, see later in this file
+// Forward declaration of helpers, see later in this file
 namespace {
     inline void trim(std::string& s);
     inline std::string extractStringValue(const std::string& src, const std::string& key);
@@ -22,7 +22,7 @@ namespace tdg::infra {
     }
 
     void JsonWaveSource::setLevel(unsigned int level) {
-        m_filePath = m_folderPath + "level" + std::to_string(level) + ".json";
+        m_filePath = m_folderPath + "level_" + std::to_string(level) + ".json";
 
         // Open JSON file to count waves
         std::ifstream file(m_filePath);
@@ -74,12 +74,13 @@ namespace tdg::infra {
 
                 for (const std::string& g : groupObjects) {
                     core::Creature::Type type = parseType(extractStringValue(g, "enemy"));
+                    unsigned int level = static_cast<unsigned int>(extractIntValue(g, "level"));
                     int count = extractIntValue(g, "count");
                     int entrance = extractIntValue(g, "entrance");
                     float interval = extractIntValue(g, "interval_ms") * 0.001f;
 
                     for (int i = 0; i < count; ++i) {
-                        core::SpawnEntry se = {interval, entrance, type};
+                        core::SpawnEntry se = {interval, type, level, entrance};
                         w.spawns.push_back(se);
                     }
                 }
@@ -94,9 +95,6 @@ namespace tdg::infra {
         if      (n == "Minion")  return core::Creature::Type::Minion;
         else if (n == "Drone")   return core::Creature::Type::Drone;
         else if (n == "Tank")    return core::Creature::Type::Tank;
-        else if (n == "MinionB") return core::Creature::Type::MinionB;
-        else if (n == "DroneB")  return core::Creature::Type::DroneB;
-        else if (n == "TankB")   return core::Creature::Type::TankB;
         else return core::Creature::Type::Minion;
     }
 

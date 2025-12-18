@@ -22,7 +22,7 @@ namespace tdg::engine {
         // Spawn new creatures
         while (!m_events.spawn.empty()) {
             Events::Spawn& se = m_events.spawn.front();
-            spawnCreature(se.type, se.entrance);
+            spawnCreature(se.type, se.level, se.entrance);
             m_events.spawn.pop();
         }
 
@@ -52,7 +52,7 @@ namespace tdg::engine {
         handleDeadVFX();
 
         // If no creatures left, load next wave
-        if (isWaveOver() && m_waveManager->getTimeBeforeNext() <= 0.0f) {
+        if (isWaveOver() && m_waveManager->timeBeforeNext() <= 0.0f) {
             m_waveManager->loadNext();
         }
     }
@@ -183,8 +183,8 @@ namespace tdg::engine {
         return false;
     }
 
-    void Game::spawnCreature(Creature::Type type, std::optional<unsigned int> entry) {
-        CreaturePtr newCreature = m_creatureFactory.create(type);
+    void Game::spawnCreature(Creature::Type type, unsigned int level, std::optional<unsigned int> entry) {
+        CreaturePtr newCreature = m_creatureFactory.create(type, level);
         if (!newCreature) return;
 
         const Tile* spawnTile = nullptr;
@@ -229,7 +229,7 @@ namespace tdg::engine {
         return {
             m_player.materials(),
             m_cores.safeCount(), m_cores.stolenCount(), m_cores.lostCount(),
-            m_waveManager->getWaveNumber(), m_waveManager->waveCount(), m_waveManager->getTimeBeforeNext()
+            m_waveManager->waveIndex(), m_waveManager->waveCount(), m_waveManager->timeBeforeNext()
         };
     }
 

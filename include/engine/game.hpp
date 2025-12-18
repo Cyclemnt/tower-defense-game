@@ -45,7 +45,7 @@ namespace tdg::engine {
         bool upgradeTower(int x, int y);
         bool sellTower(int x, int y);
 
-        void spawnCreature(Creature::Type type, std::optional<unsigned int> entry);
+        void spawnCreature(Creature::Type type, unsigned int level, std::optional<unsigned int> entry);
 
         GameView getView() const;
 

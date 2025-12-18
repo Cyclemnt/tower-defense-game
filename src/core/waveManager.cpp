@@ -15,7 +15,7 @@ namespace tdg::core {
         while (m_spawnIndex < m_wave.size() && m_timer <= 0.0f) {
             SpawnEntry& currentSpawn = m_wave[m_spawnIndex];
             m_inWave = true;
-            events.spawn.push({currentSpawn.enemyType, currentSpawn.spawnEntrance});
+            events.spawn.push({currentSpawn.enemyType, currentSpawn.level, currentSpawn.spawnEntrance});
             ++m_spawnIndex;
 
             // Schedule next spawn if it exists
@@ -39,16 +39,7 @@ namespace tdg::core {
         return m_waveIndex >= waveCount() && m_spawnIndex >= m_wave.size();
     }
 
-    unsigned int WaveManager::getWaveNumber() const noexcept {
-        return m_waveIndex;
-    }
-
-    unsigned int WaveManager::waveCount() const noexcept {
-        return m_source->waveCount();
-    }
-
-    float WaveManager::getTimeBeforeNext() const noexcept {
-        // bool inWave = (m_spawnIndex < m_waves[m_waveIndex].spawns.size()) && ((m_spawnIndex == 0) && m_timer <= m_waves[m_waveIndex].spawns[m_spawnIndex].delay);
+    float WaveManager::timeBeforeNext() const noexcept {
         return m_inWave ? 0.0f : m_timer < 0 ? 0.0f : m_timer;
     }
 
