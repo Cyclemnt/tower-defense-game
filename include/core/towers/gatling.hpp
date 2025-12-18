@@ -10,10 +10,10 @@ namespace tdg::core {
         explicit Gatling(int x, int y) noexcept;
         ~Gatling() override = default;
 
-        void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override;
+        void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override; // Main function to update cooldown, select target and shoot
 
-        bool upgrade() override;
-        std::string spriteId() const noexcept override;
+        bool upgrade() override; // Upgrades tower stats
+        std::string spriteId() const noexcept override; // To get the a sting ID (used to draw)
     };
 
 } // namespace tdg::core

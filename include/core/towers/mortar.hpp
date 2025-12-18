@@ -10,12 +10,12 @@ namespace tdg::core {
         explicit Mortar(int x, int y) noexcept;
         ~Mortar() override = default;
 
-        void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override;
+        void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override; // Main function to update cooldown, select target and shoot
 
-        bool upgrade() override;
-        std::string spriteId() const noexcept override;
+        bool upgrade() override; // Upgrades tower stats
+        std::string spriteId() const noexcept override; // To get the a sting ID (used to draw)
 
-        void draw(IVideoRenderer& vidRenderer) const override;
+        void draw(IVideoRenderer& vidRenderer) const override; // Draws the tower
         
     private:
         /// @brief Represents a projectile fired by the Mortar.
@@ -24,9 +24,9 @@ namespace tdg::core {
             float endX, endY;
         };
 
-        std::vector<Shell> m_shells;  ///< List of all active shells
-        float m_shellSpeed = 4.0f;    ///< Shell speed in tile/s
-        float m_shellExplosionRadius = 0.6f;  ///< Shell explosion radius in tile
+        std::vector<Shell> m_shells; ///< List of all active shells
+        float m_shellSpeed = 4.0f;   ///< Shell speed in tile/s
+        float m_shellExplosionRadius = 0.6f; ///< Shell explosion radius in tile
     };
 
 } // namespace tdg::core

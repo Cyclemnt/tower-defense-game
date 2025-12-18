@@ -60,10 +60,22 @@ namespace tdg::core {
     }
 
     bool Laser::upgrade() {
-        if (m_level == 3u) return false;
-        m_level += 1;
-        m_stats.fireRate *= 1.20;
-        return true;
+        switch (m_level) {
+            case 1u:
+                m_level += 1;
+                m_stats.range = 3.5f;
+                m_stats.damage = 0.12f;
+                return true;
+
+            case 2u:
+                m_level += 1;
+                m_stats.range = 4.0f;
+                m_stats.damage = 0.14f;
+                return true;
+            
+            default:
+                return false;
+        }
     }
 
     std::string Laser::spriteId() const noexcept {

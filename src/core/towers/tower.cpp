@@ -31,7 +31,7 @@ namespace tdg::core {
     }
 
     void Tower::draw(IVideoRenderer& vidRenderer) const {
-        vidRenderer.drawSprite(spriteId(), m_x, m_y - 0.7f);
+        vidRenderer.drawSprite(spriteId(), m_x, m_y - 0.7f); // y offset to account for towers sprite size
     }
 
 } // namespace tdg::core

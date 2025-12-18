@@ -77,11 +77,24 @@ namespace tdg::core {
     }
 
     bool Mortar::upgrade() {
-        if (m_level == 3u) return false;
-        m_level += 1;
-        m_stats.fireRate /= 1.20;
-        m_stats.damage *= 1.40;
-        return true;
+        switch (m_level) {
+            case 1u:
+                m_level += 1;
+                m_stats.range = 3.5f;
+                m_stats.fireRate = 0.5f;
+                m_stats.damage = 58.0f;
+                return true;
+
+            case 2u:
+                m_level += 1;
+                m_stats.range = 5.0f;
+                m_stats.fireRate = 0.2f;
+                m_stats.damage = 98.0f;
+                return true;
+            
+            default:
+                return false;
+        }
     }
 
     std::string Mortar::spriteId() const noexcept {

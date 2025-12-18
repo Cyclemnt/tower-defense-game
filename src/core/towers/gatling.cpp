@@ -1,7 +1,7 @@
 #include <cmath>
 #include "core/towers/gatling.hpp"
 #include "core/events.hpp"
-#include <iostream>
+
 #define PIf 3.141592f
 
 namespace tdg::core {
@@ -9,7 +9,7 @@ namespace tdg::core {
     Gatling::Gatling(int x, int y) noexcept
         : Tower({
             /*dmg*/ 4,
-            /*rate*/ 4.0f,
+            /*rate*/ 3.0f,
             /*rng*/ 3.0f,
             /* cost */ {
                 0u,     // Au
@@ -49,10 +49,22 @@ namespace tdg::core {
     }
 
     bool Gatling::upgrade() {
-        if (m_level == 3u) return false;
-        m_level += 1;
-        m_stats.damage *= 1.20f;
-        return true;
+        switch (m_level) {
+            case 1u:
+                m_level += 1;
+                m_stats.fireRate = 4.0f;
+                m_stats.damage = 5.0f;
+                return true;
+
+            case 2u:
+                m_level += 1;
+                m_stats.fireRate = 5.0f;
+                m_stats.damage = 6.0f;
+                return true;
+            
+            default:
+                return false;
+        }
     }
 
     std::string Gatling::spriteId() const noexcept {
