@@ -1,0 +1,9 @@
+{
+  "name": "tower-defense-cxx",
+  "version": "1.0.0",
+  "dependencies": [
+    "sfml",
+    "tgui"
+  ],
+  "builtin-baseline": "5bf0c55239da398b8c6f450818c9e28d36bf9966"
+}
