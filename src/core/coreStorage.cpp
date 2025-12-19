@@ -1,4 +1,3 @@
-#include <cmath>
 #include "core/coreStorage.hpp"
 
 namespace tdg::core {
@@ -13,7 +12,7 @@ namespace tdg::core {
     }
 
     unsigned int CoreStorage::stealCores(unsigned int n) {
-        const unsigned int taken = std::min(n, m_safe);
+        const unsigned int taken = (n < m_safe) ? n : m_safe;
         m_safe   -= taken;
         m_stolen += taken;
         return taken;
