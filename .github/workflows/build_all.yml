@@ -179,7 +179,7 @@ jobs:
   publish:
     name: Create GitHub Release
     runs-on: ubuntu-latest
-    needs: [build-windows, build-linux, build-macos]
+    needs: [build-windows, build-linux]
   
     steps:
       - name: Download All Artifacts
@@ -195,4 +195,3 @@ jobs:
           files: |
             artifacts/tower-defense-game-windows-x64/tower-defense-game-windows-x64.zip
             artifacts/tower-defense-game-linux-x64/tower-defense-game-linux-x64.tar.gz
-            artifacts/tower-defense-game-macos-arm64/tower-defense-game-macos-arm64.zip
