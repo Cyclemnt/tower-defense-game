@@ -10,9 +10,9 @@ namespace tdg::core {
     public:
         HitSparkVFX(unsigned int level, float x1, float y1);
 
-        void update(float dt) override;
+        void update(float dt) override; // Updates time to live of the effect and particles position
 
-        void draw(IVideoRenderer& vidRenderer) const override;
+        void draw(IVideoRenderer& vidRenderer) const override; // Draws the effect
         
     private:
         struct Particle {

@@ -3,12 +3,12 @@
 
 #include <functional>
 #include <optional>
-#include "core/player.hpp"
 
 namespace tdg::core {
 
     struct GameView {
-        Materials materials{};
+        Materials materials{}; // Player's balance
+        
         unsigned int coresSafe{};
         unsigned int coresStolen{};
         unsigned int coresLost{};

@@ -16,7 +16,7 @@ namespace tdg::infra {
 
     private:
         std::string m_folderPath; // Folder path to the json
-        std::string m_filePath; // File path to the json
+        std::string m_filePath; // File path to the current json
         unsigned int m_waveCount{0}; // Number of waves in the level
 
         core::Creature::Type parseType(const std::string& n) const noexcept; // Converts string to creature Type

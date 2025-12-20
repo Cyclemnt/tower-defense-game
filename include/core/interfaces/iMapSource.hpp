@@ -19,8 +19,8 @@ namespace tdg::core {
     public:
         virtual ~IMapSource() = default;
 
-        virtual void setLevel(unsigned int level) = 0;
-        virtual MapData loadMap() const = 0;
+        virtual void setLevel(unsigned int level) = 0; // Sets the level of the map
+        virtual MapData loadMap() const = 0; // Loads the description of a map
     };
 
 } // namespace tdg::core

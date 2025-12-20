@@ -12,10 +12,11 @@ namespace tdg::core {
     public:
         virtual ~IPathfinder() = default;
 
-        /// @brief Computes path from (sx,sy) to (dx,dy). Returns optional vector of
-        /// @return PathPoint if path exists.
+        /// @brief Computes a path between two tiles using A*.
+        /// @return A list of tiles forming the path from start to goal, or empty if none.
         virtual std::vector<const Tile*> findPath(const Tile* start, const Tile* goal, bool ignoreTowers = false) const = 0;
 
+        /// @brief Computes and chooses shortest path between multiple goals
         std::vector<const Tile*> findPathToClosestGoal(const Tile* start, std::vector<Tile*> goals);
     };
 

@@ -2,7 +2,6 @@
 #define GAME_HPP
 
 #include <memory>
-#include <vector>
 #include <optional>
 
 #include "core/map.hpp"
@@ -12,29 +11,25 @@
 #include "core/player.hpp"
 #include "core/coreStorage.hpp"
 
-#include "core/gameViewProvider.hpp"
-
 #include "core/events.hpp"
+
+#include "core/gameViewProvider.hpp"
 
 #include "core/managers/towerManager.hpp"
 #include "core/managers/creatureManager.hpp"
 #include "core/managers/vfxManager.hpp"
 #include "core/managers/sfxManager.hpp"
 
-#include "core/interfaces/iVideoRenderer.hpp"
-#include "core/interfaces/iAudioRenderer.hpp"
-
-
-namespace tdg::core { class IWaveSource; class IMapSource; }
+namespace tdg::core { class IWaveSource; class IMapSource; class IVideoRenderer; class IAudioRenderer; }
 
 namespace tdg::engine {
 
     using namespace tdg::core;
 
-    class Game {
+    class Game final {
     public:
         explicit Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc,
-            unsigned int startCores = 24u, Materials startMaterials = {100u,100u,100u});
+            unsigned int startCores = 24u, Materials startMaterials = {30u,50u,150u});
 
         void update(float dt);
         void renderVideo(IVideoRenderer& renderer) const;
@@ -44,23 +39,24 @@ namespace tdg::engine {
         bool upgradeTower(int x, int y);
         bool sellTower(int x, int y);
 
-        void spawnCreature(Creature::Type type, unsigned int level, std::optional<unsigned int> entry);
+        void spawnCreature(std::string creatureType, unsigned int level, std::optional<unsigned int> entry);
 
-        GameView getView() const;
+        GameView getView() const; // Gives global information about the state of the game (useful for HUD)
 
         bool isWaveOver() const;
         bool isGameOver() const;
         bool isVictory() const;
 
-        /* Lack of time (bad time management) made me do that */
-        bool canAfford(std::string towerType) const;
-        std::optional<float> towerRangeAt(int x, int y) const;
+        /* Some useful getters for GUI */
         bool tileOpenAt(int x, int y) const;
         bool towerAt(int x, int y) const;
+        std::optional<float> towerRangeAt(int x, int y) const;
         std::optional<Materials> towerCost(std::string towerType) const;
+        bool canAfford(std::string towerType) const;
+
         int mapWidth() const { return m_map->width(); }
         int mapHeight() const { return m_map->height(); }
-        /* ================================================== */
+        /* =========================== */
 
     private:        
         unsigned long m_tick{0u};

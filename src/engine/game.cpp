@@ -2,6 +2,9 @@
 #include "engine/game.hpp"
 #include "infrastructure/aStarPathfinder.hpp"
 
+#include "core/interfaces/iVideoRenderer.hpp"
+#include "core/interfaces/iAudioRenderer.hpp"
+
 namespace tdg::engine {
 
     Game::Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc, unsigned int startCores, Materials startMaterials)
@@ -95,12 +98,16 @@ namespace tdg::engine {
         if (towerSold) m_creatureManager.updatePaths();
         return towerSold;
     }
+
+    void Game::spawnCreature(std::string creatureType, unsigned int level, std::optional<unsigned int> entry) {
+        if (creatureType == "Minion") m_creatureManager.spawn(Creature::Type::Minion, level, entry);
+        if (creatureType == "Drone") m_creatureManager.spawn(Creature::Type::Drone, level, entry);
+        if (creatureType == "Tank") m_creatureManager.spawn(Creature::Type::Tank, level, entry);
+    }
     
     bool Game::isWaveOver() const { return m_creatureManager.isWaveOver(); }
     bool Game::isGameOver() const { return m_cores.allLost(); }
     bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }
-
-    /* Everything after this is an answer to bad time management, this is very ugly */
     
     GameView Game::getView() const {
         return {

@@ -48,6 +48,7 @@ namespace tdg::core {
             std::optional<float> xEnd, yEnd;
         };
 
+        // Events happening on Creatures Paths
         struct OnPath {
             enum class Type { ArrivedAtCore, ReachedExit };
 
