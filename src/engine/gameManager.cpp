@@ -154,8 +154,10 @@ resetGameView();
 
             // Render
             if (m_state != State::WaitingForUserInput) m_window->clear();
+            m_videoRenderer->setWorldCoordinates(true);
             if (m_state != State::WaitingForUserInput) m_game->renderVideo(*m_videoRenderer);
             if (m_state != State::WaitingForUserInput) m_game->renderAudio(*m_audioRenderer);
+            m_videoRenderer->setWorldCoordinates(false);
             m_guiManager->renderInGameView(*m_videoRenderer);
             m_window->setView(m_guiView);
             m_guiManager->renderInGUIView(*m_videoRenderer, m_state != State::WaitingForUserInput);

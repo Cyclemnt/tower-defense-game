@@ -121,7 +121,7 @@ namespace tdg::infra {
         float panelY = m_winY - panelH - 10.0f * m_scale;
         m_backPanel = sf::FloatRect({panelX, panelY}, {panelW, panelH});
 
-        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, {0u,0u,0u,160u}, 2.0f, {60u,60u,60u}, false);
+        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, {0u,0u,0u,160u}, 2.0f, {60u,60u,60u});
     }
 
     void TowerPanel::drawTowerButtons(core::IVideoRenderer& vidRenderer) {
@@ -157,7 +157,7 @@ namespace tdg::infra {
 
             const float thickness = 1.5f * m_scale;
 
-            vidRenderer.drawRectangle(btnX, btnY, btnW, btnH, fill, thickness, {90u,90u,90u}, false);
+            vidRenderer.drawRectangle(btnX, btnY, btnW, btnH, fill, thickness, {90u,90u,90u});
 
             // Tower icon
             const float iconX = btnX + 6.0f * m_scale;
@@ -165,13 +165,13 @@ namespace tdg::infra {
 
             utils::Color spriteColor = {0u,0u,0u,0u};
             if (!affordable) spriteColor.setColor(150u,150u,150u,150u);
-            vidRenderer.drawSprite(towerIconNames[i], iconX, iconY, iconSize, spriteColor, false);
+            vidRenderer.drawSprite(towerIconNames[i], iconX, iconY, iconSize, spriteColor);
 
             // Tower name
             utils::Color text;
             if (onCanAffordRequest(m_towerNames[i])) text = {255u,255u,255u,255u};
             else text = {140u,140u,140u,255u};
-            vidRenderer.drawText(m_towerNames[i], 18.0f * m_scale, btnX + iconSize + 16.0f * m_scale, btnY + 4.0f * m_scale, {255u,255u,255u}, false);
+            vidRenderer.drawText(m_towerNames[i], 18.0f * m_scale, btnX + iconSize + 16.0f * m_scale, btnY + 4.0f * m_scale, {255u,255u,255u});
 
             // Costs
 
@@ -189,8 +189,8 @@ namespace tdg::infra {
             for (int j = 0; j < 3; ++j) {
                 utils::Color costIconColor = {255u,255u,255u,255u};
                 if (!affordable) costIconColor.setColor(150u,150u,150u,150u);
-                vidRenderer.drawSprite(matsIconNames[j], costX, costY, costIconSize, costIconColor, false);
-                vidRenderer.drawText(std::to_string(costButInAVector[j]), 16*m_scale, costX + 26.0f * m_scale, costY - 2.0f * m_scale, costIconColor, false);
+                vidRenderer.drawSprite(matsIconNames[j], costX, costY, costIconSize, costIconColor);
+                vidRenderer.drawText(std::to_string(costButInAVector[j]), 16*m_scale, costX + 26.0f * m_scale, costY - 2.0f * m_scale, costIconColor);
                 costX += spacing;
             }
         }
@@ -209,14 +209,14 @@ namespace tdg::infra {
         utils::Color fill;
         if (m_mode == Mode::Upgrade) fill = {195u,200u,80u,180u};
         else fill = {115u,120u,40u,150u};
-        vidRenderer.drawRectangle(btnX, btnY, btnW, btnH, fill, btnThickness, {90u,90u,90u,255u}, false);
+        vidRenderer.drawRectangle(btnX, btnY, btnW, btnH, fill, btnThickness, {90u,90u,90u,255u});
 
         // Text
         const float txtSize = 16.0f * m_scale;
         const float txtX = btnX + 20.0f * m_scale;
         const float txtY = btnY + 3.0f * m_scale;
 
-        vidRenderer.drawText("Upgrade Mode", txtSize, txtX, txtY, {255u,255u,255u,255u}, false);
+        vidRenderer.drawText("Upgrade Mode", txtSize, txtX, txtY, {255u,255u,255u,255u});
     }
 
     void TowerPanel::drawSellBtn(core::IVideoRenderer& vidRenderer) {
@@ -232,14 +232,14 @@ namespace tdg::infra {
         utils::Color fill;
         if (m_mode == Mode::Sell) fill = {200u,80u,80u,180u};
         else fill = {120u,40u,40u,150u};
-        vidRenderer.drawRectangle(btnX, btnY, btnW, btnH, fill, btnThickness, {90u,90u,90u,255u}, false);
+        vidRenderer.drawRectangle(btnX, btnY, btnW, btnH, fill, btnThickness, {90u,90u,90u,255u});
 
         // Text
         const float txtSize = 16.0f * m_scale;
         const float txtX = btnX + 20.0f * m_scale;
         const float txtY = btnY + 3.0f * m_scale;
 
-        vidRenderer.drawText("Sell Mode", txtSize, txtX, txtY, {255u,255u,255u,255u}, false);
+        vidRenderer.drawText("Sell Mode", txtSize, txtX, txtY, {255u,255u,255u,255u});
     }
 
     void TowerPanel::setProvider(core::GameViewProvider provider) {

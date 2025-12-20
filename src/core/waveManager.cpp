@@ -35,6 +35,10 @@ namespace tdg::core {
         }
     }
 
+    unsigned int WaveManager::waveFinished() const noexcept {
+        return m_spawnIndex >= m_wave.size();
+    }
+
     bool WaveManager::allWavesSpawned() const noexcept {
         return m_waveIndex >= waveCount() && m_spawnIndex >= m_wave.size();
     }

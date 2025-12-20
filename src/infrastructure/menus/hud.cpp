@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include "infrastructure/menus/hud.hpp"
+#include "core/materials.hpp"
 
 namespace tdg::infra {
     
@@ -35,7 +36,7 @@ namespace tdg::infra {
         utils::Color fill = {0, 0, 0, 150};
         float thikness = 2.0f * m_scale;
         utils::Color outline = {80, 80, 80};
-        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thikness, outline, false);
+        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thikness, outline);
 
         // Resources
         if (!m_provider().has_value()) return;
@@ -53,13 +54,13 @@ namespace tdg::infra {
         };
 
         for (int i = 0; i < 3; ++i) {
-            vidRenderer.drawSprite(resources[i].file, baseX + i * spacing, baseY, iconSize, {0u,0u,0u,0u}, false);
+            vidRenderer.drawSprite(resources[i].file, baseX + i * spacing, baseY, iconSize);
 
             float txtSize = 16.0f * m_scale;
             float txtX = baseX + i * spacing + 26.0f * m_scale;
             float txtY = baseY - 2.0f * m_scale;
             utils::Color txtColor = {255u,255u,255u};
-            vidRenderer.drawText(std::to_string(resources[i].value), txtSize, txtX, txtY, txtColor, false);
+            vidRenderer.drawText(std::to_string(resources[i].value), txtSize, txtX, txtY, txtColor);
         }
     }
 
@@ -97,7 +98,7 @@ namespace tdg::infra {
             else if (idx < safe + stolen) fill = {255u, 140u, 0u};
             else fill = {200u, 50u, 50u};
 
-            vidRenderer.drawRectangle(curX, curY, rectWidth, rectHeight, fill, 0.0f, {0u,0u,0u,0u}, false);
+            vidRenderer.drawRectangle(curX, curY, rectWidth, rectHeight, fill, 0.0f, {0u,0u,0u,0u});
             curX += rectWidth + spacing;
             ++i;
         }
@@ -114,7 +115,7 @@ namespace tdg::infra {
         float thickness = 2.0f * m_scale;
         utils::Color outline = {80u, 80u, 80u};
 
-        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thickness, outline, false);
+        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thickness, outline);
 
         // Text
         const unsigned int currentWave = m_provider()->currentWave;
@@ -128,7 +129,7 @@ namespace tdg::infra {
         float waveInfoX = panelX + 10.0f * m_scale;
         float waveInfoY = panelY + 10.0f * m_scale;
         utils::Color waveInfoColor = {255u, 255u, 255u};
-        vidRenderer.drawText(waveInfo, waveInfoSize, waveInfoX, waveInfoY, waveInfoColor, false);
+        vidRenderer.drawText(waveInfo, waveInfoSize, waveInfoX, waveInfoY, waveInfoColor);
 
         std::ostringstream ss;
         if (timeToNext > 0) ss << "Next in " << timeToNext << "s";
@@ -137,7 +138,7 @@ namespace tdg::infra {
         float waveTimerX = waveInfoX;
         float waveTimerY = waveInfoY + 26.0f * m_scale;
         utils::Color waveTimerColor = {200u, 200u, 200u};
-        vidRenderer.drawText(ss.str(), waveTimerSize, waveTimerX, waveTimerY, waveTimerColor, false);
+        vidRenderer.drawText(ss.str(), waveTimerSize, waveTimerX, waveTimerY, waveTimerColor);
     }
 
     void HUD::drawFPSPanel(core::IVideoRenderer& vidRenderer) const {
@@ -150,7 +151,7 @@ namespace tdg::infra {
         utils::Color fill = {0u, 0u, 0u, 150u};
         float thickness = 2.0f * m_scale;
         utils::Color outline = {80u, 80u, 80u};
-        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thickness, outline, false);
+        vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thickness, outline);
 
         // Text
         std::string fps = "FPS: " + std::to_string(static_cast<int>(m_lastFPS));
@@ -158,7 +159,7 @@ namespace tdg::infra {
         float fpsX = panelX + 10.0f * m_scale;
         float fpsY = panelY + 8.0f * m_scale;
         utils::Color fpsColor = {255u, 255u, 255u};
-        vidRenderer.drawText(fps, fpsSize, fpsX, fpsY, fpsColor, false);
+        vidRenderer.drawText(fps, fpsSize, fpsX, fpsY, fpsColor);
     }
 
     void HUD::setProvider(core::GameViewProvider provider) {

@@ -18,7 +18,7 @@ namespace tdg::core {
         void spawn(Creature::Type type, unsigned int level, std::optional<unsigned int> entry); // Spawns a new creature
         void updatePaths(); // Computes new path for every creature
 
-        bool isWaveOver() const noexcept { return m_creatures.empty(); }
+        bool noCreature() const noexcept { return m_creatures.empty(); }
 
         const std::vector<CreaturePtr>& creatures() const { return m_creatures; }
 

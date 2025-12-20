@@ -5,7 +5,6 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <chrono>
 #include <memory>
-#include "core/interfaces/iGuiManager.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"
 
 #include "infrastructure/menus/hud.hpp"

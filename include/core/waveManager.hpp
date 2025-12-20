@@ -19,6 +19,7 @@ namespace tdg::core {
 
         unsigned int waveIndex() const noexcept { return m_waveIndex; }
         unsigned int waveCount() const noexcept { return m_source->waveCount(); }
+        unsigned int waveFinished() const noexcept; // Returns true if the whole wave has been spawned
         bool allWavesSpawned() const noexcept; // Returns true if every wave has been spawned
         float timeBeforeNext() const noexcept; // Returns the timer if currently in a wave
 

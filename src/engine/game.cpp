@@ -36,7 +36,7 @@ namespace tdg::engine {
         m_towerManager.update(dt, m_events);
 
         // If no creatures left, load next wave
-        if (isWaveOver() && m_waveManager->timeBeforeNext() <= 0.0f) {
+        if (isWaveOver()) {
             m_waveManager->loadNext();
             m_events.sfxs.emplace(Events::NewSFX::Type::NextWave);
         }
@@ -105,7 +105,7 @@ namespace tdg::engine {
         if (creatureType == "Tank") m_creatureManager.spawn(Creature::Type::Tank, level, entry);
     }
     
-    bool Game::isWaveOver() const { return m_creatureManager.isWaveOver(); }
+    bool Game::isWaveOver() const { return m_creatureManager.noCreature() && m_waveManager->waveFinished(); }
     bool Game::isGameOver() const { return m_cores.allLost(); }
     bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }
     

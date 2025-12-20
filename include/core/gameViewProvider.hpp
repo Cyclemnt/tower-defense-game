@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <optional>
+#include "core/materials.hpp"
 
 namespace tdg::core {
 
