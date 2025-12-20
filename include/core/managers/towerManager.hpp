@@ -12,7 +12,6 @@ namespace tdg::core {
     class TowerManager {
     public:
         TowerManager(Events& events, Map& map, Player& player, const std::vector<CreaturePtr>& creatures);
-        void renderVideo(IVideoRenderer& vidRenderer) const; // Draws every Creature
 
         void update(float dt, Events& events); // Main function to create new creatures and update them
         
@@ -21,6 +20,8 @@ namespace tdg::core {
         bool sellTower(int x, int y); // Sells a tower
 
         std::optional<float> towerRangeAt(int x, int y) const; // Gives the (x, y) tower's range if it exists
+
+        const std::vector<TowerPtr>& towers() const { return m_towers; }
 
     private:
         // TowerPtr create(Tower::Type type, int x, int y) const; // Factory

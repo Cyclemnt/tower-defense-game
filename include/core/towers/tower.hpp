@@ -4,13 +4,14 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include "core/renderable.hpp"
 #include "core/creatures/creature.hpp"
 
 namespace tdg::core { class Events; class IVideoRenderer; }
 
 namespace tdg::core {
 
-    class Tower {
+    class Tower : public Renderable {
     public:
         enum class Type { Gatling, Mortar, Laser };
 
@@ -42,7 +43,9 @@ namespace tdg::core {
         virtual Materials upgradeCost() const noexcept { return m_stats.upgradeCost; }
         virtual Materials sellValue() const noexcept { return m_stats.cost / 2; }
 
-        virtual void draw(IVideoRenderer& vidRenderer) const; // Draws the tower
+        float zOrder() const noexcept override { return m_y; } // Used to sort before rendering (higher : in front of)
+        int drawLayer() const noexcept override { return 0; } // Used for priority between two equal zOrder (higher : in front of)
+        virtual void draw(IVideoRenderer& vidRenderer) const override; // Draws the tower
 
     protected:
         Tower::Stats m_stats;

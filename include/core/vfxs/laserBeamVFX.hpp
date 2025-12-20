@@ -11,6 +11,7 @@ namespace tdg::core {
 
         void update(float dt) override; // Updates the time to live and the opacity of the effect
 
+        virtual float zOrder() const noexcept override { return m_y2; } // Used to sort before rendering (higher : in front of)
         void draw(IVideoRenderer& vidRenderer) const override; // Draws the effect
     
     private:

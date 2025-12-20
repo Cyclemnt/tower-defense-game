@@ -9,6 +9,7 @@ namespace tdg::core {
     public:
         GatlingTracerVFX(unsigned int level, float x1, float y1, float x2, float y2);
 
+        virtual float zOrder() const noexcept override { return m_y2; } // Used to sort before rendering (higher : in front of)
         void draw(IVideoRenderer& vidRenderer) const override; // Draws the effect
 
     private:

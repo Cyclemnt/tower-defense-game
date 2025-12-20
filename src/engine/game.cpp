@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "engine/game.hpp"
 #include "infrastructure/aStarPathfinder.hpp"
 
@@ -39,10 +40,34 @@ namespace tdg::engine {
     }
 
     void Game::renderVideo(IVideoRenderer& vidRenderer) const {
+        // Draw Map first
         m_map->draw(vidRenderer);
-        m_creatureManager.renderVideo(vidRenderer);
-        m_vfxManager.renderVideo(vidRenderer);
-        m_towerManager.renderVideo(vidRenderer);
+
+        // Make Renderable vector
+        std::vector<const Renderable*> renderables;
+        renderables.reserve(
+            m_creatureManager.creatures().size()
+          + m_towerManager.towers().size()
+          + m_vfxManager.vfxs().size()
+        );
+
+        // Fill Renderable vector objetcs
+        for (const auto& c : m_creatureManager.creatures()) renderables.push_back(c.get());
+        for (const auto& t : m_towerManager.towers())    renderables.push_back(t.get());
+        for (const auto& v : m_vfxManager.vfxs())        renderables.push_back(v.get());
+
+        std::stable_sort(renderables.begin(), renderables.end(),
+                        [](const Renderable* a, const Renderable* b) {
+                            float za = a->zOrder();
+                            float zb = b->zOrder();
+                            float diff = za - zb;
+                            if ((diff < 0 ? -diff : diff) > 0.1f) return za < zb;
+                            // if same zOrder (+|-0.1) : tie-breaker over drawLayer()
+                            return a->drawLayer() < b->drawLayer();
+                        });
+
+        // Draw in order
+        for (const Renderable* r : renderables) r->draw(vidRenderer);
     }
 
     void Game::renderAudio(IAudioRenderer& audRenderer) {
@@ -66,7 +91,7 @@ namespace tdg::engine {
 
     bool Game::sellTower(int x, int y) {
         bool towerSold = false;
-        towerSold = m_towerManager.upgradeTower(x, y);
+        towerSold = m_towerManager.sellTower(x, y);
         if (towerSold) m_creatureManager.updatePaths();
         return towerSold;
     }

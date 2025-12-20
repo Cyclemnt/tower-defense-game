@@ -11,10 +11,6 @@ namespace tdg::core {
     CreatureManager::CreatureManager(Events& events, Map& map, IPathfinder& pathfider, CoreStorage& cores, Player& player)
         : m_map(map), m_pathfinder(pathfider), m_cores(cores), m_player(player) {}
 
-    void CreatureManager::renderVideo(IVideoRenderer& vidRenderer) const {
-        for (const CreaturePtr& creature : m_creatures) creature->draw(vidRenderer);
-    }
-
     void CreatureManager::update(float dt, Events& events) {
         handleSpawnEvents(events);
         for (CreaturePtr& creature : m_creatures) creature->update(dt, events);

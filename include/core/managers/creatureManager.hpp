@@ -12,7 +12,6 @@ namespace tdg::core {
     class CreatureManager {
     public:
         CreatureManager(Events& events, Map& map, IPathfinder& pathfider, CoreStorage& cores, Player& player);
-        void renderVideo(IVideoRenderer& vidRenderer) const; // Draws every Creature
 
         void update(float dt, Events& events); // Main function to create new creatures and update them
 

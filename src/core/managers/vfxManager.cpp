@@ -7,10 +7,6 @@ namespace tdg::core {
 
     VFXManager::VFXManager() {}
 
-    void VFXManager::renderVideo(IVideoRenderer& vidRenderer) const {
-        for (const VFXPtr& v : m_vfxs) v->draw(vidRenderer);
-    }
-
     void VFXManager::update(float dt, Events& events) {
         clearDeadVFX();
         

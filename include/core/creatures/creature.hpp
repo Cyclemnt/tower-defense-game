@@ -4,13 +4,14 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include "core/renderable.hpp"
 #include "core/materials.hpp"
 
 namespace tdg::core { class Events; struct Tile; class IVideoRenderer; }
 
 namespace tdg::core {
 
-    class Creature {
+    class Creature : public Renderable {
     public:
         enum class Type { Minion, Drone, Tank };
 
@@ -51,7 +52,9 @@ namespace tdg::core {
 
         Materials loot() const noexcept { return m_stats.bounty; }
 
-        void draw(IVideoRenderer& vidRenderer) const; // Draws the creature
+        float zOrder() const noexcept override { return m_py; } // Used to sort before rendering (higher : in front of)
+        int drawLayer() const noexcept override { return 1; } // Used for priority between two equal zOrder (higher : in front of)
+        void draw(IVideoRenderer& vidRenderer) const override; // Draws the creature
 
     protected:
         Creature::Stats m_stats;
