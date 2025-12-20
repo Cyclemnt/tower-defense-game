@@ -6,7 +6,7 @@
 
 namespace tdg::infra {
 
-    AStarPathfinder::AStarPathfinder(core::Map* map) noexcept
+    AStarPathfinder::AStarPathfinder(core::Map& map) noexcept
         : m_map(map) {}
 
     int AStarPathfinder::heuristic(const core::Tile* a, const core::Tile* b) const noexcept {
@@ -17,7 +17,7 @@ namespace tdg::infra {
     }
 
     std::vector<const core::Tile*> AStarPathfinder::findPath(const core::Tile* start, const core::Tile* goal, bool ignoreTowers) const {
-        if (!start || !goal || !m_map) return {}; // Return an empty path if start or goal are invalid.
+        if (!start || !goal) return {}; // Return an empty path if start or goal are invalid.
 
         // Comparator for the priority queue, sorts nodes by their total cost (fCost = gCost + hCost).
         auto cmp = [](Node* a, Node* b) { return a->fCost() > b->fCost(); };
@@ -49,7 +49,7 @@ namespace tdg::infra {
             }
 
             // Explore the neighbors of the current node.
-            for (const core::Tile* neighbor : m_map->neighbors(current->tile)) {
+            for (const core::Tile* neighbor : m_map.neighbors(current->tile)) {
                 // If the neighbor is not walkable, skip it.
                 // Or, if ignoreTowers == true, accept OpenZones regardless of occupation.
                 if (!neighbor->walkable(ignoreTowers)) continue;

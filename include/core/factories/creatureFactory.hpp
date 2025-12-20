@@ -1,6 +1,7 @@
 #ifndef CREATURE_FACTORY_HPP
 #define CREATURE_FACTORY_HPP
 
+#include <memory>
 #include "core/creatures/creature.hpp"
 
 namespace tdg::core {

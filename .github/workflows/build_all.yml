@@ -123,53 +123,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tower-defense-game-linux-x64
-          path: tower-defense-game-linux-x64.tar.gz
-
-
-
-  # # ----------------------------------------------------------
-  # # MACOS ARM64 (to repair)
-  # # ----------------------------------------------------------
-  # build-macos:
-  #   name: Build macOS ARM64
-  #   runs-on: macos-latest
-
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-
-  #     - name: Install vcpkg
-  #       uses: lukka/run-vcpkg@v11
-
-  #     - name: Configure CMake
-  #       run: |
-  #         cmake -B build \
-  #           -DCMAKE_OSX_ARCHITECTURES=arm64 \
-  #           -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
-  #           -DCMAKE_BUILD_TYPE=Release
-
-  #     - name: Build
-  #       run: cmake --build build --config Release
-
-  #     - name: Prepare Release Folder
-  #       run: |
-  #         mkdir package-macos
-  #         mkdir package-macos/game
-  #         mkdir package-macos/assets
-
-  #         cp build/tower_defense_cxx package-macos/game/
-  #         cp build/*.dylib package-macos/game/ || true
-  #         cp -r assets/* package-macos/assets/
-
-  #     - name: Zip macOS Release
-  #       run: |
-  #         zip -r tower-defense-game-macos-arm64.zip package-macos
-
-  #     - name: Upload Artifact (macOS)
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: tower-defense-game-macos-arm64
-  #         path: tower-defense-game-macos-arm64.zip
+          path: tower-defense-game-linux-x64.tar.gz^
 
 
 

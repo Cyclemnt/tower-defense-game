@@ -7,7 +7,7 @@ namespace tdg::core {
 
     class Mortar final : public Tower {
     public:
-        explicit Mortar(int x, int y) noexcept;
+        explicit Mortar(int x, int y, Materials cost) noexcept;
         ~Mortar() override = default;
 
         void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) override; // Main function to update cooldown, select target and shoot

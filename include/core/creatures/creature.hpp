@@ -67,7 +67,7 @@ namespace tdg::core {
         unsigned long m_tick{0u}; // Number of updates the object lived (for tick driven animation)
     };
 
-    using CreaturePtr = std::unique_ptr<Creature>;
+    using CreaturePtr = std::shared_ptr<Creature>;
 
 } // namespace tdg::core
 

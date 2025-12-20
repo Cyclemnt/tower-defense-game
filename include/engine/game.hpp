@@ -14,15 +14,12 @@
 
 #include "core/gameViewProvider.hpp"
 
-#include "core/towers/tower.hpp"
-#include "core/creatures/creature.hpp"
-#include "core/vfxs/vfx.hpp"
 #include "core/events.hpp"
 
-#include "core/factories/towerFactory.hpp"
-#include "core/factories/creatureFactory.hpp"
-#include "core/factories/vfxManager.hpp"
-#include "core/factories/sfxManager.hpp"
+#include "core/managers/towerManager.hpp"
+#include "core/managers/creatureManager.hpp"
+#include "core/managers/vfxManager.hpp"
+#include "core/managers/sfxManager.hpp"
 
 #include "core/interfaces/iVideoRenderer.hpp"
 #include "core/interfaces/iAudioRenderer.hpp"
@@ -43,7 +40,7 @@ namespace tdg::engine {
         void renderVideo(IVideoRenderer& renderer) const;
         void renderAudio(IAudioRenderer& audRenderer);
 
-        bool buildTower(Tower::Type type, int x, int y);
+        bool buildTower(std::string towerType, int x, int y);
         bool upgradeTower(int x, int y);
         bool sellTower(int x, int y);
 
@@ -56,23 +53,16 @@ namespace tdg::engine {
         bool isVictory() const;
 
         /* Lack of time (bad time management) made me do that */
-        void buildTower(std::string towerType, int x, int y);
         bool canAfford(std::string towerType) const;
-        bool canAfford(Tower::Type type) const;
         std::optional<float> towerRangeAt(int x, int y) const;
         bool tileOpenAt(int x, int y) const;
         bool towerAt(int x, int y) const;
         std::optional<Materials> towerCost(std::string towerType) const;
-        std::optional<Materials> towerCost(Tower::Type type) const;
         int mapWidth() const { return m_map->width(); }
         int mapHeight() const { return m_map->height(); }
         /* ================================================== */
 
-    private:
-        void handlePathEvent();
-        void handleDeadCreatures();
-        void updatePaths();
-        
+    private:        
         unsigned long m_tick{0u};
         
         std::unique_ptr<Map> m_map;
@@ -82,12 +72,10 @@ namespace tdg::engine {
         Player m_player;
         CoreStorage m_cores;
 
-        std::vector<TowerPtr> m_towers;
-        std::vector<CreaturePtr> m_creatures;
         Events m_events;
 
-        TowerFactory m_towerFactory;
-        CreatureFactory m_creatureFactory;
+        TowerManager m_towerManager;
+        CreatureManager m_creatureManager;
         VFXManager m_vfxManager;
         SFXManager m_sfxManager;
     };

@@ -27,9 +27,7 @@ namespace tdg::core {
 
         virtual void update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) = 0; // Main function to update cooldown, select target and shoot
 
-        virtual Creature* acquireTarget(const std::vector<CreaturePtr>& creatures); // Returns the closest creature
-        Creature* target() const noexcept { return m_target; }
-        void clearTarget() noexcept { m_target = nullptr; }
+        virtual std::weak_ptr<Creature> acquireTarget(const std::vector<CreaturePtr>& creatures); // Returns the closest creature
         virtual void attack() const; // Attacks the m_target
 
         virtual bool upgrade() = 0; // Upgrades tower stats
@@ -52,7 +50,7 @@ namespace tdg::core {
 
         int m_x{0}, m_y{0};
         
-        Creature* m_target{nullptr};
+        std::weak_ptr<Creature> m_target;
         float m_cooldown{0};
     };
 

@@ -6,45 +6,43 @@
 
 namespace tdg::core {
 
-    Gatling::Gatling(int x, int y) noexcept
+    Gatling::Gatling(int x, int y, Materials cost) noexcept
         : Tower({
             /*dmg*/ 4,
             /*rate*/ 3.0f,
             /*rng*/ 3.0f,
-            /* cost */ {
-                0u,     // Au
-                0u,     // Ag
-                50u     // Cu
-            },
+            /* cost */ cost,
             /* upgrade cost */ 10u // Au
         }, x, y) {}
 
     void Gatling::update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) {
-        if (m_target || m_cooldown > 0.0f)
+        CreaturePtr target = m_target.lock();
+        if (target || m_cooldown > 0.0f)
             m_cooldown -= dt;
 
         // Validate target
-        if (m_target) {
-            float dx = m_target->px() - m_x;
-            float dy = m_target->py() - m_y;
+        if (target) {
+            float dx = target->px() - m_x;
+            float dy = target->py() - m_y;
             float creatureDistance = std::sqrt(dx * dx + dy * dy);
-            if (!m_target->isAlive() || creatureDistance > m_stats.range)
-                clearTarget();
+            if (!target->isAlive() || creatureDistance > m_stats.range) {
+                m_target.reset(); target.reset();
+            }
         }
 
         // Acquire new target if needed
-        if (!m_target) {
+        if (!target) {
             m_cooldown = std::max(m_cooldown, 0.0f);
             m_target = acquireTarget(creatures);
         }
 
         // Attack while cooldown allows
-        while (m_target && m_cooldown <= 0.0f) {
+        while (target && m_cooldown <= 0.0f) {
             attack();
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.vfxs.emplace(Events::VFX::Type::GatlingTracer, m_level, m_x, m_y, m_target->px(), m_target->py());
-            events.vfxs.emplace(Events::VFX::Type::HitSpark, m_level, m_target->px(), m_target->py());
-            events.sfxs.emplace(Events::SFX::Type::GatlingShoot, m_level);
+            events.vfxs.emplace(Events::NewVFX::Type::GatlingTracer, m_level, m_x, m_y, target->px(), target->py());
+            events.vfxs.emplace(Events::NewVFX::Type::HitSpark, m_level, target->px(), target->py());
+            events.sfxs.emplace(Events::NewSFX::Type::GatlingShoot, m_level);
         }
     }
 
@@ -68,11 +66,12 @@ namespace tdg::core {
     }
 
     std::string Gatling::spriteId() const noexcept {
-        if (!m_target)
+        CreaturePtr target = m_target.lock();
+        if (!target)
             return "towers/gatling_" + std::to_string(m_level) + "_s";
 
-        const float dx = m_target->px() - static_cast<float>(m_x);
-        const float dy = m_target->py() - static_cast<float>(m_y);
+        const float dx = target->px() - static_cast<float>(m_x);
+        const float dy = target->py() - static_cast<float>(m_y);
         const float angle = std::fmod(std::atan2(dy, dx) + 2.0f * PIf, 2.0f * PIf);
 
         if (angle < 0.393f) return "towers/gatling_" + std::to_string(m_level) + "_e";

@@ -5,34 +5,32 @@
 
 namespace tdg::core {
 
-    Mortar::Mortar(int x, int y) noexcept
+    Mortar::Mortar(int x, int y, Materials cost) noexcept
         : Tower({
             /*dmg*/ 48,
             /*rate*/ 0.333333f,
             /*rng*/ 4.0f,
-            /* cost */ {
-                0u,     // Au
-                0u,     // Ag
-                75u     // Cu
-            },
+            /* cost */ cost,
             /* upgrade cost */ 10u // Au
         }, x, y) {}
 
     void Mortar::update(float dt, Events& events, const std::vector<CreaturePtr>& creatures) {
-        if (m_target || m_cooldown > 0.0f)
+        CreaturePtr target = m_target.lock();
+        if (target || m_cooldown > 0.0f)
             m_cooldown -= dt;
 
         // Validate target
-        if (m_target) {
-            float dx = m_target->px() - m_x;
-            float dy = m_target->py() - m_y;
+        if (target) {
+            float dx = target->px() - m_x;
+            float dy = target->py() - m_y;
             float creatureDistance = std::sqrt(dx * dx + dy * dy);
-            if (!m_target->isAlive() || creatureDistance > m_stats.range)
-                clearTarget();
+            if (!target->isAlive() || creatureDistance > m_stats.range) {
+                m_target.reset(); target.reset();
+            }
         }
 
         // Acquire new target if needed
-        if (!m_target) {
+        if (!target) {
             m_cooldown = std::max(m_cooldown, 0.0f);
             m_target = acquireTarget(creatures);
         }
@@ -54,8 +52,8 @@ namespace tdg::core {
                     if (impactDist < m_shellExplosionRadius)
                         c->takeDamage(m_stats.damage);
                 }
-                events.vfxs.emplace(Events::VFX::Type::Explosion, m_level, s.endX, s.endY);
-                events.sfxs.emplace(Events::SFX::Type::MortarHit, m_level);
+                events.vfxs.emplace(Events::NewVFX::Type::Explosion, m_level, s.endX, s.endY);
+                events.sfxs.emplace(Events::NewSFX::Type::MortarHit, m_level);
                 it = m_shells.erase(it); // Erease element and get new iterator
 
             } else {
@@ -67,12 +65,12 @@ namespace tdg::core {
         }
 
         // Shoot shells while cooldown let it
-        while (m_target && m_cooldown <= 0.0f) {
+        while (target && m_cooldown <= 0.0f) {
             // Create new projectile
-            Shell newShell{static_cast<float>(m_x), static_cast<float>(m_y) - 0.3f, m_target->px(), m_target->py()};
+            Shell newShell{static_cast<float>(m_x), static_cast<float>(m_y) - 0.3f, target->px(), target->py()};
             m_shells.push_back(newShell);
             m_cooldown += 1.0f / m_stats.fireRate;
-            events.sfxs.emplace(Events::SFX::Type::MortarShoot, m_level);
+            events.sfxs.emplace(Events::NewSFX::Type::MortarShoot, m_level);
         }
     }
 
@@ -98,7 +96,7 @@ namespace tdg::core {
     }
 
     std::string Mortar::spriteId() const noexcept {
-        float dx = m_target ? m_target->px() - static_cast<float>(m_x) : 0.0f;
+        float dx = m_target.expired() ? 0.0f : m_target.lock()->px() - static_cast<float>(m_x);
         float cooldownRatio = m_cooldown * m_stats.fireRate;
 
         switch (m_level) {
