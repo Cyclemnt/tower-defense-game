@@ -6,6 +6,7 @@
 #include <string>
 #include "core/renderable.hpp"
 #include "core/materials.hpp"
+#include "core/roamingCore.hpp"
 
 namespace tdg::core { class Events; struct Tile; class IVideoRenderer; }
 
@@ -27,7 +28,9 @@ namespace tdg::core {
         Creature(const Creature::Stats& stats);
         virtual ~Creature() = default;
 
-        virtual void update(float dt, Events& events); // Main function to follow m_path and generate events
+        virtual void update(float dt, Events& events, std::vector<RoamingCore>& roamingCores); // Main function to follow m_path and generate events
+
+        void pickUpRoamingCores(std::vector<RoamingCore>& roamingCores);
 
         bool isAlive() const noexcept { return m_alive; }
         float health() const noexcept { return m_health; }

@@ -7,11 +7,11 @@
 
 namespace tdg::core {
 
-    TowerManager::TowerManager(Events& events, Map& map, Player& player, const std::vector<CreaturePtr>& creatures)
-        : m_events(events), m_map(map), m_player(player), m_creatures(creatures) {}
+    TowerManager::TowerManager(Map& map, Player& player, const std::vector<CreaturePtr>& creatures)
+        : m_map(map), m_player(player), m_creatures(creatures) {}
 
     void TowerManager::update(float dt, Events& events) {
-        for (TowerPtr& tower : m_towers) tower->update(dt, m_events, m_creatures);
+        for (TowerPtr& tower : m_towers) tower->update(dt, events, m_creatures);
     }
 
     bool TowerManager::buildTower(Tower::Type type, int x, int y) {

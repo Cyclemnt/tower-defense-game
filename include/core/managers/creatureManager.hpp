@@ -11,7 +11,7 @@ namespace tdg::core {
     
     class CreatureManager {
     public:
-        CreatureManager(Events& events, Map& map, IPathfinder& pathfider, CoreStorage& cores, Player& player);
+        CreatureManager(Map& map, IPathfinder& pathfider, CoreStorage& cores, Player& player, std::vector<RoamingCore>& roamingCores);
 
         void update(float dt, Events& events); // Main function to create new creatures and update them
 
@@ -35,6 +35,7 @@ namespace tdg::core {
         Player& m_player;
 
         std::vector<CreaturePtr> m_creatures;
+        std::vector<RoamingCore>& m_roamingCores;
     };
 
 } // namespace tdg::core

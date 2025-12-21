@@ -58,11 +58,29 @@ namespace tdg::core {
             Creature* creature;
         };
 
+        // Cores dropped by dead creatures
+        struct DroppedCores {
+            unsigned int dropped;
+            float x, y;
+
+            DroppedCores(unsigned int amount, float px, float py) : x(px), y(py), dropped(amount) {}
+        };
+
+        // Roaming cores arrived to the CoreStorage
+        struct DepositCores {
+            unsigned int deposit;
+
+            DepositCores(unsigned int amount) : deposit(amount) {}
+        };
+
         // Events queues
         std::queue<NewSFX> sfxs;
         std::queue<NewVFX> vfxs;
         std::queue<Spawn> spawn;
         std::queue<OnPath> onPath;
+        
+        std::queue<DroppedCores> droppedCores;
+        std::queue<DepositCores> depositCores;
     };
 
 } // namespace tdg::core

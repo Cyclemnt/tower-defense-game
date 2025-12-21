@@ -15,8 +15,9 @@
 
 #include "core/gameViewProvider.hpp"
 
-#include "core/managers/towerManager.hpp"
+#include "core/managers/roamingCoreManager.hpp"
 #include "core/managers/creatureManager.hpp"
+#include "core/managers/towerManager.hpp"
 #include "core/managers/vfxManager.hpp"
 #include "core/managers/sfxManager.hpp"
 
@@ -70,8 +71,9 @@ namespace tdg::engine {
 
         Events m_events;
 
-        TowerManager m_towerManager;
+        RoamingCoreManager m_roamingCoreManager;
         CreatureManager m_creatureManager;
+        TowerManager m_towerManager;
         VFXManager m_vfxManager;
         SFXManager m_sfxManager;
     };

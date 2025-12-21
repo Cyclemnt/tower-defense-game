@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <iostream>
 #include "core/map.hpp"
 #include "core/interfaces/iMapSource.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"

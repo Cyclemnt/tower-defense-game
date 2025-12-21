@@ -8,12 +8,12 @@
 
 namespace tdg::core {
 
-    CreatureManager::CreatureManager(Events& events, Map& map, IPathfinder& pathfider, CoreStorage& cores, Player& player)
-        : m_map(map), m_pathfinder(pathfider), m_cores(cores), m_player(player) {}
+    CreatureManager::CreatureManager(Map& map, IPathfinder& pathfider, CoreStorage& cores, Player& player, std::vector<RoamingCore>& roamingCores)
+        : m_map(map), m_pathfinder(pathfider), m_cores(cores), m_player(player), m_roamingCores(roamingCores) {}
 
     void CreatureManager::update(float dt, Events& events) {
         handleSpawnEvents(events);
-        for (CreaturePtr& creature : m_creatures) creature->update(dt, events);
+        for (CreaturePtr& creature : m_creatures) creature->update(dt, events, m_roamingCores);
         handlePathEvents(events);
         handleDeadCreatures(events);
     }
@@ -101,7 +101,8 @@ namespace tdg::core {
 
             if (!creature->isAlive()) {
                 // Return cores and give loot
-                m_cores.returnCores(creature->dropCores());
+                events.droppedCores.emplace(creature->dropCores(), creature->px(), creature->py());
+                // m_cores.returnCores(creature->dropCores());
                 m_player.addMaterials(creature->loot());
                 events.sfxs.emplace(Events::NewSFX::Type::CreatureDeath);
                 // Erease the creature

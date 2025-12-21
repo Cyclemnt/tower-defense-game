@@ -12,8 +12,10 @@ namespace tdg::engine {
         m_map(std::make_unique<tdg::core::Map>(mapSrc)),
         m_pathfinder(std::make_unique<tdg::infra::AStarPathfinder>(*m_map)),
         m_waveManager(std::make_unique<tdg::core::WaveManager>(waveSrc)),
-        m_creatureManager(m_events, *m_map, *m_pathfinder, m_cores, m_player),
-        m_towerManager(m_events, *m_map, m_player, m_creatureManager.creatures()),
+
+        m_roamingCoreManager(*m_map, *m_pathfinder, m_cores),
+        m_creatureManager(*m_map, *m_pathfinder, m_cores, m_player, m_roamingCoreManager.roamingCores()),
+        m_towerManager(*m_map, m_player, m_creatureManager.creatures()),
         m_vfxManager(),
         m_sfxManager(m_events.sfxs)
     {
@@ -31,6 +33,9 @@ namespace tdg::engine {
 
         // Create and update creatures
         m_creatureManager.update(dt, m_events);
+
+        // Create and update roaming cores
+        m_roamingCoreManager.update(dt, m_events);
         
         // Update towers
         m_towerManager.update(dt, m_events);
@@ -49,7 +54,7 @@ namespace tdg::engine {
         // Make Renderable vector
         std::vector<const Renderable*> renderables;
         renderables.reserve(
-            m_creatureManager.creatures().size()
+          m_creatureManager.creatures().size()
           + m_towerManager.towers().size()
           + m_vfxManager.vfxs().size()
         );
@@ -71,6 +76,9 @@ namespace tdg::engine {
 
         // Draw in order
         for (const Renderable* r : renderables) r->draw(vidRenderer);
+
+        
+        for (const auto& r : m_roamingCoreManager.roamingCores()) r.draw(vidRenderer);
     }
 
     void Game::renderAudio(IAudioRenderer& audRenderer) {

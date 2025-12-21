@@ -11,7 +11,7 @@ namespace tdg::core {
     
     class TowerManager {
     public:
-        TowerManager(Events& events, Map& map, Player& player, const std::vector<CreaturePtr>& creatures);
+        TowerManager(Map& map, Player& player, const std::vector<CreaturePtr>& creatures);
 
         void update(float dt, Events& events); // Main function to create new creatures and update them
         
@@ -24,13 +24,11 @@ namespace tdg::core {
         const std::vector<TowerPtr>& towers() const { return m_towers; }
 
     private:
-        // TowerPtr create(Tower::Type type, int x, int y) const; // Factory
         TowerFactory m_factory;
         
         Map& m_map;
         Player& m_player;
 
-        Events& m_events;
         std::vector<TowerPtr> m_towers;
         const std::vector<CreaturePtr>& m_creatures;
     };

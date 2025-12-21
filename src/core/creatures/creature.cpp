@@ -11,7 +11,7 @@ namespace tdg::core {
     Creature::Creature(const Creature::Stats& stats)
         : m_stats(stats), m_health(stats.maxHealth), m_shield(stats.maxShield) {}
 
-    void Creature::update(float dt, Events& events) {
+    void Creature::update(float dt, Events& events, std::vector<RoamingCore>& roamingCores) {
         ++m_tick;
         if (!m_alive || m_path.empty() || m_pathIndex + 1 >= m_path.size()) return;
 
@@ -46,6 +46,19 @@ namespace tdg::core {
                 m_px += (dx / distanceToNextTile) * distanceToTravel;
                 m_py += (dy / distanceToNextTile) * distanceToTravel;
                 distanceToTravel = 0.0f;
+            }
+        }
+        pickUpRoamingCores(roamingCores);
+    }
+
+    void Creature::pickUpRoamingCores(std::vector<RoamingCore>& roamingCores) {
+        for (RoamingCore& roamingCore : roamingCores) {
+        if (remainingCapacity() == 0u) return;
+            float dx = roamingCore.px() - m_px;
+            float dy = roamingCore.py() - m_py;
+            float d = std::sqrt(dx * dx + dy * dy);
+            if (d < 0.5f) {
+                stealCores(roamingCore.pickUp(remainingCapacity()));
             }
         }
     }
@@ -109,7 +122,7 @@ namespace tdg::core {
             float angle = time + i * angleStep;
             float x = m_px + std::cos(angle) * orbitRadius + 0.5f;
             float y = m_py + std::sin(angle) * orbitRadius + 0.5f;
-            vidRenderer.drawCircle(x, y, coreRadius, {100u,200u,255u,220u}, 0.01f, {150u,220u,255u,100u});
+            vidRenderer.drawCircle(x, y, coreRadius, {100u,200u,255u,220u}, 0.03f, {170u,240u,255u,100u});
         }
 
         // Health/Shield bars

@@ -2,7 +2,7 @@
 #include <cmath>
 #include "core/vfxs/hitSparkVFX.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"
-#include <iostream>
+
 #define PIf 3.141592f
 
 namespace tdg::core {
