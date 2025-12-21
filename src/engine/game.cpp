@@ -41,7 +41,7 @@ namespace tdg::engine {
         m_towerManager.update(dt, m_events);
 
         // If no creatures left, load next wave
-        if (isWaveOver()) {
+        if (isWaveOver() && !isGameOver()) {
             m_waveManager->loadNext();
             m_events.sfxs.emplace(Events::NewSFX::Type::NextWave);
         }
@@ -86,6 +86,7 @@ namespace tdg::engine {
     }
 
     bool Game::buildTower(std::string towerType, int x, int y) {
+        if (isGameOver()) return false;
         bool towerBuilt = false;
         if (towerType == "Gatling") towerBuilt = m_towerManager.buildTower(Tower::Type::Gatling, x, y);
         if (towerType == "Mortar") towerBuilt = m_towerManager.buildTower(Tower::Type::Mortar, x, y);
@@ -95,12 +96,14 @@ namespace tdg::engine {
     }
 
     bool Game::upgradeTower(int x, int y) {
+        if (isGameOver()) return false;
         bool towerUpgraded = false;
         towerUpgraded = m_towerManager.upgradeTower(x, y);
         return towerUpgraded;
     }
 
     bool Game::sellTower(int x, int y) {
+        if (isGameOver()) return false;
         bool towerSold = false;
         towerSold = m_towerManager.sellTower(x, y);
         if (towerSold) m_creatureManager.updatePaths();
@@ -108,6 +111,7 @@ namespace tdg::engine {
     }
 
     void Game::spawnCreature(std::string creatureType, unsigned int level, std::optional<unsigned int> entry) {
+        if (isGameOver()) return;
         if (creatureType == "Minion") m_creatureManager.spawn(Creature::Type::Minion, level, entry);
         if (creatureType == "Drone") m_creatureManager.spawn(Creature::Type::Drone, level, entry);
         if (creatureType == "Tank") m_creatureManager.spawn(Creature::Type::Tank, level, entry);
@@ -126,16 +130,19 @@ namespace tdg::engine {
     }
 
     bool Game::canAfford(std::string towerType) const {
+        if (isGameOver()) return false;
         std::optional<Materials> cost = towerCost(towerType);
         if (cost.has_value()) return m_player.canAfford(cost.value());
         else return false;
     }
 
     std::optional<float> Game::towerRangeAt(int x, int y) const {
+        if (isGameOver()) return std::nullopt;
         return m_towerManager.towerRangeAt(x, y);
     }
 
     bool Game::tileOpenAt(int x, int y) const {
+        if (isGameOver()) return false;
         Tile* tile = m_map->tileAt(x, y);
         if (!tile) return false;
         if (tile->type == Tile::Type::Open) return true;
@@ -143,6 +150,7 @@ namespace tdg::engine {
     }
 
     bool Game::towerAt(int x, int y) const {
+        if (isGameOver()) return false;
         Tile* tile = m_map->tileAt(x, y);
         if (!tile) return false;
         if (tile->hasTower) return true;

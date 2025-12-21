@@ -41,7 +41,7 @@ namespace tdg::engine {
         sf::Clock m_clock;
 
         State m_state { State::MainMenu };
-        State m_previousState { State::MainMenu };
+        State m_previousGameMode { State::MainMenu };
         std::unique_ptr<core::IVideoRenderer> m_videoRenderer;
         std::unique_ptr<core::IAudioRenderer> m_audioRenderer;
         std::unique_ptr<infra::TGUIManager> m_guiManager; // Should have been an interface

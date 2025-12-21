@@ -69,7 +69,6 @@ namespace tdg::engine {
     }
 
     void GameManager::setState(State state) {
-        m_previousState = m_state;
         m_running = false;
 
         switch (state) {
@@ -84,7 +83,7 @@ namespace tdg::engine {
             m_state = State::Loading;
             startStoryMode();
             resetGameView();
-            m_state = State::Story;
+            m_previousGameMode = m_state = State::Story;
             run();
             break;
             
@@ -92,7 +91,7 @@ namespace tdg::engine {
             m_state = State::Loading;
             startArcadeMode();
             resetGameView();
-            m_state = State::Arcade;
+            m_previousGameMode = m_state = State::Arcade;
             run();
             break;
 
@@ -149,14 +148,14 @@ resetGameView();
 
             // Update
             float dt = m_clock.restart().asSeconds();
-            if (m_state != State::WaitingForUserInput) if (!m_pause) m_game->update(dt * m_acceleration);
+            if (m_game) m_game->update(dt * m_acceleration * !m_pause);
             m_guiManager->update(dt);
 
             // Render
-            if (m_state != State::WaitingForUserInput) m_window->clear();
+            m_window->clear();
             m_videoRenderer->setWorldCoordinates(true);
-            if (m_state != State::WaitingForUserInput) m_game->renderVideo(*m_videoRenderer);
-            if (m_state != State::WaitingForUserInput) m_game->renderAudio(*m_audioRenderer);
+            if (m_game) m_game->renderVideo(*m_videoRenderer);
+            if (m_game) m_game->renderAudio(*m_audioRenderer);
             m_videoRenderer->setWorldCoordinates(false);
             m_guiManager->renderInGameView(*m_videoRenderer);
             m_window->setView(m_guiView);
@@ -171,15 +170,17 @@ resetGameView();
 
     void GameManager::restartLevel() {
         loadLevel();
-        // m_state = m_previousState;
+        m_state = m_previousGameMode;
+        m_pause = false;
         run();
     }
 
     void GameManager::nextLevel() {
         m_waveLevel++;
-        if (m_previousState == State::Story) m_mapLevel++;
+        if (m_previousGameMode == State::Story) m_mapLevel++;
         loadLevel();
-        m_state = m_previousState;
+        m_state = m_previousGameMode;
+        m_pause = false;
         run();
     }
 

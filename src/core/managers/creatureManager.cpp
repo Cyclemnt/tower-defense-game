@@ -73,8 +73,11 @@ namespace tdg::core {
                     // Steal cores
                     unsigned int capacity = event.creature->remainingCapacity();
                     if (capacity > 0u) {
-                        event.creature->stealCores(m_cores.stealCores(capacity));
-                        events.sfxs.emplace(Events::NewSFX::Type::CoreSteal);
+                        unsigned int stolenCores = m_cores.stealCores(capacity);
+                        if (stolenCores > 0u) {
+                            event.creature->stealCores(stolenCores);
+                            events.sfxs.emplace(Events::NewSFX::Type::CoreSteal);
+                        }
                     }
                     // New path to exit
                     std::vector<const Tile*> bestPath = m_pathfinder.findPathToClosestGoal(m_map.corePoint(), m_map.exitPoints());

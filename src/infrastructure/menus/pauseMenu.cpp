@@ -24,19 +24,19 @@ namespace tdg::infra {
 
         auto resumeBtn = tgui::Button::create("Resume");
         resumeBtn->setSize({"280", "40"});
-        resumeBtn->setPosition({"10", "150"});
+        resumeBtn->setPosition({"10", "100"});
         resumeBtn->onPress([this]() { close(); m_onResume(); });
         m_panel->add(resumeBtn);
 
         auto restartLevelBtn = tgui::Button::create("Restart");
         restartLevelBtn->setSize({"280", "40"});
-        restartLevelBtn->setPosition({"10", "200"});
+        restartLevelBtn->setPosition({"10", "150"});
         restartLevelBtn->onPress([this]() { close(); m_onRestartLevel(); });
         m_panel->add(restartLevelBtn);
 
         auto mainMenuBtn = tgui::Button::create("Main Menu");
         mainMenuBtn->setSize({"280", "40"});
-        mainMenuBtn->setPosition({"10", "250"});
+        mainMenuBtn->setPosition({"10", "200"});
         mainMenuBtn->onPress([this]() { close(); m_onMainMenu(); });
         m_panel->add(mainMenuBtn);
 
