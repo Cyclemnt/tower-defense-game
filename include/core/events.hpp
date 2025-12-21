@@ -66,13 +66,6 @@ namespace tdg::core {
             DroppedCores(unsigned int amount, float px, float py) : x(px), y(py), dropped(amount) {}
         };
 
-        // Roaming cores arrived to the CoreStorage
-        struct DepositCores {
-            unsigned int deposit;
-
-            DepositCores(unsigned int amount) : deposit(amount) {}
-        };
-
         // Events queues
         std::queue<NewSFX> sfxs;
         std::queue<NewVFX> vfxs;
@@ -80,7 +73,6 @@ namespace tdg::core {
         std::queue<OnPath> onPath;
         
         std::queue<DroppedCores> droppedCores;
-        std::queue<DepositCores> depositCores;
     };
 
 } // namespace tdg::core
