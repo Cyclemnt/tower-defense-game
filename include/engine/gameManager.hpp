@@ -9,13 +9,18 @@
 
 #include "core/interfaces/iVideoRenderer.hpp"
 #include "core/interfaces/iAudioRenderer.hpp"
-#include "infrastructure/tguiManager.hpp"
+
+#include "engine/commandBus.hpp"
+#include "engine/inputSystem.hpp"
+#include "engine/guiManager.hpp"
+
+#include "engine/viewManager.hpp"
 
 namespace tdg::engine {
 
     class GameManager {
     public:
-        enum class State { MainMenu, Loading, Story, Arcade, Victory, GameOver, WaitingForUserInput };
+        enum class State { MainMenu, Loading, Story, Arcade, WaitingForInput };
 
         GameManager();
 
@@ -29,35 +34,35 @@ namespace tdg::engine {
         void startArcadeMode();
         void loadLevel();
 
-        void accelerate() { m_acceleration = 10; }
-        void normalSpeed() { m_acceleration = 1; }
+        void setGameSpeed(float speed) { m_gameSpeed = speed; }
 
-        void resetGameView();
+        void processCommands();
 
-        sf::View m_gameView;
-        sf::View m_guiView;
-
-        std::shared_ptr<sf::RenderWindow> m_window;
         sf::Clock m_clock;
+        std::shared_ptr<sf::RenderWindow> m_window;
+        std::unique_ptr<ViewManager> m_viewManager;
 
         State m_state { State::MainMenu };
-        State m_previousGameMode { State::MainMenu };
+        State m_gameMode { State::MainMenu };
+
         std::unique_ptr<core::IVideoRenderer> m_videoRenderer;
         std::unique_ptr<core::IAudioRenderer> m_audioRenderer;
-        std::unique_ptr<infra::TGUIManager> m_guiManager; // Should have been an interface
-        std::unique_ptr<Game> m_game;
+
+        std::shared_ptr<CommandBus> m_bus;
+        std::unique_ptr<InputSystem> m_inputSystem;
+        std::unique_ptr<TGUIManager> m_guiManager;
+
+        std::shared_ptr<Game> m_game;
 
         std::shared_ptr<core::IMapSource> m_mapSource;
         std::shared_ptr<core::IWaveSource> m_waveSource;
-
-        std::shared_ptr<float> m_tileSize;
 
         unsigned int m_waveLevel{1u};
         unsigned int m_mapLevel{1u};
         const unsigned int m_arcadeMapLevel{3u};
         bool m_running{false};
         bool m_pause{false};
-        float m_acceleration{1.0f};
+        float m_gameSpeed{1.0f};
     };
 
 } // namespace tdg::engine

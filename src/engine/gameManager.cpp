@@ -6,7 +6,7 @@
 #include "infrastructure/sfmlResourceManager.hpp"
 #include "infrastructure/sfmlVideoRenderer.hpp"
 #include "infrastructure/sfmlAudioRenderer.hpp"
-#include "infrastructure/tguiManager.hpp"
+#include "engine/guiManager.hpp"
 
 #include <iostream>
 
@@ -17,52 +17,26 @@ namespace tdg::engine {
         m_mapSource = std::make_shared<infra::FileMapSource>("../assets/maps/");
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
 
-        // Data for Renderers and GUI
+        // Window
         m_window = std::make_shared<sf::RenderWindow>();
-        sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-        m_window->create(desktop, "Tower Defense Game", sf::State::Fullscreen);
+        m_window->create(sf::VideoMode::getDesktopMode(), "Tower Defense Game", sf::State::Fullscreen);
         m_window->setFramerateLimit(60);
-        auto ressources = std::make_shared<infra::SFMLResourceManager>();
-        m_tileSize = std::make_shared<float>(64.0f);
 
-        // Renderers and GUI
-        m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(m_window, ressources, m_tileSize);
+        // Ressources for the renderers
+        std::shared_ptr<infra::SFMLResourceManager> ressources = std::make_shared<infra::SFMLResourceManager>();
+        std::shared_ptr<float> tileSize = std::make_shared<float>(64.0f);
+
+        // SFML View Manager
+        m_viewManager = std::make_unique<ViewManager>(m_window, tileSize);
+
+        // Renderers
+        m_videoRenderer = std::make_unique<infra::SFMLVideoRenderer>(m_window, ressources, tileSize);
         m_audioRenderer = std::make_unique<infra::SFMLAudioRenderer>(ressources);
-        m_guiManager = std::make_unique<infra::TGUIManager>(m_window, m_tileSize);
 
-        // Set GUI Callbacks
-        m_guiManager->m_onAccelerate = [this](){ accelerate(); };
-        m_guiManager->m_onNormalSpeed = [this](){ normalSpeed(); };
-
-        m_guiManager->m_onPause = [this](){ m_pause = true; };
-        m_guiManager->m_onResume = [this](){ m_pause = false; };
-        m_guiManager->m_onRestartLevel = [this]() { restartLevel(); };
-        m_guiManager->m_onQuit = [this](){ m_window->close(); };
-        m_guiManager->m_onMainMenu = [this](){ setState(State::MainMenu); };
-        m_guiManager->m_onStartStory = [this]() { setState(State::Story); };
-        m_guiManager->m_onStartArcade = [this]() { setState(State::Arcade); };
-        m_guiManager->m_onNextLevel = [this]() { nextLevel(); };
-
-        /* Please forgive me for these shortcuts */
-        m_guiManager->onBuildRequest = [this](std::string towerType, int tx, int ty){ if (m_game) m_game->buildTower(towerType,tx,ty); };
-        m_guiManager->onUpgradeRequest = [this](int tx, int ty){ if (m_game) m_game->upgradeTower(tx,ty); };
-        m_guiManager->onSellRequest = [this](int tx, int ty){ if (m_game) m_game->sellTower(tx,ty); };
-        
-        m_guiManager->onTowerRangeRequest = [this](int tx, int ty){ return m_game ? m_game->towerRangeAt(tx,ty) : std::nullopt; };
-        m_guiManager->onTowerAtRequest = [this](int tx, int ty){ return m_game ? m_game->towerAt(tx,ty) : false; };
-        m_guiManager->onTileOpenRequest = [this](int tx, int ty){ return m_game ? m_game->tileOpenAt(tx,ty) : false; };
-        m_guiManager->onCanAffordRequest = [this](std::string towerType){ return m_game ? m_game->canAfford(towerType) : false; };
-        m_guiManager->onCostRequest = [this](std::string towerType){ return m_game ? m_game->towerCost(towerType) : std::nullopt; };
-        m_guiManager->setCallbacksFurther();
-        /* ==================================== */
-
-        m_guiManager->setGameViewProvider([this]() -> std::optional<core::GameView> {
-            if (!m_game) return std::nullopt;
-            return m_game->getView();
-        });
-
-        m_guiView = sf::View(sf::FloatRect({0.0f, 0.0f}, {static_cast<sf::Vector2f>(m_window->getSize())}));
-        resetGameView();
+        // Command bus, input system and GUI
+        m_bus = std::make_shared<CommandBus>();
+        m_inputSystem = std::make_unique<InputSystem>(m_bus);
+        m_guiManager = std::make_unique<TGUIManager>(m_window, tileSize, m_bus);
 
         // Launching
         setState(State::MainMenu);
@@ -72,70 +46,32 @@ namespace tdg::engine {
         m_running = false;
 
         switch (state) {
-        case State::MainMenu:
-            m_videoRenderer->drawSprite("main_menu", 0, (m_window->getSize().y - 1190.0f) * 0.5f / *m_tileSize, 30);
-            m_guiManager->showMainMenu();
-            m_state = State::WaitingForUserInput;
-            run();
-            break;
-        
-        case State::Story:
-            m_state = State::Loading;
-            startStoryMode();
-            resetGameView();
-            m_previousGameMode = m_state = State::Story;
-            run();
-            break;
+            case State::MainMenu:
+                m_guiManager->showMainMenu();
+                m_state = State::WaitingForInput;
+                break;
             
-        case State::Arcade:
-            m_state = State::Loading;
-            startArcadeMode();
-            resetGameView();
-            m_previousGameMode = m_state = State::Arcade;
-            run();
-            break;
+            case State::Story:
+                m_state = State::Loading;
+                startStoryMode();
+                m_gameMode = m_state = State::Story;
+                break;
+                
+            case State::Arcade:
+                m_state = State::Loading;
+                startArcadeMode();
+                m_gameMode = m_state = State::Arcade;
+                break;
 
-        case State::Victory:
-            m_guiManager->showVictory();
-            m_state = State::WaitingForUserInput;
-            run();
-            break;
-
-        case State::GameOver:
-            m_guiManager->showGameOver();
-            m_state = State::WaitingForUserInput;
-            run();
-            break;
-
-        default:
-            break;
+            default: break;
         }
-    }
-
-    void GameManager::resetGameView() {
-        if (!m_game) return;
-
-        const sf::Vector2i mapSize = { m_game->mapWidth(), m_game->mapHeight() };
-        sf::Vector2f winSize = static_cast<sf::Vector2f>(m_window->getSize());
-
-        float maxTileSizeX = winSize.x / (mapSize.x + 2);
-        float maxTileSizeY = winSize.y / (mapSize.y + 2);
-        float newTileSize = std::min(maxTileSizeX, maxTileSizeY);
         
-        *m_tileSize = newTileSize;
-
-        // Center the map inside the window
-        sf::Vector2f mapSizePx = static_cast<sf::Vector2f>(mapSize) * *m_tileSize;
-        sf::Vector2f offset = (static_cast<sf::Vector2f>(winSize) - mapSizePx) * 0.5f;
-
-        // Adjust SFML view
-        m_gameView = sf::View(sf::FloatRect({0.0f, 0.0f}, {winSize.x, winSize.y}));
-        m_gameView.setCenter(mapSizePx * 0.5f);
+        run(); // should be at the end of startXMode(), probably
     }
 
     void GameManager::run() {
         m_running = true;
-resetGameView();
+
         while (m_window->isOpen() && m_running) {
             // Events
             while (auto event = m_window->pollEvent()) {
@@ -143,12 +79,14 @@ resetGameView();
                     m_window->close();
                     return;
                 }
+                m_inputSystem->processEvent(*event);
                 m_guiManager->processEvent(*event);
+                processCommands();
             }
 
             // Update
             float dt = m_clock.restart().asSeconds();
-            if (m_game) m_game->update(dt * m_acceleration * !m_pause);
+            if (m_game) m_game->update(dt * m_gameSpeed * !m_pause);
             m_guiManager->update(dt);
 
             // Render
@@ -157,29 +95,33 @@ resetGameView();
             if (m_game) m_game->renderVideo(*m_videoRenderer);
             if (m_game) m_game->renderAudio(*m_audioRenderer);
             m_videoRenderer->setWorldCoordinates(false);
+            
             m_guiManager->renderInGameView(*m_videoRenderer);
-            m_window->setView(m_guiView);
-            m_guiManager->renderInGUIView(*m_videoRenderer, m_state != State::WaitingForUserInput);
-            m_window->display();
-            m_window->setView(m_gameView);
+            
+            m_viewManager->setView(ViewManager::View::GUI);
+            m_guiManager->renderInGUIView(*m_videoRenderer, m_state != State::WaitingForInput);
+            m_viewManager->setView(ViewManager::View::Game);
 
-            if (m_state != State::WaitingForUserInput) if (m_game->isGameOver()) setState(State::GameOver);
-            if (m_state != State::WaitingForUserInput) if (m_game->isVictory()) setState(State::Victory);
+            m_window->display();
+
+            // Check for level end
+            if (m_state != State::WaitingForInput) if (m_game->isGameOver()) { m_guiManager->showGameOver(); m_state = State::WaitingForInput; }
+            if (m_state != State::WaitingForInput) if (m_game->isVictory()) { m_guiManager->showVictory(); m_state = State::WaitingForInput; }
         }
     }
 
     void GameManager::restartLevel() {
         loadLevel();
-        m_state = m_previousGameMode;
+        m_state = m_gameMode;
         m_pause = false;
         run();
     }
 
     void GameManager::nextLevel() {
         m_waveLevel++;
-        if (m_previousGameMode == State::Story) m_mapLevel++;
+        if (m_gameMode == State::Story) m_mapLevel++;
         loadLevel();
-        m_state = m_previousGameMode;
+        m_state = m_gameMode;
         m_pause = false;
         run();
     }
@@ -188,18 +130,105 @@ resetGameView();
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
         m_waveLevel = m_mapLevel = 1u;
         loadLevel();
+        m_pause = false;
     }
 
     void GameManager::startArcadeMode() {
         m_waveSource = std::make_shared<infra::AutoWaveSource>();
         m_waveLevel = 1u; m_mapLevel = 3u;
         loadLevel();
+        m_pause = false;
     }
 
     void GameManager::loadLevel() {
         m_mapSource->setLevel(m_mapLevel);
         m_waveSource->setLevel(m_waveLevel);
         m_game = std::make_unique<Game>(m_mapSource, m_waveSource);
+        m_guiManager->setGamePtr(m_game);
+        m_viewManager->resetGameView(m_game->mapWidth(), m_game->mapHeight());
+    }
+
+    void GameManager::processCommands() {
+        while (!m_bus->empty()) {
+            Command c = m_bus->pop();
+            switch (c.type) {
+                case Command::Type::Build: {
+                    if (auto p = std::get_if<BuildPayload>(&c.payload.value())) {
+                        if (m_game) m_game->buildTower(p->towerType, p->tx, p->ty);
+                    }
+                    break;
+                }
+
+                case Command::Type::Upgrade: {
+                    if (auto p = std::get_if<UpgradePayload>(&c.payload.value())) {
+                        if (m_game) m_game->upgradeTower(p->tx, p->ty);
+                    }
+                    break;
+                }
+
+                case Command::Type::Sell: {
+                    if (auto p = std::get_if<SellPayload>(&c.payload.value())) {
+                        if (m_game) m_game->sellTower(p->tx, p->ty);
+                    }
+                    break;
+                }
+
+                case Command::Type::TogglePause: {
+                    m_pause = !m_pause;
+                    m_guiManager->setPauseMenu(m_pause);
+                    break;
+                }
+
+                case Command::Type::setSpeed: {
+                    if (auto p = std::get_if<setGameSpeedPayload>(&c.payload.value())) {
+                        setGameSpeed(p->speed);
+                    }
+                    break;
+                }
+
+                case Command::Type::ResetView: {
+                    if (m_game) m_viewManager->resetGameView(m_game->mapWidth(), m_game->mapHeight());
+                    break;
+                }
+
+                case Command::Type::PanView: {
+                    if (auto p = std::get_if<PanViewPayload>(&c.payload.value())) {
+                        m_viewManager->panGameView(p->delta);
+                    }
+                    break;
+                }
+
+                case Command::Type::ZoomView: {
+                    if (auto p = std::get_if<ZoomViewPayload>(&c.payload.value())) {
+                        m_viewManager->zoomGameView(p->factor, p->focus);
+                    }
+                    break;
+                }
+
+                case Command::Type::LeftClick: {
+                    if (auto p = std::get_if<LeftClickPayload>(&c.payload.value())) {
+                        m_guiManager->handleLeftClick(p->pixel);
+                    }
+                    break;
+                }
+
+                case Command::Type::MouseMoved: {
+                    if (auto p = std::get_if<MouseMovedPayload>(&c.payload.value())) {
+                        m_guiManager->handleMouseMove(p->pixel);
+                    }
+                    break;
+                }
+
+                case Command::Type::RestartLevel: { restartLevel(); break; }
+                case Command::Type::NextLevel: { nextLevel(); break; }
+                case Command::Type::Quit: { m_window->close(); break; }
+                case Command::Type::MainMenu: { setState(State::MainMenu); break; }
+                case Command::Type::StartStory: { setState(State::Story); break; }
+                case Command::Type::StartArcade: { setState(State::Arcade); break; }
+
+                default: break;
+            }
+        }
     }
 
 } // namespace tdg::engine

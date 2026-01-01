@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/cyclement/devlibs/sfml-dynamic/include",
-                "/home/cyclement/devlibs/tgui-dynamic/include"
+                "/home/cyclement/devlibs/tgui-dynamic/include",
+                "${workspaceFolder}/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

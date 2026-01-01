@@ -5,7 +5,7 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <memory>
 
-namespace tdg::infra {
+namespace tdg::engine {
     
     class Menu {
     public:
@@ -13,17 +13,17 @@ namespace tdg::infra {
         virtual ~Menu() = default;
 
         virtual void show() noexcept;
+        void close() noexcept;
         
     protected:
         virtual void create() = 0;
 
-        void close() noexcept;
         sf::Vector2f centerPanel(const sf::Vector2f& size) const noexcept;
 
         std::shared_ptr<tgui::Gui> m_gui;
         tgui::Panel::Ptr m_panel;
     };
 
-} // namespace tdg::infra
+} // namespace tdg::engine
 
 #endif // MENU_HPP

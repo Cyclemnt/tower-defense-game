@@ -1,9 +1,9 @@
-#include "infrastructure/menus/gameOverMenu.hpp"
+#include "engine/gui/gameOverMenu.hpp"
 
-namespace tdg::infra {
+namespace tdg::engine {
     
-    GameOverMenu::GameOverMenu(std::shared_ptr<tgui::Gui> gui, std::function<void()>& onRestartLevel, std::function<void()>& onMainMenu, std::function<void()>& onQuit)
-        : Menu(gui), m_onRestartLevel(onRestartLevel), m_onMainMenu(onMainMenu), m_onQuit(onQuit)
+    GameOverMenu::GameOverMenu(std::shared_ptr<tgui::Gui> gui, std::shared_ptr<CommandBus> bus)
+        : Menu(gui), m_bus(bus)
     {
         create();
     }
@@ -25,21 +25,21 @@ namespace tdg::infra {
         auto restartLevelBtn = tgui::Button::create("Restart Level");
         restartLevelBtn->setSize({"280", "40"});
         restartLevelBtn->setPosition({"10", "100"});
-        restartLevelBtn->onPress([this]() { close(); m_onRestartLevel(); });
+        restartLevelBtn->onPress([this]() { close(); m_bus->push({Command::Type::RestartLevel}); });
         m_panel->add(restartLevelBtn);
 
         auto mainMenuBtn = tgui::Button::create("Main Menu");
         mainMenuBtn->setSize({"280", "40"});
         mainMenuBtn->setPosition({"10", "150"});
-        mainMenuBtn->onPress([this]() { close(); m_onMainMenu(); });
+        mainMenuBtn->onPress([this]() { close(); m_bus->push({Command::Type::MainMenu}); });
         m_panel->add(mainMenuBtn);
 
         auto quitBtn = tgui::Button::create("Quit");
         quitBtn->setSize({"280", "40"});
         quitBtn->setPosition({"10", "200"});
-        quitBtn->onPress([this]() { close(); m_onQuit(); });
+        quitBtn->onPress([this]() { close(); m_bus->push({Command::Type::Quit}); });
         m_panel->add(quitBtn);
 
     }
 
-} // namespace tdg::infra
+} // namespace tdg::engine

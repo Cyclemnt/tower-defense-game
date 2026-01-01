@@ -22,9 +22,12 @@ namespace tdg::core {
             Events::DroppedCores event = events.droppedCores.front();
 
             Tile* start = m_map.tileAt(std::round(event.x), std::round(event.y));
-            std::vector<const Tile*> path = m_pathfinder.findPath(start, m_map.corePoint());
 
-            m_roamingCores.emplace_back(event.dropped, event.x, event.y, path);
+            if (start == m_map.corePoint()) m_cores.returnCores(event.dropped);
+            else {
+                std::vector<const Tile*> path = m_pathfinder.findPath(start, m_map.corePoint());
+                m_roamingCores.emplace_back(event.dropped, event.x, event.y, path);
+            }
 
             events.droppedCores.pop();
         }

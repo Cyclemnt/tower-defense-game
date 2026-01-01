@@ -1,9 +1,9 @@
 #include <iostream>
 #include <sstream>
-#include "infrastructure/menus/hud.hpp"
+#include "engine/gui/hud.hpp"
 #include "core/materials.hpp"
 
-namespace tdg::infra {
+namespace tdg::engine {
     
     HUD::HUD() {}
 
@@ -15,36 +15,36 @@ namespace tdg::infra {
     }
 
     void HUD::draw(core::IVideoRenderer& vidRenderer) {
-        if (!m_provider || !m_provider().has_value()) return;
-        m_winX = vidRenderer.getWindowWidth();
-        m_winY = vidRenderer.getWindowHeight();
-        m_scale = static_cast<float>(m_winX) / 1920.0f; // base scale from 1080p reference
+        if (m_game.expired()) return;
 
         drawResourcesPanel(vidRenderer);
         drawCores(vidRenderer);
         drawWavePanel(vidRenderer);
         drawFPSPanel(vidRenderer);
     }
+    
+    void HUD::setGamePtr(std::weak_ptr<Game> game) {
+        m_game = game;
+    }
 
     void HUD::drawResourcesPanel(core::IVideoRenderer& vidRenderer) const {
         // Panel
-        const float panelW = 260.0f * m_scale;
-        const float panelH = 92.0f * m_scale;
-        const float panelX = (m_winX - panelW) * 0.5f;
-        const float panelY = 8.0f * m_scale;
+        const float panelW = 260.0f ;
+        const float panelH = 92.0f ;
+        const float panelX = (1920.0f - panelW) * 0.5f;
+        const float panelY = 8.0f ;
 
         utils::Color fill = {0, 0, 0, 150};
-        float thikness = 2.0f * m_scale;
+        float thikness = 2.0f;
         utils::Color outline = {80, 80, 80};
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thikness, outline);
 
         // Resources
-        if (!m_provider().has_value()) return;
-        const core::Materials mats = m_provider().value().materials; // idk how to proprely get player balance
-        const float iconSize = 20.0f * m_scale;
-        const float spacing = 80.0f * m_scale;
-        const float baseX = panelX + 12.0f * m_scale;
-        const float baseY = panelY + 16.0f * m_scale;
+        const core::Materials mats = m_game.lock()->getView().materials;
+        const float iconSize = 20.0f;
+        const float spacing = 80.0f;
+        const float baseX = panelX + 12.0f;
+        const float baseY = panelY + 16.0f;
 
         struct Icon { const std::string file; unsigned int value; };
         const Icon resources[3] = {
@@ -56,29 +56,30 @@ namespace tdg::infra {
         for (int i = 0; i < 3; ++i) {
             vidRenderer.drawSprite(resources[i].file, baseX + i * spacing, baseY, iconSize);
 
-            float txtSize = 16.0f * m_scale;
-            float txtX = baseX + i * spacing + 26.0f * m_scale;
-            float txtY = baseY - 2.0f * m_scale;
+            float txtSize = 16.0f;
+            float txtX = baseX + i * spacing + 26.0f;
+            float txtY = baseY - 2.0f;
             utils::Color txtColor = {255u,255u,255u};
             vidRenderer.drawText(std::to_string(resources[i].value), txtSize, txtX, txtY, txtColor);
         }
     }
 
     void HUD::drawCores(core::IVideoRenderer& vidRenderer) const {
-        const float panelW = 240.0f * m_scale;
-        const float panelH = 92.0f * m_scale;
-        const float panelX = (m_winX - panelW) * 0.5f;
-        const float panelY = 66.0f * m_scale;
+        const float panelW = 240.0f;
+        const float panelH = 92.0f;
+        const float panelX = (1920.0f - panelW) * 0.5f;
+        const float panelY = 66.0f;
         
-        const unsigned safe = m_provider()->coresSafe;
-        const unsigned stolen = m_provider()->coresStolen;
-        const unsigned lost = m_provider()->coresLost;
+        core::GameView gview = m_game.lock()->getView();
+        const unsigned safe = gview.coresSafe;
+        const unsigned stolen = gview.coresStolen;
+        const unsigned lost = gview.coresLost;
         const unsigned total = safe + stolen + lost;
         if (total == 0) return;
 
-        const float spacing = 4.0f * m_scale;
+        const float spacing = 4.0f;
         const int maxPerRow = 12;
-        const float rectHeight = 10.0f * m_scale;
+        const float rectHeight = 10.0f;
         const float rectWidth = (panelW - (maxPerRow - 1) * spacing) / maxPerRow;
         const float totalWidth = maxPerRow * (rectWidth + spacing) - spacing;
         const float startX = panelX + (panelW - totalWidth) * 0.5f;
@@ -106,64 +107,61 @@ namespace tdg::infra {
 
     void HUD::drawWavePanel(core::IVideoRenderer& vidRenderer) const {
         // Panel
-        const float panelW = 200.0f * m_scale;
-        const float panelH = 70.0f * m_scale;
-        const float panelX = 10.0f * m_scale;
-        const float panelY = 8.0f * m_scale;
+        const float panelW = 200.0f;
+        const float panelH = 70.0f;
+        const float panelX = 10.0f;
+        const float panelY = 8.0f;
 
         utils::Color fill {0u, 0u, 0u, 150u};
-        float thickness = 2.0f * m_scale;
+        float thickness = 2.0f;
         utils::Color outline = {80u, 80u, 80u};
 
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thickness, outline);
 
         // Text
-        const unsigned int currentWave = m_provider()->currentWave;
-        const unsigned int totalWaves = m_provider()->totalWaves;
-        const unsigned int timeToNext = m_provider()->timeToNextWave;
+        core::GameView gview = m_game.lock()->getView();
+        const unsigned int currentWave = gview.currentWave;
+        const unsigned int totalWaves = gview.totalWaves;
+        const unsigned int timeToNext = gview.timeToNextWave;
 
         std::string waveInfo;
         if (totalWaves == std::numeric_limits<unsigned int>::max()) waveInfo = "Wave " + std::to_string(currentWave) + " / inf";
         else waveInfo = "Wave " + std::to_string(currentWave) + " / " + std::to_string(totalWaves);
-        float waveInfoSize = 16.0f * m_scale;
-        float waveInfoX = panelX + 10.0f * m_scale;
-        float waveInfoY = panelY + 10.0f * m_scale;
+        float waveInfoSize = 16.0f;
+        float waveInfoX = panelX + 10.0f;
+        float waveInfoY = panelY + 10.0f;
         utils::Color waveInfoColor = {255u, 255u, 255u};
         vidRenderer.drawText(waveInfo, waveInfoSize, waveInfoX, waveInfoY, waveInfoColor);
 
         std::ostringstream ss;
         if (timeToNext > 0) ss << "Next in " << timeToNext << "s";
         else ss << "Wave active";
-        float waveTimerSize = 14.0f * m_scale;
+        float waveTimerSize = 14.0f;
         float waveTimerX = waveInfoX;
-        float waveTimerY = waveInfoY + 26.0f * m_scale;
+        float waveTimerY = waveInfoY + 26.0f;
         utils::Color waveTimerColor = {200u, 200u, 200u};
         vidRenderer.drawText(ss.str(), waveTimerSize, waveTimerX, waveTimerY, waveTimerColor);
     }
 
     void HUD::drawFPSPanel(core::IVideoRenderer& vidRenderer) const {
         // Panel
-        const float panelW = 100.0f * m_scale;
-        const float panelH = 40.0f * m_scale;
-        const float panelX = m_winX - panelW - 10.0f * m_scale;
-        const float panelY = 8.0f * m_scale;
+        const float panelW = 100.0f;
+        const float panelH = 40.0f;
+        const float panelX = 1920.0f - panelW - 10.0f;
+        const float panelY = 8.0f;
 
         utils::Color fill = {0u, 0u, 0u, 150u};
-        float thickness = 2.0f * m_scale;
+        float thickness = 2.0f;
         utils::Color outline = {80u, 80u, 80u};
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thickness, outline);
 
         // Text
         std::string fps = "FPS: " + std::to_string(static_cast<int>(m_lastFPS));
-        float fpsSize = 16.0f * m_scale;
-        float fpsX = panelX + 10.0f * m_scale;
-        float fpsY = panelY + 8.0f * m_scale;
+        float fpsSize = 16.0f;
+        float fpsX = panelX + 10.0f;
+        float fpsY = panelY + 8.0f;
         utils::Color fpsColor = {255u, 255u, 255u};
         vidRenderer.drawText(fps, fpsSize, fpsX, fpsY, fpsColor);
     }
 
-    void HUD::setProvider(core::GameViewProvider provider) {
-        m_provider = std::move(provider);
-    }
-
-} // namespace tdg::infra
+} // namespace tdg::engine

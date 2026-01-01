@@ -1,9 +1,9 @@
-#include "infrastructure/menus/pauseMenu.hpp"
+#include "engine/gui/pauseMenu.hpp"
 
-namespace tdg::infra {
+namespace tdg::engine {
     
-    PauseMenu::PauseMenu(std::shared_ptr<tgui::Gui> gui, std::function<void()>& onResume, std::function<void()>& onRestart, std::function<void()>& onMainMenu, std::function<void()>& onQuit)
-        : Menu(gui), m_onResume(onResume), m_onRestartLevel(onRestart), m_onMainMenu(onMainMenu), m_onQuit(onQuit)
+    PauseMenu::PauseMenu(std::shared_ptr<tgui::Gui> gui, std::shared_ptr<CommandBus> bus)
+        : Menu(gui), m_bus(bus)
     {
         create();
     }
@@ -25,26 +25,26 @@ namespace tdg::infra {
         auto resumeBtn = tgui::Button::create("Resume");
         resumeBtn->setSize({"280", "40"});
         resumeBtn->setPosition({"10", "100"});
-        resumeBtn->onPress([this]() { close(); m_onResume(); });
+        resumeBtn->onPress([this]() { close(); m_bus->push({Command::Type::TogglePause}); });
         m_panel->add(resumeBtn);
 
         auto restartLevelBtn = tgui::Button::create("Restart");
         restartLevelBtn->setSize({"280", "40"});
         restartLevelBtn->setPosition({"10", "150"});
-        restartLevelBtn->onPress([this]() { close(); m_onRestartLevel(); });
+        restartLevelBtn->onPress([this]() { close(); m_bus->push({Command::Type::RestartLevel}); });
         m_panel->add(restartLevelBtn);
 
         auto mainMenuBtn = tgui::Button::create("Main Menu");
         mainMenuBtn->setSize({"280", "40"});
         mainMenuBtn->setPosition({"10", "200"});
-        mainMenuBtn->onPress([this]() { close(); m_onMainMenu(); });
+        mainMenuBtn->onPress([this]() { close(); m_bus->push({Command::Type::MainMenu}); });
         m_panel->add(mainMenuBtn);
 
         auto quitBtn = tgui::Button::create("Quit");
         quitBtn->setSize({"280", "40"});
         quitBtn->setPosition({"10", "250"});
-        quitBtn->onPress([this]() { close(); m_onQuit(); });
+        quitBtn->onPress([this]() { close(); m_bus->push({Command::Type::Quit}); });
         m_panel->add(quitBtn);
     }
 
-} // namespace tdg::infra
+} // namespace tdg::engine

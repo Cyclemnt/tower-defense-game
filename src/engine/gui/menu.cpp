@@ -1,6 +1,6 @@
-#include "infrastructure/menus/menu.hpp"
+#include "engine/gui/menu.hpp"
 
-namespace tdg::infra {
+namespace tdg::engine {
 
     Menu::Menu(std::shared_ptr<tgui::Gui> gui) : m_gui(gui) {}
 
@@ -18,4 +18,4 @@ namespace tdg::infra {
         return pos;
     }
     
-} // namespace tdg::infra
+} // namespace tdg::engine

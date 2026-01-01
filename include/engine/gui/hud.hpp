@@ -3,9 +3,9 @@
 
 #include <SFML/System.hpp>
 #include "core/interfaces/iVideoRenderer.hpp"
-#include "core/gameViewProvider.hpp"
+#include "engine/game.hpp"
 
-namespace tdg::infra {
+namespace tdg::engine {
     
     class HUD {
     public:
@@ -14,23 +14,20 @@ namespace tdg::infra {
         void update(float dt);
         void draw(core::IVideoRenderer& vidRenderer);
 
-        void setProvider(core::GameViewProvider provider);
+        void setGamePtr(std::weak_ptr<Game> game);
 
     private:
         void drawResourcesPanel(core::IVideoRenderer& vidRenderer) const;
         void drawCores(core::IVideoRenderer& vidRenderer) const;
         void drawWavePanel(core::IVideoRenderer& vidRenderer) const;
         void drawFPSPanel(core::IVideoRenderer& vidRenderer) const;
+        
+        std::weak_ptr<Game> m_game;
 
         sf::Clock m_fpsClock;   ///< Small clock used to throttle FPS calculation
         float m_lastFPS{0.0f};  ///< Last computed FPS value (integer-ish for display)
-        float m_scale{0.0f};
-        unsigned int m_winX{0u};
-        unsigned int m_winY{0u};
-
-        core::GameViewProvider m_provider;
     };
 
-} // namespace tdg::infra
+} // namespace tdg::engine
 
 #endif // HUD_HPP

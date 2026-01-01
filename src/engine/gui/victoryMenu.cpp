@@ -1,9 +1,9 @@
-#include "infrastructure/menus/victoryMenu.hpp"
+#include "engine/gui/victoryMenu.hpp"
 
-namespace tdg::infra {
+namespace tdg::engine {
     
-    VictoryMenu::VictoryMenu(std::shared_ptr<tgui::Gui> gui, std::function<void()>& onNextLevel, std::function<void()>& onRestartLevel, std::function<void()>& onMainMenu, std::function<void()>& onQuit)
-        : Menu(gui), m_onNextLevel(onNextLevel), m_onRestartLevel(onRestartLevel), m_onMainMenu(onMainMenu), m_onQuit(onQuit)
+    VictoryMenu::VictoryMenu(std::shared_ptr<tgui::Gui> gui, std::shared_ptr<CommandBus> bus)
+        : Menu(gui), m_bus(bus)
     {
         create();
     }
@@ -25,27 +25,27 @@ namespace tdg::infra {
         auto nextLevelBtn = tgui::Button::create("Next Level");
         nextLevelBtn->setSize({"280", "40"});
         nextLevelBtn->setPosition({"10", "100"});
-        nextLevelBtn->onPress([this]() { close(); m_onNextLevel(); });
+        nextLevelBtn->onPress([this]() { close(); m_bus->push({Command::Type::NextLevel}); });
         m_panel->add(nextLevelBtn);
 
         auto restartLevelBtn = tgui::Button::create("Restart Level");
         restartLevelBtn->setSize({"280", "40"});
         restartLevelBtn->setPosition({"10", "150"});
-        restartLevelBtn->onPress([this]() { close(); m_onRestartLevel(); });
+        restartLevelBtn->onPress([this]() { close(); m_bus->push({Command::Type::RestartLevel}); });
         m_panel->add(restartLevelBtn);
 
         auto mainMenuBtn = tgui::Button::create("Main Menu");
         mainMenuBtn->setSize({"280", "40"});
         mainMenuBtn->setPosition({"10", "200"});
-        mainMenuBtn->onPress([this]() { close(); m_onMainMenu(); });
+        mainMenuBtn->onPress([this]() { close(); m_bus->push({Command::Type::MainMenu}); });
         m_panel->add(mainMenuBtn);
 
         auto quitBtn = tgui::Button::create("Quit");
         quitBtn->setSize({"280", "40"});
         quitBtn->setPosition({"10", "250"});
-        quitBtn->onPress([this]() { close(); m_onQuit(); });
+        quitBtn->onPress([this]() { close(); m_bus->push({Command::Type::Quit}); });
         m_panel->add(quitBtn);
 
     }
 
-} // namespace tdg::infra
+} // namespace tdg::engine

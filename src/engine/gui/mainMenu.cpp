@@ -1,9 +1,9 @@
-#include "infrastructure/menus/mainMenu.hpp"
+#include "engine/gui/mainMenu.hpp"
 
-namespace tdg::infra {
+namespace tdg::engine {
     
-    MainMenu::MainMenu(std::shared_ptr<tgui::Gui> gui, std::function<void()>& onStartStory, std::function<void()>& onStartArcade, std::function<void()>& onQuit)
-        : Menu(gui), m_onStartStory(onStartStory), m_onStartArcade(onStartArcade), m_onQuit(onQuit)
+    MainMenu::MainMenu(std::shared_ptr<tgui::Gui> gui, std::shared_ptr<CommandBus> bus)
+        : Menu(gui), m_bus(bus)
     {
         create();
     }
@@ -63,7 +63,7 @@ namespace tdg::infra {
         startStoryBtn->getRenderer()->setBorderColorHover({0,0,0,0});
         startStoryBtn->getRenderer()->setBackgroundColorDown({0,0,0,0});
         startStoryBtn->getRenderer()->setBorderColorDown({0,0,0,0});
-        startStoryBtn->onPress([this]() { close(); m_onStartStory(); });
+        startStoryBtn->onPress([this]() { close(); m_bus->push({Command::Type::StartStory}); });
         m_panel->add(startStoryBtn);
 
         auto startArcadeBtn = tgui::Button::create("");
@@ -76,7 +76,7 @@ namespace tdg::infra {
         startArcadeBtn->getRenderer()->setBorderColorHover({0,0,0,0});
         startArcadeBtn->getRenderer()->setBackgroundColorDown({0,0,0,0});
         startArcadeBtn->getRenderer()->setBorderColorDown({0,0,0,0});
-        startArcadeBtn->onPress([this]() { close(); m_onStartArcade(); });
+        startArcadeBtn->onPress([this]() { close(); m_bus->push({Command::Type::StartArcade}); });
         m_panel->add(startArcadeBtn);
 
         auto quitBtn = tgui::Button::create("");
@@ -88,8 +88,8 @@ namespace tdg::infra {
         quitBtn->getRenderer()->setBorderColorHover({0,0,0,0});
         quitBtn->getRenderer()->setBackgroundColorDown({0,0,0,0});
         quitBtn->getRenderer()->setBorderColorDown({0,0,0,0});
-        quitBtn->onPress([this]() { close(); m_onQuit(); });
+        quitBtn->onPress([this]() { close(); m_bus->push({Command::Type::Quit}); });
         m_panel->add(quitBtn);
     }
 
-} // namespace tdg::infra
+} // namespace tdg::engine
