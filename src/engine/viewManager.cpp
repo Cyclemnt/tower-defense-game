@@ -75,7 +75,7 @@ namespace tdg::engine {
     }
 
     void ViewManager::zoomGameView(float factor, sf::Vector2i focus) {
-        if (factor <= 0.f) return;
+        if (factor <= 0.0f) return;
 
         // factor > 1 => zoom in (reduce zoom level)
         float targetZoom = m_zoomLevel / factor;

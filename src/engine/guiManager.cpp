@@ -14,7 +14,7 @@ namespace tdg::engine {
 
         // Initialize panels
         m_hud = std::make_unique<HUD>();
-        m_towerPanel = std::make_unique<TowerPanel>(window, m_tileSize, m_bus);
+        m_towerPanel = std::make_unique<TowerPanel>(m_tileSize, m_bus);
         m_mainMenu = std::make_unique<MainMenu>(m_gui, m_bus);
         m_pauseMenu = std::make_unique<PauseMenu>(m_gui, m_bus);
         m_victoryMenu = std::make_unique<VictoryMenu>(m_gui, m_bus);

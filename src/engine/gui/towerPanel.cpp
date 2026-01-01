@@ -2,8 +2,8 @@
 
 namespace tdg::engine {
     
-    TowerPanel::TowerPanel(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus)
-        : m_window(window), m_tileSize(tileSize), m_bus(bus)
+    TowerPanel::TowerPanel(std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus)
+        : m_tileSize(tileSize), m_bus(bus)
     {
         m_towerNames = {"Gatling", "Mortar", "Laser"};
         m_towerPanels.push_back(sf::FloatRect());
@@ -12,9 +12,6 @@ namespace tdg::engine {
     }
     
     void TowerPanel::draw(core::IVideoRenderer& vidRenderer) {
-        m_winX = vidRenderer.getWindowWidth();
-        m_winY = vidRenderer.getWindowHeight();
-
         drawBackPanel(vidRenderer);
         drawTowerButtons(vidRenderer);
         drawUpgradeBtn(vidRenderer);
@@ -22,11 +19,8 @@ namespace tdg::engine {
     }
 
     void TowerPanel::drawOverlays(core::IVideoRenderer& vidRenderer) {
-        m_winX = vidRenderer.getWindowWidth();
-        m_winY = vidRenderer.getWindowHeight();
-
-        m_window->draw(m_tileOverlay);
-        m_window->draw(m_towerRangeOverlay);
+        vidRenderer.drawRectangle(m_tileOverlay.getPosition().x, m_tileOverlay.getPosition().y, m_tileOverlay.getSize().x, m_tileOverlay.getSize().y, utils::Color(m_tileOverlay.getFillColor().r, m_tileOverlay.getFillColor().g, m_tileOverlay.getFillColor().b, m_tileOverlay.getFillColor().a));
+        vidRenderer.drawCircle(m_towerRangeOverlay.getPosition().x + m_towerRangeOverlay.getRadius(), m_towerRangeOverlay.getPosition().y + m_towerRangeOverlay.getRadius(), m_towerRangeOverlay.getRadius(), utils::Color(0u,0u,0u,0u), m_towerRangeOverlay.getOutlineThickness(), utils::Color(m_towerRangeOverlay.getOutlineColor().r, m_towerRangeOverlay.getOutlineColor().g, m_towerRangeOverlay.getOutlineColor().b, m_towerRangeOverlay.getOutlineColor().a));
     }
 
     bool TowerPanel::handleClick(const sf::Vector2i& mousePos) {
@@ -130,7 +124,7 @@ namespace tdg::engine {
         float panelW = 356;
         float panelH = 302;
         float panelX = 10.0f;
-        float panelY = m_winY - panelH - 10.0f;
+        float panelY = 1200.0f - panelH - 10.0f;
         m_backPanel = sf::FloatRect({panelX, panelY}, {panelW, panelH});
 
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, {0u,0u,0u,160u}, 2.0f, {60u,60u,60u});
