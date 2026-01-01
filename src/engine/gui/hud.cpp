@@ -1,7 +1,9 @@
 #include <iostream>
 #include <sstream>
 #include "engine/gui/hud.hpp"
+#include "engine/iGame.hpp"
 #include "core/materials.hpp"
+#include "core/interfaces/iVideoRenderer.hpp"
 
 namespace tdg::engine {
     
@@ -23,16 +25,16 @@ namespace tdg::engine {
         drawFPSPanel(vidRenderer);
     }
     
-    void HUD::setGamePtr(std::weak_ptr<Game> game) {
+    void HUD::setGamePtr(std::weak_ptr<IGame> game) {
         m_game = game;
     }
 
     void HUD::drawResourcesPanel(core::IVideoRenderer& vidRenderer) const {
         // Panel
         const float panelW = 260.0f ;
-        const float panelH = 92.0f ;
+        const float panelH = 92.0f;
         const float panelX = (1920.0f - panelW) * 0.5f;
-        const float panelY = 8.0f ;
+        const float panelY = 8.0f;
 
         utils::Color fill = {0, 0, 0, 150};
         float thikness = 2.0f;
@@ -40,7 +42,7 @@ namespace tdg::engine {
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thikness, outline);
 
         // Resources
-        const core::Materials mats = m_game.lock()->getView().materials;
+        const core::Materials mats = m_game.lock()->playerBalance();
         const float iconSize = 20.0f;
         const float spacing = 80.0f;
         const float baseX = panelX + 12.0f;
@@ -70,10 +72,10 @@ namespace tdg::engine {
         const float panelX = (1920.0f - panelW) * 0.5f;
         const float panelY = 66.0f;
         
-        core::GameView gview = m_game.lock()->getView();
-        const unsigned safe = gview.coresSafe;
-        const unsigned stolen = gview.coresStolen;
-        const unsigned lost = gview.coresLost;
+        CoresState cores = m_game.lock()->coresState();
+        const unsigned safe = cores.safe;
+        const unsigned stolen = cores.stolen;
+        const unsigned lost = cores.lost;
         const unsigned total = safe + stolen + lost;
         if (total == 0) return;
 
@@ -119,10 +121,10 @@ namespace tdg::engine {
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, fill, thickness, outline);
 
         // Text
-        core::GameView gview = m_game.lock()->getView();
-        const unsigned int currentWave = gview.currentWave;
-        const unsigned int totalWaves = gview.totalWaves;
-        const unsigned int timeToNext = gview.timeToNextWave;
+        WaveState wave = m_game.lock()->waveState();
+        const unsigned int currentWave = wave.currentWave;
+        const unsigned int totalWaves = wave.totalWaves;
+        const unsigned int timeToNext = wave.timeToNext;
 
         std::string waveInfo;
         if (totalWaves == std::numeric_limits<unsigned int>::max()) waveInfo = "Wave " + std::to_string(currentWave) + " / inf";

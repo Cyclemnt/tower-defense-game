@@ -4,6 +4,8 @@
 #include <memory>
 #include <optional>
 
+#include "iGame.hpp"
+
 #include "core/map.hpp"
 #include "core/interfaces/iPathfinder.hpp"
 #include "core/waveManager.hpp"
@@ -12,8 +14,6 @@
 #include "core/coreStorage.hpp"
 
 #include "core/events.hpp"
-
-#include "core/gameViewProvider.hpp"
 
 #include "core/managers/roamingCoreManager.hpp"
 #include "core/managers/creatureManager.hpp"
@@ -27,7 +27,7 @@ namespace tdg::engine {
 
     using namespace tdg::core;
 
-    class Game final {
+    class Game final : public IGame {
     public:
         explicit Game(std::shared_ptr<IMapSource> mapSrc, std::shared_ptr<IWaveSource> waveSrc,
             unsigned int startCores = 24u, Materials startMaterials = {30u,50u,150u});
@@ -42,22 +42,24 @@ namespace tdg::engine {
 
         void spawnCreature(std::string creatureType, unsigned int level, std::optional<unsigned int> entry);
 
-        GameView getView() const; // Gives global information about the state of the game (useful for HUD)
-
         bool isWaveOver() const;
         bool isGameOver() const;
         bool isVictory() const;
 
-        /* Some useful getters for GUI */
-        bool tileOpenAt(int x, int y) const;
-        bool towerAt(int x, int y) const;
-        std::optional<float> towerRangeAt(int x, int y) const;
-        std::optional<Materials> towerCost(std::string towerType) const;
-        bool canAfford(std::string towerType) const;
+        /* Interface */
+        bool tileOpenAt(int x, int y) const override;
+        bool towerAt(int x, int y) const override;
+        std::optional<float> towerRangeAt(int x, int y) const override;
+        std::optional<Materials> towerCost(std::string towerType) const override;
+        bool canAfford(std::string towerType) const override;
 
-        int mapWidth() const { return m_map->width(); }
-        int mapHeight() const { return m_map->height(); }
-        /* =========================== */
+        Materials playerBalance() const noexcept override;
+        CoresState coresState() const noexcept override;
+        WaveState waveState() const noexcept override;
+
+        int mapWidth() const override { return m_map->width(); }
+        int mapHeight() const override { return m_map->height(); }
+        /* ========= */
 
     private:        
         unsigned long m_tick{0u};

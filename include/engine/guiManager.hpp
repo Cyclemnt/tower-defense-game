@@ -5,10 +5,9 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <chrono>
 #include <memory>
-#include "core/interfaces/iVideoRenderer.hpp"
 
-#include "engine/game.hpp"
-#include "engine/commandBus.hpp"
+namespace tdg::engine { class IGame; class CommandBus; }
+namespace tdg::core { class IVideoRenderer; }
 
 #include "engine/gui/hud.hpp"
 #include "engine/gui/towerPanel.hpp"
@@ -36,7 +35,7 @@ namespace tdg::engine {
         void renderInGUIView(core::IVideoRenderer& vidRenderer, bool showhud);
         void renderInGameView(core::IVideoRenderer& vidRenderer);
 
-        void setGamePtr(std::weak_ptr<Game> game);
+        void setGamePtr(std::weak_ptr<IGame> game);
 
     private:
         std::shared_ptr<tgui::Gui> m_gui{nullptr};

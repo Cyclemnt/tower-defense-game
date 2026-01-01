@@ -80,7 +80,6 @@ namespace tdg::engine {
         // Draw in order
         for (const Renderable* r : renderables) r->draw(vidRenderer);
 
-        
         for (const auto& r : m_roamingCoreManager.roamingCores()) r.draw(vidRenderer);
     }
 
@@ -123,14 +122,6 @@ namespace tdg::engine {
     bool Game::isWaveOver() const { return m_creatureManager.noCreature() && m_waveManager->waveFinished(); }
     bool Game::isGameOver() const { return m_cores.allLost(); }
     bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }
-    
-    GameView Game::getView() const {
-        return {
-            m_player.materials(),
-            m_cores.safeCount(), m_cores.stolenCount(), m_cores.lostCount(),
-            m_waveManager->waveIndex(), m_waveManager->waveCount(), m_waveManager->timeBeforeNext()
-        };
-    }
 
     bool Game::canAfford(std::string towerType) const {
         if (isGameOver()) return false;
@@ -166,5 +157,9 @@ namespace tdg::engine {
         if (towerType == "Laser") return TowerFactory::getCost(Tower::Type::Laser);
         return std::nullopt;
     }
+
+    Materials Game::playerBalance() const noexcept { return m_player.materials(); }
+    CoresState Game::coresState() const noexcept { return { m_cores.safeCount(), m_cores.stolenCount(), m_cores.lostCount() }; }
+    WaveState Game::waveState() const noexcept { return { m_waveManager->waveIndex(), m_waveManager->waveCount(), m_waveManager->timeBeforeNext() }; }
 
 } // tdg::engine

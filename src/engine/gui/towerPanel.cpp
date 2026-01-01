@@ -1,5 +1,12 @@
 #include "engine/gui/towerPanel.hpp"
 
+#include "engine/iGame.hpp"
+#include "engine/commandBus.hpp"
+
+#include "core/materials.hpp"
+
+#include "core/interfaces/iVideoRenderer.hpp"
+
 namespace tdg::engine {
     
     TowerPanel::TowerPanel(std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus)
@@ -116,7 +123,7 @@ namespace tdg::engine {
         }
     }
 
-    void TowerPanel::setGamePtr(std::weak_ptr<Game> game) {
+    void TowerPanel::setGamePtr(std::weak_ptr<IGame> game) {
         m_game = game;
     }
 

@@ -69,7 +69,7 @@ namespace tdg::engine {
         m_towerPanel->drawOverlays(vidRenderer);
     }
 
-    void TGUIManager::setGamePtr(std::weak_ptr<Game> game) {
+    void TGUIManager::setGamePtr(std::weak_ptr<IGame> game) {
         m_hud->setGamePtr(game);
         m_towerPanel->setGamePtr(game);
     }

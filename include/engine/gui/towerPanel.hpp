@@ -4,10 +4,9 @@
 #include <TGUI/TGUI.hpp>
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <SFML/Graphics.hpp>
-#include "engine/game.hpp"
-#include "engine/commandBus.hpp"
-#include "core/interfaces/iVideoRenderer.hpp"
-#include "core/gameViewProvider.hpp"
+
+namespace tdg::engine { class IGame; class CommandBus; }
+namespace tdg::core { class IVideoRenderer; }
 
 namespace tdg::engine {
 
@@ -24,7 +23,7 @@ namespace tdg::engine {
         void handleTileClick(const sf::Vector2i& tilePos);
         void handleMouseMove(const sf::Vector2i& tilePos);
 
-        void setGamePtr(std::weak_ptr<Game> game);
+        void setGamePtr(std::weak_ptr<IGame> game);
 
     private:
         void drawBackPanel(core::IVideoRenderer& vidRenderer);
@@ -34,7 +33,7 @@ namespace tdg::engine {
         
         std::shared_ptr<float> m_tileSize{nullptr};
 
-        std::weak_ptr<Game> m_game;
+        std::weak_ptr<IGame> m_game;
         std::shared_ptr<CommandBus> m_bus;
 
         Mode m_mode{Mode::None};

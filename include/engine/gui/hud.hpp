@@ -2,8 +2,9 @@
 #define HUD_HPP
 
 #include <SFML/System.hpp>
-#include "core/interfaces/iVideoRenderer.hpp"
-#include "engine/game.hpp"
+
+namespace tdg::engine { class IGame; }
+namespace tdg::core { class IVideoRenderer; }
 
 namespace tdg::engine {
     
@@ -14,7 +15,7 @@ namespace tdg::engine {
         void update(float dt);
         void draw(core::IVideoRenderer& vidRenderer);
 
-        void setGamePtr(std::weak_ptr<Game> game);
+        void setGamePtr(std::weak_ptr<IGame> game);
 
     private:
         void drawResourcesPanel(core::IVideoRenderer& vidRenderer) const;
@@ -22,7 +23,7 @@ namespace tdg::engine {
         void drawWavePanel(core::IVideoRenderer& vidRenderer) const;
         void drawFPSPanel(core::IVideoRenderer& vidRenderer) const;
         
-        std::weak_ptr<Game> m_game;
+        std::weak_ptr<IGame> m_game;
 
         sf::Clock m_fpsClock;   ///< Small clock used to throttle FPS calculation
         float m_lastFPS{0.0f};  ///< Last computed FPS value (integer-ish for display)
