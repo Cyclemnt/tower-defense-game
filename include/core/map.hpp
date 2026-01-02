@@ -45,6 +45,7 @@ namespace tdg::core {
         int m_width{0};
         int m_height{0};
         std::vector<Tile> m_tiles; // Row-major
+        unsigned int m_level{1u}; // For sprite selection
 
         std::vector<Tile*> m_entryPoints; // Lists entry points for fast access
         std::vector<Tile*> m_exitPoints; // Lists exits points for fast access

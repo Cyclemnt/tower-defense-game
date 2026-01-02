@@ -13,6 +13,7 @@ namespace tdg::infra {
     }
 
     void FileMapSource::setLevel(unsigned int level) {
+        m_level = level;
         m_filePath = m_folderPath + "map_" + std::to_string(level) + ".txt";
     }
 
@@ -51,6 +52,7 @@ namespace tdg::infra {
         core::MapData mapData;
         mapData.height = height;
         mapData.width = width;
+        mapData.level = m_level;
 
         // Parse and instantiate tiles
         for (int y = 0; y < height; ++y) {

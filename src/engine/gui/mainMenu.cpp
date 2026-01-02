@@ -40,23 +40,24 @@ namespace tdg::engine {
         // quitBtn->onPress([this]() { close(); m_onQuit(); });
         // m_panel->add(quitBtn);
 
+        unsigned int winX = m_gui->getWindow()->getSize().x;
+        unsigned int winY = m_gui->getWindow()->getSize().y;
 
-        sf::Vector2f panelSize = {1920.0f, 1190.0f};
+        sf::Vector2f panelSize = sf::Vector2f(m_gui->getWindow()->getSize());
         sf::Vector2f panelPos = centerPanel(panelSize);
 
         m_panel = tgui::Panel::create({panelSize});
         m_panel->setPosition({panelPos});
         m_panel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
-
-        auto label = tgui::Label::create("Main Menu");
-        label->setTextSize(18);
-        // label->getRenderer()->setTextColor(tgui::Color::White);
-        label->setPosition({10, 10});
-        // m_panel->add(label);
+        
+        tgui::Picture::Ptr background = tgui::Picture::create("../assets/textures/main_menu.png");
+        background->setSize(winX, winY);
+        background->setPosition(0, 0);
+        m_panel->add(background);
 
         auto startStoryBtn = tgui::Button::create("");
-        startStoryBtn->setSize({"440", "145"});
-        startStoryBtn->setPosition({"195", "893"});
+        startStoryBtn->setSize({440 * winX / 1920.0f, 145 * winY / 1200.0f});
+        startStoryBtn->setPosition({195 * winX / 1920.0f, 893 * winY / 1200.0f});
         startStoryBtn->getRenderer()->setBackgroundColor({0,0,0,0});
         startStoryBtn->getRenderer()->setBorderColor({0,0,0,0});
         startStoryBtn->getRenderer()->setBackgroundColorHover({0,0,0,0});
@@ -67,8 +68,8 @@ namespace tdg::engine {
         m_panel->add(startStoryBtn);
 
         auto startArcadeBtn = tgui::Button::create("");
-        startArcadeBtn->setSize({"410", "145"});
-        startArcadeBtn->setPosition({"755", "893"});
+        startArcadeBtn->setSize({410 * winX / 1920.0f, 145 * winY / 1200.0f});
+        startArcadeBtn->setPosition({755 * winX / 1920.0f, 893 * winY / 1200.0f});
         startArcadeBtn->getRenderer()->setBackgroundColor({0,0,0,0});
         startArcadeBtn->getRenderer()->setBorderColor({0,0,0,0});
         startArcadeBtn->getRenderer()->setBackgroundColorHover({0,0,0,0});
@@ -80,8 +81,8 @@ namespace tdg::engine {
         m_panel->add(startArcadeBtn);
 
         auto quitBtn = tgui::Button::create("");
-        quitBtn->setSize({"440", "145"});
-        quitBtn->setPosition({"1285", "893"});
+        quitBtn->setSize({440 * winX / 1920.0f, 145 * winY / 1200.0f});
+        quitBtn->setPosition({1285 * winX / 1920.0f, 893 * winY / 1200.0f});
         quitBtn->getRenderer()->setBackgroundColor({0,0,0,0});
         quitBtn->getRenderer()->setBorderColor({0,0,0,0});
         quitBtn->getRenderer()->setBackgroundColorHover({0,0,0,0});

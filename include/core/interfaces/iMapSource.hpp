@@ -11,6 +11,7 @@ namespace tdg::core {
         int width{0};
         int height{0};
         std::vector<Tile> tiles;
+        unsigned int level{1u};
     };
     
     /// @brief Interface for map sources (files, editor, network).

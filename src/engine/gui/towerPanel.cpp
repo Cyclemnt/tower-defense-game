@@ -9,8 +9,8 @@
 
 namespace tdg::engine {
     
-    TowerPanel::TowerPanel(std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus)
-        : m_tileSize(tileSize), m_bus(bus)
+    TowerPanel::TowerPanel(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus)
+        : m_window(window), m_tileSize(tileSize), m_bus(bus)
     {
         m_towerNames = {"Gatling", "Mortar", "Laser"};
         m_towerPanels.push_back(sf::FloatRect());
@@ -131,7 +131,7 @@ namespace tdg::engine {
         float panelW = 356;
         float panelH = 302;
         float panelX = 10.0f;
-        float panelY = 1200.0f - panelH - 10.0f;
+        float panelY = m_window->getSize().y - panelH - 10.0f;
         m_backPanel = sf::FloatRect({panelX, panelY}, {panelW, panelH});
 
         vidRenderer.drawRectangle(panelX, panelY, panelW, panelH, {0u,0u,0u,160u}, 2.0f, {60u,60u,60u});

@@ -20,9 +20,6 @@ namespace tdg::infra {
 
         bool isInView(float x, float y) const;
 
-        unsigned int getWindowWidth() const override { return m_window->getSize().x; }
-        unsigned int getWindowHeight() const override { return m_window->getSize().y; }
-
     private:
         std::shared_ptr<sf::RenderWindow> m_window;
         std::shared_ptr<SFMLResourceManager> m_ressources;

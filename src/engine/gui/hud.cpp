@@ -7,7 +7,8 @@
 
 namespace tdg::engine {
     
-    HUD::HUD() {}
+    HUD::HUD(std::shared_ptr<sf::RenderWindow> window)
+        : m_window(window) {}
 
     void HUD::update(float dt) {
         if (m_fpsClock.getElapsedTime().asSeconds() > 1.0f) {
@@ -33,7 +34,7 @@ namespace tdg::engine {
         // Panel
         const float panelW = 260.0f ;
         const float panelH = 92.0f;
-        const float panelX = (1920.0f - panelW) * 0.5f;
+        const float panelX = (m_window->getSize().x - panelW) * 0.5f;
         const float panelY = 8.0f;
 
         utils::Color fill = {0, 0, 0, 150};
@@ -69,7 +70,7 @@ namespace tdg::engine {
     void HUD::drawCores(core::IVideoRenderer& vidRenderer) const {
         const float panelW = 240.0f;
         const float panelH = 92.0f;
-        const float panelX = (1920.0f - panelW) * 0.5f;
+        const float panelX = (m_window->getSize().x - panelW) * 0.5f;
         const float panelY = 66.0f;
         
         CoresState cores = m_game.lock()->coresState();
@@ -149,7 +150,7 @@ namespace tdg::engine {
         // Panel
         const float panelW = 100.0f;
         const float panelH = 40.0f;
-        const float panelX = 1920.0f - panelW - 10.0f;
+        const float panelX = m_window->getSize().x - panelW - 10.0f;
         const float panelY = 8.0f;
 
         utils::Color fill = {0u, 0u, 0u, 150u};

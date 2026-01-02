@@ -15,6 +15,7 @@ namespace tdg::infra {
     private:
         std::string m_folderPath; // Folder path to the txt files
         std::string m_filePath; // File path to the current txt file
+        unsigned int m_level{1u};
     };
 
 } // namespace tdg::infra

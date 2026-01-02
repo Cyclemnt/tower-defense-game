@@ -16,9 +16,6 @@ namespace tdg::core {
         virtual void drawCircle(float x, float y, float radius, utils::Color fill, float thickness = 0.0f, utils::Color outline = {0u,0u,0u,0u}) = 0;
 
         virtual void drawText(const std::string& text, float size, float x, float y, utils::Color color) = 0;
-
-        virtual unsigned int getWindowWidth() const = 0;
-        virtual unsigned int getWindowHeight() const = 0;
     
     protected:
         bool m_worldCoordinates{true};

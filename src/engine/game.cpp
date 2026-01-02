@@ -123,17 +123,7 @@ namespace tdg::engine {
     bool Game::isGameOver() const { return m_cores.allLost(); }
     bool Game::isVictory() const { return m_waveManager->allWavesSpawned() && isWaveOver() && !isGameOver(); }
 
-    bool Game::canAfford(std::string towerType) const {
-        if (isGameOver()) return false;
-        std::optional<Materials> cost = towerCost(towerType);
-        if (cost.has_value()) return m_player.canAfford(cost.value());
-        else return false;
-    }
-
-    std::optional<float> Game::towerRangeAt(int x, int y) const {
-        if (isGameOver()) return std::nullopt;
-        return m_towerManager.towerRangeAt(x, y);
-    }
+    /* Interface */
 
     bool Game::tileOpenAt(int x, int y) const {
         if (isGameOver()) return false;
@@ -151,6 +141,11 @@ namespace tdg::engine {
         else return false;
     }
 
+    std::optional<float> Game::towerRangeAt(int x, int y) const {
+        if (isGameOver()) return std::nullopt;
+        return m_towerManager.towerRangeAt(x, y);
+    }
+
     std::optional<Materials> Game::towerCost(std::string towerType) const {
         if (towerType == "Gatling") return TowerFactory::getCost(Tower::Type::Gatling);
         if (towerType == "Mortar") return TowerFactory::getCost(Tower::Type::Mortar);
@@ -158,8 +153,17 @@ namespace tdg::engine {
         return std::nullopt;
     }
 
+    bool Game::canAfford(std::string towerType) const {
+        if (isGameOver()) return false;
+        std::optional<Materials> cost = towerCost(towerType);
+        if (cost.has_value()) return m_player.canAfford(cost.value());
+        else return false;
+    }
+
     Materials Game::playerBalance() const noexcept { return m_player.materials(); }
     CoresState Game::coresState() const noexcept { return { m_cores.safeCount(), m_cores.stolenCount(), m_cores.lostCount() }; }
-    WaveState Game::waveState() const noexcept { return { m_waveManager->waveIndex(), m_waveManager->waveCount(), m_waveManager->timeBeforeNext() }; }
+    WaveState Game::waveState() const noexcept { return { m_waveManager->waveIndex(), m_waveManager->waveCount(), static_cast<unsigned int>(m_waveManager->timeBeforeNext()) }; }
+
+    /* ========= */
 
 } // tdg::engine

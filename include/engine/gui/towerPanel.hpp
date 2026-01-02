@@ -14,7 +14,7 @@ namespace tdg::engine {
     public:
         enum class Mode { None, Sell, Upgrade, Gatling, Mortar, Laser };
         
-        TowerPanel(std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus);
+        TowerPanel(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus);
 
         void draw(core::IVideoRenderer& vidRenderer);
         void drawOverlays(core::IVideoRenderer& vidRenderer);
@@ -31,6 +31,7 @@ namespace tdg::engine {
         void drawUpgradeBtn(core::IVideoRenderer& vidRenderer);
         void drawSellBtn(core::IVideoRenderer& vidRenderer);
         
+        std::shared_ptr<sf::RenderWindow> m_window{nullptr};
         std::shared_ptr<float> m_tileSize{nullptr};
 
         std::weak_ptr<IGame> m_game;

@@ -11,6 +11,7 @@ namespace tdg::core {
         m_width = data.width;
         m_height = data.height;
         m_tiles = data.tiles;
+        m_level = data.level;
 
         // Save interest points for fast access
         for (Tile& tile : m_tiles) {
@@ -106,34 +107,34 @@ namespace tdg::core {
         // Top and bottom
         for (int i = -margin; i < m_width + margin; i++) {
             for (int j = -margin; j < 0; ++j) {
-                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Top
+                vidRenderer.drawSprite("tiles/" + std::to_string(m_level) + "/empty_" + randomTextureId(i, j), i, j);  // Top
             }
-            for (int j = m_height; j < m_height + 2; j++) {
-                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Bottom
+            for (int j = m_height; j < m_height + margin; j++) {
+                vidRenderer.drawSprite("tiles/" + std::to_string(m_level) + "/empty_" + randomTextureId(i, j), i, j);  // Bottom
             }
         }
 
         // Left and right
         for (int i = -margin; i < 0; i++) {
             for (int j = -margin; j < m_height + margin; j++) {
-                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Left
+                vidRenderer.drawSprite("tiles/" + std::to_string(m_level) + "/empty_" + randomTextureId(i, j), i, j);  // Left
             }
         }
         for (int i = m_width; i < m_width + margin; i++) {
             for (int j = -margin; j < m_height + margin; j++) {
-                vidRenderer.drawSprite("tiles/empty_" + randomTextureId(i, j), i, j);  // Right
+                vidRenderer.drawSprite("tiles/" + std::to_string(m_level) + "/empty_" + randomTextureId(i, j), i, j);  // Right
             }
         }
     }
 
     std::string Map::tileToSpriteId(Tile tile) const noexcept {
         switch (tile.type) {
-            case Tile::Type::Path: return "tiles/path";
-            case Tile::Type::Open: return "tiles/open";
-            case Tile::Type::Entry: return "tiles/entry";
-            case Tile::Type::Exit: return "tiles/exit";
-            case Tile::Type::CoreStorage: return "tiles/core_" + coreStorageTextureId();
-            case Tile::Type::Empty: return "tiles/empty_" + randomTextureId(tile.x, tile.y);
+            case Tile::Type::Path: return "tiles/" + std::to_string(m_level) + "/path";
+            case Tile::Type::Open: return "tiles/" + std::to_string(m_level) + "/open";
+            case Tile::Type::Entry: return "tiles/" + std::to_string(m_level) + "/entry";
+            case Tile::Type::Exit: return "tiles/" + std::to_string(m_level) + "/exit";
+            case Tile::Type::CoreStorage: return "tiles/" + std::to_string(m_level) + "/core_" + coreStorageTextureId();
+            case Tile::Type::Empty: return "tiles/" + std::to_string(m_level) + "/empty_" + randomTextureId(tile.x, tile.y);
             default: return "missing_texture";
         }
     }
