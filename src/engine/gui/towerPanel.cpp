@@ -178,7 +178,7 @@ namespace tdg::engine {
             const float iconX = btnX + 6.0f;
             const float iconY = btnY + (btnH - iconSize) * 0.5f;
 
-            utils::Color spriteColor = {0u,0u,0u,0u};
+            utils::Color spriteColor = {255u,255u,255u,255u};
             if (!affordable) spriteColor.setColor(150u,150u,150u,150u);
             vidRenderer.drawSprite(towerIconNames[i], iconX, iconY, iconSize, spriteColor);
 

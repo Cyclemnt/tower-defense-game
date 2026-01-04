@@ -14,7 +14,7 @@ namespace tdg::core {
 
     class Creature : public Renderable {
     public:
-        enum class Type { Minion, Drone, Tank };
+        enum class Type { Minion, Drone, Tank, Mother };
 
         struct Stats {
             float maxHealth{0.0f};

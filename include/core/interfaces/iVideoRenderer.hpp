@@ -10,7 +10,7 @@ namespace tdg::core {
     public:
         void setWorldCoordinates(bool worldCoordinates) { m_worldCoordinates = worldCoordinates; }
 
-        virtual void drawSprite(const std::string& spriteId, float x, float y, float size = 1.0f, utils::Color color = {0u,0u,0u,0u}) = 0;
+        virtual void drawSprite(const std::string& spriteId, float x, float y, float size = 1.0f, utils::Color color = {255u,255u,255u,255u}) = 0;
         virtual void drawRectangle(float x, float y, float width, float height, utils::Color fill, float thickness = 0.0f, utils::Color outline = {0u,0u,0u,0u}) = 0;
         virtual void drawLine(float x1, float y1, float x2, float y2, float width, utils::Color fill, float thickness = 0.0f, utils::Color outline = {0u,0u,0u,0u}) = 0;
         virtual void drawCircle(float x, float y, float radius, utils::Color fill, float thickness = 0.0f, utils::Color outline = {0u,0u,0u,0u}) = 0;

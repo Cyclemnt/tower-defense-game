@@ -24,7 +24,11 @@ namespace tdg::core {
 
         // Determine spawn tile
         const Tile* spawnTile = nullptr;
-        if (entry.has_value() && entry.value() < m_map.entryPoints().size()) {
+        if (type == Creature::Type::Mother) { // Mother only spawns on exitTiles
+            int random = rand() % m_map.exitPoints().size();
+            spawnTile = m_map.exitPoints()[random];
+        }
+        else if (entry.has_value() && entry.value() < m_map.entryPoints().size()) {
             spawnTile = m_map.entryPoints()[entry.value()];
         }
         else {

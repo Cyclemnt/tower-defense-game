@@ -15,8 +15,14 @@ namespace tdg::infra {
     }
 
     void AutoWaveSource::setLevel(unsigned int level) {
-        m_waveCount = std::nullopt;
-        m_difficultyCoefficient = 1.0f + level / 10.0f;
+        if (level == 0u) {
+            m_waveCount = std::nullopt;
+            m_difficultyCoefficient = 1.0f + 5u / 10.0f;
+        }
+        else {
+            m_waveCount = 4u + level * 2u;
+            m_difficultyCoefficient = 1.0f + level / 10.0f;
+        }
     }
 
     core::WaveData AutoWaveSource::loadWave(unsigned int waveIndex) const {

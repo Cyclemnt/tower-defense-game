@@ -24,7 +24,7 @@ namespace tdg::infra {
             float scale = size / static_cast<float>(texSize.x);
             sprite.setScale(sf::Vector2f(scale, scale));
 
-            if (color.a != 0u) { sprite.setColor(sf::Color(color.r, color.g, color.b, color.a)); }
+            sprite.setColor(sf::Color(color.r, color.g, color.b, color.a));
 
             m_window->draw(sprite);
         }

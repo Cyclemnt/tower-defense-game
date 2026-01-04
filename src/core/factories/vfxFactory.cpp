@@ -4,6 +4,8 @@
 #include "core/vfxs/laserBeamVFX.hpp"
 #include "core/vfxs/explosionVFX.hpp"
 #include "core/vfxs/hitSparkVFX.hpp"
+#include "core/vfxs/fanucVFX.hpp"
+#include "core/vfxs/fireflyVFX.hpp"
 
 namespace tdg::core {
     
@@ -13,6 +15,8 @@ namespace tdg::core {
             case Events::NewVFX::Type::LaserBeam:     return std::make_unique<LaserBeamVFX>(data.level, data.xStart, data.yStart, data.xEnd.value(), data.yEnd.value());
             case Events::NewVFX::Type::Explosion:     return std::make_unique<ExplosionVFX>(data.level, data.xStart, data.yStart);
             case Events::NewVFX::Type::HitSpark:      return std::make_unique<HitSparkVFX>(data.level, data.xStart, data.yStart);
+            case Events::NewVFX::Type::Fanuc:         return std::make_unique<FanucVFX>(data.xStart, data.yStart);
+            case Events::NewVFX::Type::FireFly:       return std::make_unique<FireflyVFX>(data.xStart, data.yStart);
         }
         return nullptr;
     }

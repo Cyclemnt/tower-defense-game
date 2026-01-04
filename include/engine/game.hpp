@@ -21,6 +21,8 @@
 #include "core/managers/vfxManager.hpp"
 #include "core/managers/sfxManager.hpp"
 
+#include "core/animationGenerator.hpp"
+
 namespace tdg::core { class IWaveSource; class IMapSource; class IVideoRenderer; class IAudioRenderer; }
 
 namespace tdg::engine {
@@ -35,6 +37,8 @@ namespace tdg::engine {
         void update(float dt);
         void renderVideo(IVideoRenderer& renderer) const;
         void renderAudio(IAudioRenderer& audRenderer);
+
+        void generateBackgroundAnimations();
 
         bool buildTower(std::string towerType, int x, int y);
         bool upgradeTower(int x, int y);
@@ -78,6 +82,8 @@ namespace tdg::engine {
         TowerManager m_towerManager;
         VFXManager m_vfxManager;
         SFXManager m_sfxManager;
+
+        AnimationGenerator m_animation;
     };
 
 } // namespace tdg::engine

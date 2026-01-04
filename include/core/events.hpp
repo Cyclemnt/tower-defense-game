@@ -37,9 +37,9 @@ namespace tdg::core {
 
         // VFX Event
         struct NewVFX {
-            enum class Type { LaserBeam, GatlingTracer, HitSpark, Explosion };
+            enum class Type { LaserBeam, GatlingTracer, HitSpark, Explosion, Fanuc, FireFly };
 
-            NewVFX(NewVFX::Type t, unsigned int lvl, float x1, float y1, std::optional<float> x2 = std::nullopt, std::optional<float> y2 = std::nullopt) 
+            NewVFX(NewVFX::Type t, unsigned int lvl, float x1 = 0.0f, float y1 = 0.0f, std::optional<float> x2 = std::nullopt, std::optional<float> y2 = std::nullopt) 
                 : type(t), level(lvl), xStart(x1), yStart(y1), xEnd(x2), yEnd(y2) {}
 
             NewVFX::Type type;

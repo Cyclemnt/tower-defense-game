@@ -18,6 +18,7 @@ namespace tdg::core {
 
         int width() const noexcept { return m_width; }
         int height() const noexcept { return m_height; }
+        unsigned int level() const noexcept { return m_level; }
 
         const Tile* tileAt(int x, int y) const noexcept; // Returns a const ptr to the (x,y) tile
         Tile* tileAt(int x, int y) noexcept; // Returns a ptr to the (x,y) tile

@@ -118,6 +118,7 @@ namespace tdg::engine {
     }
 
     void GameManager::nextLevel() {
+        if (m_mapLevel >= 5u) m_window->close(); // Lazy
         m_waveLevel++;
         if (m_gameMode == State::Story) m_mapLevel++;
         loadLevel();
@@ -135,7 +136,7 @@ namespace tdg::engine {
 
     void GameManager::startArcadeMode() {
         m_waveSource = std::make_shared<infra::AutoWaveSource>();
-        m_waveLevel = 1u; m_mapLevel = 3u;
+        m_waveLevel = 0u; m_mapLevel = 3u;
         loadLevel();
         m_pause = false;
     }

@@ -1,4 +1,7 @@
 #include <stdexcept>
+#include <cstdint>
+#include <string>
+#include <utility>
 #include "core/map.hpp"
 #include "core/interfaces/iMapSource.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"
@@ -141,17 +144,35 @@ namespace tdg::core {
 
     std::string Map::randomTextureId(int x, int y) const noexcept {
         const uint32_t combined = static_cast<uint32_t>((x * 73857093U) ^ (y * 19349663U) + kSeed);
-        const uint32_t rnd = combined % 100U;
+        uint32_t rnd = combined % 100U; // 0..99
 
-        if (rnd < 70U) return "1";
-        else if (rnd < 72U) return "2";
-        else if (rnd < 74U) return "4";
-        else if (rnd < 76U) return "5";
-        else if (rnd < 78U) return "6";
-        else if (rnd < 80U) return "7";
-        else if (rnd < 90U) return "3";
-        else if (rnd < 91U) return "8";
-        else return "0";
+        using Entry = std::pair<uint8_t, const char*>;
+
+        static constexpr Entry L1[] = {{70,"8"}, {10,"7"}, {5,"1"}, {5,"2"}, {3,"3"}, {3,"4"}, {2,"5"}, {2,"6"}};
+        static constexpr Entry L2[] = {{75,"1"}, {10,"7"}, {2,"2"}, {3,"3"}, {4,"4"}, {4,"5"}, {2,"6"}};
+        static constexpr Entry L3[] = {{70,"1"}, {2,"2"}, {2,"4"}, {2,"5"}, {2,"6"}, {2,"7"}, {10,"3"}, {1,"8"}, {9,"0"}};
+        static constexpr Entry L4[] = {{49,"0"}, {7,"6"}, {3,"2"}, {10,"8"}, {10,"9"}, {5,"1"}, {5,"4"}, {5,"7"}, {3,"5"}, {2,"3"}, {1,"10"}};
+        static constexpr Entry L5[] = {{50,"1"}, {20,"6"}, {7,"8"}, {7,"2"}, {6,"5"}, {4,"4"}, {4,"7"}, {2,"3"}};
+
+        const Entry* table = nullptr;
+        std::size_t size = 0;
+
+        switch (m_level) {
+            case 1: table = L1; size = std::size(L1); break;
+            case 2: table = L2; size = std::size(L2); break;
+            case 3: table = L3; size = std::size(L3); break;
+            case 4: table = L4; size = std::size(L4); break;
+            default: table = L5; size = std::size(L5); break;
+        }
+
+        for (std::size_t i = 0; i < size; ++i) {
+            if (rnd < table[i].first)
+                return std::string(table[i].second);
+            rnd -= table[i].first;
+        }
+
+        // Security (shouldn't happen if probabilities sum up to 100)
+        return std::string(table[size - 1].second);
     }
 
     std::string Map::coreStorageTextureId() const noexcept {

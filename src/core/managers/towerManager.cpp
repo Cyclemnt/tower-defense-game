@@ -47,12 +47,12 @@ namespace tdg::core {
             if (tower->x() == x && tower->y() == y) {
                 // If player can afford,
                 if (!m_player.canAfford(tower->upgradeCost())) return false;
-                // Pay the upgrade
-                m_player.buy(tower->upgradeCost());
-                // Then upgrade
-                tower->upgrade();
-
-                return true;
+                // Then upgrade:
+                if (tower->upgrade()) {
+                    // Pay the upgrade
+                    m_player.buy(tower->upgradeCost());
+                    return true;
+                } else return false;
             }
         }
         return false;

@@ -1,0 +1,88 @@
+{
+  "timeline": [
+    {
+      "wave": 1,
+      "start_delay_ms": 2000,
+      "groups": [
+        { "enemy": "Mother", "level": 1, "count": 1, "interval_ms": 500 },
+        { "enemy": "Drone", "level": 1, "count": 15, "interval_ms": 300 },
+        { "enemy": "Minion", "level": 1, "count": 16, "interval_ms": 450 }
+      ]
+    },
+    {
+      "wave": 2,
+      "start_delay_ms": 1500,
+      "groups": [
+        { "enemy": "Drone", "level": 1, "count": 5, "interval_ms": 300 },
+        { "enemy": "Minion", "level": 1, "count": 6, "interval_ms": 450 }
+      ]
+    },
+    {
+      "wave": 3,
+      "start_delay_ms": 5000,
+      "groups": [
+        { "enemy": "MinionB", "level": 1, "count": 2, "interval_ms": 1200 },
+        { "enemy": "Drone", "level": 1, "count": 6, "interval_ms": 250 }
+      ]
+    },
+    {
+      "wave": 4,
+      "start_delay_ms": 0,
+      "groups": [
+        { "enemy": "Tank", "level": 1, "count": 2, "interval_ms": 800 },
+        { "enemy": "Minion", "level": 1, "count": 10, "interval_ms": 350 },
+        { "enemy": "Drone", "level": 1, "count": 4, "interval_ms": 300 }
+      ]
+    },
+    {
+      "wave": 5,
+      "start_delay_ms": 7000,
+      "groups": [
+        { "enemy": "TankB", "level": 1, "count": 1, "interval_ms": 0 },
+        { "enemy": "Minion", "level": 1, "count": 12, "interval_ms": 400 }
+      ]
+    },
+    {
+      "wave": 6,
+      "start_delay_ms": 1000,
+      "groups": [
+        { "enemy": "DroneB", "level": 1, "count": 2, "interval_ms": 1000 },
+        { "enemy": "Minion", "level": 1, "count": 14, "interval_ms": 300 }
+      ]
+    },
+    {
+      "wave": 7,
+      "start_delay_ms": 2500,
+      "groups": [
+        { "enemy": "Minion", "level": 1, "count": 20, "interval_ms": 120 },
+        { "enemy": "MinionB", "level": 1, "count": 1, "interval_ms": 0 }
+      ]
+    },
+    {
+      "wave": 8,
+      "start_delay_ms": 0,
+      "groups": [
+        { "enemy": "Tank", "level": 1, "count": 4, "interval_ms": 700 },
+        { "enemy": "Drone", "level": 1, "count": 8, "interval_ms": 220 }
+      ]
+    },
+    {
+      "wave": 9,
+      "start_delay_ms": 9000,
+      "groups": [
+        { "enemy": "TankB", "level": 1, "count": 2, "interval_ms": 1800 },
+        { "enemy": "DroneB", "level": 1, "count": 4, "interval_ms": 600 },
+        { "enemy": "Minion", "level": 1, "count": 10, "interval_ms": 350 }
+      ]
+    },
+    {
+      "wave": 10,
+      "start_delay_ms": 6000,
+      "groups": [
+        { "enemy": "TankB", "level": 1, "count": 1, "interval_ms": 0 },
+        { "enemy": "Minion", "level": 1, "count": 30, "interval_ms": 100 },
+        { "enemy": "DroneB", "level": 1, "count": 2, "interval_ms": 900 }
+      ]
+    }
+  ]
+}

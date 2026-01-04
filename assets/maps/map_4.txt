@@ -8,7 +8,7 @@ O O O . . O O O O O . . . . . . . O O . . . . O . O O O
 . . O O O . O O O O . O . . O O O . . . . . . . . . . .
 . . . . . . O O . O . O . O O O . . . . . . . . . . . .
 . . . . . . O O O O . O O O O O O O . . . . . . . . . .
-. . . . E # # O . O . O O O . O . O # # X . . . . . . .
+. . . . E # # O . C . O O O . O . O # # X . . . . . . .
 . . . . . . O . O O . O O O O O . . . . . . . . . . . .
 . . . . . . O . O O O . . . . . O O O O O O O . . . . .
 . . . . . . O . O O O O O O O O O . . . . . O . . . . .

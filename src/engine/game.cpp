@@ -17,7 +17,8 @@ namespace tdg::engine {
         m_creatureManager(*m_map, *m_pathfinder, m_cores, m_player, m_roamingCoreManager.roamingCores()),
         m_towerManager(*m_map, m_player, m_creatureManager.creatures()),
         m_vfxManager(),
-        m_sfxManager(m_events.sfxs)
+        m_sfxManager(m_events.sfxs),
+        m_animation(*m_map)
     {
         m_map->setCoreStorageFillRatioRequest([this](){ return m_cores.ratio(); });
     }
@@ -27,6 +28,9 @@ namespace tdg::engine {
 
         // Update WaveManager
         m_waveManager->update(dt, m_events);
+
+        // Generate animations
+        m_animation.generate(dt, m_events);
 
         // Create and update VFXs
         m_vfxManager.update(dt, m_events);
@@ -41,7 +45,7 @@ namespace tdg::engine {
         m_towerManager.update(dt, m_events);
 
         // If no creatures left, load next wave
-        if (isWaveOver() && !isGameOver()) {
+        if (isWaveOver() && !isGameOver() && !isVictory()) {
             m_waveManager->loadNext();
             m_events.sfxs.emplace(Events::NewSFX::Type::NextWave);
         }

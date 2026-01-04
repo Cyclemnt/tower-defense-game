@@ -9,6 +9,7 @@ namespace {
     inline void trim(std::string& s);
     inline std::string extractStringValue(const std::string& src, const std::string& key);
     inline int extractIntValue(const std::string& src, const std::string& key);
+    inline std::optional<int> extractOptionalIntValue(const std::string& src, const std::string& key);
     inline std::string extractArraySection(const std::string& src, const std::string& key);
     inline std::vector<std::string> splitObjects(const std::string& arrContent);
 }
@@ -76,7 +77,7 @@ namespace tdg::infra {
                     core::Creature::Type type = parseType(extractStringValue(g, "enemy"));
                     unsigned int level = static_cast<unsigned int>(extractIntValue(g, "level"));
                     int count = extractIntValue(g, "count");
-                    int entrance = extractIntValue(g, "entrance");
+                    std::optional<int> entrance = extractOptionalIntValue(g, "entrance");
                     float interval = extractIntValue(g, "interval_ms") * 0.001f;
 
                     for (int i = 0; i < count; ++i) {
@@ -95,6 +96,7 @@ namespace tdg::infra {
         if      (n == "Minion")  return core::Creature::Type::Minion;
         else if (n == "Drone")   return core::Creature::Type::Drone;
         else if (n == "Tank")    return core::Creature::Type::Tank;
+        else if (n == "Mother")    return core::Creature::Type::Mother;
         else return core::Creature::Type::Minion;
     }
 
@@ -130,6 +132,17 @@ namespace {
         if (pos == std::string::npos) return 0;
         size_t start = src.find_first_of("-0123456789", pos);
         if (start == std::string::npos) return 0;
+        size_t end = src.find_first_not_of("0123456789", start + 1);
+        return std::stoi(src.substr(start, end - start));
+    }
+
+    inline std::optional<int> extractOptionalIntValue(const std::string& src, const std::string& key) {
+        size_t pos = src.find("\"" + key + "\"");
+        if (pos == std::string::npos) return std::nullopt;
+        pos = src.find(':', pos);
+        if (pos == std::string::npos) return std::nullopt;
+        size_t start = src.find_first_of("-0123456789", pos);
+        if (start == std::string::npos) return std::nullopt;
         size_t end = src.find_first_not_of("0123456789", start + 1);
         return std::stoi(src.substr(start, end - start));
     }
