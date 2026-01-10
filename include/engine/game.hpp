@@ -67,6 +67,7 @@ namespace tdg::engine {
 
     private:        
         unsigned long m_tick{0u};
+        bool m_over{false};
         
         std::unique_ptr<Map> m_map;
         std::unique_ptr<IPathfinder> m_pathfinder;

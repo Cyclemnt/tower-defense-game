@@ -50,7 +50,7 @@ namespace tdg::core {
 
         // Events happening on Creatures Paths
         struct OnPath {
-            enum class Type { ArrivedAtCore, ReachedExit };
+            enum class Type { CaughtCores, ArrivedAtCore, ReachedExit };
 
             OnPath(OnPath::Type t, Creature* c) : type(t), creature(c) {}
 

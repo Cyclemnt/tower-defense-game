@@ -13,6 +13,7 @@ namespace tdg::infra {
     public:
         const sf::Texture& getTexture(const std::string& name);
         const sf::SoundBuffer& getSound(const std::string& name);
+        void reset();
 
     private:
         std::unordered_map<std::string, sf::Texture> m_textures;

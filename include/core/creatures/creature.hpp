@@ -30,7 +30,7 @@ namespace tdg::core {
 
         virtual void update(float dt, Events& events, std::vector<RoamingCore>& roamingCores); // Main function to follow m_path and generate events
 
-        void pickUpRoamingCores(std::vector<RoamingCore>& roamingCores);
+        bool pickUpRoamingCores(std::vector<RoamingCore>& roamingCores);
 
         bool isAlive() const noexcept { return m_alive; }
         float health() const noexcept { return m_health; }

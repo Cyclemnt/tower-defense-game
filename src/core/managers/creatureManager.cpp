@@ -72,6 +72,14 @@ namespace tdg::core {
             Events::OnPath& event = events.onPath.front();
             switch (event.type) {
 
+                // Creature caught roaming cores:
+                case Events::OnPath::Type::CaughtCores: {
+                    // New path to exit
+                    std::vector<const Tile*> bestPath = m_pathfinder.findPathToClosestGoal(event.creature->nextTile(), m_map.exitPoints());
+                    event.creature->setPath(std::move(bestPath));
+                    break;
+                }
+
                 // Creature reached CoreStorage:
                 case Events::OnPath::Type::ArrivedAtCore: {
                     // Steal cores

@@ -36,4 +36,9 @@ namespace tdg::infra {
         return m_soundBuffers.at(name);
     }
 
+    void SFMLResourceManager::reset() {
+        m_textures.clear();
+        m_soundBuffers.clear();
+    }
+
 } // namespace tdg::infra

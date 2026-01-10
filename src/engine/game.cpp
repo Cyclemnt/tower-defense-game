@@ -50,8 +50,8 @@ namespace tdg::engine {
             m_events.sfxs.emplace(Events::NewSFX::Type::NextWave);
         }
 
-        // if (isGameOver()) m_events.sfxs.emplace(Events::NewSFX::Type::GameOver);
-        // if (isVictory()) m_events.sfxs.emplace(Events::NewSFX::Type::LevelCompleted);
+        if (isGameOver() && !m_over) { m_over = true; m_events.sfxs.emplace(Events::NewSFX::Type::GameOver); }
+        if (isVictory() && !m_over) { m_over = true; m_events.sfxs.emplace(Events::NewSFX::Type::LevelCompleted); }
     }
 
     void Game::renderVideo(IVideoRenderer& vidRenderer) const {

@@ -48,19 +48,23 @@ namespace tdg::core {
                 distanceToTravel = 0.0f;
             }
         }
-        pickUpRoamingCores(roamingCores);
+        if (pickUpRoamingCores(roamingCores)) events.onPath.emplace(Events::OnPath::Type::CaughtCores, this);
     }
 
-    void Creature::pickUpRoamingCores(std::vector<RoamingCore>& roamingCores) {
+    bool Creature::pickUpRoamingCores(std::vector<RoamingCore>& roamingCores) {
+        bool pickedUp = false;
         for (RoamingCore& roamingCore : roamingCores) {
-        if (remainingCapacity() == 0u) return;
+            if (remainingCapacity() == 0u) return pickedUp;
             float dx = roamingCore.px() - m_px;
             float dy = roamingCore.py() - m_py;
             float d = std::sqrt(dx * dx + dy * dy);
             if (d < 0.5f) {
-                stealCores(roamingCore.pickUp(remainingCapacity()));
+                unsigned int amount = roamingCore.pickUp(remainingCapacity());
+                stealCores(amount);
+                if (amount > 0u) pickedUp = true;
             }
         }
+        return pickedUp;
     }
 
     void Creature::takeDamage(float amount) {
