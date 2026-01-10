@@ -84,6 +84,8 @@ namespace tdg::engine {
                 processCommands();
             }
 
+            m_audioRenderer->setPitch(m_gameSpeed);
+
             // Update
             float dt = m_clock.restart().asSeconds();
             if (m_game) m_game->update(dt * m_gameSpeed * !m_pause);

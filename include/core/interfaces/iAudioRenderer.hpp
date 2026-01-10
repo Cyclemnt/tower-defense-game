@@ -10,6 +10,11 @@ namespace tdg::core {
         virtual ~IAudioRenderer() = default;
 
         virtual void playSound(const std::string& soundId) = 0;
+
+        virtual void setPitch(float pitch) { m_pitch = pitch; }
+
+    protected:
+        float m_pitch{1.0f};
     };
 
 } // namespace tdg::core

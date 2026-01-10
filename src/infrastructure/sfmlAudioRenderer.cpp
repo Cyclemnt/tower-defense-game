@@ -10,6 +10,7 @@ namespace tdg::infra {
         try {
             const sf::SoundBuffer& buffer = m_ressources->getSound(soundId);
             std::unique_ptr<sf::Sound> s = std::make_unique<sf::Sound>(buffer);
+            s->setPitch(m_pitch);
             s->play();
             m_buffer.push_back(std::move(s));
         }
