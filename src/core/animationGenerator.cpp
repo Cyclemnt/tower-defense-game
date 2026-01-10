@@ -26,9 +26,9 @@ namespace tdg::core {
         
         switch (level) {
             case 1u: if (rnd < 2) events.vfxs.emplace(Events::NewVFX::Type::Fanuc, level, rndX, rndY); break;
-            case 2u: break;
-            case 3u: break;
-            case 4u: break;
+            case 2u: if (rnd < 8) events.vfxs.emplace(Events::NewVFX::Type::Tumbleweed, level, rndX, rndY); break;
+            case 3u: if (rnd < 8) events.vfxs.emplace(Events::NewVFX::Type::Butterfly, level, rndX, rndY); break;
+            case 4u: if (rnd < 8) events.vfxs.emplace(Events::NewVFX::Type::Pipou, level, rndX, rndY); break;
             case 5u: if (rnd < 20) events.vfxs.emplace(Events::NewVFX::Type::FireFly, level, rndX, rndY); break;
             
             default: break;

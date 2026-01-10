@@ -1,14 +1,14 @@
 #include <cmath>
-#include "core/vfxs/butterflyVFX.hpp"
+#include "core/vfxs/pipouVFX.hpp"
 #include "core/interfaces/iVideoRenderer.hpp"
 
 namespace tdg::core {
     
-    ButterflyVFX::ButterflyVFX(float x1, float y1)
+    PipouVFX::PipouVFX(float x1, float y1)
         : VFX(1u, x1, y1)
     {
         // World limits
-        const float minX = -5.0f; const float maxX = 27.0f;
+        const float minX = -5.0f; const float maxX = 33.0f;
 
         float r0 = static_cast<float>(std::rand()) / RAND_MAX;
         m_x1 = minX + r0 * (maxX - minX);
@@ -21,7 +21,7 @@ namespace tdg::core {
         m_lifetime = m_timetolive = (xFinal - m_x1) / m_speed;
     }
 
-    void ButterflyVFX::update(float dt) {
+    void PipouVFX::update(float dt) {
         ++m_tick;
         if (m_timetolive > 0.0f) {
             m_timetolive -= std::min(m_timetolive, dt);
@@ -31,13 +31,13 @@ namespace tdg::core {
         else m_alive = false;
     }
 
-    void ButterflyVFX::draw(IVideoRenderer& vidRenderer) const {
-        int frame = m_tick / 8 % 4;
-        std::string id = "vfx/butterfly_" + std::to_string(frame);
+    void PipouVFX::draw(IVideoRenderer& vidRenderer) const {
+        int frame = m_tick / 6 % 4;
+        std::string id = "vfx/pipou_" + std::to_string(frame);
         vidRenderer.drawSprite(id, m_x1, m_y1, 1.0f, utils::Color(255,255,255,m_alpha));
     }
 
-    void ButterflyVFX::computeFade() {
+    void PipouVFX::computeFade() {
         float timeElapsed = m_lifetime - m_timetolive;
 
         float fadeIn = timeElapsed / m_fadeDuration;
@@ -50,18 +50,17 @@ namespace tdg::core {
         m_alpha = static_cast<unsigned int>(255.0f * alphaFactor);
     }
 
-    void ButterflyVFX::randomizePosition(float dt) {
+    void PipouVFX::randomizePosition(float dt) {
         m_time += dt;
 
         // Move forward
         m_x1 += m_speed * dt;
 
         // Chaos
-        float flutterFast = std::sin(m_time * 6.0f) * 0.2f;
+        float flutterFast = std::sin(m_time * 6.0f) * 0.6f;
         float flutterSlow = std::sin(m_time * 2.3f + 1.7f) * 0.2f;
-        float upwardKick = std::max(0.0f, std::sin(m_time * 1.2f)) * 0.2f;
 
-        m_y1 += (flutterFast + flutterSlow + upwardKick) * dt;
+        m_y1 += (flutterFast + flutterSlow) * dt;
     }
 
 } // namespace tdg::core

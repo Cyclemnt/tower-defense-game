@@ -1,13 +1,13 @@
-#ifndef BUTTERFLY_VFX_HPP
-#define BUTTERFLY_VFX_HPP
+#ifndef PIPOU_VFX_HPP
+#define PIPOU_VFX_HPP
 
 #include "core/vfxs/vfx.hpp"
 
 namespace tdg::core {
     
-    class ButterflyVFX final : public VFX {
+    class PipouVFX final : public VFX {
     public:
-        ButterflyVFX(float x1, float y1);
+        PipouVFX(float x1, float y1);
 
         void update(float dt) override; // Updates the time to live and opacity of the effect
 
@@ -19,7 +19,7 @@ namespace tdg::core {
         
     float m_time{0.0f};
 
-        float m_speed{0.7};
+        float m_speed{2.1};
 
         float m_lifetime{60.0f};
         float m_fadeDuration{5.0f};
@@ -29,4 +29,4 @@ namespace tdg::core {
 
 } // namespace tdg::core
 
-#endif // BUTTERFLY_VFX_HPP
+#endif // PIPOU_VFX_HPP

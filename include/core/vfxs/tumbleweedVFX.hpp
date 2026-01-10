@@ -1,13 +1,13 @@
-#ifndef BUTTERFLY_VFX_HPP
-#define BUTTERFLY_VFX_HPP
+#ifndef TUMBLEWEED_VFX_HPP
+#define TUMBLEWEED_VFX_HPP
 
 #include "core/vfxs/vfx.hpp"
 
 namespace tdg::core {
     
-    class ButterflyVFX final : public VFX {
+    class TumbleweedVFX final : public VFX {
     public:
-        ButterflyVFX(float x1, float y1);
+        TumbleweedVFX(float x1, float y1);
 
         void update(float dt) override; // Updates the time to live and opacity of the effect
 
@@ -17,9 +17,7 @@ namespace tdg::core {
         void computeFade();
         void randomizePosition(float dt);
         
-    float m_time{0.0f};
-
-        float m_speed{0.7};
+        float m_speed{1.8};
 
         float m_lifetime{60.0f};
         float m_fadeDuration{5.0f};
@@ -29,4 +27,4 @@ namespace tdg::core {
 
 } // namespace tdg::core
 
-#endif // BUTTERFLY_VFX_HPP
+#endif // TUMBLEWEED_VFX_HPP
