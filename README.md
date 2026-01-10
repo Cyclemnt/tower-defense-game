@@ -1,83 +1,79 @@
-# Tower Defense Game
-A simplified tower defense game in C++.
+# Tower Defense Game (C++)
 
-## Overview
-This project is an educational implementation of a tower defense game.  
-It is designed with an **object-oriented approach** in C++ and follows principles of clean architecture (SOLID).  
+This project is a Tower Defense game developed in C++ using the **SFML** library for rendering and **TGUI** for the user interface. The architecture is segmented into three distinct layers: logic core (`tdg::core`), orchestration (`tdg::engine`), and infrastructure (`tdg::infra`).
 
-The codebase is modular and aims to separate the following concerns:
-- **Map management** (tiles, entry zones, exit zones, core storage).
-- **Pathfinding** (finding shortest paths for creatures).
-- **Game entities** (creatures, towers, resources).
-- **Game loop** (spawning, updating, interactions between entities).
+## How to Play
 
-The project currently runs in **console mode** for debugging and testing purposes.  
-Later iterations may use **SFML** and **TGUI** for rendering and UI.
+A ready-to-run executable is available in the **Releases** section of this GitHub repository. Download the latest version, extract the archive, and run the `TowerDefense` executable.
 
----
+## Technical Features
 
-## Game Concept
-- The game is played on a **grid-based, top-down map**.
-- A limited number of **cores** (the resource to defend) are stored in a special tile.
-- **Creatures** spawn from entry zones and attempt to reach the core storage using the shortest path.
-- If a creature reaches the core storage:
-  - It steals one core.
-  - It then tries to reach an exit zone, again following the shortest path.
-- If a creature carrying a core is destroyed:
-  - The core returns to the base.
-- If the creature exits the map with the core:
-  - The core is lost permanently.
-- **Towers** can be built by the player to defend the base:
-  - Different tower types exist (e.g., Gun, Laser, Inferno).
-  - Towers have stats such as damage, range, fire rate, and whether they deal area damage.
-  - Towers can be upgraded to higher levels.
-- Towers cost **materials** to build:
-  - Three types exist: Au (gold), Ag (silver), Cu (copper).
-  - The player starts with a limited stock (enough for 3–4 towers).
-  - Defeating creatures grants additional materials.
+* **Decoupled Architecture**: Strict separation between business logic and implementation details (rendering, audio, I/O).
+* **A* Pathfinding**: Implementation of the A* algorithm with a Manhattan heuristic, optimized to recalculate paths only when the map topology changes.
+* **Event System**: Asynchronous communication between entities and managers via typed event queues.
+* **Resource Management**: Use of factories for creature and tower instantiation, and a centralized resource manager for texture and sound caching.
+* **Rendering Optimization**: Implementation of a "view culling" system (`isInView`) to maintain high performance (120+ FPS) even with numerous active entities.
 
----
+## Architecture
 
-## Map and Gameplay Mechanics
-- The map is made of different **tiles**:
-  - `Path` tiles: walkable by creatures.
-  - `OpenZone` tiles: buildable areas for towers.
-  - `EntryZone` tiles: where creatures spawn.
-  - `ExitZone` tiles: where creatures attempt to escape.
-  - `CoreStorage` tile: where the cores are initially stored.
-  - `EmptyZone` tiles: neutral/unusable areas.
-- Creatures always search for the **shortest available path**.
-- The player can **strategically place towers** to lengthen enemy paths and maximize damage dealt.
-- If all paths to the resource are blocked:
-  - Creatures will still attempt to reach the resource using the last known path.
-  - Towers cannot permanently prevent access to the cores.
+The project follows a modular structure:
 
----
+* **tdg::core**: Game rules, world state, and update semantics.
+* **tdg::engine**: Main loop, input handling, and GUI interfacing.
+* **tdg::infra**: Concrete implementations (SFML rendering, audio, JSON file loading).
 
-## Technical Details
-- **Language**: C++17  
-- **Build System**: CMake  
-- **Core libraries**: STL (no external dependencies at this stage)  
-- **Future libraries**: [SFML](https://www.sfml-dev.org/) for graphics, [TGUI](https://tgui.eu/) for UI  
+## Tech Stack
 
-### Key Components
-- `Tile` and its subclasses (`Path`, `OpenZone`, `EntryZone`, `ExitZone`, `CoreStorage`, `EmptyZone`).
-- `Map`: manages the grid and stores references to special zones.
-- `Pathfinder`: implements A* to compute shortest paths.
-- `Creature`: represents an enemy (HP, shield, speed, cores carried).
-- `Tower`: represents a defense structure (stats, upgrade system, attack logic).
-- `Game`: the main loop, spawns enemies, updates entities, and checks win/lose conditions.
+* **Language**: C++17
+* **Graphics**: SFML
+* **Interface**: TGUI
+* **Build System**: CMake
+* **Dependency Management**: vcpkg
+* **Data**: JSON files for waves and plain text files for maps.
 
----
+## Installation & Build (for Developers)
 
-## Current Status
-- **UML draft** designed and partially implemented.  
-- Base class structure created (`Tile`, `Map`, `Creature`, `Tower`).  
-- Pathfinding algorithm (A*) implemented and tested on sample maps.  
-- Work in progress: completing tower types, defining game loop, resource management.  
+### Prerequisites
 
----
+Ensure you have a C++17 compatible compiler and CMake installed.
 
-## Contributors
-- Clément Lamouller
-- Luan Parizot
+### Build Instructions
+
+1. Clone the repository:
+```bash
+git clone https://github.com/Cyclemnt/tower-defense-game.git
+cd tower-defense-game
+
+```
+
+2. Configure and build:
+```bash
+mkdir build && cd build
+cmake ..
+make
+
+```
+
+3. Run the game:
+```bash
+./tower_defense_cxx
+
+```
+
+## Branch Structure
+
+The repository is organized to ensure transparency of the final deliverable:
+
+* **main**: Official stable version submitted on December 19th.
+* **dev**: Development branch containing extended features (Biome system, Roaming Cores, refactored Managers, and CommandBus).
+
+To try the extended version: `git checkout dev`
+
+## Authors
+
+* Clément Lamouller
+* Luan Parizot
+
+## License
+
+This project was developed for educational purposes as part of a Computer Science course.
