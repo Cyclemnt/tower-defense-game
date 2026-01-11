@@ -84,8 +84,6 @@ namespace tdg::engine {
                 processCommands();
             }
 
-            m_audioRenderer->setPitch(m_gameSpeed);
-
             // Update
             float dt = m_clock.restart().asSeconds();
             if (m_game) m_game->update(dt * m_gameSpeed * !m_pause);
@@ -131,7 +129,7 @@ namespace tdg::engine {
 
     void GameManager::startStoryMode() {
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
-        m_waveLevel = m_mapLevel = 1u;
+        m_waveLevel = m_mapLevel = 5u;
         loadLevel();
         m_pause = false;
     }
@@ -185,6 +183,7 @@ namespace tdg::engine {
                 case Command::Type::setSpeed: {
                     if (auto p = std::get_if<setGameSpeedPayload>(&c.payload.value())) {
                         setGameSpeed(p->speed);
+                        m_audioRenderer->setPitch(m_gameSpeed);
                     }
                     break;
                 }

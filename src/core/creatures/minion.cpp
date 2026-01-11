@@ -9,7 +9,7 @@ namespace tdg::core {
             /* speed */ 1.0f,
             /* coresCapacity */ 1u,
             /* loot */ {
-                0u,                     // Au
+                1u,                     // Au
                 level == 2u ? 5u : 1u,  // Ag
                 level == 2u ? 10u : 5u  // Cu
             },

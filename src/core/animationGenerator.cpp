@@ -13,6 +13,8 @@ namespace tdg::core {
     }
 
     void AnimationGenerator::generate(float dt, Events& events) {
+        if (dt == 0.0f) return;
+        
         int rnd = std::rand() % 1000;
         
         unsigned int level = m_map.level();

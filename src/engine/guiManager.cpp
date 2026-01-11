@@ -26,7 +26,7 @@ namespace tdg::engine {
     }
     
     void TGUIManager::handleLeftClick(sf::Vector2i pixel) {
-        m_towerPanel->handleClick(pixel);
+        if (m_towerPanel->handleClick(pixel)) return; // If click consumed by UI
         sf::Vector2i tilePos = sf::Vector2i(m_window->mapPixelToCoords(pixel) / *m_tileSize);
         m_towerPanel->handleTileClick(tilePos);
     }
