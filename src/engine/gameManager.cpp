@@ -129,7 +129,7 @@ namespace tdg::engine {
 
     void GameManager::startStoryMode() {
         m_waveSource = std::make_shared<infra::JsonWaveSource>("../assets/waves/");
-        m_waveLevel = m_mapLevel = 5u;
+        m_waveLevel = m_mapLevel = 1u;
         loadLevel();
         m_pause = false;
     }

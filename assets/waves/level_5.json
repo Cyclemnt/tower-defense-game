@@ -5,12 +5,12 @@
       "start_delay_ms": 2000,
       "groups": [
         { "enemy": "Mother", "level": 1, "count": 1, "interval_ms": 3000 },
-        { "enemy": "Tank", "level": 1, "count": 15, "interval_ms": 2000 },
-        { "enemy": "Tank", "level": 2, "count": 15, "interval_ms": 2000 },
-        { "enemy": "Drone", "level": 1, "count": 15, "interval_ms": 800 },
-        { "enemy": "Drone", "level": 2, "count": 15, "interval_ms": 800 },
+        { "enemy": "Tank", "level": 1, "count": 10, "interval_ms": 2000 },
+        { "enemy": "Tank", "level": 2, "count": 10, "interval_ms": 2000 },
+        { "enemy": "Drone", "level": 1, "count": 10, "interval_ms": 800 },
+        { "enemy": "Drone", "level": 2, "count": 10, "interval_ms": 800 },
         { "enemy": "Minion", "level": 1, "count": 20, "interval_ms": 600 },
-        { "enemy": "Minion", "level": 2, "count": 20, "interval_ms": 600 }
+        { "enemy": "Minion", "level": 2, "count": 10, "interval_ms": 600 }
       ]
     },
     {
