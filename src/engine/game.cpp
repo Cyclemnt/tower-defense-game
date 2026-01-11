@@ -94,6 +94,7 @@ namespace tdg::engine {
     bool Game::buildTower(std::string towerType, int x, int y) {
         if (isGameOver()) return false;
         bool towerBuilt = false;
+        if (towerType == "Wall") towerBuilt = m_towerManager.buildTower(Tower::Type::Wall, x, y);
         if (towerType == "Gatling") towerBuilt = m_towerManager.buildTower(Tower::Type::Gatling, x, y);
         if (towerType == "Mortar") towerBuilt = m_towerManager.buildTower(Tower::Type::Mortar, x, y);
         if (towerType == "Laser") towerBuilt = m_towerManager.buildTower(Tower::Type::Laser, x, y);
@@ -151,6 +152,7 @@ namespace tdg::engine {
     }
 
     std::optional<Materials> Game::towerCost(std::string towerType) const {
+        if (towerType == "Wall") return TowerFactory::getCost(Tower::Type::Wall);
         if (towerType == "Gatling") return TowerFactory::getCost(Tower::Type::Gatling);
         if (towerType == "Mortar") return TowerFactory::getCost(Tower::Type::Mortar);
         if (towerType == "Laser") return TowerFactory::getCost(Tower::Type::Laser);

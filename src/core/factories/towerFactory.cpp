@@ -3,6 +3,7 @@
 #include "core/towers/gatling.hpp"
 #include "core/towers/mortar.hpp"
 #include "core/towers/laser.hpp"
+#include "core/towers/wall.hpp"
 
 namespace tdg::core {
     
@@ -11,6 +12,7 @@ namespace tdg::core {
             case Tower::Type::Gatling: return std::make_unique<Gatling>(x, y, getCost(type));
             case Tower::Type::Mortar:  return std::make_unique<Mortar>(x, y, getCost(type));
             case Tower::Type::Laser:   return std::make_unique<Laser>(x, y, getCost(type));
+            case Tower::Type::Wall:    return std::make_unique<Wall>(x, y, getCost(type));
         }
         return nullptr;
     }
@@ -20,6 +22,7 @@ namespace tdg::core {
             case Tower::Type::Gatling: return Materials(0u,  0u,  50u);
             case Tower::Type::Mortar:  return Materials(0u,  0u,  75u);
             case Tower::Type::Laser:   return Materials(0u, 10u, 100u);
+            case Tower::Type::Wall:    return Materials(0u,  0u,  25u);
         }
         return Materials(0,0,0);
     }

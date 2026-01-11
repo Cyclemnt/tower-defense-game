@@ -13,7 +13,7 @@ namespace tdg::core {
 
     class Tower : public Renderable {
     public:
-        enum class Type { Gatling, Mortar, Laser };
+        enum class Type { Gatling, Mortar, Laser, Wall };
 
         struct Stats {
             float damage{0.0f};

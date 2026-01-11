@@ -12,7 +12,7 @@ namespace tdg::engine {
 
     class TowerPanel {
     public:
-        enum class Mode { None, Sell, Upgrade, Gatling, Mortar, Laser };
+        enum class Mode { None, Sell, Upgrade, Gatling, Mortar, Laser, Wall };
         
         TowerPanel(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus);
 

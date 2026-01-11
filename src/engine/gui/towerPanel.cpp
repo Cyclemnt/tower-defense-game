@@ -12,7 +12,8 @@ namespace tdg::engine {
     TowerPanel::TowerPanel(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<float> tileSize, std::shared_ptr<CommandBus> bus)
         : m_window(window), m_tileSize(tileSize), m_bus(bus)
     {
-        m_towerNames = {"Gatling", "Mortar", "Laser"};
+        m_towerNames = {"Wall", "Gatling", "Mortar", "Laser"};
+        m_towerPanels.push_back(sf::FloatRect());
         m_towerPanels.push_back(sf::FloatRect());
         m_towerPanels.push_back(sf::FloatRect());
         m_towerPanels.push_back(sf::FloatRect());
@@ -50,9 +51,10 @@ namespace tdg::engine {
                 bool affordable = m_game.lock()->canAfford(m_towerNames[i]);;
                 if (!affordable) return true;
                 switch (i) {
-                    case 0: m_mode = (m_mode == Mode::Gatling) ? Mode::None : Mode::Gatling; break;
-                    case 1: m_mode = (m_mode == Mode::Mortar) ? Mode::None : Mode::Mortar; break;
-                    case 2: m_mode = (m_mode == Mode::Laser) ? Mode::None : Mode::Laser; break;
+                    case 0: m_mode = (m_mode == Mode::Wall) ? Mode::None : Mode::Wall; break;
+                    case 1: m_mode = (m_mode == Mode::Gatling) ? Mode::None : Mode::Gatling; break;
+                    case 2: m_mode = (m_mode == Mode::Mortar) ? Mode::None : Mode::Mortar; break;
+                    case 3: m_mode = (m_mode == Mode::Laser) ? Mode::None : Mode::Laser; break;
                     default: break;
                 }
                 return true;
@@ -75,6 +77,7 @@ namespace tdg::engine {
         else {
             Command c{Command::Type::Build, std::nullopt};
             switch (m_mode) {
+                case Mode::Wall: c.payload = BuildPayload{"Wall", tilePos.x, tilePos.y}; break;
                 case Mode::Gatling: c.payload = BuildPayload{"Gatling", tilePos.x, tilePos.y}; break;
                 case Mode::Mortar: c.payload = BuildPayload{"Mortar", tilePos.x, tilePos.y}; break;
                 case Mode::Laser: c.payload = BuildPayload{"Laser", tilePos.x, tilePos.y}; break;
@@ -129,7 +132,7 @@ namespace tdg::engine {
 
     void TowerPanel::drawBackPanel(core::IVideoRenderer& vidRenderer) {
         float panelW = 356;
-        float panelH = 302;
+        float panelH = 302 + 67;
         float panelX = 10.0f;
         float panelY = m_window->getSize().y - panelH - 10.0f;
         m_backPanel = sf::FloatRect({panelX, panelY}, {panelW, panelH});
@@ -141,13 +144,13 @@ namespace tdg::engine {
         if (m_game.expired()) return;
 
         const float margin = 10.0f;
-        const float lineH = (m_backPanel.size.y - 86.0f) / 3.0f - margin * 0.5f;
+        const float lineH = (m_backPanel.size.y - 86.0f) / 4.0f - margin * 0.5f;
         const float iconSize = lineH * 0.7f;
 
-        std::string towerIconNames[3] = {"icons/gatling", "icons/mortar", "icons/laser"};
+        std::string towerIconNames[4] = {"icons/wall", "icons/gatling", "icons/mortar", "icons/laser"};
         std::string matsIconNames[3] = {"icons/gold", "icons/silver", "icons/copper"};
 
-        for (size_t i = 0; i < 3; ++i) {
+        for (size_t i = 0; i < 4; ++i) {
             bool affordable = m_game.lock()->canAfford(m_towerNames[i]);
 
             const float btnW = m_backPanel.size.x - 2 * margin;
@@ -159,16 +162,18 @@ namespace tdg::engine {
             utils::Color fill;
             if (m_mode == Mode::Sell) fill = {150u,60u,60u,150u};
             else if (m_mode == Mode::Upgrade) fill = {145u,150u,60u,150u};
-            else if (m_mode == Mode::Gatling && i == 0) fill = {200u,180u,60u,160u};
-            else if (m_mode == Mode::Mortar && i == 1) fill = {200u,180u,60u,160u};
-            else if (m_mode == Mode::Laser && i == 2) fill = {200u,180u,60u,160u};
+            else if (m_mode == Mode::Wall && i == 0) fill = {200u,180u,60u,160u};
+            else if (m_mode == Mode::Gatling && i == 1) fill = {200u,180u,60u,160u};
+            else if (m_mode == Mode::Mortar && i == 2) fill = {200u,180u,60u,160u};
+            else if (m_mode == Mode::Laser && i == 3) fill = {200u,180u,60u,160u};
             else if (affordable) fill = {80u,80u,80u,180u};
             else fill = {50u,50u,50u,100u};
 
             
-            if (m_mode == Mode::Gatling && i == 0 && !affordable) m_mode = Mode::None;
-            else if (m_mode == Mode::Mortar && i == 1 && !affordable) m_mode = Mode::None;
-            else if (m_mode == Mode::Laser && i == 2 &&  !affordable) m_mode = Mode::None;
+            if (m_mode == Mode::Wall && i == 0 && !affordable) m_mode = Mode::None;
+            else if (m_mode == Mode::Gatling && i == 1 && !affordable) m_mode = Mode::None;
+            else if (m_mode == Mode::Mortar && i == 2 && !affordable) m_mode = Mode::None;
+            else if (m_mode == Mode::Laser && i == 3 &&  !affordable) m_mode = Mode::None;
 
             const float thickness = 1.5f;
 

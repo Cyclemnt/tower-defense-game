@@ -31,7 +31,7 @@ namespace tdg::core {
     protected:
         float m_px{0.0f}, m_py{0.0f};
         unsigned int m_groupQuantity{0u};
-        float m_speed{0.5f};
+        float m_speed{0.15f};
 
         size_t m_pathIndex{0};
         std::vector<const Tile*> m_path;
