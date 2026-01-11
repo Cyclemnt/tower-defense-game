@@ -12,14 +12,6 @@
         { "enemy": "Minion", "level": 1, "count": 20, "interval_ms": 600 },
         { "enemy": "Minion", "level": 2, "count": 10, "interval_ms": 600 }
       ]
-    },
-    {
-      "wave": 2,
-      "start_delay_ms": 1500,
-      "groups": [
-        { "enemy": "Drone", "level": 1, "count": 5, "interval_ms": 300 },
-        { "enemy": "Minion", "level": 1, "count": 6, "interval_ms": 450 }
-      ]
     }
   ]
 }
