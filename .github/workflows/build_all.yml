@@ -123,7 +123,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tower-defense-game-linux-x64
-          path: tower-defense-game-linux-x64.tar.gz^
+          path: tower-defense-game-linux-x64.tar.gz
 
 
 
