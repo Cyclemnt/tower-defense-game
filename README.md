@@ -2,7 +2,7 @@
 
 This project is a Tower Defense game developed in C++ using the **SFML** library for rendering and **TGUI** for the user interface. The architecture is segmented into three distinct layers: logic core (`tdg::core`), orchestration (`tdg::engine`), and infrastructure (`tdg::infra`).
 
-![Tower Defense Gameplay](docs/assets/gameplay-1.png)
+![Tower Defense Gameplay](screenshots/gameplay-1.png)
 
 ## How to Play
 
@@ -84,11 +84,11 @@ This project was developed for educational purposes as part of a Computer Scienc
 
 <table align="center">
   <tr>
-    <td align="center"><img src="docs/assets/gameplay-2.png" alt="Level 1 overview"/></td>
-    <td align="center"><img src="docs/assets/gameplay-3.png" alt="Level 2 overview"/></td>
+    <td align="center"><img src="screenshots/gameplay-2.png" alt="Level 1 overview"/></td>
+    <td align="center"><img src="screenshots/gameplay-3.png" alt="Level 2 overview"/></td>
   </tr>
   <tr>
-    <td align="center"><img src="docs/assets/gameplay-4.png" alt="Base defense"/></td>
-    <td align="center"><img src="docs/assets/gameplay-5.png" alt="Late game wave"/></td>
+    <td align="center"><img src="screenshots/gameplay-4.png" alt="Base defense"/></td>
+    <td align="center"><img src="screenshots/gameplay-5.png" alt="Late game wave"/></td>
   </tr>
 </table>
